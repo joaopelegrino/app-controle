@@ -12,17 +12,19 @@ Sistema integrado de educação em tecnologia com foco em aprendizado prático e
 - ✅ **Persistência Local**: Notas salvas no localStorage do navegador
 
 ### 🆕 Funcionalidades Recém-Implementadas
-- 🎥 **Vídeo YouTube Embedado**: Vídeo de apoio C Programming integrado
+- 🎥 **Vídeo YouTube Embedado**: Vídeos de apoio em C Programming e Bash
 - 📝 **Notas Rápidas**: Caixa de texto para anotações com salvamento automático
-- 📚 **FASE 2 Completa**: Módulos HTTP/3 + Zero Trust (semanas 9-16)
+- 📚 **Sistema Bash Completo**: 4 fases baseadas em transcrição de curso real
+- 🐚 **Bash Learning System**: 16 módulos estruturados de shell scripting
 - 🔧 **Porta Fixa**: Configuração strictPort para sempre usar porta 3000
 - 💾 **Auto-Save**: Sistema de salvamento automático de notas
 
 ### 📊 Métricas do Sistema
 - **10 Áreas de Estudo**: Bash, Linux, Servidores, DevOps, Criptografia, Segurança, C, Docker, Kubernetes, VSCode
+- **3 Sistemas Integrados**: C Programming, VSCode WSL, Bash Shell Scripting
+- **48 Módulos Totais**: 16 C + 16 Bash + 16 outros sistemas
 - **30+ Flash Cards**: Distribuídos pelas áreas de conhecimento
-- **16 Módulos C**: 2 fases completas de aprendizado estruturado
-- **100+ Horas**: Conteúdo educacional planejado
+- **130+ Horas**: Conteúdo educacional planejado
 
 ## 🚀 Características
 
@@ -63,6 +65,8 @@ app-controle/
 │   ├── components/          # Componentes React
 │   │   ├── SistemaEducacionalCompleto.jsx    # Componente principal
 │   │   ├── HubView.jsx                       # Tela inicial
+│   │   ├── BashLearningSystem.jsx            # Sistema Bash
+│   │   ├── BashNotesView.jsx                 # Notas de Bash
 │   │   ├── CLearningSystem.jsx               # Sistema C
 │   │   ├── CNotesView.jsx                    # Notas de C
 │   │   ├── VSCodeLearningSystem.jsx          # Sistema VSCode
@@ -71,6 +75,7 @@ app-controle/
 │   │   └── CodeBlock.jsx                     # Bloco de código
 │   ├── data/                # Dados da aplicação
 │   │   ├── studyAreas.js                     # Áreas de estudo
+│   │   ├── bashLearningData.js               # Dados do sistema Bash
 │   │   ├── cLearningData.js                  # Dados do sistema C
 │   │   └── vscodeLearningData.js             # Dados do sistema VSCode
 │   ├── utils/               # Funções utilitárias
@@ -138,6 +143,31 @@ http://localhost:3000
 
 ### Sistemas Integrados
 
+#### Sistema Bash Shell Scripting (🐚 Integrado)
+- **FASE 1 (Semanas 1-4)**: Fundamentos Shell Scripting
+  - História Unix/Linux e Bell Labs
+  - Filosofia Software Tools (2 partes)
+  - Scripts auto-contidos com shebang (#!)
+- **FASE 2 (Semanas 5-8)**: Processamento de Texto
+  - Redirecionamento I/O e variáveis básicas
+  - Processamento de texto simples
+  - Expressões regulares (regex)
+  - Substituições e globbing
+- **FASE 3 (Semanas 9-12)**: Recursos Avançados
+  - Campos e ordenação (sort)
+  - Pipeline avançado (projeto prático)
+  - Variáveis e aritmética
+  - Status de saída e decisões
+- **FASE 4 (Semanas 13-16)**: Ferramentas e Práticas
+  - Loops (while, until, for)
+  - I/O com read e file descriptors
+  - Substituição de comando e funções
+  - Sinais e projeto final
+- **Recursos Extras**:
+  - 🎥 Vídeo do curso real de Shell Scripting
+  - 📝 Notas baseadas em transcrição completa
+  - 🐚 Exemplos práticos de pipelines Unix
+
 #### Sistema C Programming (🔨 Integrado)
 - **FASE 1 (Semanas 1-8)**: Fundamentos C Programming
   - Variáveis, operadores, estruturas de controle
@@ -189,6 +219,9 @@ O sistema é facilmente personalizável através dos arquivos de dados em `src/d
 ## 📈 Próximas Implementações
 
 ### ✅ Concluídas Recentemente
+- [x] **Sistema Bash Completo**: 4 fases baseadas em transcrição real
+- [x] **Vídeo Bash Embedado**: Curso de Shell Scripting integrado
+- [x] **Notas Detalhadas Bash**: História Unix, Bell Labs, evolução dos shells
 - [x] Vídeo YouTube embedado no Sistema C
 - [x] Sistema de notas rápidas com persistência local
 - [x] FASE 2 completa do Sistema C (HTTP/3 + Zero Trust)
@@ -236,6 +269,13 @@ Este sistema foi desenvolvido com foco em:
 
 ## 🔍 Tecnologias em Destaque
 
+### Sistema Bash Shell Scripting
+- **Shell**: POSIX-compliant scripting
+- **Baseado em**: Transcrição de curso universitário real
+- **Conteúdo**: 16 módulos estruturados em 4 fases
+- **Abordagem**: Software Tools Philosophy + Unix History
+- **Projetos**: Pipelines, regex, scripts robustos
+
 ### Sistema C Programming
 - **Linguagem**: C99 com GCC
 - **Ambiente**: VSCode + WSL2
@@ -264,3 +304,20 @@ Este sistema foi desenvolvido com foco em:
 - **Performance**: Otimizado para desenvolvimento local
 
 **Última atualização**: Janeiro 2025 ✨
+
+---
+
+## 🎓 Cursos Implementados
+
+### 📚 Fontes de Conteúdo Reais
+- **Sistema Bash**: Baseado em transcrição completa de curso universitário de Shell Scripting
+- **Sistema C**: Estrutura de aprendizado progressivo para desenvolvimento web moderno
+- **Sistema VSCode**: Focado em produtividade com WSL2
+
+### 🎯 Metodologia de Implementação
+1. **Análise de Transcrições**: Leitura completa de material educacional real
+2. **Estruturação Modular**: Divisão em fases e módulos semanais
+3. **Integração Multimídia**: Vídeos, notas e exercícios práticos
+4. **Progressão Lógica**: Do básico ao avançado com projetos práticos
+
+Este sistema demonstra como transformar conteúdo educacional real em uma plataforma interativa de aprendizado!

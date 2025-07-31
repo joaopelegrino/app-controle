@@ -3,11 +3,13 @@ import { Calendar, Clock, CheckCircle, Circle, BookOpen, Code, Shield, Server, T
 import { studyAreas } from '../data/studyAreas';
 import { fasesC, modulosC, startDateC } from '../data/cLearningData';
 import { topicosVSCode, modulosVSCode, startDateVSCode } from '../data/vscodeLearningData';
+import { fasesBash, modulosBash, startDateBash } from '../data/bashLearningData';
 import { getWeekDate, formatDate, getCurrentWeek, calculateStats } from '../utils/helpers';
 import { CodeBlock } from './CodeBlock';
 import { HubView } from './HubView';
 import { CLearningSystem } from './CLearningSystem';
 import { VSCodeLearningSystem } from './VSCodeLearningSystem';
+import { BashLearningSystem } from './BashLearningSystem';
 import { FlashcardModal } from './FlashcardModal';
 
 const SistemaEducacionalCompleto = () => {
@@ -29,6 +31,9 @@ const SistemaEducacionalCompleto = () => {
   
   // VSCode Learning States
   const [completedVSCodeModules, setCompletedVSCodeModules] = useState(new Set());
+  
+  // Bash Learning States
+  const [completedBashModules, setCompletedBashModules] = useState(new Set());
   
   // Helper Functions
   const toggleCodeVisibility = (sectionId) => {
@@ -97,6 +102,29 @@ const SistemaEducacionalCompleto = () => {
           fasesC={fasesC}
           modulosC={modulosC}
           startDateC={startDateC}
+          getWeekDate={getWeekDate}
+          formatDate={formatDate}
+          openFlashcardsFromNotes={openFlashcardsFromNotes}
+          CodeBlock={CodeBlock}
+          showCode={showCode}
+          toggleCodeVisibility={toggleCodeVisibility}
+          copyToClipboard={copyToClipboard}
+          copiedCode={copiedCode}
+        />
+      );
+    } else if (currentArea === 'bash') {
+      return (
+        <BashLearningSystem 
+          currentSubView={currentSubView}
+          setCurrentSubView={setCurrentSubView}
+          setCurrentView={setCurrentView}
+          completedBashModules={completedBashModules}
+          setCompletedBashModules={setCompletedBashModules}
+          selectedSection={selectedSection}
+          setSelectedSection={setSelectedSection}
+          fasesBash={fasesBash}
+          modulosBash={modulosBash}
+          startDateBash={startDateBash}
           getWeekDate={getWeekDate}
           formatDate={formatDate}
           openFlashcardsFromNotes={openFlashcardsFromNotes}

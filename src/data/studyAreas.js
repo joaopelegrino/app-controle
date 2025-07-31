@@ -3,9 +3,10 @@ export const studyAreas = {
     name: 'Bash',
     icon: '🐚',
     description: 'Shell scripting, automação e linha de comando',
-    badge: 'new',
-    modules: 8,
-    hours: 16,
+    badge: 'integrated',
+    modules: 16,
+    hours: 32,
+    hasIntegratedApp: true,
     flashcards: {
       basics: {
         name: 'Fundamentos',
