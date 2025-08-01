@@ -11,5 +11,11 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true
+  },
+  define: {
+    __DEV__: JSON.stringify(true)
+  },
+  esbuild: {
+    sourcemap: 'inline'
   }
 })

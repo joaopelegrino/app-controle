@@ -228,5 +228,55 @@ export const studyAreas = {
         ]
       }
     }
+  },
+  claudecode: {
+    name: 'Claude Code',
+    icon: '🤖',
+    description: 'Ferramenta CLI da Anthropic para desenvolvimento assistido por IA',
+    badge: 'new',
+    modules: 12,
+    hours: 120,
+    hasIntegratedApp: true,
+    flashcards: {
+      basics: {
+        name: 'Fundamentos',
+        cards: [
+          {
+            question: 'Como instalar o Claude Code?',
+            answer: 'npm install -g @anthropic-ai/claude-code',
+            code: 'npm install -g @anthropic-ai/claude-code\nclaude --version\nclaude auth login',
+            details: 'Requer Node.js e conta Anthropic\nConfigurar API key\nTestar com --version'
+          },
+          {
+            question: 'Como analisar um arquivo com Claude?',
+            answer: 'claude "analise este arquivo: [nome]"',
+            code: 'claude "analise package.json"\nclaude "explique este código: main.py"\nclaude "sugira melhorias para: app.js"',
+            details: 'Claude lê automaticamente o arquivo\nFornece análise detalhada\nSugere melhorias específicas'
+          },
+          {
+            question: 'Como criar comandos personalizados?',
+            answer: 'Criar arquivo .md em ~/.claude/commands/',
+            code: '---\nname: code-review\ndescription: Review completo\n---\n\nAnalise código com foco em:\n- Qualidade\n- Performance\n- Segurança',
+            details: 'Usar formato YAML + Markdown\nArgumentos dinâmicos com $PARAM\nOrganizar por categorias'
+          }
+        ]
+      },
+      advanced: {
+        name: 'Avançado',
+        cards: [
+          {
+            question: 'O que é o framework MAESTRO?',
+            answer: '7 camadas de segurança para sistemas de IA',
+            details: 'M - Model Security\nA - Access Control\nE - Encryption\nS - Sanitization\nT - Trust Boundaries\nR - Rate Limiting\nO - Observability'
+          },
+          {
+            question: 'Como implementar sistemas multi-agentes?',
+            answer: 'Orquestrar múltiplos agentes especializados',
+            code: 'agents:\n  - analyzer: "Analisa código"\n  - security: "Auditoria"\n  - docs: "Documentação"\n  - coordinator: "Orquestra"',
+            details: 'Cada agente tem função específica\nComunicação via message passing\nCoordinator gerencia workflow'
+          }
+        ]
+      }
+    }
   }
 };

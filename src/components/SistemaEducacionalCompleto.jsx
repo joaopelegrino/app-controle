@@ -4,12 +4,15 @@ import { studyAreas } from '../data/studyAreas';
 import { fasesC, modulosC, startDateC } from '../data/cLearningData';
 import { topicosVSCode, modulosVSCode, startDateVSCode } from '../data/vscodeLearningData';
 import { fasesBash, modulosBash, startDateBash } from '../data/bashLearningData';
+import { claudeCodeLearningData } from '../data/claudeCodeLearningData';
 import { getWeekDate, formatDate, getCurrentWeek, calculateStats } from '../utils/helpers';
 import { CodeBlock } from './CodeBlock';
 import { HubView } from './HubView';
 import { CLearningSystem } from './CLearningSystem';
 import { VSCodeLearningSystem } from './VSCodeLearningSystem';
 import { BashLearningSystem } from './BashLearningSystem';
+import ClaudeCodeLearningSystem from './ClaudeCodeLearningSystem';
+import ClaudeCodeNotesView from './ClaudeCodeNotesView';
 import { FlashcardModal } from './FlashcardModal';
 
 const SistemaEducacionalCompleto = () => {
@@ -34,6 +37,9 @@ const SistemaEducacionalCompleto = () => {
   
   // Bash Learning States
   const [completedBashModules, setCompletedBashModules] = useState(new Set());
+  
+  // Claude Code Learning States
+  const [completedClaudeCodeModules, setCompletedClaudeCodeModules] = useState(new Set());
   
   // Helper Functions
   const toggleCodeVisibility = (sectionId) => {
@@ -158,6 +164,27 @@ const SistemaEducacionalCompleto = () => {
           copiedCode={copiedCode}
         />
       );
+    } else if (currentArea === 'claudecode') {
+      return (
+        <ClaudeCodeLearningSystem 
+          onBack={() => setCurrentView('hub')}
+          onNavigateToNotes={(moduleId) => {
+            setSelectedSection(moduleId);
+            setCurrentView('notes');
+          }}
+          onOpenFlashcards={(area, title) => {
+            const areaData = studyAreas[area];
+            const cards = [];
+            Object.values(areaData.flashcards).forEach(category => {
+              cards.push(...category.cards);
+            });
+            setCurrentCards(cards.sort(() => Math.random() - 0.5));
+            setCurrentCardIndex(0);
+            setIsFlipped(false);
+            setFlashcardModalOpen(true);
+          }}
+        />
+      );
     }
     
     return null;
@@ -174,6 +201,26 @@ const SistemaEducacionalCompleto = () => {
         />
       )}
       {currentView === 'integrated' && <IntegratedAppView />}
+      {currentView === 'notes' && selectedSection.startsWith('claudecode') && (
+        <ClaudeCodeNotesView 
+          moduleId={selectedSection}
+          onBack={() => {
+            setCurrentView('integrated');
+            setSelectedSection('');
+          }}
+          onOpenFlashcards={(area, title) => {
+            const areaData = studyAreas[area];
+            const cards = [];
+            Object.values(areaData.flashcards).forEach(category => {
+              cards.push(...category.cards);
+            });
+            setCurrentCards(cards.sort(() => Math.random() - 0.5));
+            setCurrentCardIndex(0);
+            setIsFlipped(false);
+            setFlashcardModalOpen(true);
+          }}
+        />
+      )}
       <FlashcardModal 
         flashcardModalOpen={flashcardModalOpen}
         setFlashcardModalOpen={setFlashcardModalOpen}
