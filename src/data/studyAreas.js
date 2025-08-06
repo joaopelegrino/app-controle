@@ -278,5 +278,127 @@ export const studyAreas = {
         ]
       }
     }
+  },
+  rust: {
+    name: 'Rust',
+    icon: '🦀',
+    description: 'Caminho completo de aprendizado em desenvolvimento moderno',
+    badge: 'new',
+    modules: 35,
+    hours: 140,
+    isLearningPath: true,
+    flashcards: {
+      terminalWarp: {
+        name: 'Terminal Warp',
+        cards: [
+          {
+            question: 'Como instalar o Warp Terminal?',
+            answer: 'Download direto do site oficial warp.dev',
+            code: '# Linux/WSL:\nwget -qO- https://releases.warp.dev/linux/v0.2023.11.14.08.02.stable_02/warp-terminal_0.2023.11.14.08.02.stable.02_amd64.deb',
+            details: 'Terminal moderno com AI integrada\nSuporta blocos de comando\nAutocomplete inteligente'
+          },
+          {
+            question: 'Quais são os principais recursos do Warp?',
+            answer: 'AI Assistant, blocos de comando, colaboração',
+            details: 'AI Assistant para ajuda contextual\nBlocos de comando editáveis\nCompartilhamento de sessões\nTemas personalizáveis'
+          }
+        ]
+      },
+      vimMotions: {
+        name: 'Vim Motions',
+        cards: [
+          {
+            question: 'Quais são os movimentos básicos do Vim?',
+            answer: 'h (esquerda), j (baixo), k (cima), l (direita)',
+            code: 'h - move cursor para esquerda\nj - move cursor para baixo\nk - move cursor para cima\nl - move cursor para direita',
+            details: 'Movimentos fundamentais no Vim\nEvita uso do mouse\nMais eficiente que setas'
+          },
+          {
+            question: 'Como navegar por palavras no Vim?',
+            answer: 'w (próxima palavra), b (palavra anterior), e (fim da palavra)',
+            code: 'w - próxima palavra\nb - palavra anterior\ne - fim da palavra atual\nW, B, E - ignora pontuação',
+            details: 'Navegação rápida por texto\nMinúscula: considera pontuação\nMaiúscula: ignora pontuação'
+          }
+        ]
+      },
+      rustLang: {
+        name: 'Linguagem Rust',
+        cards: [
+          {
+            question: 'Como instalar Rust?',
+            answer: 'curl --proto \'=https\' --tlsv1.2 -sSf https://sh.rustup.rs | sh',
+            code: 'curl --proto \'=https\' --tlsv1.2 -sSf https://sh.rustup.rs | sh\nsource ~/.cargo/env\nrustc --version',
+            details: 'Rustup gerencia toolchain Rust\nInstala compiler e Cargo\nAutomaticamente configura PATH'
+          },
+          {
+            question: 'Como criar um projeto Rust?',
+            answer: 'cargo new projeto_nome',
+            code: 'cargo new meu_projeto\ncd meu_projeto\ncargo run',
+            details: 'Cargo é o build system do Rust\nCria estrutura padrão\nGerencia dependências'
+          },
+          {
+            question: 'O que é ownership em Rust?',
+            answer: 'Sistema de gerenciamento de memória sem garbage collector',
+            code: 'fn main() {\n    let s1 = String::from("hello");\n    let s2 = s1; // s1 não é mais válido\n    println!("{}", s2);\n}',
+            details: 'Cada valor tem um único owner\nQuando owner sai de escopo, valor é dropado\nPrevine memory leaks e data races'
+          }
+        ]
+      },
+      devopsRust: {
+        name: 'DevOps',
+        cards: [
+          {
+            question: 'Como configurar CI/CD para Rust?',
+            answer: 'GitHub Actions com cargo test e cargo build',
+            code: 'name: CI\non: [push, pull_request]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n    - uses: actions/checkout@v3\n    - run: cargo test',
+            details: 'Actions padrão para Rust\nTesta em múltiplas versões\nCache de dependências'
+          }
+        ]
+      },
+      servidoresRust: {
+        name: 'Servidores',
+        cards: [
+          {
+            question: 'Como criar servidor web com Actix?',
+            answer: 'Framework web rápido para Rust',
+            code: 'use actix_web::{web, App, HttpServer, Result};\n\nasync fn hello() -> Result<String> {\n    Ok("Hello World!".to_string())\n}\n\n#[actix_web::main]\nasync fn main() -> std::io::Result<()> {\n    HttpServer::new(|| {\n        App::new().route("/", web::get().to(hello))\n    })\n    .bind("127.0.0.1:8080")?\n    .run()\n    .await\n}',
+            details: 'Actix-web é um dos frameworks mais rápidos\nSuporta async/await\nMiddleware integrado'
+          }
+        ]
+      },
+      segurancaRust: {
+        name: 'Segurança',
+        cards: [
+          {
+            question: 'Por que Rust é seguro por padrão?',
+            answer: 'Sistema de tipos previne vulnerabilidades comuns',
+            details: 'Não há buffer overflows\nMemory safety sem garbage collector\nThread safety compiletime\nNão há null pointer dereferencing'
+          },
+          {
+            question: 'Como usar ferramentas de auditoria em Rust?',
+            answer: 'cargo audit verifica vulnerabilidades conhecidas',
+            code: 'cargo install cargo-audit\ncargo audit\ncargo audit fix',
+            details: 'Verifica dependências vulneráveis\nBancoBenchmarkodo RustSec Advisory Database\nCorrige automaticamente quando possível'
+          }
+        ]
+      },
+      criptografiaRust: {
+        name: 'Criptografia',
+        cards: [
+          {
+            question: 'Qual crate usar para criptografia?',
+            answer: 'ring para criptografia de baixo nível, rustls para TLS',
+            code: '[dependencies]\nring = "0.16"\nrustls = "0.21"',
+            details: 'ring: primitivas criptográficas\nrustls: implementação TLS pura Rust\nAuditorias regulares de segurança'
+          },
+          {
+            question: 'Como gerar hash SHA-256?',
+            answer: 'Use ring::digest para hashing seguro',
+            code: 'use ring::digest;\n\nfn sha256(data: &[u8]) -> String {\n    let digest = digest::digest(&digest::SHA256, data);\n    hex::encode(digest.as_ref())\n}',
+            details: 'ring usa implementações auditadas\nConstant-time operations\nResistente a timing attacks'
+          }
+        ]
+      }
+    }
   }
 };
