@@ -279,6 +279,69 @@ export const studyAreas = {
       }
     }
   },
+  rustprogramming: {
+    name: 'Sistemas de Aprendizado Rust',
+    icon: '🦀',
+    description: 'Curso completo de Rust Programming - Sistema integrado com vídeo e 24 módulos',
+    badge: 'integrated',
+    modules: 24,
+    hours: 120,
+    hasIntegratedApp: true,
+    flashcards: {
+      fundamentals: {
+        name: 'Fundamentos',
+        cards: [
+          {
+            question: 'Quais são as 3 regras de ownership em Rust?',
+            answer: '1) Cada valor tem um owner, 2) Só pode haver um owner por vez, 3) Quando o owner sai de escopo, o valor é dropado',
+            code: 'let s1 = String::from("hello");\nlet s2 = s1; // Move occurs\n// s1 is no longer valid',
+            details: 'Ownership é o que torna Rust único\nEvita memory leaks e data races\nCompilador garante memory safety'
+          },
+          {
+            question: 'Diferença entre String e &str?',
+            answer: 'String é owned (heap), &str é borrowed (stack/heap slice)',
+            code: 'let s1: String = String::from("hello");\nlet s2: &str = "world"; // string literal\nlet s3: &str = &s1; // slice of String',
+            details: 'String: mutável, owned, heap\n&str: imutável, borrowed, slice\nUse &str para parâmetros de função'
+          },
+          {
+            question: 'Como funciona borrowing em Rust?',
+            answer: 'Referencias (&) permitem usar valor sem tomar ownership',
+            code: 'let s = String::from("hello");\nlet len = calculate_length(&s);\nfn calculate_length(s: &String) -> usize {\n    s.len()\n}',
+            details: '& cria referência imutável\n&mut cria referência mutável\nApenas uma &mut OU várias & por vez'
+          },
+          {
+            question: 'O que são lifetimes em Rust?',
+            answer: 'Anotações que garantem que referências vivem tempo suficiente',
+            code: 'fn longest<\'a>(x: &\'a str, y: &\'a str) -> &\'a str {\n    if x.len() > y.len() { x } else { y }\n}',
+            details: 'Previnem dangling pointers\nCompilador infere na maioria dos casos\nNecessárias em structs com referências'
+          }
+        ]
+      },
+      advanced: {
+        name: 'Conceitos Avançados',
+        cards: [
+          {
+            question: 'O que são traits em Rust?',
+            answer: 'Interface que define comportamento compartilhado entre tipos',
+            code: 'trait Summary {\n    fn summarize(&self) -> String;\n}\n\nimpl Summary for NewsArticle {\n    fn summarize(&self) -> String {\n        format!("{}", self.headline)\n    }\n}',
+            details: 'Similar a interfaces em outras linguagens\nPermitem polimorfismo\nPode ter implementações default'
+          },
+          {
+            question: 'Como funcionam generics em Rust?',
+            answer: 'Permitem escrever código para múltiplos tipos',
+            code: 'struct Point<T> {\n    x: T,\n    y: T,\n}\n\nlet integer_point = Point { x: 5, y: 10 };\nlet float_point = Point { x: 1.0, y: 4.0 };',
+            details: 'Compilador gera código específico para cada tipo\nZero-cost abstractions\nUse com traits para trait bounds'
+          },
+          {
+            question: 'O que é o Result<T, E> enum?',
+            answer: 'Tipo para tratamento de erros recoverable',
+            code: 'fn divide(a: f64, b: f64) -> Result<f64, String> {\n    if b == 0.0 {\n        Err("Division by zero".to_string())\n    } else {\n        Ok(a / b)\n    }\n}',
+            details: 'Ok(T) para sucesso, Err(E) para erro\nUse ? operator para propagação\nForça tratamento explícito de erros'
+          }
+        ]
+      }
+    }
+  },
   rust: {
     name: 'Rust',
     icon: '🦀',

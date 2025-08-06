@@ -903,7 +903,7 @@ int main () {
             <div className="bg-white rounded-lg shadow-sm border p-4">
               <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                 <FileText className="w-5 h-5" />
-                Conteúdo da Aula
+                Conteúdo do Tópico
               </h3>
               
               {sections.map(section => {

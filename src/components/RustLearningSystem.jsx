@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save } from 'lucide-react';
-import { CNotesView } from './CNotesView';
+import { RustNotesView } from './RustNotesView';
 
-export const CLearningSystem = ({ 
+export const RustLearningSystem = ({ 
   currentSubView, 
   setCurrentSubView, 
   setCurrentView, 
@@ -10,9 +10,9 @@ export const CLearningSystem = ({
   setCompletedModules, 
   selectedSection, 
   setSelectedSection, 
-  fasesC, 
-  modulosC, 
-  startDateC, 
+  fasesRust, 
+  modulosRust, 
+  startDateRust, 
   getWeekDate, 
   formatDate, 
   openFlashcardsFromNotes, 
@@ -22,22 +22,22 @@ export const CLearningSystem = ({
   copyToClipboard, 
   copiedCode 
 }) => {
-  const progressPercentage = Math.round((completedModules.size / modulosC.length) * 100);
+  const progressPercentage = Math.round((completedModules.size / modulosRust.length) * 100);
   
   // Estados para notas rápidas
-  const [quickNotes, setQuickNotes] = useState(localStorage.getItem('c-learning-notes') || '');
+  const [quickNotes, setQuickNotes] = useState(localStorage.getItem('rust-learning-notes') || '');
   const [notesSaved, setNotesSaved] = useState(false);
   
   // Função para salvar notas
   const saveNotes = () => {
-    localStorage.setItem('c-learning-notes', quickNotes);
+    localStorage.setItem('rust-learning-notes', quickNotes);
     setNotesSaved(true);
     setTimeout(() => setNotesSaved(false), 2000);
   };
   
   if (currentSubView === 'notes') {
     return (
-      <CNotesView 
+      <RustNotesView 
         setCurrentSubView={setCurrentSubView}
         selectedSection={selectedSection}
         setSelectedSection={setSelectedSection}
@@ -59,27 +59,27 @@ export const CLearningSystem = ({
             <div>
               <button
                 onClick={() => setCurrentView('hub')}
-                className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
+                className="flex items-center gap-2 text-orange-600 hover:text-orange-800 mb-4"
               >
                 <Home className="w-4 h-4" />
                 Voltar ao Hub
               </button>
-              <h1 className="text-3xl font-bold text-gray-900">Sistemas de Aprendizado C</h1>
+              <h1 className="text-3xl font-bold text-gray-900">🦀 Sistemas de Aprendizado Rust</h1>
               <p className="text-gray-600 mt-1">
                 <span className="font-medium">2 Sistemas Integrados:</span> 
-                <span className="text-indigo-600"> FASE 1: Fundamentos C Programming</span> → 
-                <span className="text-blue-600"> FASE 2: Site da Agência HTTP/3 + Zero Trust</span>
+                <span className="text-orange-600"> FASE 1: Fundamentos Rust Programming</span> → 
+                <span className="text-red-600"> FASE 2: Projeto Avançado Rust + Sistemas</span>
               </p>
             </div>
             <div className="text-right">
-              <div className="text-3xl font-bold text-blue-600">{progressPercentage}%</div>
-              <div className="text-sm text-gray-500">{completedModules.size}/{modulosC.length} módulos</div>
+              <div className="text-3xl font-bold text-orange-600">{progressPercentage}%</div>
+              <div className="text-sm text-gray-500">{completedModules.size}/{modulosRust.length} módulos</div>
             </div>
           </div>
           
           <div className="w-full bg-gray-200 rounded-full h-3 mt-4">
             <div 
-              className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-300"
+              className="bg-gradient-to-r from-orange-500 to-red-500 h-3 rounded-full transition-all duration-300"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
@@ -87,8 +87,8 @@ export const CLearningSystem = ({
         
         
         <div className="space-y-4">
-          {fasesC.map(fase => {
-            const faseModulos = modulosC.filter(m => m.fase === fase.id);
+          {fasesRust.map(fase => {
+            const faseModulos = modulosRust.filter(m => m.fase === fase.id);
             const IconeComponent = fase.icone;
             
             return (
@@ -107,7 +107,7 @@ export const CLearningSystem = ({
                           )}
                           {fase.id === 2 && (
                             <span className="bg-white/20 text-white text-xs px-2 py-1 rounded-full">
-                              🚀 HTTP/3 + Zero Trust
+                              🚀 Projetos Avançados
                             </span>
                           )}
                         </div>
@@ -123,22 +123,22 @@ export const CLearningSystem = ({
                 
                 {/* Vídeo YouTube - Apenas para FASE 1 */}
                 {fase.id === 1 && (
-                  <div className="bg-indigo-50 border-t border-indigo-200 p-6">
+                  <div className="bg-orange-50 border-t border-orange-200 p-6">
                     <div className="flex items-center gap-2 mb-4">
                       <Play className="w-5 h-5 text-red-600" />
-                      <h3 className="text-lg font-semibold text-gray-900">Vídeo de Apoio - Fundamentos C Programming</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Vídeo de Apoio - Fundamentos Rust Programming</h3>
                     </div>
-                    <div className="bg-white border border-indigo-200 rounded-lg p-3 mb-4">
-                      <p className="text-sm text-indigo-700">
-                        📚 Este vídeo complementa os estudos da <strong>FASE 1: FUNDAMENTOS C PROGRAMMING</strong> (semanas 1-8)
+                    <div className="bg-white border border-orange-200 rounded-lg p-3 mb-4">
+                      <p className="text-sm text-orange-700">
+                        📚 Este vídeo complementa os estudos da <strong>FASE 1: FUNDAMENTOS RUST PROGRAMMING</strong> (semanas 1-12)
                       </p>
                     </div>
                     <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
                       <iframe
                         width="100%"
                         height="100%"
-                        src="https://www.youtube.com/embed/xND0t1pr3KY"
-                        title="C Programming Tutorial"
+                        src="https://www.youtube.com/embed/BpPEoZW5IiY"
+                        title="Rust Programming Tutorial"
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
@@ -148,18 +148,18 @@ export const CLearningSystem = ({
                     </div>
                     
                     {/* Notas Rápidas - Específicas para FASE 1 */}
-                    <div className="mt-6 bg-white border border-indigo-200 rounded-lg p-6">
+                    <div className="mt-6 bg-white border border-orange-200 rounded-lg p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
-                          <StickyNote className="w-5 h-5 text-indigo-600" />
-                          <h3 className="text-lg font-semibold text-gray-900">Notas Rápidas - Fundamentos C</h3>
+                          <StickyNote className="w-5 h-5 text-orange-600" />
+                          <h3 className="text-lg font-semibold text-gray-900">Notas Rápidas - Fundamentos Rust</h3>
                         </div>
                         <button
                           onClick={saveNotes}
                           className={`flex items-center gap-2 px-3 py-1 rounded-md text-sm transition-colors ${
                             notesSaved 
                               ? 'bg-green-100 text-green-700' 
-                              : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+                              : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
                           }`}
                         >
                           <Save className="w-4 h-4" />
@@ -169,15 +169,16 @@ export const CLearningSystem = ({
                       <textarea
                         value={quickNotes}
                         onChange={(e) => setQuickNotes(e.target.value)}
-                        placeholder="Digite suas anotações sobre os fundamentos de C Programming...
+                        placeholder="Digite suas anotações sobre os fundamentos de Rust Programming...
 
 • Conceitos importantes do vídeo
-• Dúvidas para revisar nos módulos
-• Ideias de projetos práticos
-• Links úteis para C Programming"
-                        className="w-full h-80 p-3 border border-indigo-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+• Dúvidas sobre ownership e borrowing
+• Exemplos de códigos interessantes
+• Diferenças entre Rust e outras linguagens
+• Links úteis para Rust Programming"
+                        className="w-full h-80 p-3 border border-orange-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
                       />
-                      <div className="mt-3 text-xs text-indigo-600">
+                      <div className="mt-3 text-xs text-orange-600">
                         📝 Suas notas sobre FASE 1 são salvas automaticamente no navegador
                       </div>
                     </div>
@@ -188,7 +189,7 @@ export const CLearningSystem = ({
                   <div className="grid gap-3">
                     {faseModulos.map(modulo => {
                       const isCompleted = completedModules.has(modulo.id);
-                      const weekDate = getWeekDate(modulo.semana, startDateC);
+                      const weekDate = getWeekDate(modulo.semana, startDateRust);
                       
                       return (
                         <div 
@@ -201,7 +202,7 @@ export const CLearningSystem = ({
                           onClick={() => {
                             if (modulo.temNotas) {
                               setCurrentSubView('notes');
-                              setSelectedSection('hello-world');
+                              setSelectedSection('hello-world-rust');
                             } else if (!isCompleted) {
                               setCompletedModules(prev => new Set([...prev, modulo.id]));
                             }
@@ -220,7 +221,7 @@ export const CLearningSystem = ({
                                 <h4 className="font-medium text-gray-900">
                                   {modulo.nome}
                                   {modulo.temNotas && (
-                                    <span className="ml-2 inline-flex items-center gap-1 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                                    <span className="ml-2 inline-flex items-center gap-1 text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">
                                       <BookOpen className="w-3 h-3" />
                                       Ver Notas
                                     </span>

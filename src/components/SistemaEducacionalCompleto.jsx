@@ -4,6 +4,7 @@ import { studyAreas } from '../data/studyAreas';
 import { fasesC, modulosC, startDateC } from '../data/cLearningData';
 import { topicosVSCode, modulosVSCode, startDateVSCode } from '../data/vscodeLearningData';
 import { fasesBash, modulosBash, startDateBash } from '../data/bashLearningData';
+import { fasesRust, modulosRust, startDateRust } from '../data/rustLearningData';
 import { claudeCodeLearningData } from '../data/claudeCodeLearningData';
 import { getWeekDate, formatDate, getCurrentWeek, calculateStats } from '../utils/helpers';
 import { CodeBlock } from './CodeBlock';
@@ -11,9 +12,11 @@ import { HubView } from './HubView';
 import { CLearningSystem } from './CLearningSystem';
 import { VSCodeLearningSystem } from './VSCodeLearningSystem';
 import { BashLearningSystem } from './BashLearningSystem';
+import { RustLearningSystem } from './RustLearningSystem';
 import ClaudeCodeLearningSystem from './ClaudeCodeLearningSystem';
 import ClaudeCodeNotesView from './ClaudeCodeNotesView';
 import { FlashcardModal } from './FlashcardModal';
+import LearningPathView from './LearningPathView';
 
 const SistemaEducacionalCompleto = () => {
   // Global States
@@ -41,6 +44,9 @@ const SistemaEducacionalCompleto = () => {
   // Claude Code Learning States
   const [completedClaudeCodeModules, setCompletedClaudeCodeModules] = useState(new Set());
   
+  // Rust Learning States
+  const [completedRustModules, setCompletedRustModules] = useState(new Set());
+  
   // Helper Functions
   const toggleCodeVisibility = (sectionId) => {
     setShowCode(prev => ({
@@ -63,7 +69,10 @@ const SistemaEducacionalCompleto = () => {
     setCurrentArea(areaKey);
     const area = studyAreas[areaKey];
     
-    if (area.hasIntegratedApp) {
+    if (area.isLearningPath) {
+      // Navigate to learning path view
+      setCurrentView('learningPath');
+    } else if (area.hasIntegratedApp) {
       setCurrentView('integrated');
       setCurrentSubView('calendar');
     } else {
@@ -86,6 +95,14 @@ const SistemaEducacionalCompleto = () => {
       cards.push(...category.cards);
     });
     setCurrentCards(cards.sort(() => Math.random() - 0.5));
+    setCurrentCardIndex(0);
+    setIsFlipped(false);
+    setFlashcardModalOpen(true);
+  };
+
+  const openAreaFromLearningPath = (areaKey, areaData) => {
+    // Open flashcards for specific area within learning path
+    setCurrentCards(areaData.cards.sort(() => Math.random() - 0.5));
     setCurrentCardIndex(0);
     setIsFlipped(false);
     setFlashcardModalOpen(true);
@@ -185,6 +202,29 @@ const SistemaEducacionalCompleto = () => {
           }}
         />
       );
+    } else if (currentArea === 'rustprogramming') {
+      return (
+        <RustLearningSystem 
+          currentSubView={currentSubView}
+          setCurrentSubView={setCurrentSubView}
+          setCurrentView={setCurrentView}
+          completedModules={completedRustModules}
+          setCompletedModules={setCompletedRustModules}
+          selectedSection={selectedSection}
+          setSelectedSection={setSelectedSection}
+          fasesRust={fasesRust}
+          modulosRust={modulosRust}
+          startDateRust={startDateRust}
+          getWeekDate={getWeekDate}
+          formatDate={formatDate}
+          openFlashcardsFromNotes={openFlashcardsFromNotes}
+          CodeBlock={CodeBlock}
+          showCode={showCode}
+          toggleCodeVisibility={toggleCodeVisibility}
+          copyToClipboard={copyToClipboard}
+          copiedCode={copiedCode}
+        />
+      );
     }
     
     return null;
@@ -198,6 +238,19 @@ const SistemaEducacionalCompleto = () => {
           studyAreas={studyAreas}
           calculateStats={calculateStats}
           openArea={openArea}
+        />
+      )}
+      {currentView === 'learningPath' && (
+        <LearningPathView 
+          pathData={studyAreas[currentArea]}
+          pathKey={currentArea}
+          onBack={() => setCurrentView('hub')}
+          onAreaClick={openAreaFromLearningPath}
+          onNavigateToIntegrated={(areaKey) => {
+            setCurrentArea(areaKey);
+            setCurrentView('integrated');
+            setCurrentSubView('calendar');
+          }}
         />
       )}
       {currentView === 'integrated' && <IntegratedAppView />}
