@@ -10,12 +10,24 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true
+    sourcemap: false, // Desabilitado em produção por segurança
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'ui-vendor': ['lucide-react']
+        }
+      }
+    }
   },
   define: {
-    __DEV__: JSON.stringify(true)
-  },
-  esbuild: {
-    sourcemap: 'inline'
+    __DEV__: process.env.NODE_ENV !== 'production'
   }
 })
