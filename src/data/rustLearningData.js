@@ -132,11 +132,10 @@ export const modulosRust = [
     semana: 12, 
     fase: 1, 
     duracao: '1 semana', 
-    entregavel: 'Vec + HashMap + Result<T,E> + ? operator' 
+     entregavel: 'Vec + HashMap + Result<T,E> + ? operator' 
   },
   
-  // FASE 2 - Semana 13-14: Tipos Avançados
-  { 
+  // FASE 2 - Semana 13-14: Tipos Avançados  { 
     id: '2.1', 
     nome: 'Type Coercion + From/Into + String Manipulation', 
     semana: 13, 
