@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save } from 'lucide-react';
 import { CNotesView } from './CNotesView';
+import { Breadcrumb } from './Breadcrumb';
 
 export const CLearningSystem = ({ 
   currentSubView, 
@@ -54,6 +55,12 @@ export const CLearningSystem = ({
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
+        <Breadcrumb
+          items={[
+            { label: 'Hub', icon: '🏠', onClick: () => setCurrentView('hub') },
+            { label: 'Curso de C Programming', icon: '📖', current: true }
+          ]}
+        />
         <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
           <div className="flex justify-between items-center">
             <div>
@@ -64,11 +71,11 @@ export const CLearningSystem = ({
                 <Home className="w-4 h-4" />
                 Voltar ao Hub
               </button>
-              <h1 className="text-3xl font-bold text-gray-900">Sistemas de Aprendizado C</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Curso de C Programming</h1>
               <p className="text-gray-600 mt-1">
                 <span className="font-medium">2 Sistemas Integrados:</span> 
-                <span className="text-indigo-600"> FASE 1: Fundamentos C Programming</span> → 
-                <span className="text-blue-600"> FASE 2: Site da Agência HTTP/3 + Zero Trust</span>
+                <span className="text-indigo-600"> Seção 1: Fundamentos C Programming</span> →
+                <span className="text-blue-600"> Seção 2: Site da Agência HTTP/3 + Zero Trust</span>
               </p>
             </div>
             <div className="text-right">
@@ -121,7 +128,7 @@ export const CLearningSystem = ({
                   </div>
                 </div>
                 
-                {/* Vídeo YouTube - Apenas para FASE 1 */}
+                {/* Vídeo YouTube - Apenas para Seção 1 */}
                 {fase.id === 1 && (
                   <div className="bg-indigo-50 border-t border-indigo-200 p-6">
                     <div className="flex items-center gap-2 mb-4">
@@ -130,7 +137,7 @@ export const CLearningSystem = ({
                     </div>
                     <div className="bg-white border border-indigo-200 rounded-lg p-3 mb-4">
                       <p className="text-sm text-indigo-700">
-                        📚 Este vídeo complementa os estudos da <strong>FASE 1: FUNDAMENTOS C PROGRAMMING</strong> (semanas 1-8)
+                        📚 Este vídeo complementa os estudos da <strong>Seção 1: Fundamentos C Programming</strong> (semanas 1-8)
                       </p>
                     </div>
                     <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
@@ -147,12 +154,12 @@ export const CLearningSystem = ({
                       ></iframe>
                     </div>
                     
-                    {/* Notas Rápidas - Específicas para FASE 1 */}
+                    {/* Meu Caderno de Notas - Específicas para Seção 1 */}
                     <div className="mt-6 bg-white border border-indigo-200 rounded-lg p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
                           <StickyNote className="w-5 h-5 text-indigo-600" />
-                          <h3 className="text-lg font-semibold text-gray-900">Notas Rápidas - Fundamentos C</h3>
+                          <h3 className="text-lg font-semibold text-gray-900">📒 Meu Caderno de Notas - Fundamentos C</h3>
                         </div>
                         <button
                           onClick={saveNotes}
@@ -178,7 +185,7 @@ export const CLearningSystem = ({
                         className="w-full h-80 p-3 border border-indigo-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
                       />
                       <div className="mt-3 text-xs text-indigo-600">
-                        📝 Suas notas sobre FASE 1 são salvas automaticamente no navegador
+                        📝 Suas notas sobre Seção 1 são salvas automaticamente no navegador
                       </div>
                     </div>
                   </div>
@@ -222,7 +229,7 @@ export const CLearningSystem = ({
                                   {modulo.temNotas && (
                                     <span className="ml-2 inline-flex items-center gap-1 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
                                       <BookOpen className="w-3 h-3" />
-                                      Ver Notas
+                                      📖 Estudar
                                     </span>
                                   )}
                                 </h4>

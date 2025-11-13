@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Clock, 
-  BookOpen, 
-  CheckCircle, 
-  Target, 
+import {
+  Clock,
+  BookOpen,
+  CheckCircle,
+  Target,
   Calendar,
   Trophy,
   Users,
@@ -19,6 +19,7 @@ import {
   Activity
 } from 'lucide-react';
 import { claudeCodeLearningData } from '../data/claudeCodeLearningData';
+import { Breadcrumb } from './Breadcrumb';
 
 const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards }) => {
   const [completedModules, setCompletedModules] = useState(() => {
@@ -173,6 +174,12 @@ const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards 
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        <Breadcrumb
+          items={[
+            { label: 'Hub', icon: '🏠', onClick: onBack },
+            { label: 'Curso de Claude Code', icon: '🤖', current: true }
+          ]}
+        />
         {/* Stats Dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
@@ -343,7 +350,7 @@ const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards 
                               }`}
                             >
                               <FileText className="w-4 h-4" />
-                              Ver Notas
+                              📖 Estudar
                             </button>
                           )}
                           
@@ -366,7 +373,7 @@ const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards 
         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mt-8 border border-white/20">
           <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
             <FileText className="w-5 h-5" />
-            Notas Rápidas
+            📒 Meu Caderno de Notas
           </h3>
           <textarea
             value={notes}

@@ -28,12 +28,12 @@ Sistema integrado de educação em tecnologia com foco em aprendizado prático e
 - 💾 **Auto-Save**: Sistema de salvamento automático de notas
 
 ### 📊 Métricas do Sistema
-- **12 Áreas de Estudo**: Bash, Linux, Servidores, DevOps, Criptografia, Segurança, C, Docker, Kubernetes, VSCode, Rust, Claude Code
-- **4 Sistemas Integrados**: C Programming, VSCode WSL, Bash Shell Scripting, Rust Programming
+- **13 Áreas de Estudo**: Bash, Linux, Servidores, DevOps, Criptografia, Segurança, C, Docker, Kubernetes, VSCode, Claude Code, Rust, Sistemas Rust
+- **5 Sistemas Integrados**: C Programming, Rust Programming, Bash Shell Scripting, VSCode WSL, Claude Code CLI
 - **1 Caminho de Aprendizado**: Rust (7 áreas estruturadas + navegação para sistema integrado)
-- **107 Módulos Totais**: 16 C + 16 Bash + 24 Rust + 8 VSCode + 12 Claude Code + 31 outros
-- **60+ Flash Cards**: Distribuídos pelas áreas de conhecimento
-- **390+ Horas**: Conteúdo educacional planejado
+- **227 Módulos Totais**: 50 C + 16 Bash + 24 Rust + 8 VSCode + 12 Claude Code + 117 outros
+- **39 Flash Cards**: Distribuídos pelas áreas de conhecimento
+- **692 Horas**: Conteúdo educacional extensivo
 
 ## 🚀 Características
 

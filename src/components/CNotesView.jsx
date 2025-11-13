@@ -177,13 +177,13 @@ int main () {
   };
   
   return (
-    <div className="max-w-7xl mx-auto p-4">
+    <div className="max-w-5xl mx-auto p-4">
       <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
               <BookOpen className="w-8 h-8 text-blue-600" />
-              Notas de Aprendizado
+              📝 Aula 1.1: Fundamentos C99
             </h1>
             <p className="text-gray-600 mt-1">
               Módulo 1.1: Fundamentos C99 - Ambiente de Desenvolvimento Moderno
@@ -195,7 +195,7 @@ int main () {
             className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Voltar ao Calendário
+            Voltar ao Curso
           </button>
         </div>
       </div>

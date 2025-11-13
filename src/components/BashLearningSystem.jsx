@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save } from 'lucide-react';
 import { BashNotesView } from './BashNotesView';
+import { Breadcrumb } from './Breadcrumb';
 
 export const BashLearningSystem = ({ 
   currentSubView, 
@@ -37,8 +38,9 @@ export const BashLearningSystem = ({
   
   if (currentSubView === 'notes') {
     return (
-      <BashNotesView 
+      <BashNotesView
         setCurrentSubView={setCurrentSubView}
+        setCurrentView={setCurrentView}
         selectedSection={selectedSection}
         setSelectedSection={setSelectedSection}
         openFlashcardsFromNotes={openFlashcardsFromNotes}
@@ -54,6 +56,12 @@ export const BashLearningSystem = ({
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
+        <Breadcrumb
+          items={[
+            { label: 'Hub', icon: '🏠', onClick: () => setCurrentView('hub') },
+            { label: 'Curso de Bash', icon: '📖', current: true }
+          ]}
+        />
         <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
           <div className="flex justify-between items-center">
             <div>
@@ -64,7 +72,7 @@ export const BashLearningSystem = ({
                 <Home className="w-4 h-4" />
                 Voltar ao Hub
               </button>
-              <h1 className="text-3xl font-bold text-gray-900">Sistema de Aprendizado Bash</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Curso de Bash Shell Scripting</h1>
               <p className="text-gray-600 mt-1">Shell Scripting Robusto → Unix Tools → Pipelines Poderosos</p>
             </div>
             <div className="text-right">
@@ -81,7 +89,7 @@ export const BashLearningSystem = ({
           </div>
         </div>
         
-        {/* Vídeo do YouTube e Notas Rápidas */}
+        {/* Vídeo do YouTube e Meu Caderno de Notas */}
         <div className="grid lg:grid-cols-3 gap-6 mb-6">
           {/* Vídeo YouTube */}
           <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border p-6">
@@ -104,12 +112,12 @@ export const BashLearningSystem = ({
             </div>
           </div>
           
-          {/* Notas Rápidas */}
+          {/* Meu Caderno de Notas */}
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <StickyNote className="w-5 h-5 text-yellow-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Notas Rápidas</h3>
+                <h3 className="text-lg font-semibold text-gray-900">📒 Meu Caderno de Notas</h3>
               </div>
               <button
                 onClick={saveNotes}
@@ -196,7 +204,7 @@ export const BashLearningSystem = ({
                                   {modulo.temNotas && (
                                     <span className="ml-2 inline-flex items-center gap-1 text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
                                       <BookOpen className="w-3 h-3" />
-                                      Ver Notas
+                                      📖 Estudar
                                     </span>
                                   )}
                                 </h4>

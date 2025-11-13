@@ -6,7 +6,8 @@ export const HubView = ({ studyAreas, calculateStats, openArea }) => {
   
   // Separar caminhos de aprendizado das áreas normais
   const learningPaths = Object.entries(studyAreas).filter(([key, area]) => area.isLearningPath);
-  const regularAreas = Object.entries(studyAreas).filter(([key, area]) => !area.isLearningPath);
+  const regularAreas = Object.entries(studyAreas).filter(([key, area]) => !area.isLearningPath && area.status !== 'in-development');
+  const inDevelopmentAreas = Object.entries(studyAreas).filter(([key, area]) => area.status === 'in-development');
   
   const LearningPathCard = ({ pathKey, path }) => {
     const pathAreas = Object.entries(path.flashcards);
@@ -129,6 +130,43 @@ export const HubView = ({ studyAreas, calculateStats, openArea }) => {
             );
           })}
         </div>
+
+        {/* Seção Em Desenvolvimento */}
+        {inDevelopmentAreas.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">🚧 Em Desenvolvimento</h2>
+            <p className="text-gray-600 text-center mb-6">Novos cursos completos em breve</p>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {inDevelopmentAreas.map(([key, area]) => {
+                const cardCount = area.flashcards ?
+                  Object.values(area.flashcards).reduce((sum, cat) => sum + cat.cards.length, 0) : 0;
+
+                return (
+                  <div
+                    key={key}
+                    className="bg-gray-100 rounded-lg shadow-lg p-6 cursor-not-allowed opacity-50 relative overflow-hidden"
+                    title={`Em desenvolvimento - Disponível na Release 3.0`}
+                  >
+                    <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white bg-orange-500">
+                      Em Breve
+                    </div>
+                    <div className="flex items-center mb-4">
+                      <span className="text-4xl mr-4 grayscale">{area.icon}</span>
+                      <h3 className="text-xl font-bold text-gray-600">{area.name}</h3>
+                    </div>
+                    <p className="text-gray-500 mb-4">{area.description}</p>
+                    <div className="flex justify-between text-sm text-gray-400">
+                      <span>{area.modules} módulos</span>
+                      <span>{cardCount} cards</span>
+                      <span>{area.hours}h</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
