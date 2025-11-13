@@ -38,9 +38,13 @@
       "Bash(python3:*)",
       "Bash(source:*)",
       "Bash(python:*)",
-      "Bash(./processar_amostra.sh:*)"
+      "Bash(./processar_amostra.sh:*)",
+      "Bash(npx chrome-devtools-mcp:*)",
+      "mcp__chrome-devtools__*",
+      "Bash(./scripts/start-chrome-debug.sh)"
     ],
     "deny": []
   },
-  "outputStyle": "Learning"
+  "outputStyle": "Learning",
+  "enableAllProjectMcpServers": true
 }
