@@ -51,10 +51,11 @@ app-controle/
 │       ├── setup.js                        # Configuração testes
 │       └── components/AreaCard.test.jsx    # Teste exemplo
 ├── dist/                # Build de produção
-├── docs/                # Documentação técnica
+├── docs/                # Documentação técnica ativa
 │   ├── MCP-CHROME-DEVTOOLS-GUIA-COMPLETO.md
 │   ├── MCP-CHROME-DEVTOOLS-MANUAL-USO.md
-│   └── MCP-CHROME-DEVTOOLS-QUICK-START.md
+│   ├── MCP-CHROME-DEVTOOLS-QUICK-START.md
+│   └── TEMPLATE-CURSO-PADRAO.md  # Template oficial sistemas
 ├── screenshots/         # Screenshots de validação
 │   ├── 01-hub-inicial.png
 │   ├── 02-modal-bash.png
@@ -74,6 +75,11 @@ app-controle/
 │   │   └── meta-configuracao-evolucao/  # Meta-skill
 │   ├── agents/          # Agents complexos (multi-step)
 │   │   └── ux-refactor-agent.md      # UX/UI refactoring
+│   ├── meta-docs/       # Documentação histórica organizada ✨ NOVO
+│   │   ├── INDEX.md     # Índice de 12 documentos históricos
+│   │   ├── BACKLOG-*.md # Backlogs de sessões (4 arquivos)
+│   │   ├── RELATORIO-*.md # Relatórios técnicos e validações (6 arquivos)
+│   │   └── DIAGNOSTICO-*.md # Diagnósticos e guias (2 arquivos)
 │   ├── hooks.toml       # Automações e gatilhos
 │   └── settings.local.json  # Permissões e configurações
 ├── .mcp.json            # Configuração MCP servers
@@ -82,11 +88,9 @@ app-controle/
 ├── nginx.conf          # Configuração otimizada
 ├── vite.config.js      # Build sem sourcemaps
 ├── test-usabilidade-mcp.cjs  # Testes automatizados E2E
-├── PRODUCT-CENTRAL-DOCUMENT.md  # PRD + User Stories + Backlog (v2.4)
-├── DIAGNOSTICO-COMPLETO-ULTRATHINK-2025-11-13.md  # Diagnóstico técnico
-├── RELATORIO-USABILIDADE-ULTRATHINK.md  # Relatório de testes (nota 8.0/10)
-├── RELATORIO-VALIDACAO-EPICO-12.md  # Validação ÉPICO 12 (88% completo) ✨ NOVO
-└── VALIDACAO-MCP-CHROME-DEVTOOLS.md  # Validação MCP
+├── CLAUDE.md             # ✅ Instruções do projeto para Claude Code
+├── PRODUCT-CENTRAL-DOCUMENT.md  # ✅ PRD + User Stories + Backlog (v2.4)
+└── README.md             # ✅ README principal do projeto
 ```
 
 ## 📊 Métricas do Sistema (Estado Atual - Novembro 2025)
@@ -109,11 +113,13 @@ app-controle/
 - **Nota Geral**: 8.8/10 ⭐ (+0.3 pelo ÉPICO 12)
 
 ### Arquivos de Documentação
-- **21+ documentos Markdown**: PRD, diagnósticos, guias, relatórios
+- **3 Documentos Ativos na Raiz**: CLAUDE.md, PRODUCT-CENTRAL-DOCUMENT.md, README.md
+- **4 Guias Técnicos em docs/**: 3 guias MCP + 1 template oficial
+- **12 Documentos Históricos**: Organizados em `.claude/meta-docs/` (backlogs, relatórios, validações)
 - **Fonte Única da Verdade**: PRODUCT-CENTRAL-DOCUMENT.md (v2.4)
-- **53 User Stories**: 3 completas recentemente (US-060 ✅, US-061 🚧 77%, US-070 ✅)
+- **53 User Stories**: 3 completas recentemente (US-060 ✅, US-061 ✅, US-070 ✅)
 - **4 Releases Planejadas**: Roadmap até março 2026
-- **ÉPICO 12**: 88% completo (US-060 DONE, US-061 em progresso)
+- **ÉPICO 12**: 100% completo ✅ (US-060, US-061 DONE)
 - **ÉPICO 13**: 3% completo (US-070 DONE)
 
 ## 🚀 Capacidades MCP (Model Context Protocol)
@@ -864,16 +870,42 @@ Configurado em `.claude/settings.local.json`:
 
 ## 📚 Documentação de Referência
 
-### Documentos Principais
-- **PRODUCT-CENTRAL-DOCUMENT.md** - PRD, User Stories, Backlog, Roadmap
-- **DIAGNOSTICO-COMPLETO-ULTRATHINK-2025-11-13.md** - Análise técnica profunda
-- **RELATORIO-USABILIDADE-ULTRATHINK.md** - Testes de usabilidade (nota 8.0/10)
-- **VALIDACAO-MCP-CHROME-DEVTOOLS.md** - Validação das 5 capacidades MCP
+### 📄 Documentos Ativos (Raiz do Projeto)
+- **CLAUDE.md** - Instruções completas do projeto para Claude Code (este arquivo)
+- **PRODUCT-CENTRAL-DOCUMENT.md** - PRD, User Stories, Backlog, Roadmap (v2.4)
+- **README.md** - README principal do projeto
 
-### Guias MCP
-- **docs/MCP-CHROME-DEVTOOLS-GUIA-COMPLETO.md** - Configuração detalhada WSL2
-- **docs/MCP-CHROME-DEVTOOLS-MANUAL-USO.md** - 24 comandos MCP + casos de uso
-- **docs/MCP-CHROME-DEVTOOLS-QUICK-START.md** - Início rápido (5 minutos)
+### 📘 Documentação Técnica (docs/)
+**Guias MCP Chrome DevTools:**
+- **MCP-CHROME-DEVTOOLS-GUIA-COMPLETO.md** - Configuração detalhada WSL2
+- **MCP-CHROME-DEVTOOLS-MANUAL-USO.md** - 24 comandos MCP + casos de uso
+- **MCP-CHROME-DEVTOOLS-QUICK-START.md** - Início rápido (5 minutos)
+
+**Templates Oficiais:**
+- **TEMPLATE-CURSO-PADRAO.md** - Template para criar novos sistemas de aprendizado
+
+### 📚 Documentação Histórica (.claude/meta-docs/)
+**Índice:** `.claude/meta-docs/INDEX.md` (12 documentos organizados)
+
+**Backlogs de Sessões (4):**
+- BACKLOG-2025-11-13-EPICO-12-COMPLETO.md
+- BACKLOG-2025-11-13-SPRINT-25-COMPLETO.md
+- BACKLOG-2025-11-13-US-071-TEMPLATE-PADRAO.md
+- BACKLOG-2025-11-13-VALIDACAO-PADRAO-BASH.md
+
+**Relatórios de Validação (3):**
+- RELATORIO-VALIDACAO-EPICO-12.md - Validação ÉPICO 12 (100% completo)
+- RELATORIO-VALIDACAO-US-061.md - Breadcrumb implementado (13/13 critérios)
+- VALIDACAO-MCP-CHROME-DEVTOOLS.md - Validação MCP (24 ferramentas)
+
+**Relatórios Técnicos (3):**
+- RELATORIO-CONFORMIDADE-PADRAO-BASH-2025-11-13.md - Checklist 14 itens
+- RELATORIO-LIMPEZA-PROJETO-2025-11-13.md - Housekeeping
+- RELATORIO-USABILIDADE-ULTRATHINK.md - Testes usabilidade (nota 8.0/10)
+
+**Diagnósticos e Guias (2):**
+- DIAGNOSTICO-COMPLETO-ULTRATHINK-2025-11-13.md - Análise técnica profunda
+- exemplo-playwright-mcp-screenshots.md - Tutorial Playwright MCP
 
 ### Links Externos Úteis
 - [Documentação React](https://react.dev)
