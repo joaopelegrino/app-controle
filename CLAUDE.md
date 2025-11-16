@@ -72,14 +72,19 @@ app-controle/
 │   │   ├── component-refactor/       # Refatoração React
 │   │   ├── breadcrumb-impl/          # Breadcrumb acessível
 │   │   ├── ultrathink-arch/          # Arquitetura sistema
-│   │   └── meta-configuracao-evolucao/  # Meta-skill
+│   │   └── meta-configuracao-evolucao/  # Meta-skill + docs de skills
+│   │       ├── SKILL.md
+│   │       ├── README-SKILLS-AGENTS.md  # Guia completo de skills
+│   │       └── QUICK-START.md           # Início rápido (5 min)
 │   ├── agents/          # Agents complexos (multi-step)
 │   │   └── ux-refactor-agent.md      # UX/UI refactoring
-│   ├── meta-docs/       # Documentação histórica organizada ✨ NOVO
-│   │   ├── INDEX.md     # Índice de 12 documentos históricos
-│   │   ├── BACKLOG-*.md # Backlogs de sessões (4 arquivos)
-│   │   ├── RELATORIO-*.md # Relatórios técnicos e validações (6 arquivos)
-│   │   └── DIAGNOSTICO-*.md # Diagnósticos e guias (2 arquivos)
+│   ├── meta-docs/       # Meta-documentação (evolução config Claude Code) ✨
+│   │   ├── README.md    # Propósito e guidelines da meta-docs
+│   │   ├── INDEX.md     # Catálogo completo (12 documentos)
+│   │   ├── sessions/    # Backlogs de sessões (organizados por data)
+│   │   │   └── 2025-11-13/  # Sprint produtiva (4 backlogs)
+│   │   ├── validacoes/  # Validações de skills/agents/MCP (3 docs)
+│   │   └── diagnosticos/  # Análises técnicas + guias (5 docs)
 │   ├── hooks.toml       # Automações e gatilhos
 │   └── settings.local.json  # Permissões e configurações
 ├── .mcp.json            # Configuração MCP servers
@@ -115,7 +120,7 @@ app-controle/
 ### Arquivos de Documentação
 - **3 Documentos Ativos na Raiz**: CLAUDE.md, PRODUCT-CENTRAL-DOCUMENT.md, README.md
 - **4 Guias Técnicos em docs/**: 3 guias MCP + 1 template oficial
-- **12 Documentos Históricos**: Organizados em `.claude/meta-docs/` (backlogs, relatórios, validações)
+- **12 Documentos Meta**: Organizados em `.claude/meta-docs/` (sessions, validacoes, diagnosticos)
 - **Fonte Única da Verdade**: PRODUCT-CENTRAL-DOCUMENT.md (v2.4)
 - **53 User Stories**: 3 completas recentemente (US-060 ✅, US-061 ✅, US-070 ✅)
 - **4 Releases Planejadas**: Roadmap até março 2026
@@ -529,6 +534,10 @@ Phase 5: Documentation
 
 ### Como Usar Skills e Agents
 
+**📖 Documentação Completa:**
+- [README-SKILLS-AGENTS.md](/.claude/skills/meta-configuracao-evolucao/README-SKILLS-AGENTS.md) - Guia completo
+- [QUICK-START.md](/.claude/skills/meta-configuracao-evolucao/QUICK-START.md) - Início rápido (5 min)
+
 #### Skills (Ativação Automática)
 
 Skills ativam **automaticamente** quando você trabalha em contextos relacionados:
@@ -884,28 +893,42 @@ Configurado em `.claude/settings.local.json`:
 **Templates Oficiais:**
 - **TEMPLATE-CURSO-PADRAO.md** - Template para criar novos sistemas de aprendizado
 
-### 📚 Documentação Histórica (.claude/meta-docs/)
-**Índice:** `.claude/meta-docs/INDEX.md` (12 documentos organizados)
+### 📚 Meta-Documentação (.claude/meta-docs/)
 
-**Backlogs de Sessões (4):**
-- BACKLOG-2025-11-13-EPICO-12-COMPLETO.md
-- BACKLOG-2025-11-13-SPRINT-25-COMPLETO.md
-- BACKLOG-2025-11-13-US-071-TEMPLATE-PADRAO.md
-- BACKLOG-2025-11-13-VALIDACAO-PADRAO-BASH.md
+**Propósito:** Única fonte da verdade sobre evolução da configuração do Claude Code (skills, agents, hooks, CLAUDE.md)
 
-**Relatórios de Validação (3):**
-- RELATORIO-VALIDACAO-EPICO-12.md - Validação ÉPICO 12 (100% completo)
-- RELATORIO-VALIDACAO-US-061.md - Breadcrumb implementado (13/13 critérios)
-- VALIDACAO-MCP-CHROME-DEVTOOLS.md - Validação MCP (24 ferramentas)
+**Estrutura Organizada:**
+```
+meta-docs/
+├── README.md                   # Propósito e guidelines
+├── INDEX.md                    # Catálogo completo (12 documentos)
+│
+├── sessions/                   # 🗓️ Sessões de evolução (4 docs)
+│   └── 2025-11-13/            # Organizado por data
+│       ├── epico-12-completo.md
+│       ├── sprint-25-completo.md
+│       ├── us-071-template-padrao.md
+│       └── validacao-padrao-bash.md
+│
+├── validacoes/                 # ✅ Validações de config (3 docs)
+│   ├── epico-12.md            # ÉPICO 12 - 100% completo
+│   ├── us-061.md              # Breadcrumb - 13/13 critérios
+│   └── mcp-chrome-devtools.md # MCP - 24 ferramentas
+│
+└── diagnosticos/               # 📊 Análises técnicas (5 docs)
+    ├── ultrathink-2025-11-13.md
+    ├── conformidade-padrao-bash.md
+    ├── limpeza-projeto.md
+    ├── usabilidade.md
+    └── guias/
+        └── playwright-mcp-screenshots.md
+```
 
-**Relatórios Técnicos (3):**
-- RELATORIO-CONFORMIDADE-PADRAO-BASH-2025-11-13.md - Checklist 14 itens
-- RELATORIO-LIMPEZA-PROJETO-2025-11-13.md - Housekeeping
-- RELATORIO-USABILIDADE-ULTRATHINK.md - Testes usabilidade (nota 8.0/10)
+**Consultar:**
+- [INDEX.md](/.claude/meta-docs/INDEX.md) - Navegação completa
+- [README.md](/.claude/meta-docs/README.md) - Como usar meta-docs
 
-**Diagnósticos e Guias (2):**
-- DIAGNOSTICO-COMPLETO-ULTRATHINK-2025-11-13.md - Análise técnica profunda
-- exemplo-playwright-mcp-screenshots.md - Tutorial Playwright MCP
+**Nota:** meta-docs/ rastreia apenas configuração do Claude Code, NÃO documentação da aplicação
 
 ### Links Externos Úteis
 - [Documentação React](https://react.dev)
@@ -1027,11 +1050,12 @@ Configurado em `.claude/settings.local.json`:
 
 ---
 
-**📅 Última atualização:** 2025-11-13 (US-061 Implementada - ÉPICO 12 COMPLETO)
+**📅 Última atualização:** 2025-11-16 (Reorganização .claude/meta-docs/)
 **✅ Status:** Produção (Release 1.0) + Sprint 2.4 (100% ✅) + Sprint 3.1 (3%)
 **🔄 Próxima Release:** 2.5 "UX Refinements" → 3.0 "Consistency & Scale"
 **📦 Projeto:** Sistema Educacional Completo v2.0 (Ultrathink)
 **👤 Responsável:** João Pelegrino
 **🤖 Assistente:** Claude Code com MCP integrado
 **🎯 Nota:** 9.0/10 ⭐ (+0.2) | Meta: 9.5/10 ⭐
-**🚀 Conquista Recente:** ÉPICO 12 - 100% COMPLETO | US-061 DONE (Breadcrumb Hierárquico)
+**🚀 Conquista Recente:** Meta-docs reorganizado (sessions, validacoes, diagnosticos)
+**📚 Estrutura:** Skills docs → meta-configuracao-evolucao/ | Meta-docs → categorizado

@@ -1,77 +1,104 @@
-# 📚 Índice de Meta-Documentação - Ultrathink
+# 📚 Índice - Meta-Documentação Ultrathink
 
-**Última Atualização:** 2025-11-14
+**Última Atualização:** 2025-11-16
 **Localização:** `.claude/meta-docs/`
-**Propósito:** Documentação histórica, backlogs de sessões, relatórios de validação e guias de suporte
+**Propósito:** Rastrear evolução da meta-configuração do Claude Code
 
 ---
 
-## 📖 Sobre este Diretório
+## 🎯 Sobre Este Índice
 
-Este diretório contém **documentação histórica e de suporte** do projeto Ultrathink. Diferente de:
+Este índice cataloga toda a **meta-documentação** do projeto Ultrathink - ou seja, documentação sobre a **configuração do Claude Code** (skills, agents, hooks, CLAUDE.md).
 
-- **Raiz do projeto**: Documentos ativos (CLAUDE.md, PRODUCT-CENTRAL-DOCUMENT.md, README.md)
-- **docs/**: Documentação técnica ativa (guias MCP, templates oficiais)
-
-Os arquivos aqui são **referências históricas** de sprints completadas, validações realizadas e diagnósticos técnicos.
+📖 **Leia primeiro:** [README.md](./README.md) para entender o propósito desta pasta.
 
 ---
 
-## 📂 Categorias
+## 📂 Estrutura Atual
 
-### 🗓️ Backlogs de Sessões (4 arquivos)
+```
+meta-docs/
+├── README.md                   # Propósito e guidelines
+├── INDEX.md                    # Este arquivo (catálogo completo)
+│
+├── sessions/                   # 🗓️ Sessões de evolução (4 docs)
+│   └── 2025-11-13/
+│       ├── epico-12-completo.md
+│       ├── sprint-25-completo.md
+│       ├── us-071-template-padrao.md
+│       └── validacao-padrao-bash.md
+│
+├── validacoes/                 # ✅ Validações de config (3 docs)
+│   ├── epico-12.md
+│   ├── us-061.md
+│   └── mcp-chrome-devtools.md
+│
+└── diagnosticos/               # 📊 Análises técnicas (5 docs)
+    ├── ultrathink-2025-11-13.md
+    ├── conformidade-padrao-bash.md
+    ├── limpeza-projeto.md
+    ├── usabilidade.md
+    └── guias/
+        └── playwright-mcp-screenshots.md
+```
 
-Registros de trabalho realizado em sessões específicas com Claude Code:
-
-| Arquivo | Data | Descrição | Status |
-|---------|------|-----------|--------|
-| **BACKLOG-2025-11-13-EPICO-12-COMPLETO.md** | 2025-11-13 | Conclusão do ÉPICO 12 (Arquitetura de Informação) | ✅ COMPLETO |
-| **BACKLOG-2025-11-13-SPRINT-25-COMPLETO.md** | 2025-11-13 | Sprint 2.5 completa (US-060 + US-061) | ✅ COMPLETO |
-| **BACKLOG-2025-11-13-US-071-TEMPLATE-PADRAO.md** | 2025-11-13 | US-071: Criação do template de curso padrão | ✅ DONE |
-| **BACKLOG-2025-11-13-VALIDACAO-PADRAO-BASH.md** | 2025-11-13 | Validação do padrão Bash como referência | ✅ VALIDADO |
-
-**Uso:** Consultar decisões de design, implementações passadas e contexto histórico de sprints.
-
----
-
-### 📊 Relatórios de Validação (3 arquivos)
-
-Relatórios de validação de User Stories e épicos:
-
-| Arquivo | Escopo | Conteúdo Principal | Nota |
-|---------|--------|-------------------|------|
-| **RELATORIO-VALIDACAO-EPICO-12.md** | ÉPICO 12 | Validação de nomenclatura + breadcrumb (US-060, US-061) | 100% conforme |
-| **RELATORIO-VALIDACAO-US-061.md** | US-061 | Implementação de breadcrumb hierárquico (13/13 critérios) | ✅ DONE |
-| **VALIDACAO-MCP-CHROME-DEVTOOLS.md** | MCP | Validação de 5 capacidades Chrome DevTools (24 ferramentas) | ✅ Funcional |
-
-**Uso:** Evidências de conformidade com critérios de aceite, screenshots de validação.
-
----
-
-### 📋 Relatórios Técnicos (3 arquivos)
-
-Análises detalhadas de qualidade, conformidade e usabilidade:
-
-| Arquivo | Tipo | Conteúdo Principal | Insight Chave |
-|---------|------|-------------------|--------------|
-| **RELATORIO-CONFORMIDADE-PADRAO-BASH-2025-11-13.md** | Conformidade | Análise de 14 itens de conformidade do padrão Bash | Bash é padrão ouro |
-| **RELATORIO-LIMPEZA-PROJETO-2025-11-13.md** | Housekeeping | Limpeza de arquivos temporários e organização | Raiz limpa mantida |
-| **RELATORIO-USABILIDADE-ULTRATHINK.md** | Usabilidade | Testes com MCP Chrome DevTools (nota 8.0/10) | 2 screenshots, 9 testes |
-
-**Uso:** Referência de qualidade, benchmarks de conformidade, histórico de melhorias.
+**Total:** 12 documentos organizados em 3 categorias
 
 ---
 
-### 🔧 Diagnósticos e Guias de Suporte (2 arquivos)
+## 🗓️ Sessões de Evolução (4 documentos)
 
-Diagnósticos técnicos e guias de ferramentas:
+Backlogs de sessões focadas em configurar/melhorar Claude Code:
 
-| Arquivo | Categoria | Conteúdo | Quando Consultar |
-|---------|-----------|----------|-----------------|
-| **DIAGNOSTICO-COMPLETO-ULTRATHINK-2025-11-13.md** | Diagnóstico | Análise técnica profunda (stack, métricas, débito) | Decisões arquiteturais |
-| **exemplo-playwright-mcp-screenshots.md** | Tutorial | Como usar Playwright MCP para capturar screenshots | Debugging visual com MCP |
+| Arquivo | Data | Tema | Conquista Principal |
+|---------|------|------|-------------------|
+| [epico-12-completo.md](./sessions/2025-11-13/epico-12-completo.md) | 2025-11-13 | ÉPICO 12 - Arquitetura de Informação | Skills de nomenclatura + breadcrumb |
+| [sprint-25-completo.md](./sessions/2025-11-13/sprint-25-completo.md) | 2025-11-13 | Sprint 2.5 completa | US-060 + US-061 implementadas |
+| [us-071-template-padrao.md](./sessions/2025-11-13/us-071-template-padrao.md) | 2025-11-13 | US-071 Template de Curso | Template oficial validado |
+| [validacao-padrao-bash.md](./sessions/2025-11-13/validacao-padrao-bash.md) | 2025-11-13 | Padrão Bash como referência | Bash = padrão ouro |
 
-**Uso:** Entender estado do sistema, configurar ferramentas MCP, debugging avançado.
+**Quando Consultar:**
+- Entender decisões de design de skills/agents
+- Rastrear quando foi criada configuração X
+- Contexto histórico de implementações
+
+---
+
+## ✅ Validações (3 documentos)
+
+Evidências de que skills, agents, hooks e MCP funcionam:
+
+| Arquivo | O Que Foi Validado | Critérios | Status |
+|---------|-------------------|-----------|--------|
+| [epico-12.md](./validacoes/epico-12.md) | ÉPICO 12 completo | Nomenclatura + Breadcrumb | ✅ 100% |
+| [us-061.md](./validacoes/us-061.md) | US-061 Breadcrumb | 13/13 critérios de aceite | ✅ DONE |
+| [mcp-chrome-devtools.md](./validacoes/mcp-chrome-devtools.md) | MCP Chrome DevTools | 24 ferramentas testadas | ✅ Funcional |
+
+**Quando Consultar:**
+- Verificar se skill/agent está validado
+- Evidências para auditorias
+- Screenshots de validação
+
+---
+
+## 📊 Diagnósticos e Análises (5 documentos)
+
+Análises técnicas da configuração do Claude Code:
+
+### Diagnósticos Principais
+
+| Arquivo | Tipo | Conteúdo | Quando Consultar |
+|---------|------|----------|-----------------|
+| [ultrathink-2025-11-13.md](./diagnosticos/ultrathink-2025-11-13.md) | Snapshot Completo | Stack, métricas, componentes, débito técnico | Decisões arquiteturais |
+| [conformidade-padrao-bash.md](./diagnosticos/conformidade-padrao-bash.md) | Checklist | 14 itens de conformidade do padrão Bash | Template para novos sistemas |
+| [limpeza-projeto.md](./diagnosticos/limpeza-projeto.md) | Housekeeping | Arquivos removidos, organização mantida | Manutenção da raiz |
+| [usabilidade.md](./diagnosticos/usabilidade.md) | Testes UX | 9 testes MCP, nota 8.0/10, 2 screenshots | Melhorias de UX |
+
+### Guias e Tutoriais
+
+| Arquivo | Ferramenta | Conteúdo |
+|---------|-----------|----------|
+| [guias/playwright-mcp-screenshots.md](./diagnosticos/guias/playwright-mcp-screenshots.md) | Playwright MCP | Como capturar screenshots automatizados |
 
 ---
 
@@ -79,186 +106,183 @@ Diagnósticos técnicos e guias de ferramentas:
 
 ### Por Data
 
-- **2025-11-13**: 11 documentos (sprint produtiva!)
-  - ÉPICO 12 completo
-  - Sprint 2.5 concluída
-  - 3 relatórios de validação
-  - 4 backlogs de sessão
+**2025-11-13** (Sprint Produtiva!)
+- ✅ 4 sessões documentadas
+- ✅ 3 validações concluídas
+- ✅ 4 diagnósticos criados
+- 🏆 ÉPICO 12 - 100% completo
+
+### Por Categoria
+
+- **🗓️ Sessões**: 4 backlogs de evolução da config
+- **✅ Validações**: 3 provas de conformidade
+- **📊 Diagnósticos**: 4 análises + 1 guia
 
 ### Por Status
 
-- ✅ **Concluídos**: 11 documentos
-- 📚 **Referência**: 1 guia (Playwright)
-
-### Por Tipo
-
-- **Backlogs**: 4 arquivos
-- **Relatórios**: 6 arquivos
-- **Diagnósticos**: 1 arquivo
-- **Tutoriais**: 1 arquivo
+- ✅ **Concluídos**: 12 documentos
+- 🚧 **Em Progresso**: 0
+- 📋 **Planejados**: Próximas sessões
 
 ---
 
 ## 📌 Documentos Mais Consultados
 
-1. **DIAGNOSTICO-COMPLETO-ULTRATHINK-2025-11-13.md**
-   - Visão geral completa do sistema
-   - Stack, métricas, componentes
-   - Débito técnico identificado
+### 1. Diagnóstico Completo Ultrathink
+📄 [diagnosticos/ultrathink-2025-11-13.md](./diagnosticos/ultrathink-2025-11-13.md)
 
-2. **RELATORIO-VALIDACAO-EPICO-12.md**
-   - Evidências de conformidade com glossário
-   - Screenshots de breadcrumb implementado
-   - Metodologia de validação MCP
-
-3. **RELATORIO-USABILIDADE-ULTRATHINK.md**
-   - Testes de usabilidade (nota 8.0/10)
-   - 9 testes automatizados com MCP
-   - Recomendações de melhoria
-
-4. **RELATORIO-CONFORMIDADE-PADRAO-BASH-2025-11-13.md**
-   - Checklist de 14 itens de conformidade
-   - Bash como padrão ouro validado
-   - Template para novos sistemas
+**Por quê:** Visão geral completa do sistema em 2025-11-13
+- Stack tecnológica
+- 18 componentes React
+- 227 módulos educacionais
+- Débito técnico identificado
+- Métricas de qualidade
 
 ---
 
-## 🗂️ Estrutura Completa do Projeto
+### 2. Validação ÉPICO 12
+📄 [validacoes/epico-12.md](./validacoes/epico-12.md)
 
-```
-app-controle/
-├── CLAUDE.md                           # ✅ ATIVO - Instruções Claude Code
-├── PRODUCT-CENTRAL-DOCUMENT.md         # ✅ ATIVO - PRD Central (fonte única)
-├── README.md                           # ✅ ATIVO - README principal
-│
-├── docs/                               # 📘 Documentação técnica ativa
-│   ├── MCP-CHROME-DEVTOOLS-GUIA-COMPLETO.md
-│   ├── MCP-CHROME-DEVTOOLS-MANUAL-USO.md
-│   ├── MCP-CHROME-DEVTOOLS-QUICK-START.md
-│   └── TEMPLATE-CURSO-PADRAO.md        # Template oficial
-│
-└── .claude/meta-docs/                  # 📚 Documentação histórica (AQUI)
-    ├── INDEX.md                        # Este arquivo
-    │
-    ├── # Backlogs de Sessões (4)
-    ├── BACKLOG-2025-11-13-EPICO-12-COMPLETO.md
-    ├── BACKLOG-2025-11-13-SPRINT-25-COMPLETO.md
-    ├── BACKLOG-2025-11-13-US-071-TEMPLATE-PADRAO.md
-    ├── BACKLOG-2025-11-13-VALIDACAO-PADRAO-BASH.md
-    │
-    ├── # Relatórios de Validação (3)
-    ├── RELATORIO-VALIDACAO-EPICO-12.md
-    ├── RELATORIO-VALIDACAO-US-061.md
-    ├── VALIDACAO-MCP-CHROME-DEVTOOLS.md
-    │
-    ├── # Relatórios Técnicos (3)
-    ├── RELATORIO-CONFORMIDADE-PADRAO-BASH-2025-11-13.md
-    ├── RELATORIO-LIMPEZA-PROJETO-2025-11-13.md
-    ├── RELATORIO-USABILIDADE-ULTRATHINK.md
-    │
-    └── # Diagnósticos e Guias (2)
-        ├── DIAGNOSTICO-COMPLETO-ULTRATHINK-2025-11-13.md
-        └── exemplo-playwright-mcp-screenshots.md
-```
+**Por quê:** Evidências de conformidade com glossário e breadcrumb
+- 28 correções de nomenclatura
+- Skills `ux-nomenclature` e `breadcrumb-impl`
+- Screenshots de validação
+- Metodologia MCP documentada
 
 ---
 
-## 🔄 Manutenção
+### 3. Conformidade Padrão Bash
+📄 [diagnosticos/conformidade-padrao-bash.md](./diagnosticos/conformidade-padrao-bash.md)
 
-### Quando Adicionar Arquivo Aqui
-
-Mova para `.claude/meta-docs/` quando:
-
-- ✅ Backlog de sessão completada
-- ✅ Relatório de validação de US/épico
-- ✅ Diagnóstico técnico snapshot no tempo
-- ✅ Guia de ferramenta que não é mais ativo
-- ✅ Documentação histórica de decisões
-
-### Quando NÃO Mover
-
-Mantenha na raiz ou docs/ se:
-
-- ❌ Documento ativo (CLAUDE.md, PRD, README)
-- ❌ Documentação técnica em uso (guias MCP)
-- ❌ Templates oficiais (TEMPLATE-CURSO-PADRAO.md)
-- ❌ Configuração de projeto (.mcp.json, package.json)
-
-### Organização Futura
-
-À medida que o projeto cresce, considere subpastas:
-
-```
-.claude/meta-docs/
-├── INDEX.md
-├── 2025-11/              # Por mês
-│   ├── backlogs/
-│   ├── relatorios/
-│   └── validacoes/
-├── epicos/               # Por épico
-│   ├── EPICO-12/
-│   └── EPICO-13/
-└── arquivados/           # Muito antigos (>6 meses)
-```
+**Por quê:** Checklist de 14 itens validando Bash como padrão ouro
+- Template para novos sistemas
+- Critérios de qualidade
+- Evidências de conformidade
 
 ---
 
-## 📖 Como Usar este Índice
+### 4. Validação MCP Chrome DevTools
+📄 [validacoes/mcp-chrome-devtools.md](./validacoes/mcp-chrome-devtools.md)
+
+**Por quê:** Prova de que 24 ferramentas MCP estão funcionais
+- Navegação programática
+- Screenshots automatizados
+- Inspeção de console/rede
+- Performance tracing
+
+---
+
+## 🗂️ Contexto do Projeto Ultrathink
+
+### Documentação Ativa (Fora de meta-docs/)
+
+**Raiz do Projeto:**
+- `CLAUDE.md` - Instruções completas do Claude Code ✅
+- `PRODUCT-CENTRAL-DOCUMENT.md` - PRD Central (v2.4) ✅
+- `README.md` - README principal ✅
+
+**Docs Técnicos:**
+- `docs/` - Guias MCP, templates oficiais
+
+**Configuração Claude Code:**
+- `.claude/skills/` - 5 skills especializadas
+- `.claude/agents/` - 5 agents complexos
+- `.claude/commands/` - 3 comandos slash
+- `.claude/hooks.toml` - Automações
+- `.claude/settings.local.json` - Permissões
+
+---
+
+## 🔄 Como Usar Este Índice
 
 ### Para Claude Code
 
-Ao retomar contexto de sessões antigas:
+Ao retomar contexto:
+
 ```
-"Read .claude/meta-docs/BACKLOG-2025-11-13-SPRINT-25-COMPLETO.md"
-"What were the key decisions in ÉPICO 12?"
+"Read .claude/meta-docs/sessions/2025-11-13/epico-12-completo.md"
+"Quais decisões foram tomadas no ÉPICO 12?"
 ```
 
 ### Para Desenvolvedores
 
-Consultar evidências de implementação:
+Consultar evidências:
+
 ```bash
 cd .claude/meta-docs
-ls -lt | head -10  # Últimos 10 arquivos modificados
-grep -r "breadcrumb" .  # Buscar referências
+
+# Listar últimas sessões
+ls -lt sessions/*/
+
+# Buscar validações de breadcrumb
+grep -r "breadcrumb" validacoes/
+
+# Ver diagnósticos recentes
+ls -lt diagnosticos/
 ```
 
 ### Para Auditorias
 
-Rastrear conformidade e qualidade:
-- Relatórios de validação comprovam critérios de aceite
-- Screenshots preservados como evidências
-- Decisões de design documentadas em backlogs
+Rastrear conformidade:
+- Validações comprovam critérios de aceite ✅
+- Screenshots preservados como evidências 📸
+- Decisões documentadas em sessões 📋
 
 ---
 
-## 🏆 Estatísticas
+## 📊 Estatísticas
 
+### Conteúdo
 - **Total de Documentos**: 12 arquivos
-- **Período Coberto**: 2025-11-13 (1 dia produtivo!)
-- **Épicos Documentados**: ÉPICO 12 (100% completo)
-- **Sprints Documentados**: Sprint 2.5 (completa)
-- **User Stories Validadas**: US-060, US-061, US-071
-- **Sistemas Validados**: Bash (padrão ouro)
-- **Screenshots Preservados**: 6+ evidências visuais
-- **Linhas de Documentação**: ~5.000+ linhas
+- **Período Coberto**: 2025-11-13 → 2025-11-16
+- **Sessões Documentadas**: 1 data (2025-11-13)
+- **Validações**: 3 (ÉPICO 12, US-061, MCP)
+- **Diagnósticos**: 5 análises técnicas
+- **Linhas de Documentação**: ~6.000+ linhas
+
+### Conquistas Rastreadas
+- ✅ ÉPICO 12 - 100% completo
+- ✅ Sprint 2.5 - Concluída
+- ✅ 5 Skills criadas e documentadas
+- ✅ 5 Agents implementados
+- ✅ MCP Chrome DevTools validado (24 tools)
+
+---
+
+## 🚀 Próximos Passos
+
+Ao completar nova sessão de configuração:
+
+1. ✅ Criar arquivo em `sessions/YYYY-MM-DD/nome-descritivo.md`
+2. ✅ Adicionar validação em `validacoes/` se testou algo
+3. ✅ Criar diagnóstico em `diagnosticos/` se analisou qualidade
+4. ✅ Atualizar este `INDEX.md` com novo documento
+5. ✅ Atualizar estatísticas acima
 
 ---
 
 ## 🔗 Links Úteis
 
-- **PRD Central**: `../../../PRODUCT-CENTRAL-DOCUMENT.md`
-- **Instruções Claude**: `../../../CLAUDE.md`
-- **Docs Técnicos**: `../../../docs/`
-- **Skills e Agents**: `../skills/`, `../agents/`
-- **Comandos Slash**: `../commands/`
+### Documentação de Skills/Agents
+- [Skills README](../skills/meta-configuracao-evolucao/README-SKILLS-AGENTS.md)
+- [Quick Start Skills](../skills/meta-configuracao-evolucao/QUICK-START.md)
+
+### Configuração Claude
+- [CLAUDE.md](../../CLAUDE.md) - Instruções principais
+- [hooks.toml](../hooks.toml) - Automações configuradas
+- [settings.local.json](../settings.local.json) - Permissões
+
+### Documentação Oficial
+- [Claude Code Docs](https://docs.claude.com/en/docs/claude-code/)
+- [MCP Chrome DevTools](https://github.com/google/chrome-devtools-mcp)
 
 ---
 
-**📅 Última Reorganização:** 2025-11-14
-**🤖 Organizado por:** Claude Code
+**📅 Última Reorganização:** 2025-11-16
+**🤖 Organizado por:** Claude Code + João Pelegrino
 **✅ Status:** Estrutura estabelecida e indexada
-**🔄 Próxima Revisão:** Ao completar próximo épico/sprint
+**🔄 Próxima Revisão:** Ao completar próxima sessão de config
 
 ---
 
-*Este índice facilita navegação, contexto histórico e rastreabilidade de decisões no projeto Ultrathink.*
+*Este índice facilita navegação, contexto histórico e rastreabilidade da evolução da meta-configuração do Ultrathink.*
