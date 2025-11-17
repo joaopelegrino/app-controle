@@ -303,21 +303,27 @@ Nota Geral: 9.0/10 ⭐ (antes: 8.5/10)
 **Sprint:** 2.1 (Q1 2026)  
 **Pontos:** 21
 
-#### US-040: Implementar React Router
+#### US-040: Implementar React Router ✅ **DONE**
 
-**Como** usuário navegando  
-**Quero** URLs que reflitam minha posição  
+**Como** usuário navegando
+**Quero** URLs que reflitam minha posição
 **Para** compartilhar links e usar botão voltar do navegador
 
 **Critérios de Aceite:**
-- [ ] react-router-dom instalado
-- [ ] Rotas: `/`, `/curso/:id`, `/curso/:id/aula/:aulaId`
-- [ ] Navegação via Link/NavLink
-- [ ] Botão voltar do navegador funciona
-- [ ] Deep linking funciona (ex: `/curso/bash/aula/1-1`)
-- [ ] 404 page implementada
+- [x] react-router-dom instalado ✅
+- [x] Rotas: `/`, `/curso/:id`, `/curso/:id/aula/:aulaId`, `/trilha/:pathId` ✅
+- [x] Navegação via useNavigate (migrado de state-based) ✅
+- [x] Botão voltar do navegador funciona ✅
+- [x] Deep linking funciona (ex: `/curso/bash`) ✅
+- [x] 404 page implementada (NotFoundPage.jsx) ✅
 
 **Complexidade:** 13 pontos
+
+**Resultado:**
+- Build: 6.12s (zero erros)
+- Bundle size: ~677 KB (< 5MB ✅)
+- Console: Zero erros (apenas 2 warnings de future flags)
+- Screenshots: 2 capturas (Hub + Deep Link Bash)
 
 ---
 
@@ -769,28 +775,35 @@ Produto:
 
 ## 🚀 PRÓXIMOS PASSOS IMEDIATOS
 
-### Sprint Atual (2025-11-17 a 2025-11-24)
+### Sprint Atual (Sprint 2.1 - 2025-11-17)
 
-**Foco:** Finalizar Release 1.0, preparar documentação para Release 2.0
-
-**Tarefas:**
-1. ✅ Atualizar CLAUDE.md com contexto B2B ✅ DONE
-2. ✅ Criar docs/backlog/ROADMAP.md ✅ DONE (este arquivo)
-3. 📋 Marcar PRODUCT-CENTRAL-DOCUMENT.md como DEPRECATED
-4. 📋 Validar build final Release 1.0
-5. 📋 Preparar demo para clientes piloto
-6. 📋 Criar apresentação comercial (pitch deck)
-
-### Próximo Sprint (Sprint 2.1 - Dezembro 2025)
-
-**Foco:** Iniciar ÉPICO 14 (Navegação)
+**Foco:** ✅ Iniciar ÉPICO 14 (Navegação) - **US-040 COMPLETA**
 
 **Tarefas:**
-1. US-040: Implementar React Router (13 pontos)
-2. US-041: Tratamento de erros localStorage (5 pontos)
-3. US-042: Persistir progresso de módulos (8 pontos)
+1. ✅ US-040: Implementar React Router (13 pontos) ✅ **DONE**
+   - React Router 6 instalado
+   - Rotas implementadas: `/`, `/curso/:id`, `/curso/:id/aula/:moduleId`, `/trilha/:pathId`
+   - Deep linking funcional
+   - Botão voltar do navegador funcional
+   - 404 page (NotFoundPage.jsx)
+   - Build: 6.12s, 677KB, zero erros
 
-**Total:** 26 pontos (sprint saudável)
+**Última Sessão (2025-11-17):**
+- **Implementação:** React Router migração completa (state-based → rotas)
+- **Arquivos modificados:** 3 (main.jsx, SistemaEducacionalCompleto.jsx, +NotFoundPage.jsx)
+- **Validação:** Build OK, console limpo, navegação testada
+- **Screenshots:** 2 capturas (Hub + Deep Link /curso/bash)
+- **Próximos Passos:** US-041 (localStorage errors) ou US-042 (persistir progresso)
+
+### Próximo Sprint (Sprint 2.2 - Dezembro 2025)
+
+**Foco:** Continuar ÉPICO 14 (Navegação e Persistência)
+
+**Tarefas Planejadas:**
+1. US-041: Tratamento de erros localStorage (5 pontos)
+2. US-042: Persistir progresso de módulos (8 pontos)
+
+**Total:** 13 pontos (sprint saudável)
 
 ---
 
