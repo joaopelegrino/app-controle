@@ -45,9 +45,14 @@ describe('AreaCard Component', () => {
 
   it('renders learning-path variant correctly', () => {
     render(<AreaCard {...defaultProps} variant="learning-path" />);
-    
-    const card = screen.getByText('Test Area').closest('div');
-    expect(card).toHaveClass('from-purple-600', 'to-blue-600');
+
+    // Test Area está em <h3> → <div flex> → <div container>
+    const titleH3 = screen.getByText('Test Area');
+    const flexDiv = titleH3.closest('div'); // div com "flex items-center mb-4"
+    const containerDiv = flexDiv.parentElement; // div com "bg-gradient-to-br from-purple-600 to-blue-600"
+
+    expect(containerDiv.className).toContain('from-purple-600');
+    expect(containerDiv.className).toContain('to-blue-600');
   });
 
   it('renders with preview content', () => {

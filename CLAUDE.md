@@ -1,7 +1,9 @@
-# Sistema Educacional Completo - Contexto para Claude Code
+# Ultrathink - Contexto para Claude Code
 
 ## 🎯 Visão Geral
-Sistema educacional interativo focado em tecnologia, com flash cards 3D, vídeos integrados e trilhas de aprendizado estruturadas. Projeto de aprendizado do usuário João Pelegrino, com evolução contínua desde janeiro 2025.
+**Ultrathink** é uma plataforma B2B de treinamento técnico corporativo que estrutura, organiza e mensura o conhecimento interno de empresas de tecnologia. Sistema desenvolvido e testado por João Pelegrino, com evolução contínua desde janeiro 2025.
+
+**Contexto B2B:** Resolve o problema de empresas que gastam R$150k-200k/ano em plataformas genéricas (Udemy Business) mas enfrentam baixa taxa de engajamento (10-15%), conteúdo não customizável e impossibilidade de medir ROI. Ultrathink oferece trilhas customizáveis, progresso rastreável e analytics corporativo.
 
 ## 🛠️ Stack Tecnológica
 - **Frontend**: React 18.3.1
@@ -118,14 +120,14 @@ app-controle/
 - **Nota Geral**: 8.8/10 ⭐ (+0.3 pelo ÉPICO 12)
 
 ### Arquivos de Documentação
-- **3 Documentos Ativos na Raiz**: CLAUDE.md, PRODUCT-CENTRAL-DOCUMENT.md, README.md
+- **3 Documentos Ativos na Raiz**: CLAUDE.md, README.md, PRODUCT-CENTRAL-DOCUMENT.md (⚠️ DEPRECATED)
+- **Fonte Única da Verdade (SSOT)**: docs/backlog/ROADMAP.md (v3.0 B2B) ✨
 - **4 Guias Técnicos em docs/**: 3 guias MCP + 1 template oficial
 - **12 Documentos Meta**: Organizados em `.claude/meta-docs/` (sessions, validacoes, diagnosticos)
-- **Fonte Única da Verdade**: PRODUCT-CENTRAL-DOCUMENT.md (v2.4)
-- **53 User Stories**: 3 completas recentemente (US-060 ✅, US-061 ✅, US-070 ✅)
-- **4 Releases Planejadas**: Roadmap até março 2026
+- **40+ User Stories B2B**: Organizadas em 4 Releases (até Q3 2026)
+- **4 Releases Planejadas**: Roadmap até setembro 2026
 - **ÉPICO 12**: 100% completo ✅ (US-060, US-061 DONE)
-- **ÉPICO 13**: 3% completo (US-070 DONE)
+- **ÉPICO 13**: 10% completo (US-070 DONE)
 
 ## 🚀 Capacidades MCP (Model Context Protocol)
 
@@ -828,9 +830,9 @@ docs/treinamento-interno/
 - Módulos usam glossário ÉPICO 12 (00-definicoes-principais.md)
 - Nomenclatura consistente (Curso, Aula, Seção)
 
-**Camada 4 ↔ PRODUCT-CENTRAL-DOCUMENT.md:**
-- Módulos referenciam PRD para entender produto
-- User Stories fornecem contexto de negócio
+**Camada 4 ↔ docs/backlog/ROADMAP.md:**
+- Módulos referenciam ROADMAP.md (SSOT) para entender produto B2B
+- User Stories fornecem contexto de negócio corporativo
 
 **Cross-References Bidirecionais:**
 ```markdown
@@ -954,11 +956,12 @@ node test-usabilidade-mcp.cjs  # Teste automatizado completo
 - **Linting** com ESLint auto-fix
 
 ### Documentação
-- **PRD Central**: PRODUCT-CENTRAL-DOCUMENT.md (fonte única da verdade)
-- **User Stories**: Formato "Como... Quero... Para..."
+- **SSOT (Single Source of Truth)**: docs/backlog/ROADMAP.md (v3.0 B2B)
+- **User Stories**: Formato "Como [persona]... Quero... Para..."
 - **Critérios de Aceite**: Checkboxes explícitos
 - **Estimativas**: Pontos Fibonacci (1, 2, 3, 5, 8, 13, 21)
 - **Status**: DONE ✅ | IN PROGRESS 🚧 | TODO 📋 | ICEBOX 🧊
+- **Legacy**: PRODUCT-CENTRAL-DOCUMENT.md (deprecated, redireciona para ROADMAP.md)
 
 ## 🔒 Segurança
 - **Headers CSP** configurados no nginx
@@ -1063,7 +1066,7 @@ Próximos objetivos:
 - Manter código limpo sem console.log
 - Seguir padrões Tailwind existentes
 - Preservar funcionalidades existentes
-- Consultar PRODUCT-CENTRAL-DOCUMENT.md para decisões de produto
+- Consultar docs/backlog/ROADMAP.md (SSOT) para decisões de produto B2B
 - Atualizar User Stories quando implementar features
 - Marcar critérios de aceite como completos
 - Rodar testes antes de commitar
@@ -1089,8 +1092,8 @@ Próximos objetivos:
 8. Consultar logs em `.claude/error.log` se disponível
 
 ### AO IMPLEMENTAR FEATURES
-1. Verificar User Story correspondente no PRD
-2. Ler critérios de aceite
+1. Verificar User Story correspondente em docs/backlog/ROADMAP.md
+2. Ler critérios de aceite e contexto B2B
 3. Criar branch: `feature/US-XXX-descricao`
 4. Implementar conforme critérios
 5. Escrever testes (se aplicável)
@@ -1119,11 +1122,16 @@ node test-usabilidade-mcp.cjs
 # Captura screenshots em screenshots/
 ```
 
-## 🎯 Contexto de Aprendizado
+## 🎯 Contexto B2B Corporativo
 
-Este é um projeto de **estudo e aprendizado** do usuário **João Pelegrino**, nível iniciante a intermediário em programação.
+**Ultrathink** é um produto B2B (plataforma de treinamento técnico corporativo) desenvolvido e testado por **João Pelegrino** como fundador/desenvolvedor.
 
-### Objetivos de Aprendizado
+### **Público-Alvo do Produto**
+- **Primário**: CTOs, Gerentes de Engenharia, Diretores de RH/T&D
+- **Secundário**: Colaboradores técnicos (desenvolvedores, DevOps, SREs)
+- **Mercado**: Empresas de tecnologia 50-500 funcionários (Brasil)
+
+### **Stack Técnica Utilizada** (Para Desenvolvimento)
 - React e componentes funcionais
 - Hooks (useState, useEffect)
 - Tailwind CSS e design responsivo
@@ -1136,14 +1144,21 @@ Este é um projeto de **estudo e aprendizado** do usuário **João Pelegrino**, 
 - Arquitetura de componentes
 - Gerenciamento de estado
 
+### **Personas B2B (Referência de Negócio)**
+Consultar: `docs/conceitual/01-visao-geral/05-personas-corporativas.md`
+
+- **Persona 1: "Carlos, CTO de Startup"** (120 funcionários, gasta R$180k/ano em Udemy Business, quer customização)
+- **Persona 2: "Ana, Gerente de Engenharia"** (fintech 200 pessoas, onboarding caótico, precisa padronização)
+- **Persona 3: "Roberto, Diretor de RH"** (consultoria 500 pessoas, quer universidade corporativa)
+
 ### Estilo de Comunicação
 Explicações devem ser:
-- **Claras e didáticas**: Evitar jargões sem explicação
+- **Claras e didáticas**: Evitar jargões sem explicação (facilitando onboarding de novos contribuidores)
 - **Com exemplos práticos**: Mostrar código real do projeto
-- **Focadas no "porquê"**: Não apenas "como", mas por que fazemos assim
+- **Focadas no "porquê"**: Não apenas "como", mas por que fazemos assim (decisões arquiteturais B2B)
 - **Em português brasileiro**: Linguagem natural
 - **Com insights educacionais**: Seção "★ Insight" ao final de tarefas complexas
-- **Encorajadoras**: Celebrar progresso e aprendizado
+- **Contexto B2B**: Sempre lembrar que o produto é corporativo, não pessoal
 
 ### Output Style: Learning Mode
 Configurado em `.claude/settings.local.json`:
@@ -1154,18 +1169,27 @@ Configurado em `.claude/settings.local.json`:
 ```
 
 **Características:**
-- Insights educacionais após implementações
+- Insights educacionais após implementações (facilitam evolução do produto)
 - Explicações de conceitos técnicos
-- Conexões com padrões da indústria
+- Conexões com padrões da indústria (B2B SaaS)
 - Encorajamento do aprendizado prático
-- Solicitação de input do usuário em decisões de design
+- Solicitação de input do usuário em decisões de design (produto B2B)
 
 ## 📚 Documentação de Referência
 
 ### 📄 Documentos Ativos (Raiz do Projeto)
 - **CLAUDE.md** - Instruções completas do projeto para Claude Code (este arquivo)
-- **PRODUCT-CENTRAL-DOCUMENT.md** - PRD, User Stories, Backlog, Roadmap (v2.4)
 - **README.md** - README principal do projeto
+- **PRODUCT-CENTRAL-DOCUMENT.md** - ⚠️ DEPRECATED (redireciona para ROADMAP.md)
+
+### 📋 Product Management (docs/backlog/)
+- **ROADMAP.md** - ✅ SSOT (Single Source of Truth) - PRD B2B v3.0
+  - Visão B2B Ultrathink (3 personas corporativas)
+  - Estado Atual (Release 1.0 completa)
+  - 4 Releases planejadas (Q1-Q3 2026)
+  - 40+ User Stories B2B priorizadas
+  - Métricas corporativas (NPS, engajamento, ARR)
+  - Matriz RICE de priorização
 
 ### 📘 Documentação Técnica (docs/)
 **Guias MCP Chrome DevTools:**
@@ -1309,12 +1333,12 @@ meta-docs/
 - 2 relatórios de validação gerados
 
 ✅ **Documentação Profissional**
-- PRD com 53 User Stories (v2.4 atualizado)
-- Roadmap até março 2026
-- ÉPICO 13: 10 User Stories, 118 pontos (~10 semanas)
+- ROADMAP.md B2B com 40+ User Stories (v3.0)
+- Roadmap até setembro 2026 (4 releases)
+- 4 Épicos B2B: Navegação, Qualidade, Enterprise Features, Growth
 - Guias completos MCP (3 documentos)
 - Diagnóstico técnico detalhado
-- 2 relatórios de validação (ÉPICO 12 + US-070)
+- 3 relatórios de validação (ÉPICO 12, US-070, Roadmap B2B)
 
 ✅ **Automação e Qualidade**
 - Hooks configurados (pre/post tool use)

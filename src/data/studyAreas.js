@@ -15,7 +15,7 @@ export const studyAreas = {
           {
             question: 'Como criar uma variável em Bash?',
             answer: 'VARIAVEL="valor" (sem espaços ao redor do =)',
-            code: 'NAME="João"\necho $NAME\n# ou\necho ${NAME}',
+            code: 'NAME="Developer"\necho $NAME\n# ou\necho ${NAME}',
             details: 'Em Bash, não use espaços ao redor do =\nUse $ para acessar o valor\nUse ${} para delimitar claramente a variável'
           },
           {
