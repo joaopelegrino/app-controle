@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save } from 'lucide-react';
+import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save, AlertTriangle } from 'lucide-react';
 import { BashNotesView } from './BashNotesView';
 import { Breadcrumb } from './Breadcrumb';
+import { useAutoSaveNotes } from '../hooks/useAutoSaveNotes';
 
 export const BashLearningSystem = ({ 
   currentSubView, 
@@ -24,17 +25,9 @@ export const BashLearningSystem = ({
   copiedCode 
 }) => {
   const progressPercentage = Math.round((completedBashModules.size / modulosBash.length) * 100);
-  
-  // Estados para notas rápidas
-  const [quickNotes, setQuickNotes] = useState(localStorage.getItem('bash-learning-notes') || '');
-  const [notesSaved, setNotesSaved] = useState(false);
-  
-  // Função para salvar notas
-  const saveNotes = () => {
-    localStorage.setItem('bash-learning-notes', quickNotes);
-    setNotesSaved(true);
-    setTimeout(() => setNotesSaved(false), 2000);
-  };
+
+  // Auto-save de notas com error handling robusto (US-041)
+  const [quickNotes, setQuickNotes, saveStatus, sizeInfo] = useAutoSaveNotes('bash');
   
   if (currentSubView === 'notes') {
     return (
@@ -112,40 +105,83 @@ export const BashLearningSystem = ({
             </div>
           </div>
           
-          {/* Meu Caderno de Notas */}
+          {/* Meu Caderno de Notas (US-041: Auto-save com error handling) */}
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <StickyNote className="w-5 h-5 text-yellow-600" />
                 <h3 className="text-lg font-semibold text-gray-900">📒 Meu Caderno de Notas</h3>
               </div>
-              <button
-                onClick={saveNotes}
-                className={`flex items-center gap-2 px-3 py-1 rounded-md text-sm transition-colors ${
-                  notesSaved 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-                }`}
-              >
-                <Save className="w-4 h-4" />
-                {notesSaved ? 'Salvo!' : 'Salvar'}
-              </button>
+
+              {/* Indicador de Status de Salvamento (Auto-save) */}
+              <div className="flex items-center gap-3">
+                {saveStatus === 'saving' && (
+                  <span className="flex items-center gap-2 text-sm text-blue-600">
+                    <Save className="w-4 h-4 animate-pulse" />
+                    Salvando...
+                  </span>
+                )}
+                {saveStatus === 'saved' && (
+                  <span className="flex items-center gap-2 text-sm text-green-600">
+                    <CheckCircle className="w-4 h-4" />
+                    Salvo automaticamente
+                  </span>
+                )}
+                {saveStatus === 'error' && (
+                  <span className="flex items-center gap-2 text-sm text-red-600">
+                    <AlertTriangle className="w-4 h-4" />
+                    Erro ao salvar
+                  </span>
+                )}
+                {saveStatus === 'quota_exceeded' && (
+                  <span className="flex items-center gap-2 text-sm text-orange-600">
+                    <AlertTriangle className="w-4 h-4" />
+                    Limite excedido (50KB)
+                  </span>
+                )}
+              </div>
             </div>
+
             <textarea
               value={quickNotes}
               onChange={(e) => setQuickNotes(e.target.value)}
               placeholder="Digite suas anotações sobre Bash...
 
 • Comandos importantes
-• Pipelines úteis  
+• Pipelines úteis
 • Regex patterns
 • Scripts personalizados
 • Dúvidas para revisar"
               className="w-full h-80 p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+              disabled={saveStatus === 'quota_exceeded'}
             />
-            <div className="mt-3 text-xs text-gray-500">
-              🐚 Suas notas de Bash são salvas automaticamente
+
+            {/* Indicador de Tamanho e Avisos */}
+            <div className="mt-3 flex items-center justify-between text-xs">
+              <span className="text-gray-500">
+                🐚 Suas notas de Bash são salvas automaticamente
+              </span>
+              <span className={`font-mono ${
+                parseFloat(sizeInfo.percentage) >= 80
+                  ? 'text-orange-600 font-semibold'
+                  : 'text-gray-500'
+              }`}>
+                {sizeInfo.sizeKB} KB / 50 KB ({sizeInfo.percentage}%)
+              </span>
             </div>
+
+            {/* Alerta quando atingir 80% do limite */}
+            {parseFloat(sizeInfo.percentage) >= 80 && parseFloat(sizeInfo.percentage) < 100 && (
+              <div className="mt-2 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5" />
+                  <div className="text-sm text-yellow-800">
+                    <strong>Nota grande:</strong> Você está usando {sizeInfo.percentage}% do limite.
+                    Considere dividir em notas menores para melhor organização.
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         
