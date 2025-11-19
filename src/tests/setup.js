@@ -1,12 +1,26 @@
 import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
-// Mock localStorage
-const localStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
-};
+// Mock window.alert (não funciona em JSDOM)
+global.alert = vi.fn();
+
+// Mock localStorage funcional
+const localStorageMock = (() => {
+  let store = {};
+
+  return {
+    getItem: (key) => store[key] || null,
+    setItem: (key, value) => {
+      store[key] = value.toString();
+    },
+    removeItem: (key) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    }
+  };
+})();
 
 global.localStorage = localStorageMock;
 

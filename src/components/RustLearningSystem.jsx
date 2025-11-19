@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save } from 'lucide-react';
+import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, AlertTriangle } from 'lucide-react';
+import { useAutoSaveNotes } from '../hooks/useAutoSaveNotes';
 import { RustNotesView } from './RustNotesView';
 import { Breadcrumb } from './Breadcrumb';
 
@@ -27,16 +28,8 @@ export const RustLearningSystem = ({
   const navigate = useNavigate();
   const progressPercentage = Math.round((completedModules.size / modulosRust.length) * 100);
 
-  // Estados para notas rápidas
-  const [quickNotes, setQuickNotes] = useState(localStorage.getItem('rust-learning-notes') || '');
-  const [notesSaved, setNotesSaved] = useState(false);
-  
-  // Função para salvar notas
-  const saveNotes = () => {
-    localStorage.setItem('rust-learning-notes', quickNotes);
-    setNotesSaved(true);
-    setTimeout(() => setNotesSaved(false), 2000);
-  };
+  // Hook de auto-save com tratamento de erros localStorage
+  const [quickNotes, setQuickNotes, saveStatus, sizeInfo] = useAutoSaveNotes('rust');
   
   if (currentSubView === 'notes') {
     return (
@@ -158,22 +151,9 @@ export const RustLearningSystem = ({
                     
                     {/* Meu Caderno de Notas - Específicas para Seção 1 */}
                     <div className="mt-6 bg-white border border-orange-200 rounded-lg p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                          <StickyNote className="w-5 h-5 text-orange-600" />
-                          <h3 className="text-lg font-semibold text-gray-900">📒 Meu Caderno de Notas - Fundamentos Rust</h3>
-                        </div>
-                        <button
-                          onClick={saveNotes}
-                          className={`flex items-center gap-2 px-3 py-1 rounded-md text-sm transition-colors ${
-                            notesSaved 
-                              ? 'bg-green-100 text-green-700' 
-                              : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
-                          }`}
-                        >
-                          <Save className="w-4 h-4" />
-                          {notesSaved ? 'Salvo!' : 'Salvar'}
-                        </button>
+                      <div className="flex items-center gap-2 mb-4">
+                        <StickyNote className="w-5 h-5 text-orange-600" />
+                        <h3 className="text-lg font-semibold text-gray-900">📒 Meu Caderno de Notas - Fundamentos Rust</h3>
                       </div>
                       <textarea
                         value={quickNotes}
@@ -187,8 +167,30 @@ export const RustLearningSystem = ({
 • Links úteis para Rust Programming"
                         className="w-full h-80 p-3 border border-orange-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
                       />
-                      <div className="mt-3 text-xs text-orange-600">
-                        📝 Suas notas sobre Seção 1 são salvas automaticamente no navegador
+                      <div className="mt-3 space-y-1">
+                        <div className="text-sm">
+                          {saveStatus === 'saving' && (
+                            <span className="text-blue-600">💾 Salvando automaticamente...</span>
+                          )}
+                          {saveStatus === 'saved' && (
+                            <span className="text-green-600">🦀 Suas notas de Rust são salvas automaticamente</span>
+                          )}
+                          {saveStatus === 'error' && (
+                            <span className="text-red-600 flex items-center gap-1">
+                              <AlertTriangle className="w-4 h-4" />
+                              Erro ao salvar notas
+                            </span>
+                          )}
+                          {saveStatus === 'quota_exceeded' && (
+                            <span className="text-orange-600 flex items-center gap-1">
+                              <AlertTriangle className="w-4 h-4" />
+                              Limite de 50KB excedido
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          📊 {sizeInfo.sizeKB} KB / 50 KB ({sizeInfo.percentage}%)
+                        </div>
                       </div>
                     </div>
                   </div>

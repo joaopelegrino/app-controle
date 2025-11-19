@@ -17,10 +17,12 @@ import {
   ArrowLeft,
   Play,
   ArrowRight,
-  Activity
+  Activity,
+  AlertTriangle
 } from 'lucide-react';
 import { claudeCodeLearningData } from '../data/claudeCodeLearningData';
 import { Breadcrumb } from './Breadcrumb';
+import { useAutoSaveNotes } from '../hooks/useAutoSaveNotes';
 
 const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards }) => {
   const navigate = useNavigate();
@@ -29,9 +31,8 @@ const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards 
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
 
-  const [notes, setNotes] = useState(() => {
-    return localStorage.getItem('claudecode-learning-notes') || '';
-  });
+  // Hook de auto-save com tratamento de erros localStorage
+  const [notes, setNotes, saveStatus, sizeInfo] = useAutoSaveNotes('claude-code');
 
   const [currentWeek, setCurrentWeek] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -46,10 +47,6 @@ const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards 
   useEffect(() => {
     localStorage.setItem('claudecode-completed-modules', JSON.stringify([...completedModules]));
   }, [completedModules]);
-
-  useEffect(() => {
-    localStorage.setItem('claudecode-learning-notes', notes);
-  }, [notes]);
 
   // Função para alternar conclusão de módulo
   const toggleModuleCompletion = (moduleId) => {
@@ -383,6 +380,31 @@ const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards 
             placeholder="Anote aqui seus insights, comandos úteis, dúvidas ou descobertas sobre Claude Code..."
             className="w-full h-32 bg-black/20 border border-white/20 rounded-lg p-4 text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           />
+          <div className="mt-3 space-y-1">
+            <div className="text-sm">
+              {saveStatus === 'saving' && (
+                <span className="text-blue-300">💾 Salvando automaticamente...</span>
+              )}
+              {saveStatus === 'saved' && (
+                <span className="text-green-300">🤖 Suas notas de Claude Code são salvas automaticamente</span>
+              )}
+              {saveStatus === 'error' && (
+                <span className="text-red-300 flex items-center gap-1">
+                  <AlertTriangle className="w-4 h-4" />
+                  Erro ao salvar notas
+                </span>
+              )}
+              {saveStatus === 'quota_exceeded' && (
+                <span className="text-orange-300 flex items-center gap-1">
+                  <AlertTriangle className="w-4 h-4" />
+                  Limite de 50KB excedido
+                </span>
+              )}
+            </div>
+            <div className="text-xs text-gray-400">
+              📊 {sizeInfo.sizeKB} KB / 50 KB ({sizeInfo.percentage}%)
+            </div>
+          </div>
         </div>
 
         {/* Rodapé com informações */}
