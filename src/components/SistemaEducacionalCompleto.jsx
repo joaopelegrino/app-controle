@@ -277,7 +277,7 @@ const SistemaEducacionalCompleto = () => {
               startDateBash={startDateBash}
               getWeekDate={getWeekDate}
               formatDate={formatDate}
-              openFlashcardsFromNotes={openFlashcardsFromNotes}
+              openFlashcardsFromNotes={() => openFlashcardsFromNotes('bash')} // Fix: passar areaKey
               CodeBlock={CodeBlock}
               showCode={showCode}
               toggleCodeVisibility={toggleCodeVisibility}
@@ -300,7 +300,7 @@ const SistemaEducacionalCompleto = () => {
               startDateC={startDateC}
               getWeekDate={getWeekDate}
               formatDate={formatDate}
-              openFlashcardsFromNotes={openFlashcardsFromNotes}
+              openFlashcardsFromNotes={() => openFlashcardsFromNotes('clang')} // Fix: passar areaKey
               CodeBlock={CodeBlock}
               showCode={showCode}
               toggleCodeVisibility={toggleCodeVisibility}
@@ -323,7 +323,7 @@ const SistemaEducacionalCompleto = () => {
               startDateRust={startDateRust}
               getWeekDate={getWeekDate}
               formatDate={formatDate}
-              openFlashcardsFromNotes={openFlashcardsFromNotes}
+              openFlashcardsFromNotes={() => openFlashcardsFromNotes('rust')} // Fix: passar areaKey
               CodeBlock={CodeBlock}
               showCode={showCode}
               toggleCodeVisibility={toggleCodeVisibility}
