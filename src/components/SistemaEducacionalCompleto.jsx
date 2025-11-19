@@ -257,6 +257,7 @@ const SistemaEducacionalCompleto = () => {
 
   const ModuleNotesRoute = () => {
     const { courseId, moduleId } = useParams();
+    const [localSelectedSection, setLocalSelectedSection] = useState('course-intro'); // Fix: seção inicial
 
     // US-040: Renderizar NotesView correto baseado no courseId
     const renderNotesView = () => {
@@ -269,8 +270,8 @@ const SistemaEducacionalCompleto = () => {
               setCurrentView={() => navigate('/')}
               completedBashModules={completedBashModules}
               setCompletedBashModules={setCompletedBashModules}
-              selectedSection={moduleId}
-              setSelectedSection={setSelectedSection}
+              selectedSection={localSelectedSection} // Fix: usar estado local
+              setSelectedSection={setLocalSelectedSection} // Fix: usar setState local
               fasesBash={fasesBash}
               modulosBash={modulosBash}
               startDateBash={startDateBash}
@@ -292,8 +293,8 @@ const SistemaEducacionalCompleto = () => {
               setCurrentView={() => navigate('/')}
               completedModules={completedModules}
               setCompletedModules={setCompletedModules}
-              selectedSection={moduleId}
-              setSelectedSection={setSelectedSection}
+              selectedSection={localSelectedSection} // Fix: usar estado local
+              setSelectedSection={setLocalSelectedSection} // Fix: usar setState local
               fasesC={fasesC}
               modulosC={modulosC}
               startDateC={startDateC}
@@ -315,8 +316,8 @@ const SistemaEducacionalCompleto = () => {
               setCurrentView={() => navigate('/')}
               completedModules={completedRustModules}
               setCompletedModules={setCompletedRustModules}
-              selectedSection={moduleId}
-              setSelectedSection={setSelectedSection}
+              selectedSection={localSelectedSection} // Fix: usar estado local
+              setSelectedSection={setLocalSelectedSection} // Fix: usar setState local
               fasesRust={fasesRust}
               modulosRust={modulosRust}
               startDateRust={startDateRust}
