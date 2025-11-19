@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Clock,
   BookOpen,
@@ -22,6 +23,7 @@ import { claudeCodeLearningData } from '../data/claudeCodeLearningData';
 import { Breadcrumb } from './Breadcrumb';
 
 const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards }) => {
+  const navigate = useNavigate();
   const [completedModules, setCompletedModules] = useState(() => {
     const saved = localStorage.getItem('claudecode-completed-modules');
     return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -341,7 +343,7 @@ const ClaudeCodeLearningSystem = ({ onBack, onNavigateToNotes, onOpenFlashcards 
                         <div className="flex gap-2">
                           {module.temNotas && (
                             <button
-                              onClick={() => canAccess && onNavigateToNotes(`claudecode-${module.id}`)}
+                              onClick={() => canAccess && navigate(`/curso/claude-code/aula/${module.id}`)}
                               disabled={!canAccess}
                               className={`flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg transition-colors ${
                                 canAccess

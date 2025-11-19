@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save, AlertTriangle } from 'lucide-react';
 import { CNotesView } from './CNotesView';
 import { Breadcrumb } from './Breadcrumb';
@@ -24,6 +25,7 @@ export const CLearningSystem = ({
   copyToClipboard, 
   copiedCode 
 }) => {
+  const navigate = useNavigate();
   const progressPercentage = Math.round((completedModules.size / modulosC.length) * 100);
 
   // Auto-save de notas com error handling robusto (US-041)
@@ -243,8 +245,8 @@ export const CLearningSystem = ({
                           }`}
                           onClick={() => {
                             if (modulo.temNotas) {
-                              setCurrentSubView('notes');
-                              setSelectedSection('hello-world');
+                              // US-040: React Router navigation (deep linking para aulas)
+                              navigate(`/curso/clang/aula/${modulo.id}`);
                             } else if (!isCompleted) {
                               setCompletedModules(prev => new Set([...prev, modulo.id]));
                             }

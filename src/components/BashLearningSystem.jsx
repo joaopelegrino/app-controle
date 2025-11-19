@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save, AlertTriangle } from 'lucide-react';
 import { BashNotesView } from './BashNotesView';
 import { Breadcrumb } from './Breadcrumb';
@@ -24,6 +25,7 @@ export const BashLearningSystem = ({
   copyToClipboard, 
   copiedCode 
 }) => {
+  const navigate = useNavigate();
   const progressPercentage = Math.round((completedBashModules.size / modulosBash.length) * 100);
 
   // Auto-save de notas com error handling robusto (US-041)
@@ -218,8 +220,8 @@ export const BashLearningSystem = ({
                           }`}
                           onClick={() => {
                             if (modulo.temNotas) {
-                              setCurrentSubView('notes');
-                              setSelectedSection('course-intro');
+                              // US-040: React Router navigation (deep linking para aulas)
+                              navigate(`/curso/bash/aula/${modulo.id}`);
                             } else if (!isCompleted) {
                               setCompletedBashModules(prev => new Set([...prev, modulo.id]));
                             }

@@ -257,26 +257,103 @@ const SistemaEducacionalCompleto = () => {
 
   const ModuleNotesRoute = () => {
     const { courseId, moduleId } = useParams();
-    return (
-      <ClaudeCodeNotesView
-        moduleId={moduleId}
-        onBack={() => {
-          navigate(`/curso/${courseId}`);
-          setSelectedSection('');
-        }}
-        onOpenFlashcards={(area, title) => {
-          const areaData = studyAreas[area];
-          const cards = [];
-          Object.values(areaData.flashcards).forEach(category => {
-            cards.push(...category.cards);
-          });
-          setCurrentCards(cards.sort(() => Math.random() - 0.5));
-          setCurrentCardIndex(0);
-          setIsFlipped(false);
-          setFlashcardModalOpen(true);
-        }}
-      />
-    );
+
+    // US-040: Renderizar NotesView correto baseado no courseId
+    const renderNotesView = () => {
+      switch (courseId) {
+        case 'bash':
+          return (
+            <BashLearningSystem
+              currentSubView="notes"
+              setCurrentSubView={(view) => view === 'calendar' && navigate(`/curso/${courseId}`)}
+              setCurrentView={() => navigate('/')}
+              completedBashModules={completedBashModules}
+              setCompletedBashModules={setCompletedBashModules}
+              selectedSection={moduleId}
+              setSelectedSection={setSelectedSection}
+              fasesBash={fasesBash}
+              modulosBash={modulosBash}
+              startDateBash={startDateBash}
+              getWeekDate={getWeekDate}
+              formatDate={formatDate}
+              openFlashcardsFromNotes={openFlashcardsFromNotes}
+              CodeBlock={CodeBlock}
+              showCode={showCode}
+              toggleCodeVisibility={toggleCodeVisibility}
+              copyToClipboard={copyToClipboard}
+              copiedCode={copiedCode}
+            />
+          );
+        case 'clang':
+          return (
+            <CLearningSystem
+              currentSubView="notes"
+              setCurrentSubView={(view) => view === 'calendar' && navigate(`/curso/${courseId}`)}
+              setCurrentView={() => navigate('/')}
+              completedModules={completedModules}
+              setCompletedModules={setCompletedModules}
+              selectedSection={moduleId}
+              setSelectedSection={setSelectedSection}
+              fasesC={fasesC}
+              modulosC={modulosC}
+              startDateC={startDateC}
+              getWeekDate={getWeekDate}
+              formatDate={formatDate}
+              openFlashcardsFromNotes={openFlashcardsFromNotes}
+              CodeBlock={CodeBlock}
+              showCode={showCode}
+              toggleCodeVisibility={toggleCodeVisibility}
+              copyToClipboard={copyToClipboard}
+              copiedCode={copiedCode}
+            />
+          );
+        case 'rust':
+          return (
+            <RustLearningSystem
+              currentSubView="notes"
+              setCurrentSubView={(view) => view === 'calendar' && navigate(`/curso/${courseId}`)}
+              setCurrentView={() => navigate('/')}
+              completedModules={completedRustModules}
+              setCompletedModules={setCompletedRustModules}
+              selectedSection={moduleId}
+              setSelectedSection={setSelectedSection}
+              fasesRust={fasesRust}
+              modulosRust={modulosRust}
+              startDateRust={startDateRust}
+              getWeekDate={getWeekDate}
+              formatDate={formatDate}
+              openFlashcardsFromNotes={openFlashcardsFromNotes}
+              CodeBlock={CodeBlock}
+              showCode={showCode}
+              toggleCodeVisibility={toggleCodeVisibility}
+              copyToClipboard={copyToClipboard}
+              copiedCode={copiedCode}
+            />
+          );
+        case 'claude-code':
+          return (
+            <ClaudeCodeNotesView
+              moduleId={moduleId}
+              onBack={() => navigate(`/curso/${courseId}`)}
+              onOpenFlashcards={(area, title) => {
+                const areaData = studyAreas[area];
+                const cards = [];
+                Object.values(areaData.flashcards).forEach(category => {
+                  cards.push(...category.cards);
+                });
+                setCurrentCards(cards.sort(() => Math.random() - 0.5));
+                setCurrentCardIndex(0);
+                setIsFlipped(false);
+                setFlashcardModalOpen(true);
+              }}
+            />
+          );
+        default:
+          return <NotFoundPage />;
+      }
+    };
+
+    return renderNotesView();
   };
 
   // Main Render

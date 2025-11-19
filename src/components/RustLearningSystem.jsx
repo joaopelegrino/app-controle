@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save } from 'lucide-react';
 import { RustNotesView } from './RustNotesView';
 import { Breadcrumb } from './Breadcrumb';
@@ -23,8 +24,9 @@ export const RustLearningSystem = ({
   copyToClipboard, 
   copiedCode 
 }) => {
+  const navigate = useNavigate();
   const progressPercentage = Math.round((completedModules.size / modulosRust.length) * 100);
-  
+
   // Estados para notas rápidas
   const [quickNotes, setQuickNotes] = useState(localStorage.getItem('rust-learning-notes') || '');
   const [notesSaved, setNotesSaved] = useState(false);
@@ -208,8 +210,8 @@ export const RustLearningSystem = ({
                           }`}
                           onClick={() => {
                             if (modulo.temNotas) {
-                              setCurrentSubView('notes');
-                              setSelectedSection('hello-world-rust');
+                              // US-040: React Router navigation (deep linking para aulas)
+                              navigate(`/curso/rust/aula/${modulo.id}`);
                             } else if (!isCompleted) {
                               setCompletedModules(prev => new Set([...prev, modulo.id]));
                             }
