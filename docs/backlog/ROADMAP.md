@@ -303,7 +303,7 @@ Nota Geral: 9.0/10 ⭐ (antes: 8.5/10)
 **Sprint:** 2.1 (Q1 2026)  
 **Pontos:** 21
 
-#### US-040: Implementar React Router ✅ **DONE**
+#### US-040: Implementar React Router ⚠️ **PARCIALMENTE COMPLETA** (Bug Identificado)
 
 **Como** usuário navegando
 **Quero** URLs que reflitam minha posição
@@ -312,18 +312,60 @@ Nota Geral: 9.0/10 ⭐ (antes: 8.5/10)
 **Critérios de Aceite:**
 - [x] react-router-dom instalado ✅
 - [x] Rotas: `/`, `/curso/:id`, `/curso/:id/aula/:aulaId`, `/trilha/:pathId` ✅
-- [x] Navegação via useNavigate (migrado de state-based) ✅
-- [x] Botão voltar do navegador funciona ✅
-- [x] Deep linking funciona (ex: `/curso/bash`) ✅
+- [ ] Navegação via useNavigate (migrado de state-based) ⚠️ **INCOMPLETO**
+- [ ] Botão voltar do navegador funciona ⚠️ **QUEBRADO em aulas**
+- [x] Deep linking funciona (ex: `/curso/bash`) ✅ **Apenas nível de curso**
 - [x] 404 page implementada (NotFoundPage.jsx) ✅
 
 **Complexidade:** 13 pontos
 
-**Resultado:**
+**Resultado Inicial (2025-11-17):**
 - Build: 6.12s (zero erros)
 - Bundle size: ~677 KB (< 5MB ✅)
 - Console: Zero erros (apenas 2 warnings de future flags)
 - Screenshots: 2 capturas (Hub + Deep Link Bash)
+
+---
+
+**🔴 BUG CRÍTICO IDENTIFICADO (2025-11-19):**
+
+**Problema:** Rotas implementadas no componente pai (SistemaEducacionalCompleto.jsx), mas **4 sistemas de aprendizagem ainda usam navegação state-based** ao invés de React Router.
+
+**Evidência (MCP Chrome DevTools):**
+```
+Teste realizado: Clicar em "Introdução ao Curso + História Unix/Linux" no /curso/bash
+
+Esperado: URL muda para /curso/bash/aula/1.1
+Obtido:   URL permanece em /curso/bash ❌
+
+Causa: BashLearningSystem.jsx linha 220-222 usa setCurrentSubView('notes')
+       ao invés de navigate('/curso/bash/aula/1.1')
+```
+
+**Componentes Afetados:**
+- ❌ BashLearningSystem.jsx (linha 220-222)
+- ❌ CLearningSystem.jsx (mesmo padrão)
+- ❌ RustLearningSystem.jsx (mesmo padrão)
+- ❌ ClaudeCodeLearningSystem.jsx (mesmo padrão)
+
+**Impacto:**
+- ❌ Deep linking para aulas específicas **não funciona**
+- ❌ Botão voltar do navegador **não funciona** dentro de cursos
+- ❌ Compartilhamento de links de aulas **quebrado**
+- ❌ URLs não refletem posição real do usuário nas aulas
+
+**Ação Corretiva Necessária:**
+1. Refatorar 4 LearningSystem components para usar `useNavigate()` ao invés de `currentSubView`
+2. Remover props `currentSubView` e `setCurrentSubView` de todos os sistemas
+3. Atualizar clicks em módulos para `navigate('/curso/:id/aula/:moduleId')`
+4. Validar deep linking com MCP Chrome DevTools para todos os 4 sistemas
+5. Atualizar testes E2E (Playwright) para validar navegação de aulas
+
+**Estimativa de Correção:** 8 pontos (2h por sistema × 4 sistemas)
+
+**Prioridade:** 🔴 P0 (Bloqueia Release 2.0 - navegação é feature core)
+
+**Status:** ⏳ Pendente (correção planejada para Sprint 2.3)
 
 ---
 
@@ -683,6 +725,286 @@ Nota Geral: 9.0/10 ⭐ (antes: 8.5/10)
 
 ---
 
+### ÉPICO 24: Skills Técnicas e Treinamento Interno 📋 TODO
+
+**Prioridade:** 🔴 Crítica (Infraestrutura)
+**Sprint:** 2.2-4.2 (Q1-Q2 2026)
+**Pontos:** 102
+
+**Objetivo:** Criar base de conhecimento técnico (Skills Claude Code) e programa de onboarding estruturado (4 semanas) para escalar o time.
+
+**Justificativa B2B:**
+- Empresas clientes precisam de onboarding estruturado para seus times técnicos
+- Skills garantem consistência de código e padrões
+- Programa de 4 semanas reduz tempo de produtividade de desenvolvedores (2+ meses → 28 dias)
+
+**Contexto:**
+Este épico integra o débito de documentação identificado em:
+- `.claude/skills/SKILLS-BACKLOG.md` (8 skills pendentes)
+- `docs/treinamento-interno/TRAINING-INTERNAL-BACKLOG.md` (15 módulos + 4 workshops + 3 assessments)
+
+**Metodologia:** Six-Layer Docs (Camada 1: Skills + Camada 4: Treinamento)
+
+---
+
+#### US-100: Criar Skills P0 (Stack Principal)
+
+**Como** Claude Code trabalhando no projeto
+**Quero** skills técnicas para React, Vite e Tailwind
+**Para** seguir padrões consistentes e acelerar desenvolvimento
+
+**Critérios de Aceite:**
+- [ ] Skill `react-components-patterns` criada (DS-001)
+  - [ ] 250+ palavras de descrição
+  - [ ] 11 keywords estratégicos
+  - [ ] 3 arquivos auxiliares (functional-components, hooks-guide, composition-patterns)
+  - [ ] Auto-discovery >90%
+  - [ ] Cross-references para docs/tecnico/
+- [ ] Skill `vite-build-optimization` criada (DS-002)
+  - [ ] Cobertura: dev server, HMR, build otimizado, code splitting
+  - [ ] 3 arquivos auxiliares (dev-server, build-config, performance)
+  - [ ] Troubleshooting com 3+ problemas comuns
+- [ ] Skill `tailwind-design-system` criada (DS-003)
+  - [ ] Cobertura: utility-first, responsividade, JIT, custom theme
+  - [ ] 3 arquivos auxiliares (utilities, responsive, customization)
+  - [ ] Exemplos reais do projeto
+
+**Deliverables:**
+- D-100: Skill react-components-patterns (DS-001)
+- D-101: Skill vite-build-optimization (DS-002)
+- D-102: Skill tailwind-design-system (DS-003)
+
+**Impacto:**
+- Desbloqueia L0-02 (React Basics), L0-03 (Vite), L0-04 (Tailwind)
+- Acelera desenvolvimento de componentes (padrões claros)
+- Reduz code review time (padrões documentados)
+
+**Complexidade:** 13 pontos (~10-12h)
+
+---
+
+#### US-101: Criar Skills P1 (Quality & Advanced)
+
+**Como** Claude Code implementando features avançadas
+**Quero** skills para testing, state management e deployment
+**Para** garantir qualidade e facilitar deploys
+
+**Critérios de Aceite:**
+- [ ] Skill `testing-strategy-vitest` criada (DS-004)
+  - [ ] Cobertura: unit tests, component tests, mocking, coverage
+  - [ ] Exemplos de testes do projeto
+  - [ ] Integração Playwright para E2E
+- [ ] Skill `localStorage-patterns` criada (DS-005)
+  - [ ] Cobertura: schema design, error handling, quota management
+  - [ ] Padrões de persistência do projeto
+  - [ ] Troubleshooting QuotaExceededError
+- [ ] Skill `react-hooks-custom` criada (DS-006)
+  - [ ] Cobertura: useAutoSaveNotes, useModuleProgress
+  - [ ] Padrões de composição de hooks
+  - [ ] Antipadrões a evitar
+- [ ] Skill `docker-deployment` criada (DS-007)
+  - [ ] Cobertura: multi-stage Dockerfile, Nginx, CI/CD
+  - [ ] Exemplos do projeto (Dockerfile atual)
+  - [ ] Troubleshooting deploy issues
+- [ ] Skill `system-state-management` criada (DS-008)
+  - [ ] Cobertura: Context vs Props, state lifting, localStorage sync
+  - [ ] Padrões do projeto (HubView → Systems)
+  - [ ] Quando usar Context vs simples props
+
+**Deliverables:**
+- D-103: Skill testing-strategy-vitest (DS-004)
+- D-104: Skill localStorage-patterns (DS-005)
+- D-105: Skill react-hooks-custom (DS-006)
+- D-106: Skill docker-deployment (DS-007)
+- D-107: Skill system-state-management (DS-008)
+
+**Impacto:**
+- Desbloqueia L1-03 (State Management), L2-01/02 (Testing), L2-03/04 (Deployment)
+- Reduz bugs de localStorage (padrões claros)
+- Facilita testes automatizados (guia completo)
+- Acelera deploys (troubleshooting documentado)
+
+**Dependências:** US-041 se beneficia de DS-005 (localStorage-patterns)
+
+**Complexidade:** 21 pontos (~16-20h)
+
+---
+
+#### US-102: Criar Módulos L0 (Fundamentals)
+
+**Como** desenvolvedor iniciante no projeto
+**Quero** módulos de treinamento fundamentais
+**Para** configurar ambiente e aprender stack básico em 1 semana
+
+**Critérios de Aceite:**
+- [ ] Módulo L0-01: Environment Setup (4h)
+  - [ ] Guia WSL2, Node 22 (NVM), Git (SSH), Docker
+  - [ ] 1 exercício prático (clonar e rodar projeto)
+  - [ ] Checklist de sucesso (aplicação rodando localhost:3000)
+- [ ] Módulo L0-02: React Basics (8h)
+  - [ ] Cobertura: JSX, Components, Props, Hooks (useState, useEffect)
+  - [ ] 3 exercícios práticos (criar componente AreaCard customizado)
+  - [ ] Referência: Skill DS-001 (react-components-patterns)
+- [ ] Módulo L0-03: Vite & Build Tools (4h)
+  - [ ] Cobertura: dev server, HMR, build prod, code splitting
+  - [ ] 1 exercício prático (otimizar bundle)
+  - [ ] Referência: Skill DS-002 (vite-build-optimization)
+- [ ] Módulo L0-04: Tailwind CSS (4h)
+  - [ ] Cobertura: utility-first, responsive, JIT, custom theme
+  - [ ] 2 exercícios práticos (estilizar componente)
+  - [ ] Referência: Skill DS-003 (tailwind-design-system)
+- [ ] Módulo L0-05: Git Workflow (4h)
+  - [ ] Cobertura: branches, commits, PRs, code review, hooks
+  - [ ] 1 exercício prático (primeiro PR)
+  - [ ] Checklist de sucesso (PR merged)
+- [ ] Workshop WS-001: Setup & First Commit (5h)
+  - [ ] Hands-on completo: ambiente → primeiro PR
+- [ ] Assessment ASS-L0: Fundamentals Quiz (30min)
+  - [ ] 30 questões multiple choice
+  - [ ] Passing score: 80% (24/30 corretas)
+
+**Deliverables:**
+- D-108: Módulo L0-01 (Environment Setup)
+- D-109: Módulo L0-02 (React Basics)
+- D-110: Módulo L0-03 (Vite & Build Tools)
+- D-111: Módulo L0-04 (Tailwind CSS)
+- D-112: Módulo L0-05 (Git Workflow)
+- D-113: Workshop WS-001 (Setup & First Commit)
+- D-114: Assessment ASS-L0 (Fundamentals Quiz)
+
+**Impacto:**
+- Habilita Semana 1 de onboarding (24h conteúdo + 5h workshop)
+- Reduz tempo de setup (dev produtivo em 1 semana)
+- Valida conhecimento fundamental (assessment 80%+)
+
+**Dependências:** Requer US-100 (skills P0) completa
+
+**Complexidade:** 21 pontos (~20-24h)
+
+---
+
+#### US-103: Criar Módulos L1 + L2 (Core + Advanced)
+
+**Como** desenvolvedor intermediário
+**Quero** módulos avançados de arquitetura, state e deployment
+**Para** contribuir com features complexas e fazer deploys
+
+**Critérios de Aceite:**
+
+**Módulos L1 (Core Concepts - 36h):**
+- [ ] L1-01: Arquitetura do Sistema (6h) - 4 camadas, fluxo, separação
+- [ ] L1-02: Learning System Pattern (8h) - Anatomia, navegação, progresso
+- [ ] L1-03: State Management (8h) - localStorage, hooks, Context vs Props
+- [ ] L1-04: Breadcrumb & Navigation (6h) - WCAG AA, hierarquia
+- [ ] L1-05: Nomenclatura e UX (8h) - Glossário ÉPICO 12, consistência
+- [ ] Workshop WS-002: Criar Primeiro Componente (6h)
+- [ ] Workshop WS-003: Feature End-to-End (6h) - Sistema Python completo
+- [ ] Assessment ASS-L1: Core Concepts Practical (4h) - Hands-on coding
+
+**Módulos L2 (Advanced - 20h):**
+- [ ] L2-01: Testing com Vitest (6h) - Unit, component, mocking, coverage
+- [ ] L2-02: E2E com Playwright (4h) - Navegação, assertions, CI
+- [ ] L2-03: Docker & Deployment (4h) - Multi-stage, Nginx, Compose
+- [ ] L2-04: CI/CD com GitHub Actions (4h) - Workflows, build, deploy
+- [ ] L2-05: Refatoração Avançada (2h) - Extract hooks, BaseLearningSystem
+- [ ] Workshop WS-004: Deploy Production-Ready (4h)
+- [ ] Assessment ASS-L2: Developer Certification (8h) - Projeto completo
+
+**Deliverables:**
+- D-115 a D-119: Módulos L1-01 a L1-05 (5 módulos)
+- D-120: Workshop WS-002 (Criar Primeiro Componente)
+- D-121: Workshop WS-003 (Feature End-to-End)
+- D-122: Assessment ASS-L1 (Core Concepts Practical)
+- D-123 a D-127: Módulos L2-01 a L2-05 (5 módulos)
+- D-128: Workshop WS-004 (Deploy Production-Ready)
+- D-129: Assessment ASS-L2 (Developer Certification)
+
+**Impacto:**
+- Habilita Semanas 2-4 de onboarding (56h conteúdo + 16h workshops)
+- Capacita desenvolvedores para features complexas
+- Certifica desenvolvedores (assessment final 80%+)
+- Reduz tempo de onboarding (2+ meses → 28 dias)
+
+**Dependências:** Requer US-100, US-101, US-102 completas
+
+**Complexidade:** 47 pontos (~52-60h)
+
+---
+
+### Resumo do ÉPICO 24
+
+| User Story | Pontos | Tempo | Deliverables | Prioridade | Dependências |
+|------------|--------|-------|--------------|-----------|--------------|
+| US-100 (Skills P0) | 13 | 10-12h | D-100 a D-102 (3) | 🔴 P0 | Nenhuma |
+| US-101 (Skills P1) | 21 | 16-20h | D-103 a D-107 (5) | 🟠 P1 | Nenhuma |
+| US-102 (Módulos L0) | 21 | 20-24h | D-108 a D-114 (7) | 🟠 P1 | US-100 |
+| US-103 (Módulos L1+L2) | 47 | 52-60h | D-115 a D-129 (15) | 🟡 P2 | US-100, US-101, US-102 |
+| **TOTAL** | **102** | **98-116h** | **30 deliverables** | - | - |
+
+**Cronograma Estimado:**
+- Sprint 2.2-2.3: US-100 (Skills P0) - 2 sprints
+- Sprint 2.4-3.1: US-101 (Skills P1) - 3 sprints
+- Sprint 3.2-3.3: US-102 (Módulos L0) - 3 sprints
+- Sprint 3.4-4.2: US-103 (Módulos L1+L2) - 7 sprints
+
+**Duração Total:** 15 sprints (~12-15 semanas)
+
+**Métricas de Sucesso:**
+- ✅ 13 skills criadas (100% SKILLS-BACKLOG.md)
+- ✅ 15 módulos de treinamento (100% TRAINING-INTERNAL-BACKLOG.md)
+- ✅ 4 workshops hands-on
+- ✅ 3 assessments com 80%+ pass rate
+- ✅ Primeiro desenvolvedor onboarded em 28 dias
+- ✅ 3+ desenvolvedores certificados
+
+**Integração com Releases:**
+- Release 2.0: US-100, US-101 (skills completas)
+- Release 3.0: US-102, US-103 (programa de onboarding completo)
+
+**Arquivos Afetados:**
+```
+.claude/skills/
+├── react-components-patterns/      # DS-001 (US-100)
+├── vite-build-optimization/        # DS-002 (US-100)
+├── tailwind-design-system/         # DS-003 (US-100)
+├── testing-strategy-vitest/        # DS-004 (US-101)
+├── localStorage-patterns/          # DS-005 (US-101)
+├── react-hooks-custom/             # DS-006 (US-101)
+├── docker-deployment/              # DS-007 (US-101)
+└── system-state-management/        # DS-008 (US-101)
+
+docs/treinamento-interno/
+├── fundamentals/ (L0)              # US-102
+│   ├── L0-01-environment-setup/
+│   ├── L0-02-react-basics/
+│   ├── L0-03-vite-build-tools/
+│   ├── L0-04-tailwind-css/
+│   └── L0-05-git-workflow/
+├── core-concepts/ (L1)             # US-103
+│   ├── L1-01-arquitetura/
+│   ├── L1-02-learning-system/
+│   ├── L1-03-state-management/
+│   ├── L1-04-breadcrumb/
+│   └── L1-05-nomenclatura-ux/
+├── advanced/ (L2)                  # US-103
+│   ├── L2-01-testing-vitest/
+│   ├── L2-02-e2e-playwright/
+│   ├── L2-03-docker-deployment/
+│   ├── L2-04-ci-cd-github-actions/
+│   └── L2-05-refatoracao-avancada/
+├── workshops/                      # US-102, US-103
+│   ├── WS-001-setup-first-commit/
+│   ├── WS-002-create-component/
+│   ├── WS-003-feature-end-to-end/
+│   └── WS-004-deploy-production/
+└── assessments/                    # US-102, US-103
+    ├── ASS-L0-fundamentals-quiz/
+    ├── ASS-L1-core-concepts-practical/
+    └── ASS-L2-developer-certification/
+```
+
+---
+
 ## 📊 MÉTRICAS DE SUCESSO B2B
 
 ### Objetivos de Curto Prazo (6 meses - Release 2.0)
@@ -775,25 +1097,49 @@ Produto:
 
 ## 🚀 PRÓXIMOS PASSOS IMEDIATOS
 
-### Sprint Atual (Sprint 2.1 - 2025-11-17)
+### Sprint Atual (Sprint 2.1-2.2 - Novembro 2025)
 
-**Foco:** ✅ Iniciar ÉPICO 14 (Navegação) - **US-040 COMPLETA**
+**Foco:** ÉPICO 14 (Navegação e Persistência) - **Em Andamento**
 
-**Tarefas:**
-1. ✅ US-040: Implementar React Router (13 pontos) ✅ **DONE**
-   - React Router 6 instalado
-   - Rotas implementadas: `/`, `/curso/:id`, `/curso/:id/aula/:moduleId`, `/trilha/:pathId`
-   - Deep linking funcional
-   - Botão voltar do navegador funcional
-   - 404 page (NotFoundPage.jsx)
-   - Build: 6.12s, 677KB, zero erros
+**Tarefas Completas:**
+1. ⚠️ US-040: Implementar React Router (13 pontos) **PARCIALMENTE COMPLETA**
+   - React Router 6 instalado ✅
+   - Rotas implementadas (nível pai) ✅
+   - **BUG:** LearningSystem ainda usa state-based navigation ❌
+   - Deep linking funcional apenas para cursos (não aulas) ⚠️
+   - 404 page (NotFoundPage.jsx) ✅
 
-**Última Sessão (2025-11-17):**
-- **Implementação:** React Router migração completa (state-based → rotas)
-- **Arquivos modificados:** 3 (main.jsx, SistemaEducacionalCompleto.jsx, +NotFoundPage.jsx)
-- **Validação:** Build OK, console limpo, navegação testada
-- **Screenshots:** 2 capturas (Hub + Deep Link /curso/bash)
-- **Próximos Passos:** US-041 (localStorage errors) ou US-042 (persistir progresso)
+2. 🔄 US-041: Tratamento Erros localStorage (5 pontos) **50% COMPLETA**
+   - Hook useAutoSaveNotes.js criado ✅
+   - Skill DS-005 (localStorage-patterns) criada ✅
+   - CLearningSystem refatorado ✅
+   - BashLearningSystem refatorado ✅
+   - **Pendente:** RustLearningSystem, ClaudeCodeLearningSystem ⏳
+   - **Pendente:** Testes unitários ⏳
+
+**Sessão Anterior (2025-11-17):**
+- **Implementação:** React Router (parcial - apenas componente pai)
+- **Arquivos:** 3 (main.jsx, SistemaEducacionalCompleto.jsx, +NotFoundPage.jsx)
+- **Validação:** Build OK, navegação nível curso OK
+
+**Última Sessão (2025-11-19):**
+- **Descoberta:** Bug crítico US-040 (4 LearningSystem ainda usam state-based)
+- **Implementação:** US-041 localStorage error handling (50% - 2/4 componentes)
+- **Arquivos criados:**
+  - `src/hooks/useAutoSaveNotes.js` (185 linhas) ✅
+  - `.claude/skills/localStorage-patterns/SKILL.md` (1.510 linhas) ✅
+  - 3 arquivos auxiliares (error-handling, quota-management, troubleshooting) ✅
+- **Arquivos modificados:**
+  - `src/components/CLearningSystem.jsx` (auto-save + error handling) ✅
+  - `src/components/BashLearningSystem.jsx` (auto-save + error handling) ✅
+- **Validação MCP:**
+  - Deep linking /curso/bash → OK (nível curso)
+  - Deep linking /curso/bash/aula/1.1 → FALHOU ❌ (state-based)
+  - Auto-save C e Bash → OK ✅
+- **Commit:** `4f5bf31` feat(US-041): implement localStorage error handling
+- **Próximos Passos:**
+  1. Completar US-041 (Rust + ClaudeCode + testes)
+  2. Corrigir US-040 completamente (8 pontos adicionais)
 
 ### Próximo Sprint (Sprint 2.2 - Dezembro 2025)
 
