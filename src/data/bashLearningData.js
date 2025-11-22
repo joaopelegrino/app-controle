@@ -3,7 +3,7 @@ import { Terminal, FileText, Settings, Zap } from 'lucide-react';
 export const fasesBash = [
   {
     id: 1,
-    nome: "FASE 1: FUNDAMENTOS SHELL SCRIPTING",
+    nome: "Seção 1: Fundamentos Shell Scripting",
     semanas: "1-4",
     cor: "bg-green-500",
     corClara: "bg-green-50",
@@ -12,7 +12,7 @@ export const fasesBash = [
   },
   {
     id: 2,
-    nome: "FASE 2: PROCESSAMENTO DE TEXTO",
+    nome: "Seção 2: Processamento de Texto",
     semanas: "5-8",
     cor: "bg-blue-500",
     corClara: "bg-blue-50",
@@ -21,7 +21,7 @@ export const fasesBash = [
   },
   {
     id: 3,
-    nome: "FASE 3: RECURSOS AVANÇADOS",
+    nome: "Seção 3: Recursos Avançados",
     semanas: "9-12",
     cor: "bg-purple-500",
     corClara: "bg-purple-50",
@@ -30,7 +30,7 @@ export const fasesBash = [
   },
   {
     id: 4,
-    nome: "FASE 4: FERRAMENTAS E PRÁTICAS",
+    nome: "Seção 4: Ferramentas e Práticas",
     semanas: "13-16",
     cor: "bg-orange-500",
     corClara: "bg-orange-50",
@@ -40,7 +40,7 @@ export const fasesBash = [
 ];
 
 export const modulosBash = [
-  // FASE 1 - Fundamentos
+  // Seção 1 - Fundamentos
   { 
     id: '1.1', 
     nome: 'Introdução ao Curso + História Unix/Linux', 

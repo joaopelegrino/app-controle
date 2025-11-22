@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircle, Circle, BookOpen, Home } from 'lucide-react';
 import { VSCodeNotesView } from './VSCodeNotesView';
+import { Breadcrumb } from './Breadcrumb';
 
 export const VSCodeLearningSystem = ({ 
   currentSubView, 
@@ -43,6 +44,12 @@ export const VSCodeLearningSystem = ({
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
+        <Breadcrumb
+          items={[
+            { label: 'Hub', icon: '🏠', onClick: () => setCurrentView('hub') },
+            { label: 'Curso de VSCode WSL', icon: '💻', current: true }
+          ]}
+        />
         <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
           <div className="flex justify-between items-center">
             <div>
@@ -53,7 +60,7 @@ export const VSCodeLearningSystem = ({
                 <Home className="w-4 h-4" />
                 Voltar ao Hub
               </button>
-              <h1 className="text-3xl font-bold text-gray-900">Sistema de Aprendizado VSCode</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Curso de VSCode WSL</h1>
               <p className="text-gray-600 mt-1">Tasks → JSON → Shell Scripting → Workspace Management</p>
             </div>
             <div className="text-right">

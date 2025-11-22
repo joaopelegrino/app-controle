@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, Save } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { CheckCircle, Circle, BookOpen, Home, Play, StickyNote, AlertTriangle } from 'lucide-react';
+import { useAutoSaveNotes } from '../hooks/useAutoSaveNotes';
 import { RustNotesView } from './RustNotesView';
+import { Breadcrumb } from './Breadcrumb';
 
 export const RustLearningSystem = ({ 
   currentSubView, 
@@ -22,18 +25,11 @@ export const RustLearningSystem = ({
   copyToClipboard, 
   copiedCode 
 }) => {
+  const navigate = useNavigate();
   const progressPercentage = Math.round((completedModules.size / modulosRust.length) * 100);
-  
-  // Estados para notas rápidas
-  const [quickNotes, setQuickNotes] = useState(localStorage.getItem('rust-learning-notes') || '');
-  const [notesSaved, setNotesSaved] = useState(false);
-  
-  // Função para salvar notas
-  const saveNotes = () => {
-    localStorage.setItem('rust-learning-notes', quickNotes);
-    setNotesSaved(true);
-    setTimeout(() => setNotesSaved(false), 2000);
-  };
+
+  // Hook de auto-save com tratamento de erros localStorage
+  const [quickNotes, setQuickNotes, saveStatus, sizeInfo] = useAutoSaveNotes('rust');
   
   if (currentSubView === 'notes') {
     return (
@@ -54,6 +50,12 @@ export const RustLearningSystem = ({
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
+        <Breadcrumb
+          items={[
+            { label: 'Hub', icon: '🏠', onClick: () => setCurrentView('hub') },
+            { label: 'Curso de Rust Programming', icon: '🦀', current: true }
+          ]}
+        />
         <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
           <div className="flex justify-between items-center">
             <div>
@@ -64,11 +66,11 @@ export const RustLearningSystem = ({
                 <Home className="w-4 h-4" />
                 Voltar ao Hub
               </button>
-              <h1 className="text-3xl font-bold text-gray-900">🦀 Sistemas de Aprendizado Rust</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Curso de Rust Programming</h1>
               <p className="text-gray-600 mt-1">
                 <span className="font-medium">2 Sistemas Integrados:</span> 
-                <span className="text-orange-600"> FASE 1: Fundamentos Rust Programming</span> → 
-                <span className="text-red-600"> FASE 2: Projeto Avançado Rust + Sistemas</span>
+                <span className="text-orange-600"> Seção 1: Fundamentos Rust Programming</span> → 
+                <span className="text-red-600"> Seção 2: Projeto Avançado Rust + Sistemas</span>
               </p>
             </div>
             <div className="text-right">
@@ -121,7 +123,7 @@ export const RustLearningSystem = ({
                   </div>
                 </div>
                 
-                {/* Vídeo YouTube - Apenas para FASE 1 */}
+                {/* Vídeo YouTube - Apenas para Seção 1 */}
                 {fase.id === 1 && (
                   <div className="bg-orange-50 border-t border-orange-200 p-6">
                     <div className="flex items-center gap-2 mb-4">
@@ -130,7 +132,7 @@ export const RustLearningSystem = ({
                     </div>
                     <div className="bg-white border border-orange-200 rounded-lg p-3 mb-4">
                       <p className="text-sm text-orange-700">
-                        📚 Este vídeo complementa os estudos da <strong>FASE 1: FUNDAMENTOS RUST PROGRAMMING</strong> (semanas 1-12)
+                        📚 Este vídeo complementa os estudos da <strong>Seção 1: Fundamentos Rust Programming</strong> (semanas 1-12)
                       </p>
                     </div>
                     <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
@@ -147,24 +149,11 @@ export const RustLearningSystem = ({
                       ></iframe>
                     </div>
                     
-                    {/* Notas Rápidas - Específicas para FASE 1 */}
+                    {/* Meu Caderno de Notas - Específicas para Seção 1 */}
                     <div className="mt-6 bg-white border border-orange-200 rounded-lg p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                          <StickyNote className="w-5 h-5 text-orange-600" />
-                          <h3 className="text-lg font-semibold text-gray-900">Notas Rápidas - Fundamentos Rust</h3>
-                        </div>
-                        <button
-                          onClick={saveNotes}
-                          className={`flex items-center gap-2 px-3 py-1 rounded-md text-sm transition-colors ${
-                            notesSaved 
-                              ? 'bg-green-100 text-green-700' 
-                              : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
-                          }`}
-                        >
-                          <Save className="w-4 h-4" />
-                          {notesSaved ? 'Salvo!' : 'Salvar'}
-                        </button>
+                      <div className="flex items-center gap-2 mb-4">
+                        <StickyNote className="w-5 h-5 text-orange-600" />
+                        <h3 className="text-lg font-semibold text-gray-900">📒 Meu Caderno de Notas - Fundamentos Rust</h3>
                       </div>
                       <textarea
                         value={quickNotes}
@@ -178,8 +167,30 @@ export const RustLearningSystem = ({
 • Links úteis para Rust Programming"
                         className="w-full h-80 p-3 border border-orange-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
                       />
-                      <div className="mt-3 text-xs text-orange-600">
-                        📝 Suas notas sobre FASE 1 são salvas automaticamente no navegador
+                      <div className="mt-3 space-y-1">
+                        <div className="text-sm">
+                          {saveStatus === 'saving' && (
+                            <span className="text-blue-600">💾 Salvando automaticamente...</span>
+                          )}
+                          {saveStatus === 'saved' && (
+                            <span className="text-green-600">🦀 Suas notas de Rust são salvas automaticamente</span>
+                          )}
+                          {saveStatus === 'error' && (
+                            <span className="text-red-600 flex items-center gap-1">
+                              <AlertTriangle className="w-4 h-4" />
+                              Erro ao salvar notas
+                            </span>
+                          )}
+                          {saveStatus === 'quota_exceeded' && (
+                            <span className="text-orange-600 flex items-center gap-1">
+                              <AlertTriangle className="w-4 h-4" />
+                              Limite de 50KB excedido
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          📊 {sizeInfo.sizeKB} KB / 50 KB ({sizeInfo.percentage}%)
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -201,8 +212,8 @@ export const RustLearningSystem = ({
                           }`}
                           onClick={() => {
                             if (modulo.temNotas) {
-                              setCurrentSubView('notes');
-                              setSelectedSection('hello-world-rust');
+                              // US-040: React Router navigation (deep linking para aulas)
+                              navigate(`/curso/rust/aula/${modulo.id}`);
                             } else if (!isCompleted) {
                               setCompletedModules(prev => new Set([...prev, modulo.id]));
                             }
@@ -223,7 +234,7 @@ export const RustLearningSystem = ({
                                   {modulo.temNotas && (
                                     <span className="ml-2 inline-flex items-center gap-1 text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">
                                       <BookOpen className="w-3 h-3" />
-                                      Ver Notas
+                                      📖 Estudar
                                     </span>
                                   )}
                                 </h4>

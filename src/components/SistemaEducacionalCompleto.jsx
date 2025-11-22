@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Calendar, Clock, CheckCircle, Circle, BookOpen, Code, Shield, Server, TrendingUp, ChevronLeft, ChevronRight, Target, Award, FileText, Eye, EyeOff, Copy, Lightbulb, AlertTriangle, Terminal, ArrowLeft, ExternalLink, FileJson, Folder, Settings, Zap, Home, X } from 'lucide-react';
 import { studyAreas } from '../data/studyAreas';
+import { caminhosPropostos } from '../data/caminhoExemploData';
 import { fasesC, modulosC, startDateC } from '../data/cLearningData';
 import { topicosVSCode, modulosVSCode, startDateVSCode } from '../data/vscodeLearningData';
 import { fasesBash, modulosBash, startDateBash } from '../data/bashLearningData';
@@ -17,11 +19,13 @@ import ClaudeCodeLearningSystem from './ClaudeCodeLearningSystem';
 import ClaudeCodeNotesView from './ClaudeCodeNotesView';
 import { FlashcardModal } from './FlashcardModal';
 import LearningPathView from './LearningPathView';
+import NotFoundPage from '../pages/NotFoundPage';
 
 const SistemaEducacionalCompleto = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   // Global States
-  const [currentView, setCurrentView] = useState('hub');
-  const [currentArea, setCurrentArea] = useState(null);
   const [currentSubView, setCurrentSubView] = useState('calendar');
   const [selectedSection, setSelectedSection] = useState('');
   const [showCode, setShowCode] = useState({});
@@ -66,17 +70,22 @@ const SistemaEducacionalCompleto = () => {
   };
   
   const openArea = (areaKey) => {
-    setCurrentArea(areaKey);
     const area = studyAreas[areaKey];
-    
+
+    if (!area) {
+      console.warn(`[openArea] Área não encontrada: ${areaKey}`);
+      return;
+    }
+
     if (area.isLearningPath) {
-      // Navigate to learning path view
-      setCurrentView('learningPath');
+      // Navigate to learning path view (modelo antigo - deprecated)
+      navigate(`/trilha/${areaKey}`);
     } else if (area.hasIntegratedApp) {
-      setCurrentView('integrated');
+      // Navigate to integrated course view
+      navigate(`/curso/${areaKey}`);
       setCurrentSubView('calendar');
     } else {
-      // Open flashcards directly
+      // Open flashcards directly (não precisa navegar, modal abre no estado atual)
       const cards = [];
       Object.values(area.flashcards).forEach(category => {
         cards.push(...category.cards);
@@ -87,9 +96,17 @@ const SistemaEducacionalCompleto = () => {
       setFlashcardModalOpen(true);
     }
   };
+
+  // US-044: Abrir caminho proposto (novo modelo)
+  const openLearningPath = (pathKey) => {
+    const path = caminhosPropostos[pathKey];
+    if (path) {
+      navigate(`/trilha/${pathKey}`);
+    }
+  };
   
-  const openFlashcardsFromNotes = () => {
-    const area = studyAreas[currentArea];
+  const openFlashcardsFromNotes = (areaKey) => {
+    const area = studyAreas[areaKey];
     const cards = [];
     Object.values(area.flashcards).forEach(category => {
       cards.push(...category.cards);
@@ -108,16 +125,16 @@ const SistemaEducacionalCompleto = () => {
     setFlashcardModalOpen(true);
   };
   
-  // Integrated App View (C or VSCode)
-  const IntegratedAppView = () => {
-    const area = studyAreas[currentArea];
-    
-    if (currentArea === 'clang') {
+  // Integrated App View (C or VSCode) - Receives areaKey from URL
+  const IntegratedAppView = ({ areaKey }) => {
+    const area = studyAreas[areaKey];
+
+    if (areaKey === 'clang') {
       return (
-        <CLearningSystem 
+        <CLearningSystem
           currentSubView={currentSubView}
           setCurrentSubView={setCurrentSubView}
-          setCurrentView={setCurrentView}
+          setCurrentView={() => navigate('/')}
           completedModules={completedModules}
           setCompletedModules={setCompletedModules}
           selectedSection={selectedSection}
@@ -127,7 +144,7 @@ const SistemaEducacionalCompleto = () => {
           startDateC={startDateC}
           getWeekDate={getWeekDate}
           formatDate={formatDate}
-          openFlashcardsFromNotes={openFlashcardsFromNotes}
+          openFlashcardsFromNotes={() => openFlashcardsFromNotes(areaKey)}
           CodeBlock={CodeBlock}
           showCode={showCode}
           toggleCodeVisibility={toggleCodeVisibility}
@@ -135,12 +152,12 @@ const SistemaEducacionalCompleto = () => {
           copiedCode={copiedCode}
         />
       );
-    } else if (currentArea === 'bash') {
+    } else if (areaKey === 'bash') {
       return (
-        <BashLearningSystem 
+        <BashLearningSystem
           currentSubView={currentSubView}
           setCurrentSubView={setCurrentSubView}
-          setCurrentView={setCurrentView}
+          setCurrentView={() => navigate('/')}
           completedBashModules={completedBashModules}
           setCompletedBashModules={setCompletedBashModules}
           selectedSection={selectedSection}
@@ -150,7 +167,7 @@ const SistemaEducacionalCompleto = () => {
           startDateBash={startDateBash}
           getWeekDate={getWeekDate}
           formatDate={formatDate}
-          openFlashcardsFromNotes={openFlashcardsFromNotes}
+          openFlashcardsFromNotes={() => openFlashcardsFromNotes(areaKey)}
           CodeBlock={CodeBlock}
           showCode={showCode}
           toggleCodeVisibility={toggleCodeVisibility}
@@ -158,12 +175,12 @@ const SistemaEducacionalCompleto = () => {
           copiedCode={copiedCode}
         />
       );
-    } else if (currentArea === 'vscode') {
+    } else if (areaKey === 'vscode') {
       return (
-        <VSCodeLearningSystem 
+        <VSCodeLearningSystem
           currentSubView={currentSubView}
           setCurrentSubView={setCurrentSubView}
-          setCurrentView={setCurrentView}
+          setCurrentView={() => navigate('/')}
           completedVSCodeModules={completedVSCodeModules}
           setCompletedVSCodeModules={setCompletedVSCodeModules}
           selectedSection={selectedSection}
@@ -173,7 +190,7 @@ const SistemaEducacionalCompleto = () => {
           startDateVSCode={startDateVSCode}
           getWeekDate={getWeekDate}
           formatDate={formatDate}
-          openFlashcardsFromNotes={openFlashcardsFromNotes}
+          openFlashcardsFromNotes={() => openFlashcardsFromNotes(areaKey)}
           CodeBlock={CodeBlock}
           showCode={showCode}
           toggleCodeVisibility={toggleCodeVisibility}
@@ -181,13 +198,13 @@ const SistemaEducacionalCompleto = () => {
           copiedCode={copiedCode}
         />
       );
-    } else if (currentArea === 'claudecode') {
+    } else if (areaKey === 'claudecode') {
       return (
-        <ClaudeCodeLearningSystem 
-          onBack={() => setCurrentView('hub')}
+        <ClaudeCodeLearningSystem
+          onBack={() => navigate('/')}
           onNavigateToNotes={(moduleId) => {
             setSelectedSection(moduleId);
-            setCurrentView('notes');
+            navigate(`/curso/${areaKey}/aula/${moduleId}`);
           }}
           onOpenFlashcards={(area, title) => {
             const areaData = studyAreas[area];
@@ -202,12 +219,12 @@ const SistemaEducacionalCompleto = () => {
           }}
         />
       );
-    } else if (currentArea === 'rustprogramming') {
+    } else if (areaKey === 'rustprogramming') {
       return (
-        <RustLearningSystem 
+        <RustLearningSystem
           currentSubView={currentSubView}
           setCurrentSubView={setCurrentSubView}
-          setCurrentView={setCurrentView}
+          setCurrentView={() => navigate('/')}
           completedModules={completedRustModules}
           setCompletedModules={setCompletedRustModules}
           selectedSection={selectedSection}
@@ -217,7 +234,7 @@ const SistemaEducacionalCompleto = () => {
           startDateRust={startDateRust}
           getWeekDate={getWeekDate}
           formatDate={formatDate}
-          openFlashcardsFromNotes={openFlashcardsFromNotes}
+          openFlashcardsFromNotes={() => openFlashcardsFromNotes(areaKey)}
           CodeBlock={CodeBlock}
           showCode={showCode}
           toggleCodeVisibility={toggleCodeVisibility}
@@ -230,51 +247,165 @@ const SistemaEducacionalCompleto = () => {
     return null;
   };
   
+  // Route components that extract params
+  const CourseRoute = () => {
+    const { courseId } = useParams();
+    return <IntegratedAppView areaKey={courseId} />;
+  };
+
+  const LearningPathRoute = () => {
+    const { pathId } = useParams();
+    // US-044: Usar novo modelo de caminhos propostos
+    const pathData = caminhosPropostos[pathId] || studyAreas[pathId];
+
+    return (
+      <LearningPathView
+        pathData={pathData}
+        pathKey={pathId}
+        onBack={() => navigate('/')}
+        onAreaClick={openAreaFromLearningPath}
+        onNavigateToCourse={(areaKey) => {
+          navigate(`/curso/${areaKey}`);
+          setCurrentSubView('calendar');
+        }}
+      />
+    );
+  };
+
+  const ModuleNotesRoute = () => {
+    const { courseId, moduleId } = useParams();
+    const [localSelectedSection, setLocalSelectedSection] = useState('course-intro'); // Fix: seção inicial
+
+    // US-040: Renderizar NotesView correto baseado no courseId
+    const renderNotesView = () => {
+      switch (courseId) {
+        case 'bash':
+          return (
+            <BashLearningSystem
+              currentSubView="notes"
+              setCurrentSubView={(view) => view === 'calendar' && navigate(`/curso/${courseId}`)}
+              setCurrentView={() => navigate('/')}
+              completedBashModules={completedBashModules}
+              setCompletedBashModules={setCompletedBashModules}
+              selectedSection={localSelectedSection} // Fix: usar estado local
+              setSelectedSection={setLocalSelectedSection} // Fix: usar setState local
+              fasesBash={fasesBash}
+              modulosBash={modulosBash}
+              startDateBash={startDateBash}
+              getWeekDate={getWeekDate}
+              formatDate={formatDate}
+              openFlashcardsFromNotes={() => openFlashcardsFromNotes('bash')} // Fix: passar areaKey
+              CodeBlock={CodeBlock}
+              showCode={showCode}
+              toggleCodeVisibility={toggleCodeVisibility}
+              copyToClipboard={copyToClipboard}
+              copiedCode={copiedCode}
+            />
+          );
+        case 'clang':
+          return (
+            <CLearningSystem
+              currentSubView="notes"
+              setCurrentSubView={(view) => view === 'calendar' && navigate(`/curso/${courseId}`)}
+              setCurrentView={() => navigate('/')}
+              completedModules={completedModules}
+              setCompletedModules={setCompletedModules}
+              selectedSection={localSelectedSection} // Fix: usar estado local
+              setSelectedSection={setLocalSelectedSection} // Fix: usar setState local
+              fasesC={fasesC}
+              modulosC={modulosC}
+              startDateC={startDateC}
+              getWeekDate={getWeekDate}
+              formatDate={formatDate}
+              openFlashcardsFromNotes={() => openFlashcardsFromNotes('clang')} // Fix: passar areaKey
+              CodeBlock={CodeBlock}
+              showCode={showCode}
+              toggleCodeVisibility={toggleCodeVisibility}
+              copyToClipboard={copyToClipboard}
+              copiedCode={copiedCode}
+            />
+          );
+        case 'rust':
+          return (
+            <RustLearningSystem
+              currentSubView="notes"
+              setCurrentSubView={(view) => view === 'calendar' && navigate(`/curso/${courseId}`)}
+              setCurrentView={() => navigate('/')}
+              completedModules={completedRustModules}
+              setCompletedModules={setCompletedRustModules}
+              selectedSection={localSelectedSection} // Fix: usar estado local
+              setSelectedSection={setLocalSelectedSection} // Fix: usar setState local
+              fasesRust={fasesRust}
+              modulosRust={modulosRust}
+              startDateRust={startDateRust}
+              getWeekDate={getWeekDate}
+              formatDate={formatDate}
+              openFlashcardsFromNotes={() => openFlashcardsFromNotes('rust')} // Fix: passar areaKey
+              CodeBlock={CodeBlock}
+              showCode={showCode}
+              toggleCodeVisibility={toggleCodeVisibility}
+              copyToClipboard={copyToClipboard}
+              copiedCode={copiedCode}
+            />
+          );
+        case 'claude-code':
+          return (
+            <ClaudeCodeNotesView
+              moduleId={moduleId}
+              onBack={() => navigate(`/curso/${courseId}`)}
+              onOpenFlashcards={(area, title) => {
+                const areaData = studyAreas[area];
+                const cards = [];
+                Object.values(areaData.flashcards).forEach(category => {
+                  cards.push(...category.cards);
+                });
+                setCurrentCards(cards.sort(() => Math.random() - 0.5));
+                setCurrentCardIndex(0);
+                setIsFlipped(false);
+                setFlashcardModalOpen(true);
+              }}
+            />
+          );
+        default:
+          return <NotFoundPage />;
+      }
+    };
+
+    return renderNotesView();
+  };
+
   // Main Render
   return (
     <div>
-      {currentView === 'hub' && (
-        <HubView 
-          studyAreas={studyAreas}
-          calculateStats={calculateStats}
-          openArea={openArea}
+      <Routes>
+        {/* Hub - Rota principal */}
+        <Route
+          path="/"
+          element={
+            <HubView
+              studyAreas={studyAreas}
+              calculateStats={calculateStats}
+              openArea={openArea}
+              openLearningPath={openLearningPath}
+            />
+          }
         />
-      )}
-      {currentView === 'learningPath' && (
-        <LearningPathView 
-          pathData={studyAreas[currentArea]}
-          pathKey={currentArea}
-          onBack={() => setCurrentView('hub')}
-          onAreaClick={openAreaFromLearningPath}
-          onNavigateToIntegrated={(areaKey) => {
-            setCurrentArea(areaKey);
-            setCurrentView('integrated');
-            setCurrentSubView('calendar');
-          }}
-        />
-      )}
-      {currentView === 'integrated' && <IntegratedAppView />}
-      {currentView === 'notes' && selectedSection.startsWith('claudecode') && (
-        <ClaudeCodeNotesView 
-          moduleId={selectedSection}
-          onBack={() => {
-            setCurrentView('integrated');
-            setSelectedSection('');
-          }}
-          onOpenFlashcards={(area, title) => {
-            const areaData = studyAreas[area];
-            const cards = [];
-            Object.values(areaData.flashcards).forEach(category => {
-              cards.push(...category.cards);
-            });
-            setCurrentCards(cards.sort(() => Math.random() - 0.5));
-            setCurrentCardIndex(0);
-            setIsFlipped(false);
-            setFlashcardModalOpen(true);
-          }}
-        />
-      )}
-      <FlashcardModal 
+
+        {/* Trilhas de Aprendizado */}
+        <Route path="/trilha/:pathId" element={<LearningPathRoute />} />
+
+        {/* Cursos Integrados */}
+        <Route path="/curso/:courseId" element={<CourseRoute />} />
+
+        {/* Notas de Aula (para Claude Code) */}
+        <Route path="/curso/:courseId/aula/:moduleId" element={<ModuleNotesRoute />} />
+
+        {/* 404 - Página não encontrada */}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+
+      {/* Flashcard Modal - Global (aparece sobre qualquer rota) */}
+      <FlashcardModal
         flashcardModalOpen={flashcardModalOpen}
         setFlashcardModalOpen={setFlashcardModalOpen}
         currentCards={currentCards}

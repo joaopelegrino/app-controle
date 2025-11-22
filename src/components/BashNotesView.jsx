@@ -1,16 +1,18 @@
 import React from 'react';
 import { BookOpen, FileText, Zap, ExternalLink, ArrowLeft, Terminal, History, Code } from 'lucide-react';
+import { Breadcrumb } from './Breadcrumb';
 
-export const BashNotesView = ({ 
-  setCurrentSubView, 
-  selectedSection, 
-  setSelectedSection, 
-  openFlashcardsFromNotes, 
-  CodeBlock, 
-  showCode, 
-  toggleCodeVisibility, 
-  copyToClipboard, 
-  copiedCode 
+export const BashNotesView = ({
+  setCurrentSubView,
+  setCurrentView,
+  selectedSection,
+  setSelectedSection,
+  openFlashcardsFromNotes,
+  CodeBlock,
+  showCode,
+  toggleCodeVisibility,
+  copyToClipboard,
+  copiedCode
 }) => {
   const sections = [
     {
@@ -283,13 +285,20 @@ cat file1.txt file2.txt > result.txt`;
   };
   
   return (
-    <div className="max-w-7xl mx-auto p-4">
+    <div className="max-w-5xl mx-auto p-4">
+      <Breadcrumb
+        items={[
+          { label: 'Hub', icon: '🏠', onClick: () => setCurrentView('hub') },
+          { label: 'Curso de Bash', icon: '📖', onClick: () => setCurrentSubView('calendar') },
+          { label: 'Aula 1.1', icon: '📝', current: true }
+        ]}
+      />
       <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
               <Terminal className="w-8 h-8 text-green-600" />
-              Notas de Aprendizado Bash
+              Aula 1.1: Introdução ao Shell Scripting
             </h1>
             <p className="text-gray-600 mt-1">
               Módulo 1.1: Introdução ao Shell Scripting + História Unix
@@ -301,7 +310,7 @@ cat file1.txt file2.txt > result.txt`;
             className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Voltar ao Cronograma
+            ← Voltar ao Curso
           </button>
         </div>
       </div>
