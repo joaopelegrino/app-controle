@@ -2,9 +2,9 @@
 
 **Fonte Única de Verdade - Atualizado Automaticamente**
 
-**Última Atualização:** 2025-11-19
-**Release Atual:** Release 1.0 (Completa) | Release 2.0 (US-040 + US-041 Validadas)
-**Progresso Geral:** Release 1.0: 100% | Release 2.0: 33% (2/6 User Stories completas)
+**Última Atualização:** 2025-11-22
+**Release Atual:** Release 1.0 (Completa) | Release 2.0 (US-040 parcial + US-041 + US-044 Completas)
+**Progresso Geral:** Release 1.0: 100% | Release 2.0: 50% (3/6 User Stories completas)
 
 ---
 
@@ -229,6 +229,34 @@
 
 ---
 
+#### US-044: Hub MVP Simplificado ✅ **COMPLETA**
+
+**Status Geral:** ✅ Completa (100%)
+
+| Deliverable | Tasks | Status | Estágios | Obs |
+|-------------|-------|--------|----------|-----|
+| **D-040: caminhoExemploData.js** | - | ✅ Completo | 🔵 🟡 🟠 🟢 📚 | Novo modelo de Caminhos Propostos |
+| **D-041: studyAreas.js MVP** | - | ✅ Completo | 🔵 🟡 🟠 🟢 📚 | Apenas Bash ativo |
+| **D-042: HubView.jsx MVP** | - | ✅ Completo | 🔵 🟡 🟠 🟢 📚 | 1 área + 1 caminho |
+| **D-043: LearningPathView.jsx** | - | ✅ Completo | 🔵 🟡 🟠 🟢 📚 | Novo modelo de cursos |
+| **D-044: Skill learning-path-patterns** | DS-014 | ✅ Completo | 🔵 🟡 🟠 🟢 📚 | Documentação completa |
+
+**Resultado:**
+- Implementado: 2025-11-22 (~1h)
+- Testado MCP: Hub, Bash, Caminho - zero erros ✅
+- Skill: DS-014 learning-path-patterns criada
+- Branch: `feature/US-044-hub-mvp-simplificado`
+- Commit: `dcb60ad` feat(US-044): simplify Hub to MVP with standardized content
+
+**Documentação Criada:**
+- `.claude/skills/learning-path-patterns/SKILL.md` (~400 linhas)
+- `.claude/skills/learning-path-patterns/auxiliary/data-modeling.md`
+- `.claude/skills/learning-path-patterns/auxiliary/adding-new-paths.md`
+- Atualizado: `ultrathink-arch/SKILL.md` (seção de Caminhos)
+- Atualizado: `docs/tecnico/architecture/01-visao-geral-arquitetura.md`
+
+---
+
 #### US-043: Refatoração Learning Systems
 
 **Status Geral:** ⏳ Não Iniciada (0%)
@@ -379,7 +407,7 @@
 | Release | User Stories | Deliverables | Status | Progresso |
 |---------|--------------|--------------|--------|-----------|
 | **Release 1.0** | 7 USs | 23 deliverables | ✅ Completa | 100% |
-| **Release 2.0** | 7 USs | 21 deliverables | 🚧 Em Andamento | 14% (US-040 validada, ÉP24 iniciado) |
+| **Release 2.0** | 7 USs | 26 deliverables | 🚧 Em Andamento | 50% (US-040 parcial + US-041 + US-044 completas) |
 | **Release 3.0** | 1 US | 22 deliverables | ⏳ Planejada | 0% (ÉP24 continuação) |
 | **Release 4.0** | - | - | ⏳ Planejada | - |
 
@@ -412,6 +440,6 @@ Este documento é atualizado automaticamente baseado em:
 
 ---
 
-**Última atualização:** 2025-11-19 (US-041 completa - localStorage error handling)
+**Última atualização:** 2025-11-22 (US-044 completa - Hub MVP Simplificado + Documentação)
 **Responsável:** Sistema automatizado (Git hooks) + Claude Code
 **Próxima revisão:** Sprint 2.2 (US-042 - Dezembro 2025)

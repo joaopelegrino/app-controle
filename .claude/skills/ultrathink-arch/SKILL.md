@@ -77,7 +77,8 @@ app-controle/
 │   │       └── (Breadcrumb.jsx - futuro)
 │   │
 │   ├── data/                 # Dados estruturados (fonte da verdade)
-│   │   ├── studyAreas.js                   # 13 áreas de estudo
+│   │   ├── studyAreas.js                   # 13 áreas de estudo (MVP: apenas Bash ativo)
+│   │   ├── caminhoExemploData.js           # Caminhos Propostos (trilhas de cursos)
 │   │   ├── cLearningData.js                # 50 módulos C
 │   │   ├── rustLearningData.js             # 24 módulos Rust
 │   │   ├── bashLearningData.js             # 16 módulos Bash
@@ -107,7 +108,9 @@ app-controle/
 │   │   ├── ux-nomenclature/
 │   │   ├── component-refactor/
 │   │   ├── breadcrumb-impl/
-│   │   └── ultrathink-arch/
+│   │   ├── ultrathink-arch/
+│   │   ├── localStorage-patterns/
+│   │   └── learning-path-patterns/
 │   ├── agents/               # Agents especializados
 │   ├── hooks.toml            # Hooks de automação
 │   └── settings.local.json   # Configurações
@@ -159,6 +162,76 @@ NÍVEL 1: Hub de Aprendizado
                             ├── Navegação (anterior/próximo)
                             └── Contador (1/2)
 ```
+
+## Modelo de Caminhos Propostos (US-044)
+
+### Conceito Fundamental
+
+**Area de Estudo (Curso):** Entidade autocontida com video, modulos, notas, flashcards.
+**Caminho Proposto (Trilha):** Sequencia ordenada de CURSOS (referencias, nao dados duplicados).
+
+```
+Exemplo: "Desenvolvedor Backend"
+  1. Bash Shell Scripting (disponivel)
+  2. Linux Fundamentals (em breve)
+  3. Docker & Containers (em breve)
+  4. DevOps Essentials (em breve)
+```
+
+### Schema de Caminho (caminhoExemploData.js)
+
+```javascript
+export const caminhoExemplo = {
+  id: 'backend-developer',
+  name: 'Desenvolvedor Backend',
+  icon: 'trilha',
+  description: 'Caminho para dominar desenvolvimento backend',
+  badge: 'exemplo',
+
+  cursos: [
+    {
+      ordem: 1,
+      areaId: 'bash',       // Referencia a studyAreas.js
+      nome: 'Bash Shell Scripting',
+      modules: 16,
+      hours: 32,
+      disponivel: true,     // Clicavel
+      destaque: 'Padrao de referencia'
+    },
+    // ... mais cursos
+  ],
+
+  // Getters computados
+  get totalCursos() { return this.cursos.length; },
+  get cursosDisponiveis() { return this.cursos.filter(c => c.disponivel).length; }
+};
+
+export const caminhosPropostos = {
+  'backend-developer': caminhoExemplo
+};
+```
+
+### Navegacao de Caminhos
+
+```
+Hub (/)
+  |-- Clica em Caminho "Desenvolvedor Backend"
+  v
+LearningPathView (/trilha/backend-developer)
+  |-- Lista cursos na ordem
+  |-- Cursos disponiveis: clicaveis (badge verde)
+  |-- Cursos indisponiveis: desabilitados (badge "Em breve")
+  |-- Clica em "Bash" (disponivel)
+  v
+BashLearningSystem (/curso/bash)
+```
+
+### Skill Relacionada
+
+Para detalhes completos sobre Caminhos de Aprendizado, consulte:
+**.claude/skills/learning-path-patterns/SKILL.md**
+
+---
 
 ## Fluxo de Dados
 

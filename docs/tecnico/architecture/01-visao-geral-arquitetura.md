@@ -482,7 +482,8 @@ CMD ["nginx", "-g", "daemon off;"]
 │                   Camada 3: Data Layer                      │
 │                  (Dados & Persistência)                     │
 ├─────────────────────────────────────────────────────────────┤
-│ - src/data/studyAreas.js       (Áreas de estudo)           │
+│ - src/data/studyAreas.js       (Areas de estudo - MVP: Bash)│
+│ - src/data/caminhoExemploData.js (Caminhos Propostos)       │
 │ - src/data/*LearningData.js    (Dados de cursos)           │
 │ - localStorage                  (Progresso, notas)          │
 │ - (Futuro) Backend API          (Sync multi-device)         │
@@ -658,6 +659,56 @@ export default BashLearningSystem;
 2. Eventos fluem de baixo para cima (callbacks)
 3. Estado é mutado apenas por setState/useState
 4. Nunca mutar props diretamente
+
+---
+
+## Modelo de Caminhos Propostos (US-044)
+
+### Conceito Fundamental
+
+A partir da US-044 (Hub MVP Simplificado), o sistema diferencia claramente dois conceitos:
+
+**Area de Estudo (Curso):** Entidade autocontida com video, modulos, notas, flashcards.
+**Caminho Proposto (Trilha):** Sequencia ordenada de CURSOS (referencias, nao dados duplicados).
+
+```
+Exemplo: "Desenvolvedor Backend"
+  1. Bash Shell Scripting (disponivel)
+  2. Linux Fundamentals (em breve)
+  3. Docker & Containers (em breve)
+  4. DevOps Essentials (em breve)
+```
+
+### Arquivos de Dados
+
+```
+src/data/
+├── studyAreas.js           # Areas de Estudo (MVP: apenas Bash ativo)
+├── caminhoExemploData.js   # Caminhos Propostos (modelo de referencia)
+├── bashLearningData.js     # Conteudo do curso Bash
+└── ...
+```
+
+### Schema de Caminho
+
+```javascript
+{
+  id: 'backend-developer',
+  name: 'Desenvolvedor Backend',
+  cursos: [
+    {
+      ordem: 1,
+      areaId: 'bash',        // Referencia a studyAreas.js
+      disponivel: true,      // Clicavel
+      modules: 16,
+      hours: 32
+    }
+  ],
+  get totalCursos() { return this.cursos.length; }
+}
+```
+
+**Skill Relacionada:** `.claude/skills/learning-path-patterns/SKILL.md`
 
 ---
 
