@@ -297,11 +297,11 @@ Nota Geral: 9.0/10 ⭐ (antes: 8.5/10)
 
 ---
 
-### ÉPICO 14: Navegação e Persistência 📋 TODO
+### ÉPICO 14: Navegação e Persistência 📋 EM ANDAMENTO
 
-**Prioridade:** 🟠 Alta  
-**Sprint:** 2.1 (Q1 2026)  
-**Pontos:** 21
+**Prioridade:** 🟠 Alta
+**Sprint:** 2.1 (Q1 2026)
+**Pontos:** 26 (21 + 5 da US-044)
 
 #### US-040: Implementar React Router ⚠️ **PARCIALMENTE COMPLETA** (Bug Identificado)
 
@@ -410,6 +410,55 @@ Causa: BashLearningSystem.jsx linha 220-222 usa setCurrentSubView('notes')
 - [ ] Tratamento de erros (US-041)
 
 **Complexidade:** 8 pontos
+
+---
+
+#### US-044: Simplificar Hub para MVP com Padrão Consistente 📋 TODO
+
+**Como** visitante da plataforma
+**Quero** ver apenas conteúdo que segue o padrão estabelecido
+**Para** ter uma experiência consistente e profissional
+
+**Contexto:**
+O Hub atual mostra 13 áreas, mas apenas **Bash** segue o padrão correto de implementação.
+O conceito de "Caminho Proposto" (trilha de cursos) está misturado com flashcards soltos.
+Esta US cria um MVP focado mostrando apenas código padronizado.
+
+**Critérios de Aceite:**
+
+**Áreas de Estudo:**
+- [ ] Hub mostra apenas **Bash** como Área de Estudo (padrão de referência)
+- [ ] Navegação `/curso/bash` funciona 100%
+- [ ] Outras áreas ficam comentadas em `studyAreas.js` (não deletadas)
+
+**Caminhos Propostos (novo modelo):**
+- [ ] Criar `caminhoExemploData.js` com dummy data padronizado
+- [ ] Caminho = sequência ordenada de cursos (não flashcards soltos)
+- [ ] Cada curso do caminho mostra: nome, descrição, módulos, horas, disponibilidade
+- [ ] Cursos disponíveis (Bash) são clicáveis → navegam para `/curso/:id`
+- [ ] Cursos indisponíveis mostram badge "Em breve"
+
+**Componentes:**
+- [ ] `HubView.jsx` filtrado para MVP (1 área + 1 caminho)
+- [ ] `LearningPathView.jsx` adaptado para novo modelo de cursos
+- [ ] Estatísticas refletem apenas conteúdo visível
+
+**Qualidade:**
+- [ ] Build passa sem erros
+- [ ] Zero console errors
+- [ ] Navegação testada com MCP Chrome DevTools
+
+**Branch:** `feature/US-044-hub-mvp-simplificado`
+
+**Complexidade:** 5 pontos (~1h)
+
+**Prioridade:** 🔴 P0 (Qualidade visual do produto)
+
+**Justificativa:**
+- Mostrar apenas código padronizado transmite profissionalismo
+- Evita confusão com áreas inconsistentes
+- Estabelece modelo correto para "Caminho Proposto"
+- Facilita onboarding de novos usuários
 
 ---
 
@@ -1131,29 +1180,24 @@ Produto:
 - **Arquivos:** 3 (main.jsx, SistemaEducacionalCompleto.jsx, +NotFoundPage.jsx)
 - **Validação:** Build OK, navegação nível curso OK
 
-**Última Sessão (2025-11-19 - Sessão 2: Conclusão US-041):**
+**Última Sessão (2025-11-22 - Sessão 3: Planejamento US-044):**
+- **Análise:** Verificação do estado atual com MCP Chrome DevTools ✅
+- **Validação:** US-041 funcionando 100% (auto-save, quota, persistência confirmados) ✅
+- **Planejamento:** Criada US-044 (Hub MVP Simplificado) com novo modelo de Caminhos Propostos
+- **Decisão arquitetural:**
+  - Hub mostrará apenas **Bash** (Área de Estudo padrão)
+  - **Caminho Proposto** = sequência ordenada de cursos (não flashcards soltos)
+  - Dummy data com padrão correto para exemplo
+- **ROADMAP atualizado:** US-044 adicionada ao ÉPICO 14 (+5 pontos)
+- **Próxima ação:** Implementar US-044 na branch `feature/US-044-hub-mvp-simplificado`
+
+**Sessão Anterior (2025-11-19 - Sessão 2: Conclusão US-041):**
 - **Implementação:** US-041 localStorage error handling (100% completa) ✅
-- **Arquivos criados (sessão anterior):**
-  - `src/hooks/useAutoSaveNotes.js` (185 linhas) ✅
-  - `.claude/skills/localStorage-patterns/SKILL.md` (1.510 linhas) ✅
-  - 3 arquivos auxiliares (error-handling, quota-management, troubleshooting) ✅
-- **Arquivos refatorados (sessão atual):**
-  - `src/components/RustLearningSystem.jsx` (auto-save + error handling) ✅
-  - `src/components/ClaudeCodeLearningSystem.jsx` (auto-save + error handling) ✅
-- **Testes criados:**
-  - `src/hooks/__tests__/useAutoSaveNotes.test.js` (258 linhas, 12 testes) ✅
-  - `src/tests/setup.js` (mock localStorage + window.alert) ✅
-- **Validação Vitest:**
-  - Testes: 12/12 passando (100%) ✅
-  - Cobertura: inicialização, auto-save, quota, tamanho, fallback, recovery
-- **Commits:**
-  - `4f5bf31` feat(US-041): implement localStorage error handling (50%)
-  - `52124fe` feat(US-041): complete localStorage error handling (100%) ✅
-- **Tempo investido:** 1h10min (conforme estimado)
+- **Hook:** `src/hooks/useAutoSaveNotes.js` (185 linhas)
+- **Skill:** `.claude/skills/localStorage-patterns/` (1.510+ linhas)
+- **Testes:** 12/12 passando (100%)
+- **Commits:** `52124fe` feat(US-041): complete localStorage error handling
 - **Critérios de aceite:** 7/7 atendidos ✅
-- **Próximos Passos:**
-  1. US-042: Persistir progresso de módulos (8 pontos)
-  2. Corrigir US-040 completamente (8 pontos adicionais)
 
 ### Próximo Sprint (Sprint 2.2 - Dezembro 2025)
 

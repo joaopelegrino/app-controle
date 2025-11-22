@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Calendar, Clock, CheckCircle, Circle, BookOpen, Code, Shield, Server, TrendingUp, ChevronLeft, ChevronRight, Target, Award, FileText, Eye, EyeOff, Copy, Lightbulb, AlertTriangle, Terminal, ArrowLeft, ExternalLink, FileJson, Folder, Settings, Zap, Home, X } from 'lucide-react';
 import { studyAreas } from '../data/studyAreas';
+import { caminhosPropostos } from '../data/caminhoExemploData';
 import { fasesC, modulosC, startDateC } from '../data/cLearningData';
 import { topicosVSCode, modulosVSCode, startDateVSCode } from '../data/vscodeLearningData';
 import { fasesBash, modulosBash, startDateBash } from '../data/bashLearningData';
@@ -71,8 +72,13 @@ const SistemaEducacionalCompleto = () => {
   const openArea = (areaKey) => {
     const area = studyAreas[areaKey];
 
+    if (!area) {
+      console.warn(`[openArea] Área não encontrada: ${areaKey}`);
+      return;
+    }
+
     if (area.isLearningPath) {
-      // Navigate to learning path view
+      // Navigate to learning path view (modelo antigo - deprecated)
       navigate(`/trilha/${areaKey}`);
     } else if (area.hasIntegratedApp) {
       // Navigate to integrated course view
@@ -88,6 +94,14 @@ const SistemaEducacionalCompleto = () => {
       setCurrentCardIndex(0);
       setIsFlipped(false);
       setFlashcardModalOpen(true);
+    }
+  };
+
+  // US-044: Abrir caminho proposto (novo modelo)
+  const openLearningPath = (pathKey) => {
+    const path = caminhosPropostos[pathKey];
+    if (path) {
+      navigate(`/trilha/${pathKey}`);
     }
   };
   
@@ -241,13 +255,16 @@ const SistemaEducacionalCompleto = () => {
 
   const LearningPathRoute = () => {
     const { pathId } = useParams();
+    // US-044: Usar novo modelo de caminhos propostos
+    const pathData = caminhosPropostos[pathId] || studyAreas[pathId];
+
     return (
       <LearningPathView
-        pathData={studyAreas[pathId]}
+        pathData={pathData}
         pathKey={pathId}
         onBack={() => navigate('/')}
         onAreaClick={openAreaFromLearningPath}
-        onNavigateToIntegrated={(areaKey) => {
+        onNavigateToCourse={(areaKey) => {
           navigate(`/curso/${areaKey}`);
           setCurrentSubView('calendar');
         }}
@@ -369,6 +386,7 @@ const SistemaEducacionalCompleto = () => {
               studyAreas={studyAreas}
               calculateStats={calculateStats}
               openArea={openArea}
+              openLearningPath={openLearningPath}
             />
           }
         />
