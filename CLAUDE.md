@@ -1,6 +1,6 @@
 # Ultrathink - Contexto para Claude Code
 
-**Version:** 2.0.0 | **Date:** 2025-11-17 | **Status:** Production
+**Version:** 2.1.0 | **Date:** 2025-11-22 | **Status:** Production
 **Project Type:** Plataforma B2B de treinamento técnico corporativo
 
 ---
@@ -76,7 +76,7 @@ ls .claude/skills/  # Ver skills disponíveis (meta + project)
 ---
 
 #### Comandos, Skills e Agents
-**Resumo:** 3 comandos slash (/test, /deploy, /fix). 5 skills ativas (ux-nomenclature, component-refactor, breadcrumb-impl, ultrathink-arch, meta-configuracao-evolucao). 1 agent UX (ux-refactor-agent com workflow de 5 fases). Skills ativam automaticamente por contexto.
+**Resumo:** 3 comandos slash (/test, /deploy, /fix). 8 skills ativas (ux-nomenclature, component-refactor, breadcrumb-impl, ultrathink-arch, meta-configuracao-evolucao, localStorage-patterns, learning-path-patterns, react-components-patterns). 1 agent UX (ux-refactor-agent com workflow de 5 fases). Skills ativam automaticamente por contexto.
 
 **Carregar quando:** Usar comandos slash, consultar skills, invocar agents, entender ativação automática
 **Referência completa:** [COMMANDS-SKILLS-AGENTS.md](.claude/docs-meta/claude-md-modules/COMMANDS-SKILLS-AGENTS.md)
@@ -104,7 +104,7 @@ ls .claude/skills/  # Ver skills disponíveis (meta + project)
 ### 🚀 Roadmap e Status
 
 #### Estado Atual e Releases
-**Resumo:** Release 1.0 completa (227 módulos, 692h, 5 sistemas). ÉPICO 12 100% (nomenclatura consistente), ÉPICO 13 10% (áreas descontinuadas). Release 2.0 planejada (React Router, refatoração, testes 30%). Débito técnico: duplicação 25%, testes 5%. TODOs prioritários: US-040 (Router), US-041 (erros localStorage), US-042 (persistir progresso).
+**Resumo:** Release 1.0 completa (227 módulos, 692h, 5 sistemas). Release 2.0 em progresso (50%): US-040 parcial (React Router), US-041 completa (localStorage errors), US-044 completa (Hub MVP simplificado). MVP focado: 1 Área (Bash) + 1 Caminho (Backend Developer). Débito técnico: duplicação 25%, testes 5%. Próximo: US-042 (persistir progresso).
 
 **Carregar quando:** Consultar estado, ver próximas releases, identificar débito técnico
 **Referência completa:** [ROADMAP-STATUS.md](.claude/docs-meta/claude-md-modules/ROADMAP-STATUS.md)
@@ -289,12 +289,13 @@ node test-usabilidade-mcp.cjs
 
 ---
 
-**Última atualização:** 2025-11-17 (Modularização v1.0 - redução de 79.5%)
+**Última atualização:** 2025-11-22 (US-044 completa + documentação)
 **Review Trigger:** Após mudanças arquiteturais em `.claude/` ou módulos
 **Módulos:** 9 módulos em `.claude/docs-meta/claude-md-modules/`
+**Skills:** 8 skills ativas em `.claude/skills/`
 **Projeto:** Sistema Educacional Ultrathink v2.0 (B2B)
 **Responsável:** João Pelegrino
-**Nota:** 8.8/10 ⭐ | Meta: 9.0/10 ⭐
+**Nota:** 9.0/10 ⭐ | Meta Release 2.0: 9.5/10 ⭐
 
 ---
 

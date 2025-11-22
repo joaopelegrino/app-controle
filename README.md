@@ -43,12 +43,12 @@ Cenário Típico Gerente de Engenharia:
 
 ## ⚡ Estado Atual da Plataforma - Novembro 2025
 
-### 🎯 Status do MVP
-- ✅ **Sistema Totalmente Funcional**: Rodando em \`http://localhost:3000\`
-- ✅ **Arquitetura Modular B2B**: Componentes React separados e preparados para multi-tenancy
-- ✅ **Dados Estruturados**: 5 sistemas integrados (C, Rust, Bash, VSCode, Claude Code)
+### 🎯 Status do MVP (Hub Simplificado - US-044)
+- ✅ **Sistema Totalmente Funcional**: Rodando em `http://localhost:3000`
+- ✅ **MVP Focado**: 1 Área de Estudo (Bash) + 1 Caminho Proposto (Backend Developer)
+- ✅ **Arquitetura Modular B2B**: Componentes React preparados para multi-tenancy
 - ✅ **Interface Responsiva**: Desktop, tablet e mobile
-- ✅ **Persistência Local**: localStorage (preparando migração para backend)
+- ✅ **Persistência Local**: localStorage com tratamento de erros (US-041)
 
 ### 🆕 Funcionalidades Implementadas (Release 1.0)
 - 📖 **5 Cursos Técnicos Completos**: C (50 aulas), Rust (24 aulas), Bash (16 aulas), VSCode (8 aulas), Claude Code (12 aulas)
@@ -60,12 +60,12 @@ Cenário Típico Gerente de Engenharia:
 - 🧭 **Breadcrumb Hierárquico**: Navegação \`Hub > Curso > Aula\` (WCAG 2.1 AA)
 - 🎨 **Design System Consistente**: ÉPICO 12 - Nomenclatura 100% padronizada
 
-### 📊 Métricas do Conteúdo
-- **13 Áreas de Conhecimento**: Bash, Linux, Servidores, DevOps, Criptografia, Segurança, C, Docker, Kubernetes, VSCode, Claude Code, Rust, Sistemas Rust
-- **5 Cursos Prontos**: 110 aulas totais
-- **227 Módulos Planejados**: ~692h de conteúdo (expandindo)
-- **39 Flash Cards**: Distribuídos por nível (basics, intermediate, advanced)
-- **1 Trilha Completa**: Rust Developer Path (7 áreas integradas)
+### 📊 Métricas do MVP
+- **1 Área Ativa (MVP)**: Bash Shell Scripting (16 módulos, 32h) - padrão de referência
+- **1 Caminho Proposto**: "Desenvolvedor Backend" (Bash → Linux → Docker → DevOps)
+- **5 Sistemas Integrados**: Bash, C, Rust, VSCode, Claude Code (apenas Bash ativo no MVP)
+- **227 Módulos Planejados**: ~692h de conteúdo (expandindo seguindo padrão Bash)
+- **Release 2.0**: 50% completa (US-040 parcial + US-041 + US-044)
 
 ---
 
@@ -257,7 +257,7 @@ Este é um projeto proprietário B2B. Se você é colaborador:
 ## 📚 Documentação
 
 - **[CLAUDE.md](CLAUDE.md)** - Contexto completo para Claude Code (arquitetura, skills, MCP)
-- **[PRODUCT-CENTRAL-DOCUMENT.md](PRODUCT-CENTRAL-DOCUMENT.md)** - PRD, User Stories, Backlog
+- **[docs/backlog/ROADMAP.md](docs/backlog/ROADMAP.md)** - PRD B2B, User Stories, Backlog (SSOT)
 - **[docs/conceitual/](docs/conceitual/)** - Glossário, modelo de domínio, personas
 - **[docs/tecnico/](docs/tecnico/)** - Arquitetura, guias MCP, templates
 - **[.claude/meta-docs/](.claude/meta-docs/)** - Meta-documentação de evolução
