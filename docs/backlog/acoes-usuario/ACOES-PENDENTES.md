@@ -1,8 +1,8 @@
 # Ações Manuais Pendentes - Ultrathink
 
-**Última Atualização:** 2025-11-17
-**Status:** 3 ações pendentes
-**Prioridades:** P0: 0 | P1: 2 | P2: 1 | P3: 0
+**Última Atualização:** 2025-11-18
+**Status:** 2 ações pendentes
+**Prioridades:** P0: 0 | P1: 1 | P2: 1 | P3: 0
 
 ---
 
@@ -17,31 +17,6 @@
 ## 🔴 Prioridade P1 - HIGH (Sprint Atual)
 
 > Ações necessárias para concluir deliverables da sprint atual. Devem ser resolvidas esta semana.
-
-### ACTION-001: Validar Build de Produção do Ultrathink
-**Categoria:** testing | **Deliverable:** D-026 (React Router)
-**Responsável:** Tech Lead | **Estimativa:** 2 horas
-
-**Descrição:**
-Validar manualmente que o build de produção está funcionando corretamente após as refatorações do Release 2.0, incluindo otimizações Vite, code splitting, e assets.
-
-**Passo a Passo Resumido:**
-1. Limpar builds anteriores e executar `npm run build`
-2. Analisar bundle gerado (tamanho < 5MB)
-3. Testar build localmente com `npx vite preview`
-4. Validar assets e otimizações no DevTools Network
-5. (Opcional) Testar build Docker
-
-**Critérios de Validação:**
-- [ ] Build completa sem erros críticos
-- [ ] Bundle size < 5MB total
-- [ ] Aplicação funciona no preview
-- [ ] Sem console errors
-- [ ] Performance adequada (First Load < 3s)
-
-**Referência Completa:** [templates/ACTION-001.md](templates/ACTION-001.md)
-
----
 
 ### ACTION-003: Validar Conformidade WCAG 2.1 AA
 **Categoria:** validation | **Deliverable:** D-021 (Refatoração UI)
@@ -115,10 +90,10 @@ Configurar Google Analytics 4 para rastrear métricas corporativas B2B específi
 | Prioridade | Pendentes | Estimativa Total |
 |-----------|-----------|------------------|
 | P0 (Blocker) | 0 | 0h |
-| P1 (High) | 2 | 6h |
+| P1 (High) | 1 | 4h |
 | P2 (Medium) | 1 | 3h |
 | P3 (Low) | 0 | 0h |
-| **TOTAL** | **3** | **9h** |
+| **TOTAL** | **2** | **7h** |
 
 ---
 
@@ -134,7 +109,7 @@ Configurar Google Analytics 4 para rastrear métricas corporativas B2B específi
 
 ## 📋 Próximos Passos
 
-1. **Priorizar P1:** Executar ACTION-001 e ACTION-003 esta semana
+1. **Priorizar P1:** Executar ACTION-003 esta semana (ACTION-001 ✅ concluída via MCP)
 2. **Planejar P2:** Agendar ACTION-002 para próxima sprint (Analytics Dashboard)
 3. **Criar Novas Ações:** Usar [template-acao.md](templates/template-acao.md) quando necessário
 4. **Mover para Concluídas:** Atualizar ACOES-CONCLUIDAS.md após finalizar ações

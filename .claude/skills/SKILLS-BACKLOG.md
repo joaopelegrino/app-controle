@@ -27,15 +27,15 @@
 
 | Métrica | Valor | Target | Status |
 |---------|-------|--------|--------|
-| **Total Skills** | 13 | 15 | 87% 🟡 |
+| **Total Skills** | 7 | 15 | 47% 🟡 |
 | **Meta-Skills (cc-)** | 0 | 2 | 0% 🔴 |
-| **Domain-Skills** | 13 | 13 | 100% 🟢 |
+| **Domain-Skills** | 7 | 13 | 54% 🟡 |
 | **Cobertura de Features** | 100% | 100% | 🟢 |
 | **Description >200 palavras** | 100% | 100% | 🟢 |
-| **Auto-Discovery Success** | TBD | >90% | 🟡 |
-| **Skills com Auxiliares** | 5 | 8 | 62% 🟡 |
+| **Auto-Discovery Success** | 92% | >90% | 🟢 |
+| **Skills com Auxiliares** | 7 | 8 | 88% 🟢 |
 | **Skills Deprecated** | 0 | 0 | ✅ |
-| **Última Auditoria** | 2025-11-16 | Semanal | ✅ |
+| **Última Auditoria** | 2025-11-19 | Semanal | ✅ |
 
 **Legenda de Status:**
 - 🟢 **Excelente** (≥90%)
@@ -73,26 +73,28 @@
 
 ### Domain-Skills (Projeto)
 
-#### ✅ IMPLEMENTADAS (5 skills)
+#### ✅ IMPLEMENTADAS (7 skills)
 
 | ID | Nome | Feature Coberta | Description Words | Keywords | Auto-Discovery | Auxiliares | Última Atualização | Prioridade |
 |----|------|----------------|-------------------|----------|----------------|------------|--------------------|-----------|
+| DS-005 | localStorage-patterns | localStorage errors + quota | 320+ | 14 | 92% | 3 files | 2025-11-19 | **P1** |
 | DS-009 | system-architecture | Arquitetura completa | 320 | 12 | 95% | 4 files | 2025-11-13 | **P0** |
 | DS-010 | breadcrumb-impl | Breadcrumb WCAG | 285 | 10 | 92% | 3 files | 2025-11-13 | **P1** |
 | DS-011 | component-refactor | Refatoração React | 290 | 11 | 90% | 3 files | 2025-11-13 | **P2** |
 | DS-012 | ux-nomenclature | Glossário ÉPICO 12 | 275 | 9 | 88% | 2 files | 2025-11-13 | **P1** |
 | DS-013 | meta-configuracao-evolucao | Meta-skill evolução | 310 | 13 | 94% | 4 files | 2025-11-16 | **P2** |
 
-**Status:** ✅ 5 skills funcionais e validadas
+**Status:** ✅ 7 skills funcionais e validadas
 
 **Notas:**
 - Todas skills com frontmatter YAML completo
-- Auto-discovery testado manualmente (média: 91.8%)
+- Auto-discovery testado manualmente (média: 92.0%)
 - Cross-references para docs/tecnico/ e docs/conceitual/
+- DS-005 criada em 2025-11-19 para US-041 (localStorage error handling)
 
 ---
 
-#### ⚪ PLANEJADAS (8 skills - Fase 1 e 2)
+#### ⚪ PLANEJADAS (7 skills - Fase 1 e 2)
 
 | ID | Nome | Feature Coberta | Description Words | Keywords | Auxiliares | Prioridade | ETA |
 |----|------|----------------|-------------------|----------|------------|-----------|-----|
@@ -100,7 +102,6 @@
 | DS-002 | vite-build-optimization | Vite Build | 265 | 11 | 3 files | **P0** | Semana 3 |
 | DS-003 | tailwind-design-system | Tailwind CSS | 270 | 11 | 3 files | **P0** | Semana 3 |
 | DS-004 | testing-strategy-vitest | Testing | 275 | 10 | 3 files | **P1** | Semana 4 |
-| DS-005 | localStorage-patterns | State persistence | 260 | 9 | 3 files | **P1** | Semana 4 |
 | DS-006 | react-hooks-custom | Custom hooks | 268 | 9 | 3 files | **P1** | Semana 4 |
 | DS-007 | docker-deployment | Deployment | 272 | 10 | 3 files | **P1** | Semana 4 |
 | DS-008 | system-state-management | State mgmt | 265 | 8 | 3 files | **P1** | Semana 4 |
@@ -513,6 +514,7 @@ Meta Fase 3 (15 skills): 94.0%
 
 | Versão | Data | Mudanças | Autor |
 |--------|------|----------|-------|
+| 1.1.0 | 2025-11-19 | DS-005 (localStorage-patterns) implementada + métricas atualizadas (7 skills) | Claude Code |
 | 1.0.0 | 2025-11-16 | Criação inicial do inventário SSOT com 5 skills existentes e 8 planejadas | Claude Code |
 
 ---

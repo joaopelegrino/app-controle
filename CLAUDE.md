@@ -228,6 +228,7 @@ node test-usabilidade-mcp.cjs  # Teste automatizado completo
 ## 🤖 Regras para Claude Code
 
 ### SEMPRE
+- **Priorizar embasamento técnico: Criar skills ANTES de implementar features** (knowledge-first approach)
 - Verificar arquivo antes de editar com Read
 - Usar comandos npm para testes e build
 - Manter código limpo sem console.log
@@ -255,15 +256,19 @@ node test-usabilidade-mcp.cjs  # Teste automatizado completo
 7. Capturar screenshots para análise visual
 
 ### AO IMPLEMENTAR FEATURES
-1. Verificar User Story correspondente em docs/backlog/ROADMAP.md
-2. Ler critérios de aceite e contexto B2B
-3. Criar branch: `feature/US-XXX-descricao`
-4. Implementar conforme critérios
-5. Escrever testes (se aplicável)
-6. Atualizar documentação
-7. Marcar checkboxes dos critérios
-8. Commitar com mensagem convencional
-9. Atualizar status da US: TODO → IN PROGRESS → DONE
+1. **Verificar se existe skill de suporte** (consultar SKILLS-BACKLOG.md)
+2. **Se skill planejada mas não criada**: Criar skill PRIMEIRO (knowledge-first)
+3. Verificar User Story correspondente em docs/backlog/ROADMAP.md
+4. Ler critérios de aceite e contexto B2B
+5. Criar branch: `feature/US-XXX-descricao`
+6. Implementar conforme critérios (usando skill como referência)
+7. Escrever testes (se aplicável)
+8. Atualizar documentação
+9. Marcar checkboxes dos critérios
+10. Commitar com mensagem convencional
+11. Atualizar status da US: TODO → IN PROGRESS → DONE
+
+**Exemplo:** US-041 (localStorage errors) → Verificar DS-005 (localStorage-patterns) → Criar DS-005 primeiro → Implementar US-041 com padrões documentados
 
 ### AO USAR MCP
 **Chrome DevTools:**

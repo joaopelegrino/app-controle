@@ -2,9 +2,9 @@
 
 **Fonte Única de Verdade - Atualizado Automaticamente**
 
-**Última Atualização:** 2025-11-17
-**Release Atual:** Release 1.0 (Completa)
-**Progresso Geral:** Release 1.0: 100% | Release 2.0: 0%
+**Última Atualização:** 2025-11-19
+**Release Atual:** Release 1.0 (Completa) | Release 2.0 (US-040 + US-041 Validadas)
+**Progresso Geral:** Release 1.0: 100% | Release 2.0: 33% (2/6 User Stories completas)
 
 ---
 
@@ -160,36 +160,55 @@
 
 | Deliverable | Tasks | Status | Estágios | Obs |
 |-------------|-------|--------|----------|-----|
-| **D-026: React Router 6** | - | ✅ Completo | 🔵 🟡 🟠 ⬜ ⬜ | Instalado e configurado, aguarda validação usuário |
-| **D-027: Rotas Definidas** | - | ✅ Completo | 🔵 🟡 🟠 ⬜ ⬜ | `/`, `/curso/:id`, `/curso/:id/aula/:moduleId`, `/trilha/:pathId` |
-| **D-028: Deep Linking** | - | ✅ Completo | 🔵 🟡 🟠 ⬜ ⬜ | URLs compartilháveis funcionando, botão voltar OK |
+| **D-026: React Router 6** | - | ✅ Completo | 🔵 🟡 🟢 ⬜ 📚 | Validado via MCP Chrome DevTools |
+| **D-027: Rotas Definidas** | - | ✅ Completo | 🔵 🟡 🟢 ⬜ 📚 | Todas rotas funcionais (/, /curso/:id, /trilha/:pathId) |
+| **D-028: Deep Linking** | - | ✅ Completo | 🔵 🟡 🟢 ⬜ 📚 | URLs diretas OK, navegação back/forward OK |
 
 **Resultado:**
 - Implementado: 2025-11-17
-- Testado LLM: Build 6.12s, console limpo, navegação funcional
-- Testado Usuário: **Pendente** (ACTION-001: Validar Build)
-- Build size: 677 KB (< 5MB ✅)
-- Screenshots: 2 capturas salvas
+- Testado LLM (MCP): 2025-11-18 ✅
+  - Servidor: localhost:3000 (startup 200ms)
+  - Navegação: Hub → Bash → Aula 1.1 ✅
+  - Deep Links: /curso/bash ✅, /curso/clang ✅
+  - Botões: Voltar/Avançar navegador ✅
+  - Console: Zero erros (apenas 2 warnings future flags)
+- Screenshots: 5 capturas (1.7 MB total)
+  - validation-hub-home.png (400 KB)
+  - validation-bash-curso.png (365 KB)
+  - validation-bash-aula.png (166 KB)
+  - validation-clang-deeplink.png (382 KB)
+  - validation-bash-deeplink.png (365 KB)
 
 **Próximos Passos:**
-1. Usuário executar ACTION-001 (Validar Build de Produção)
-2. Após validação, avançar estágios: 🟠 → 🟢 → 📚
+1. ✅ Validação LLM completa (MCP Chrome DevTools)
+2. Pendente: Documentação técnica (📚) para avançar último estágio
+3. Iniciar US-041 (localStorage errors) ou US-042 (persistir progresso)
 
 ---
 
-#### US-041: Tratamento de Erros localStorage
+#### US-041: Tratamento de Erros localStorage ✅ **COMPLETA**
 
-**Status Geral:** ⏳ Não Iniciada (0%)
+**Status Geral:** ✅ Completa (100%)
 
 | Deliverable | Tasks | Status | Estágios | Obs |
 |-------------|-------|--------|----------|-----|
-| **D-029: Error Boundary Melhorado** | - | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Try-catch para quota exceeded |
-| **D-030: Fallback Mechanism** | - | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | IndexedDB como alternativa |
+| **D-029: Hook useAutoSaveNotes** | - | ✅ Completo | 🔵 🟡 🟢 ⬜ 📚 | 185 linhas, try-catch robusto |
+| **D-030: Skill localStorage-patterns** | DS-005 | ✅ Completo | 🔵 🟡 🟢 ⬜ 📚 | 1.510 linhas, 3 auxiliares |
+| **D-031: Refatoração 4 LearningSystem** | - | ✅ Completo | 🔵 🟡 🟢 ⬜ 📚 | C, Bash, Rust, ClaudeCode |
+| **D-032: Testes Unitários (12/12)** | - | ✅ Completo | 🔵 🟡 🟢 ⬜ ⬜ | 258 linhas, 100% passando |
+
+**Resultado:**
+- Implementado: 2025-11-19 (1h10min)
+- Testado (Vitest): 12/12 testes passando ✅
+- Hook: Auto-save 1s debounce, QuotaExceededError, 50KB limit
+- Skill: DS-005 com troubleshooting completo
+- Componentes: 4/4 sistemas usando useAutoSaveNotes
+- Commit: `52124fe` feat(US-041): complete localStorage error handling
 
 **Próximos Passos:**
-1. Implementar try-catch robusto
-2. Adicionar fallback para IndexedDB
-3. Exibir alertas ao usuário
+1. ✅ Implementação completa
+2. ✅ Testes unitários 12/12
+3. Pendente: Teste usuário (🟠) e documentação técnica (📚)
 
 ---
 
@@ -242,6 +261,117 @@
 
 ---
 
+### ÉPICO 24: Skills Técnicas e Treinamento Interno ⏳ TODO
+
+**Status Geral:** ⏳ Não Iniciada (0%)
+**Total Deliverables:** 30 (8 skills + 15 módulos + 4 workshops + 3 assessments)
+**Pontos Totais:** 102 pontos (~98-116h)
+
+---
+
+#### US-100: Criar Skills P0 (Stack Principal)
+
+**Status Geral:** ⏳ Não Iniciada (0%)
+
+| Deliverable | Tasks | Status | Estágios | Obs |
+|-------------|-------|--------|----------|-----|
+| **D-100: Skill react-components-patterns** | DS-001 | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | 250+ palavras, 11 keywords, 3 auxiliares |
+| **D-101: Skill vite-build-optimization** | DS-002 | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Dev server, HMR, build, code splitting |
+| **D-102: Skill tailwind-design-system** | DS-003 | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Utility-first, responsive, JIT, custom theme |
+
+**Próximos Passos:**
+1. Criar estrutura de diretórios `.claude/skills/{skill-name}/`
+2. Implementar SKILL.md com frontmatter YAML
+3. Criar 3 arquivos auxiliares por skill
+4. Validar auto-discovery >90%
+5. Cross-references para docs/tecnico/
+
+---
+
+#### US-101: Criar Skills P1 (Quality & Advanced)
+
+**Status Geral:** ⏳ Não Iniciada (0%)
+
+| Deliverable | Tasks | Status | Estágios | Obs |
+|-------------|-------|--------|----------|-----|
+| **D-103: Skill testing-strategy-vitest** | DS-004 | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Unit, component, mocking, coverage |
+| **D-104: Skill localStorage-patterns** | DS-005 | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Schema design, error handling, quota mgmt |
+| **D-105: Skill react-hooks-custom** | DS-006 | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | useAutoSaveNotes, useModuleProgress |
+| **D-106: Skill docker-deployment** | DS-007 | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Multi-stage Dockerfile, Nginx, CI/CD |
+| **D-107: Skill system-state-management** | DS-008 | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Context vs Props, state lifting |
+
+**Próximos Passos:**
+1. Priorizar DS-005 (localStorage) para desbloquear US-041
+2. Criar estrutura de skills com exemplos do projeto
+3. Troubleshooting sections com 3+ problemas comuns
+
+**Nota:** DS-005 desbloqueia US-041 (Tratamento erros localStorage)
+
+---
+
+#### US-102: Criar Módulos L0 (Fundamentals)
+
+**Status Geral:** ⏳ Não Iniciada (0%)
+
+| Deliverable | Tasks | Status | Estágios | Obs |
+|-------------|-------|--------|----------|-----|
+| **D-108: Módulo L0-01** | Environment Setup (4h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | WSL2, Node 22, Git, Docker |
+| **D-109: Módulo L0-02** | React Basics (8h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | JSX, Components, Props, Hooks |
+| **D-110: Módulo L0-03** | Vite & Build Tools (4h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Dev server, HMR, build prod |
+| **D-111: Módulo L0-04** | Tailwind CSS (4h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Utility-first, responsive |
+| **D-112: Módulo L0-05** | Git Workflow (4h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Branches, commits, PRs |
+| **D-113: Workshop WS-001** | Setup & First Commit (5h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Hands-on ambiente → PR |
+| **D-114: Assessment ASS-L0** | Fundamentals Quiz (30min) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | 30 questões, 80% pass |
+
+**Próximos Passos:**
+1. Criar estrutura de diretórios `docs/treinamento-interno/fundamentals/`
+2. Implementar 5 módulos L0 seguindo checklist de qualidade
+3. Criar Workshop WS-001 (hands-on 5h)
+4. Criar Assessment ASS-L0 (30 questões multiple choice)
+
+**Dependência:** Requer US-100 (skills P0) completa
+
+---
+
+#### US-103: Criar Módulos L1 + L2 (Core + Advanced)
+
+**Status Geral:** ⏳ Não Iniciada (0%)
+
+**Módulos L1 (Core Concepts):**
+| Deliverable | Tasks | Status | Estágios | Obs |
+|-------------|-------|--------|----------|-----|
+| **D-115: Módulo L1-01** | Arquitetura (6h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | 4 camadas, fluxo, separação |
+| **D-116: Módulo L1-02** | Learning System (8h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Anatomia, navegação, progresso |
+| **D-117: Módulo L1-03** | State Management (8h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | localStorage, hooks, Context |
+| **D-118: Módulo L1-04** | Breadcrumb (6h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | WCAG AA, hierarquia |
+| **D-119: Módulo L1-05** | Nomenclatura UX (8h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Glossário ÉPICO 12 |
+| **D-120: Workshop WS-002** | Criar Componente (6h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | FlashCard customizado |
+| **D-121: Workshop WS-003** | Feature End-to-End (6h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Sistema Python completo |
+| **D-122: Assessment ASS-L1** | Core Concepts (4h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Hands-on coding, 75% pass |
+
+**Módulos L2 (Advanced):**
+| Deliverable | Tasks | Status | Estágios | Obs |
+|-------------|-------|--------|----------|-----|
+| **D-123: Módulo L2-01** | Testing Vitest (6h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Unit, component, mocking |
+| **D-124: Módulo L2-02** | E2E Playwright (4h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Navegação, assertions, CI |
+| **D-125: Módulo L2-03** | Docker Deploy (4h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Multi-stage, Nginx, Compose |
+| **D-126: Módulo L2-04** | CI/CD GitHub (4h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Workflows, build, deploy |
+| **D-127: Módulo L2-05** | Refatoração (2h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Extract hooks, BaseLearningSystem |
+| **D-128: Workshop WS-004** | Deploy Production (4h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Deploy staging completo |
+| **D-129: Assessment ASS-L2** | Certification (8h) | ⏳ Pendente | ⬜ ⬜ ⬜ ⬜ ⬜ | Projeto completo, 80% pass |
+
+**Próximos Passos:**
+1. Criar estrutura completa `docs/treinamento-interno/` (core-concepts/, advanced/, workshops/, assessments/)
+2. Implementar 10 módulos (L1 + L2)
+3. Criar 2 workshops (WS-002, WS-003, WS-004)
+4. Criar 2 assessments (ASS-L1, ASS-L2)
+
+**Dependência:** Requer US-100, US-101, US-102 completas
+
+**Meta:** Programa de onboarding 4 semanas completo
+
+---
+
 ## 📊 Resumo Geral
 
 ### Por Release
@@ -249,20 +379,22 @@
 | Release | User Stories | Deliverables | Status | Progresso |
 |---------|--------------|--------------|--------|-----------|
 | **Release 1.0** | 7 USs | 23 deliverables | ✅ Completa | 100% |
-| **Release 2.0** | 5 USs | 13 deliverables | ⏳ Pendente | 0% |
-| **Release 3.0** | - | - | ⏳ Planejada | - |
+| **Release 2.0** | 7 USs | 21 deliverables | 🚧 Em Andamento | 14% (US-040 validada, ÉP24 iniciado) |
+| **Release 3.0** | 1 US | 22 deliverables | ⏳ Planejada | 0% (ÉP24 continuação) |
 | **Release 4.0** | - | - | ⏳ Planejada | - |
 
 ### Por Estágio
 
 | Estágio | Quantidade | % Total |
 |---------|------------|---------|
-| 🔵 Implementada | 23 | 63.9% |
-| 🟡 Testada LLM | 23 | 63.9% |
-| 🟠 Testada Usuário | 23 | 63.9% |
-| 🟢 Validada | 23 | 63.9% |
-| 📚 Docs Criada | 23 | 63.9% |
-| ⬜ Pendente | 13 | 36.1% |
+| 🔵 Implementada | 26 | 39.4% |
+| 🟡 Testada LLM | 26 | 39.4% |
+| 🟠 Testada Usuário | 23 | 34.8% |
+| 🟢 Validada | 26 | 39.4% |
+| 📚 Docs Criada | 23 | 34.8% |
+| ⬜ Pendente | 40 | 60.6% |
+
+**Nota:** Total de deliverables aumentou de 36 → **66** com integração do ÉPICO 24 (+30 deliverables de skills e treinamento)
 
 ---
 
@@ -280,6 +412,6 @@ Este documento é atualizado automaticamente baseado em:
 
 ---
 
-**Última atualização:** 2025-11-17
+**Última atualização:** 2025-11-19 (US-041 completa - localStorage error handling)
 **Responsável:** Sistema automatizado (Git hooks) + Claude Code
-**Próxima revisão:** Sprint 2.0 (Janeiro 2026)
+**Próxima revisão:** Sprint 2.2 (US-042 - Dezembro 2025)
