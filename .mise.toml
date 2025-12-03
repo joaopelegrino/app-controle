@@ -12,13 +12,16 @@
 # =============================================================================
 
 [tools]
-# Node.js - Runtime principal do projeto
-# Versão LTS 24.x para compatibilidade com React 18.3 e Vite 5.4
+# Bun - Runtime JavaScript PRINCIPAL (Anthropic Dez 2025)
+# 35x mais rápido que npm para install, 100% compatível com package.json
+bun = "1.3.3"
+
+# Node.js - Fallback para compatibilidade (scripts legados)
+# Usado apenas se algum script não funcionar com Bun
 node = "24.11.1"
 
 # Python - Usado por agents e scripts auxiliares
 # Agent learning-path-architect usa youtube_transcript.py
-# Hooks podem usar scripts Python
 python = "3.12"
 
 # =============================================================================
@@ -50,7 +53,7 @@ python = "3.12"
 [env]
 # Identificação do projeto
 PROJECT_NAME = "ultrathink"
-PROJECT_TYPE = "react-vite"
+PROJECT_TYPE = "react-vite-bun"
 
 # Configurações de desenvolvimento
 NODE_ENV = "development"
@@ -66,36 +69,52 @@ BAT_THEME = "Catppuccin Mocha"
 MISE_YES = "true"
 
 # =============================================================================
-# TAREFAS AUXILIARES (mise tasks)
+# TAREFAS AUXILIARES (mise tasks) - Usando Bun
 # =============================================================================
 
 [tasks.dev]
-description = "Inicia servidor de desenvolvimento"
-run = "npm run dev"
+description = "Inicia servidor de desenvolvimento (via Bun)"
+run = "bun run dev"
 
 [tasks.build]
-description = "Build de produção"
-run = "npm run build"
+description = "Build de produção (via Bun)"
+run = "bun run build"
 
 [tasks.test]
-description = "Executa testes com Vitest"
-run = "npm test"
+description = "Executa testes com Vitest (via Bun)"
+run = "bun run test"
 
 [tasks.lint]
-description = "Verifica código com ESLint"
-run = "npm run lint"
+description = "Verifica código com ESLint (via Bun)"
+run = "bun run lint"
+
+[tasks.install]
+description = "Instala dependências (via Bun - 35x mais rápido)"
+run = "bun install"
 
 [tasks.chrome-debug]
 description = "Inicia Chrome com remote debugging para MCP"
 run = "./scripts/start-chrome-debug.sh"
 
 [tasks.preview]
-description = "Preview do build de produção"
-run = "npm run preview"
+description = "Preview do build de produção (via Bun)"
+run = "bun run preview"
+
+[tasks.clean]
+description = "Limpa cache e node_modules"
+run = "rm -rf node_modules/.vite dist node_modules bun.lockb"
+
+[tasks.fresh]
+description = "Reinstala tudo do zero (limpa + instala)"
+run = "rm -rf node_modules/.vite dist node_modules bun.lockb && bun install"
 
 # =============================================================================
 # ALIASES ÚTEIS (sintaxe atual do mise)
 # =============================================================================
+
+[alias.bun.versions]
+latest = "1.3.3"
+current = "1.3.3"
 
 [alias.node.versions]
 lts = "24.11.1"
