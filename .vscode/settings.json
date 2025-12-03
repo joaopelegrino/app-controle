@@ -1,0 +1,28 @@
+{
+  "debug.showInlineValues": "always",
+  "debug.showVariableTypes": true,
+  "debug.toolBarLocation": "floating",
+  "debug.terminal.clearBeforeReusing": true,
+  "debug.console.acceptSuggestionOnEnter": "on",
+  "problems.decorations.enabled": true,
+  "problems.showCurrentInStatus": true,
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "javascript.preferences.includePackageJsonAutoImports": "on",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "files.associations": {
+    "*.jsx": "javascriptreact",
+    "*.tsx": "typescriptreact"
+  },
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+  }
+}

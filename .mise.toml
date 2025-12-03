@@ -1,0 +1,119 @@
+# .mise.toml - Configuração local de ferramentas de desenvolvimento
+# Projeto: Plataforma B2B de treinamento técnico corporativo (ultrathink)
+# Última atualização: 2025-12-03
+#
+# Este arquivo garante que todos os desenvolvedores usem as mesmas versões
+# de ferramentas, independente da configuração global do mise.
+#
+# Para aplicar: `mise install` na raiz do projeto
+
+# =============================================================================
+# FERRAMENTAS DE RUNTIME
+# =============================================================================
+
+[tools]
+# Node.js - Runtime principal do projeto
+# Versão LTS 24.x para compatibilidade com React 18.3 e Vite 5.4
+node = "24.11.1"
+
+# Python - Usado por agents e scripts auxiliares
+# Agent learning-path-architect usa youtube_transcript.py
+# Hooks podem usar scripts Python
+python = "3.12"
+
+# =============================================================================
+# CLI MODERNAS (via Cargo)
+# =============================================================================
+# Ferramentas essenciais para desenvolvimento eficiente
+
+# Busca e navegação
+"cargo:ripgrep" = "latest"        # grep moderno - usado por Claude Code
+"cargo:fd-find" = "latest"        # find moderno - localização rápida de arquivos
+
+# Visualização
+"cargo:bat" = "latest"            # cat com syntax highlighting
+"cargo:eza" = "latest"            # ls moderno com ícones
+
+# Monitoramento
+"cargo:bottom" = "latest"         # htop moderno para monitorar processos
+
+# Git
+"cargo:git-delta" = "latest"      # diff melhorado para git
+
+# Navegação de diretórios
+"cargo:zoxide" = "latest"         # cd inteligente com histórico
+
+# =============================================================================
+# VARIÁVEIS DE AMBIENTE DO PROJETO
+# =============================================================================
+
+[env]
+# Identificação do projeto
+PROJECT_NAME = "ultrathink"
+PROJECT_TYPE = "react-vite"
+
+# Configurações de desenvolvimento
+NODE_ENV = "development"
+VITE_PORT = "3000"
+
+# Configurações do editor
+EDITOR = "vim"
+
+# Bat (visualizador de código)
+BAT_THEME = "Catppuccin Mocha"
+
+# Mise auto-confirm para CI/CD
+MISE_YES = "true"
+
+# =============================================================================
+# TAREFAS AUXILIARES (mise tasks)
+# =============================================================================
+
+[tasks.dev]
+description = "Inicia servidor de desenvolvimento"
+run = "npm run dev"
+
+[tasks.build]
+description = "Build de produção"
+run = "npm run build"
+
+[tasks.test]
+description = "Executa testes com Vitest"
+run = "npm test"
+
+[tasks.lint]
+description = "Verifica código com ESLint"
+run = "npm run lint"
+
+[tasks.chrome-debug]
+description = "Inicia Chrome com remote debugging para MCP"
+run = "./scripts/start-chrome-debug.sh"
+
+[tasks.preview]
+description = "Preview do build de produção"
+run = "npm run preview"
+
+# =============================================================================
+# ALIASES ÚTEIS (sintaxe atual do mise)
+# =============================================================================
+
+[alias.node.versions]
+lts = "24.11.1"
+current = "24.11.1"
+
+[alias.python.versions]
+default = "3.12"
+
+# =============================================================================
+# CONFIGURAÇÕES LOCAIS
+# =============================================================================
+
+[settings]
+# Confirmar automaticamente instalações
+yes = true
+
+# Modo verboso desativado
+verbose = false
+
+# Usar recursos experimentais (shims para IDEs)
+experimental = true
