@@ -185,6 +185,11 @@ export const dataService = {
 ## Stack Técnica
 
 ```yaml
+Runtime:
+  principal: Bun 1.3.3 (Anthropic - 35x mais rápido)
+  fallback: Node.js 24.11.1 (via mise)
+  gerenciador: mise (versões centralizadas)
+
 Frontend:
   framework: React 18.3.1
   build: Vite 5.4.19
@@ -231,6 +236,7 @@ Persistência (Futuro):
 
 | Data | Mudança |
 |------|---------|
+| 2025-12-03 | Migração npm → Bun como runtime principal |
 | 2025-12-03 | Criação do MVP v1 (orphan branch) |
 
 ---

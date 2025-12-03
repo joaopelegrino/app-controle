@@ -125,11 +125,14 @@ ls .claude/skills/  # Ver skills disponíveis (meta + project)
 
 ### Desenvolvimento
 ```bash
-npm run dev          # Servidor local porta 3000 (strictPort)
-npm run build        # Build de produção otimizado
-npm test             # Rodar testes com Vitest
+bun run dev          # Servidor local porta 3000 (strictPort)
+bun run build        # Build de produção otimizado
+bun run test         # Rodar testes com Vitest
+bun install          # Instalar dependências (35x mais rápido que npm)
 docker-compose up -d # Subir container (porta 80)
 ```
+
+> **Runtime:** Bun 1.3.3 (Anthropic) via mise. Node.js 24.11.1 disponível como fallback.
 
 ### Slash Commands (Claude Code)
 ```bash
@@ -230,7 +233,7 @@ node test-usabilidade-mcp.cjs  # Teste automatizado completo
 ### SEMPRE
 - **Priorizar embasamento técnico: Criar skills ANTES de implementar features** (knowledge-first approach)
 - Verificar arquivo antes de editar com Read
-- Usar comandos npm para testes e build
+- Usar comandos bun para testes e build (bun run dev/build/test)
 - Manter código limpo sem console.log
 - Seguir padrões Tailwind existentes
 - Preservar funcionalidades existentes

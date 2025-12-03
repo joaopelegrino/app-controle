@@ -141,6 +141,7 @@ Além do software, o Plataforma B2B de treinamento técnico corporativo oferecer
 
 ## 🛠️ Stack Tecnológica
 
+- **Bun 1.3.3**: Runtime JavaScript principal (Anthropic - 35x mais rápido que npm)
 - **React 18.3.1**: Framework frontend
 - **Vite 5.4.19**: Build tool moderno (startup 295ms)
 - **Tailwind CSS 3.4.1**: Design system utility-first
@@ -149,6 +150,7 @@ Além do software, o Plataforma B2B de treinamento técnico corporativo oferecer
 - **Vitest 3.2.4**: Testes unitários
 - **Playwright 1.56.1**: Testes E2E
 - **Docker + Nginx**: Containerização e deploy
+- **mise**: Gerenciador de versões (Node.js 24.11.1 como fallback)
 
 ---
 
@@ -190,8 +192,8 @@ plataforma-b2b/
 ## 🚀 Como Rodar Localmente
 
 ### **Pré-requisitos**
-- Node.js 18+ (recomendado: 22.15.0)
-- npm 10+
+- **Bun 1.3.3+** (recomendado - via mise)
+- mise (gerenciador de versões) ou Node.js 24+ como fallback
 - Docker (opcional, para deploy)
 
 ### **Instalação**
@@ -201,11 +203,11 @@ plataforma-b2b/
 git clone <repo-url>
 cd plataforma-b2b
 
-# Instale dependências
-npm install
+# Instale dependências (35x mais rápido com Bun!)
+bun install
 
 # Rode o servidor de desenvolvimento
-npm run dev
+bun run dev
 # Acesse: http://localhost:3000
 \`\`\`
 
@@ -213,10 +215,10 @@ npm run dev
 
 \`\`\`bash
 # Build otimizado
-npm run build
+bun run build
 
 # Preview da build
-npm run preview
+bun run preview
 \`\`\`
 
 ### **Docker**
@@ -234,16 +236,16 @@ docker-compose up -d
 
 \`\`\`bash
 # Testes unitários
-npm test
+bun run test
 
 # Testes com UI
-npm run test:ui
+bun run test:ui
 
 # Cobertura de testes
-npm run test:coverage
+bun run test:coverage
 
 # Testes E2E (Playwright)
-node test-usabilidade-mcp.cjs
+bun run test-usabilidade-mcp.cjs
 \`\`\`
 
 ---
