@@ -113,28 +113,43 @@ Plataforma de aprendizado técnico com foco em:
 
 ### Sprint 2: Estrutura de Dados (P1)
 
-#### US-003: API de Dados Local
+#### US-003: API de Dados Local ✅ DONE
 
 **Como** desenvolvedor
 **Quero** camada de abstração para dados
 **Para** facilitar futura migração para backend
 
 **Critérios de Aceite:**
-- [ ] Serviço `dataService.js` criado
-- [ ] Métodos: getCourses, getProgress, saveProgress
-- [ ] Abstrai localStorage (pode trocar por API)
-- [ ] Tipagem com JSDoc
+- [x] Serviço `dataService.js` criado
+- [x] Métodos: getCourses, getCourse, getCourseModules
+- [x] Métodos: getProgress, saveProgress, clearProgress
+- [x] Métodos: getNotes, saveNotes, clearNotes
+- [x] Métodos: checkStorageAvailable, getStorageStats
+- [x] Abstrai localStorage (fallback para sessionStorage)
+- [x] Tipagem completa com JSDoc (Course, CourseProgress, NoteData, SaveResult)
 
-**Estrutura:**
+**Estrutura implementada:**
 ```javascript
 // src/services/dataService.js
 export const dataService = {
-  getCourses: () => {...},
-  getCourse: (id) => {...},
-  getProgress: (courseId) => {...},
-  saveProgress: (courseId, data) => {...},
-  getNotes: (courseId) => {...},
-  saveNotes: (courseId, content) => {...}
+  // Cursos
+  getCourses: () => Course[],
+  getCourse: (id) => Course | null,
+  getCourseModules: (id) => { fases, modulos, startDate } | null,
+
+  // Progresso
+  getProgress: (courseId) => CourseProgress,
+  saveProgress: (courseId, modules) => SaveResult,
+  clearProgress: (courseId) => boolean,
+
+  // Notas
+  getNotes: (courseId) => NoteData,
+  saveNotes: (courseId, content) => SaveResult & { sizeInfo },
+  clearNotes: (courseId) => boolean,
+
+  // Utilitários
+  checkStorageAvailable: () => boolean,
+  getStorageStats: () => { used, usedKB, usedMB, available }
 };
 ```
 
@@ -217,7 +232,7 @@ Persistência (Futuro):
 | Áreas visíveis | 1 | 1 | 5 |
 | Progresso persistido | ✅ | ✅ | ✅ |
 | Deep linking | ✅ | ✅ | ✅ |
-| Camada de dados | ❌ | ❌ | ✅ |
+| Camada de dados | ✅ | ❌ | ✅ |
 
 ---
 
@@ -236,6 +251,7 @@ Persistência (Futuro):
 
 | Data | Mudança |
 |------|---------|
+| 2025-12-04 | US-003: dataService.js criado (camada de abstração para persistência) |
 | 2025-12-04 | US-002: Deep linking de aulas validado e funcionando (callback-as-navigation pattern) |
 | 2025-12-04 | US-001: Persistência de progresso implementada (useModuleProgress hook) |
 | 2025-12-03 | Migração npm → Bun como runtime principal |
