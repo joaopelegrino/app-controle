@@ -20,6 +20,7 @@ import ClaudeCodeNotesView from './ClaudeCodeNotesView';
 import { FlashcardModal } from './FlashcardModal';
 import LearningPathView from './LearningPathView';
 import NotFoundPage from '../pages/NotFoundPage';
+import { useModuleProgress } from '../hooks/useModuleProgress';
 
 const SistemaEducacionalCompleto = () => {
   const navigate = useNavigate();
@@ -35,21 +36,21 @@ const SistemaEducacionalCompleto = () => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   
-  // C Learning States
-  const [completedModules, setCompletedModules] = useState(new Set());
+  // C Learning States (US-001: Persistência de progresso)
+  const [completedModules, setCompletedModules] = useModuleProgress('clang');
   const [selectedWeek, setSelectedWeek] = useState(1);
-  
-  // VSCode Learning States
-  const [completedVSCodeModules, setCompletedVSCodeModules] = useState(new Set());
-  
-  // Bash Learning States
-  const [completedBashModules, setCompletedBashModules] = useState(new Set());
-  
-  // Claude Code Learning States
-  const [completedClaudeCodeModules, setCompletedClaudeCodeModules] = useState(new Set());
-  
-  // Rust Learning States
-  const [completedRustModules, setCompletedRustModules] = useState(new Set());
+
+  // VSCode Learning States (US-001: Persistência de progresso)
+  const [completedVSCodeModules, setCompletedVSCodeModules] = useModuleProgress('vscode');
+
+  // Bash Learning States (US-001: Persistência de progresso)
+  const [completedBashModules, setCompletedBashModules] = useModuleProgress('bash');
+
+  // Claude Code Learning States (US-001: Persistência de progresso)
+  const [completedClaudeCodeModules, setCompletedClaudeCodeModules] = useModuleProgress('claudecode');
+
+  // Rust Learning States (US-001: Persistência de progresso)
+  const [completedRustModules, setCompletedRustModules] = useModuleProgress('rust');
   
   // Helper Functions
   const toggleCodeVisibility = (sectionId) => {
