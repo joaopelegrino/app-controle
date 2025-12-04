@@ -54,7 +54,7 @@ Plataforma de aprendizado técnico com foco em:
 | Item | Prioridade | Descrição |
 |------|------------|-----------|
 | Deep linking aulas | 🔴 P0 | URL não atualiza ao clicar em módulo |
-| Persistir progresso | 🔴 P0 | Checkboxes se perdem ao recarregar |
+| ~~Persistir progresso~~ | ✅ DONE | ~~Checkboxes se perdem ao recarregar~~ |
 | Rotas de aulas | 🟡 P1 | Implementar `/curso/:id/aula/:aulaId` |
 
 ---
@@ -63,18 +63,18 @@ Plataforma de aprendizado técnico com foco em:
 
 ### Sprint 1: Persistência (P0)
 
-#### US-001: Persistir Progresso de Módulos
+#### US-001: Persistir Progresso de Módulos ✅ DONE
 
 **Como** usuário estudando
 **Quero** que meu progresso seja salvo
 **Para** não perder ao recarregar a página
 
 **Critérios de Aceite:**
-- [ ] Hook `useModuleProgress` criado
-- [ ] Progresso salvo em localStorage por curso
-- [ ] Carrega progresso ao montar componente
-- [ ] Sincroniza estado React ↔ localStorage
-- [ ] Tratamento de erros (QuotaExceededError)
+- [x] Hook `useModuleProgress` criado
+- [x] Progresso salvo em localStorage por curso
+- [x] Carrega progresso ao montar componente
+- [x] Sincroniza estado React ↔ localStorage
+- [x] Tratamento de erros (QuotaExceededError)
 
 **Estrutura de dados:**
 ```javascript
@@ -215,7 +215,7 @@ Persistência (Futuro):
 | Métrica | Atual | Meta Sprint 1 | Meta Sprint 2 |
 |---------|-------|---------------|---------------|
 | Áreas visíveis | 1 | 1 | 5 |
-| Progresso persistido | ❌ | ✅ | ✅ |
+| Progresso persistido | ✅ | ✅ | ✅ |
 | Deep linking | ❌ | ✅ | ✅ |
 | Camada de dados | ❌ | ❌ | ✅ |
 
@@ -236,6 +236,7 @@ Persistência (Futuro):
 
 | Data | Mudança |
 |------|---------|
+| 2025-12-04 | US-001: Persistência de progresso implementada (useModuleProgress hook) |
 | 2025-12-03 | Migração npm → Bun como runtime principal |
 | 2025-12-03 | Criação do MVP v1 (orphan branch) |
 
