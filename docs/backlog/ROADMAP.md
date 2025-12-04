@@ -111,7 +111,7 @@ Plataforma de aprendizado técnico com foco em:
 
 ---
 
-### Sprint 2: Estrutura de Dados (P1)
+### Sprint 2: Estrutura de Dados (P1) ✅ COMPLETA
 
 #### US-003: API de Dados Local ✅ DONE
 
@@ -157,17 +157,31 @@ export const dataService = {
 
 ---
 
-#### US-004: Refatorar Estrutura de Dados
+#### US-004: Refatorar Estrutura de Dados ✅ DONE
 
 **Como** desenvolvedor
 **Quero** estrutura de dados consistente
 **Para** facilitar manutenção
 
 **Critérios de Aceite:**
-- [ ] Unificar formato de `*LearningData.js`
-- [ ] Schema documentado
-- [ ] Validação de dados no load
-- [ ] Migração de dados antigos
+- [x] Analisar formato atual de `*LearningData.js` (bash, c, rust)
+- [x] Schema documentado com tipos JSDoc (Phase, Module, CourseData)
+- [x] Validação de dados em runtime (validateCourseData)
+- [x] Constantes de validação (cores Tailwind, padrão de ID)
+- [ ] Migração de dados antigos (não necessário - estrutura já consistente)
+
+**Arquivo criado:** `src/data/schema.js`
+```javascript
+// Tipos principais
+Phase: { id, nome, semanas, cor, corClara, icone, descricao }
+Module: { id, nome, semana, fase, duracao, entregavel, temNotas? }
+CourseData: { fases[], modulos[], startDate }
+
+// Funções de validação
+validatePhase(phase, index) => string[]
+validateModule(module, index, validPhaseIds) => { errors, warnings }
+validateCourseData(data, courseId) => ValidationResult
+```
 
 **Complexidade:** 5 pontos
 
@@ -251,6 +265,7 @@ Persistência (Futuro):
 
 | Data | Mudança |
 |------|---------|
+| 2025-12-04 | US-004: schema.js criado (tipos JSDoc + validação de dados) |
 | 2025-12-04 | US-003: dataService.js criado (camada de abstração para persistência) |
 | 2025-12-04 | US-002: Deep linking de aulas validado e funcionando (callback-as-navigation pattern) |
 | 2025-12-04 | US-001: Persistência de progresso implementada (useModuleProgress hook) |
