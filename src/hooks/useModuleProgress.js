@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 /**
  * Hook para persistência de progresso de módulos em localStorage
@@ -30,62 +30,63 @@ import { useState, useEffect, useCallback } from 'react';
  * ```
  */
 export function useModuleProgress(courseId) {
-  const [completedModules, setCompletedModules] = useState(new Set());
-  const [storageAvailable, setStorageAvailable] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState(null);
-
   const key = `ultrathink_progress_${courseId}`;
 
-  // Carregar progresso ao montar componente
-  useEffect(() => {
+  // Lazy initialization: carrega do localStorage no primeiro render
+  const [completedModules, setCompletedModules] = useState(() => {
     try {
       const saved = localStorage.getItem(key);
       if (saved) {
         const data = JSON.parse(saved);
         if (data.completedModules && Array.isArray(data.completedModules)) {
-          setCompletedModules(new Set(data.completedModules));
-          setLastUpdated(data.lastUpdated || null);
+          return new Set(data.completedModules);
         }
       }
     } catch (error) {
       console.error(`[useModuleProgress] Erro ao carregar progresso (${key}):`, error);
-
-      if (error.name === 'SecurityError') {
-        setStorageAvailable(false);
-        console.warn('[useModuleProgress] localStorage bloqueado (modo privado?)');
-      } else if (error instanceof SyntaxError) {
-        // JSON inválido - limpar dados corrompidos
-        console.warn('[useModuleProgress] Dados corrompidos, reiniciando progresso');
-        try {
-          localStorage.removeItem(key);
-        } catch {
-          // Ignora erro ao limpar
-        }
-      }
     }
-  }, [key]);
+    return new Set();
+  });
 
-  // Salvar progresso quando completedModules mudar
+  const [storageAvailable, setStorageAvailable] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState(() => {
+    try {
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        const data = JSON.parse(saved);
+        return data.lastUpdated || null;
+      }
+    } catch {
+      // Ignora erro - já tratado acima
+    }
+    return null;
+  });
+
+  // Track if user has made changes (not just initial load)
+  const hasUserChanges = useRef(false);
+
+  // Salvar progresso quando completedModules mudar (apenas após interação do usuário)
   useEffect(() => {
+    // Só salva se o usuário fez mudanças (não no carregamento inicial)
+    if (!hasUserChanges.current) {
+      return;
+    }
+
     if (!storageAvailable) {
       console.warn('[useModuleProgress] Storage indisponível, skip save');
       return;
     }
 
-    // Evitar salvar estado inicial vazio
-    if (completedModules.size === 0 && !lastUpdated) {
-      return;
-    }
-
+    const timestamp = new Date().toISOString();
     const data = {
       completedModules: Array.from(completedModules),
-      lastUpdated: new Date().toISOString(),
+      lastUpdated: timestamp,
       totalModules: completedModules.size
     };
 
     try {
       localStorage.setItem(key, JSON.stringify(data));
-      setLastUpdated(data.lastUpdated);
+      setLastUpdated(timestamp);
     } catch (error) {
       console.error(`[useModuleProgress] Erro ao salvar progresso (${key}):`, error);
 
@@ -104,13 +105,14 @@ export function useModuleProgress(courseId) {
         console.error('[useModuleProgress] SecurityError: Modo privado detectado');
       }
     }
-  }, [completedModules, key, storageAvailable, lastUpdated]);
+  }, [completedModules, key, storageAvailable]);
 
   /**
    * Toggle module completion status
    * @param {string} moduleId - ID do módulo (ex: '1.1', '2.3')
    */
   const toggleModule = useCallback((moduleId) => {
+    hasUserChanges.current = true;
     setCompletedModules(prev => {
       const newSet = new Set(prev);
       if (newSet.has(moduleId)) {
@@ -127,6 +129,7 @@ export function useModuleProgress(courseId) {
    * @param {string} moduleId - ID do módulo
    */
   const markCompleted = useCallback((moduleId) => {
+    hasUserChanges.current = true;
     setCompletedModules(prev => {
       if (prev.has(moduleId)) return prev;
       const newSet = new Set(prev);
@@ -140,6 +143,7 @@ export function useModuleProgress(courseId) {
    * @param {string} moduleId - ID do módulo
    */
   const markIncomplete = useCallback((moduleId) => {
+    hasUserChanges.current = true;
     setCompletedModules(prev => {
       if (!prev.has(moduleId)) return prev;
       const newSet = new Set(prev);
@@ -152,6 +156,7 @@ export function useModuleProgress(courseId) {
    * Reset all progress for this course
    */
   const resetProgress = useCallback(() => {
+    hasUserChanges.current = true;
     setCompletedModules(new Set());
     try {
       localStorage.removeItem(key);
@@ -159,6 +164,12 @@ export function useModuleProgress(courseId) {
       console.error('[useModuleProgress] Erro ao resetar progresso:', error);
     }
   }, [key]);
+
+  // Wrapper para setCompletedModules que marca como mudança do usuário
+  const setCompletedModulesWithSave = useCallback((valueOrUpdater) => {
+    hasUserChanges.current = true;
+    setCompletedModules(valueOrUpdater);
+  }, []);
 
   // Info object for UI
   const progressInfo = {
@@ -168,5 +179,5 @@ export function useModuleProgress(courseId) {
     key
   };
 
-  return [completedModules, setCompletedModules, { toggleModule, markCompleted, markIncomplete, resetProgress, ...progressInfo }];
+  return [completedModules, setCompletedModulesWithSave, { toggleModule, markCompleted, markIncomplete, resetProgress, ...progressInfo }];
 }
