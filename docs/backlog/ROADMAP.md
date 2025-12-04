@@ -1,7 +1,7 @@
 # Roadmap MVP - Plataforma de Aprendizado
 
 **Versão:** 1.0 MVP
-**Data:** 2025-12-03
+**Data:** 2025-12-04
 **Branch:** `mvp-v1` (orphan - início limpo)
 **Foco:** Backend, Persistência e Estrutura Funcional
 
@@ -11,9 +11,9 @@
 
 Plataforma de aprendizado técnico com foco em:
 - ✅ Interface funcional (Hub, Cursos, Caminhos)
-- 🎯 Persistência de progresso
-- 🎯 Navegação por URL (deep linking)
-- 🎯 Estrutura escalável
+- ✅ Persistência de progresso (Sprint 1 - US-001)
+- ✅ Navegação por URL (deep linking) (Sprint 1 - US-002)
+- 🎯 Estrutura escalável (Sprint 2)
 
 ---
 
@@ -53,15 +53,15 @@ Plataforma de aprendizado técnico com foco em:
 
 | Item | Prioridade | Descrição |
 |------|------------|-----------|
-| Deep linking aulas | 🔴 P0 | URL não atualiza ao clicar em módulo |
+| ~~Deep linking aulas~~ | ✅ DONE | ~~URL não atualiza ao clicar em módulo~~ |
 | ~~Persistir progresso~~ | ✅ DONE | ~~Checkboxes se perdem ao recarregar~~ |
-| Rotas de aulas | 🟡 P1 | Implementar `/curso/:id/aula/:aulaId` |
+| ~~Rotas de aulas~~ | ✅ DONE | ~~Implementar `/curso/:id/aula/:aulaId`~~ |
 
 ---
 
 ## Backlog Priorizado
 
-### Sprint 1: Persistência (P0)
+### Sprint 1: Persistência (P0) ✅ COMPLETA
 
 #### US-001: Persistir Progresso de Módulos ✅ DONE
 
@@ -90,24 +90,24 @@ Plataforma de aprendizado técnico com foco em:
 
 ---
 
-#### US-002: Corrigir Navegação de Aulas
+#### US-002: Corrigir Navegação de Aulas ✅ DONE
 
 **Como** usuário navegando
 **Quero** que a URL reflita minha posição
 **Para** compartilhar links e usar botão voltar
 
 **Critérios de Aceite:**
-- [ ] Migrar `setCurrentSubView` → `navigate()`
-- [ ] Rota `/curso/:id/aula/:aulaId` funciona
-- [ ] Deep linking para aulas OK
-- [ ] Botão voltar do navegador funciona
-- [ ] Breadcrumb reflete posição
+- [x] Migrar `setCurrentSubView` → `navigate()` (via callback pattern)
+- [x] Rota `/curso/:id/aula/:aulaId` funciona
+- [x] Deep linking para aulas OK
+- [x] Botão voltar do navegador funciona
+- [x] Breadcrumb reflete posição
 
-**Arquivos a modificar:**
-- `BashLearningSystem.jsx`
-- `SistemaEducacionalCompleto.jsx` (rotas)
+**Arquivos envolvidos:**
+- `BashLearningSystem.jsx` - já usava `navigate()` na linha 224
+- `SistemaEducacionalCompleto.jsx` - `ModuleNotesRoute` com callback-as-navigation
 
-**Complexidade:** 8 pontos
+**Complexidade:** 8 pontos (na prática: 3 pontos - já estava implementado)
 
 ---
 
@@ -216,7 +216,7 @@ Persistência (Futuro):
 |---------|-------|---------------|---------------|
 | Áreas visíveis | 1 | 1 | 5 |
 | Progresso persistido | ✅ | ✅ | ✅ |
-| Deep linking | ❌ | ✅ | ✅ |
+| Deep linking | ✅ | ✅ | ✅ |
 | Camada de dados | ❌ | ❌ | ✅ |
 
 ---
@@ -236,6 +236,7 @@ Persistência (Futuro):
 
 | Data | Mudança |
 |------|---------|
+| 2025-12-04 | US-002: Deep linking de aulas validado e funcionando (callback-as-navigation pattern) |
 | 2025-12-04 | US-001: Persistência de progresso implementada (useModuleProgress hook) |
 | 2025-12-03 | Migração npm → Bun como runtime principal |
 | 2025-12-03 | Criação do MVP v1 (orphan branch) |
