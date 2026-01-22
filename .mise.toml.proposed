@@ -1,0 +1,493 @@
+# .mise.toml - Configuração local de ferramentas de desenvolvimento
+# Projeto: Plataforma B2B de treinamento técnico corporativo (ultrathink)
+# Branch: demo-nocodb-simple (MVP com NocoDB)
+# Última atualização: 2026-01-22
+#
+# Este arquivo garante que todos os desenvolvedores usem as mesmas versões
+# de ferramentas, independente da configuração global do mise.
+#
+# Para aplicar: `mise install` na raiz do projeto
+
+# =============================================================================
+# FERRAMENTAS DE RUNTIME
+# =============================================================================
+
+[tools]
+# Bun - Runtime JavaScript PRINCIPAL (Anthropic Dez 2025)
+# 35x mais rápido que npm para install, 100% compatível com package.json
+bun = "1.3.3"
+
+# Node.js - Fallback para compatibilidade (scripts legados)
+# Usado apenas se algum script não funcionar com Bun
+node = "24.11.1"
+
+# Python - Usado por agents e scripts auxiliares
+# Agent learning-path-architect usa youtube_transcript.py
+python = "3.12"
+
+# =============================================================================
+# CLI MODERNAS (via Cargo)
+# =============================================================================
+# Ferramentas essenciais para desenvolvimento eficiente
+
+# Busca e navegação
+"cargo:ripgrep" = "latest"        # grep moderno - usado por Claude Code
+"cargo:fd-find" = "latest"        # find moderno - localização rápida de arquivos
+
+# Visualização
+"cargo:bat" = "latest"            # cat com syntax highlighting
+"cargo:eza" = "latest"            # ls moderno com ícones
+
+# Monitoramento
+"cargo:bottom" = "latest"         # htop moderno para monitorar processos
+
+# Git
+"cargo:git-delta" = "latest"      # diff melhorado para git
+
+# Navegação de diretórios
+"cargo:zoxide" = "latest"         # cd inteligente com histórico
+
+# =============================================================================
+# VARIÁVEIS DE AMBIENTE DO PROJETO
+# =============================================================================
+
+[env]
+# Identificação do projeto
+PROJECT_NAME = "ultrathink"
+PROJECT_TYPE = "react-vite-bun"
+
+# Configurações de desenvolvimento
+NODE_ENV = "development"
+VITE_PORT = "3000"
+
+# NocoDB URLs (para testes E2E)
+NOCODB_URL = "http://localhost:8080"
+VITE_API_URL = "http://localhost:3000"
+
+# Configurações do editor
+EDITOR = "vim"
+
+# Bat (visualizador de código)
+BAT_THEME = "Catppuccin Mocha"
+
+# Mise auto-confirm para CI/CD
+MISE_YES = "true"
+
+# =============================================================================
+# TAREFAS PRINCIPAIS (mise tasks) - Usando Bun
+# =============================================================================
+
+[tasks.dev]
+description = "Inicia servidor de desenvolvimento (via Bun)"
+run = "bun run dev"
+
+[tasks.build]
+description = "Build de produção (via Bun)"
+run = "bun run build"
+
+[tasks.test]
+description = "Executa testes com Vitest (via Bun)"
+run = "bun run test"
+
+[tasks.lint]
+description = "Verifica código com ESLint (via Bun)"
+run = "bun run lint"
+
+[tasks.install]
+description = "Instala dependências (via Bun - 35x mais rápido)"
+run = "bun install"
+
+[tasks.preview]
+description = "Preview do build de produção (via Bun)"
+run = "bun run preview"
+
+[tasks.clean]
+description = "Limpa cache e node_modules"
+run = "rm -rf node_modules/.vite dist node_modules bun.lockb"
+
+[tasks.fresh]
+description = "Reinstala tudo do zero (limpa + instala)"
+run = "rm -rf node_modules/.vite dist node_modules bun.lockb && bun install"
+
+# =============================================================================
+# TAREFAS NOCODB (Docker Compose)
+# =============================================================================
+
+[tasks."nocodb:setup"]
+description = "Setup completo NocoDB (copiar .env + iniciar containers)"
+run = """
+#!/bin/bash
+set -e
+echo "🔧 Setup NocoDB..."
+
+# Copiar .env se não existir
+if [ ! -f .env.nocodb ]; then
+    echo "📋 Copiando .env.nocodb.example → .env.nocodb"
+    cp .env.nocodb.example .env.nocodb
+    chmod 600 .env.nocodb
+    echo "✅ .env.nocodb criado"
+else
+    echo "✓ .env.nocodb já existe"
+fi
+
+# Carregar variáveis
+source .env.nocodb
+
+# Iniciar containers
+echo "🐳 Iniciando PostgreSQL + NocoDB..."
+docker-compose -f docker-compose.nocodb.yml up -d
+
+echo "⏳ Aguardando serviços iniciarem (~30s)..."
+sleep 10
+
+# Verificar status
+echo "📊 Status dos containers:"
+docker-compose -f docker-compose.nocodb.yml ps
+
+echo ""
+echo "✅ Setup completo!"
+echo "📍 NocoDB: http://localhost:8080"
+echo "📧 Email: admin@ultrathink.com"
+echo "🔐 Senha: UltraThink@Admin2026!"
+"""
+
+[tasks."nocodb:start"]
+description = "Inicia containers NocoDB (PostgreSQL + NocoDB)"
+run = """
+source .env.nocodb 2>/dev/null || true
+docker-compose -f docker-compose.nocodb.yml up -d
+echo "✅ NocoDB iniciado: http://localhost:8080"
+"""
+
+[tasks."nocodb:stop"]
+description = "Para containers NocoDB"
+run = """
+docker-compose -f docker-compose.nocodb.yml down
+echo "✅ NocoDB parado"
+"""
+
+[tasks."nocodb:restart"]
+description = "Reinicia containers NocoDB"
+run = """
+docker-compose -f docker-compose.nocodb.yml restart
+echo "✅ NocoDB reiniciado"
+"""
+
+[tasks."nocodb:logs"]
+description = "Mostra logs do NocoDB em tempo real"
+run = "docker-compose -f docker-compose.nocodb.yml logs -f nocodb"
+
+[tasks."nocodb:health"]
+description = "Verifica se NocoDB está rodando"
+run = """
+#!/bin/bash
+echo "🔍 Verificando NocoDB..."
+
+# Verificar containers
+if docker-compose -f docker-compose.nocodb.yml ps | grep -q "Up"; then
+    echo "✅ Containers rodando"
+    
+    # Verificar PostgreSQL
+    if docker exec app-controle-db pg_isready -U nocodb_user -d app_controle > /dev/null 2>&1; then
+        echo "✅ PostgreSQL: OK"
+    else
+        echo "❌ PostgreSQL: Não responde"
+        exit 1
+    fi
+    
+    # Verificar NocoDB
+    if curl -s http://localhost:8080/api/v1/health > /dev/null 2>&1; then
+        echo "✅ NocoDB: OK (http://localhost:8080)"
+    else
+        echo "⏳ NocoDB: Ainda iniciando..."
+    fi
+    
+    # Verificar dados
+    USER_COUNT=$(docker exec -i app-controle-db psql -U nocodb_user -d app_controle -t -c "SELECT COUNT(*) FROM users;" 2>/dev/null | tr -d ' ')
+    if [ "$USER_COUNT" -gt 0 ]; then
+        echo "✅ Dados seed: $USER_COUNT usuários carregados"
+    else
+        echo "⚠️  Dados seed: Nenhum usuário encontrado"
+    fi
+else
+    echo "❌ Containers não estão rodando"
+    echo "💡 Execute: mise nocodb:start"
+    exit 1
+fi
+"""
+
+[tasks."nocodb:reset"]
+description = "Reseta banco de dados (⚠️ DELETA TODOS OS DADOS!)"
+run = """
+#!/bin/bash
+read -p "⚠️  Isso vai DELETAR todos os dados. Continuar? (y/N) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "🗑️  Resetando banco..."
+    docker-compose -f docker-compose.nocodb.yml down -v
+    docker-compose -f docker-compose.nocodb.yml up -d
+    echo "✅ Banco resetado (dados seed recarregados)"
+else
+    echo "❌ Cancelado"
+fi
+"""
+
+[tasks."db:verify"]
+description = "Verifica dados no PostgreSQL"
+run = """
+docker exec -it app-controle-db psql -U nocodb_user -d app_controle -c "
+SELECT 'Empresas' AS tipo, COUNT(*) AS total FROM companies
+UNION ALL SELECT 'Usuários', COUNT(*) FROM users
+UNION ALL SELECT 'Módulos', COUNT(*) FROM modules
+UNION ALL SELECT 'Progresso', COUNT(*) FROM user_progress;"
+"""
+
+# =============================================================================
+# TAREFAS DE TESTES E2E (Playwright)
+# =============================================================================
+
+[tasks."e2e:ui"]
+description = "Testes E2E com interface Playwright UI"
+run = """
+#!/bin/bash
+# Verificar se dev server está rodando
+if ! curl -s http://localhost:3000 > /dev/null 2>&1; then
+    echo "⚠️  Dev server não está rodando!"
+    echo "💡 Execute em outro terminal: mise dev"
+    exit 1
+fi
+
+# Verificar se NocoDB está rodando
+if ! curl -s http://localhost:8080 > /dev/null 2>&1; then
+    echo "⚠️  NocoDB não está rodando!"
+    echo "💡 Execute: mise nocodb:start"
+    exit 1
+fi
+
+echo "🎭 Iniciando Playwright UI..."
+npx playwright test --ui
+"""
+
+[tasks."e2e:headless"]
+description = "Testes E2E headless (CI/CD)"
+run = """
+#!/bin/bash
+# Verificar se dev server está rodando
+if ! curl -s http://localhost:3000 > /dev/null 2>&1; then
+    echo "❌ Dev server não está rodando"
+    exit 1
+fi
+
+# Verificar se NocoDB está rodando
+if ! curl -s http://localhost:8080 > /dev/null 2>&1; then
+    echo "❌ NocoDB não está rodando"
+    exit 1
+fi
+
+echo "🎭 Executando testes E2E..."
+npx playwright test
+"""
+
+[tasks."e2e:install"]
+description = "Instala browsers do Playwright"
+run = "npx playwright install"
+
+# =============================================================================
+# TAREFAS COMBINADAS (Workflows Completos)
+# =============================================================================
+
+[tasks."full-stack"]
+description = "Inicia TUDO: NocoDB + Dev Server (em segundo plano)"
+run = """
+#!/bin/bash
+echo "🚀 Iniciando full-stack..."
+
+# Iniciar NocoDB
+mise nocodb:start
+
+# Aguardar NocoDB estar pronto
+echo "⏳ Aguardando NocoDB..."
+sleep 5
+
+# Iniciar dev server em segundo plano
+echo "🔥 Iniciando dev server..."
+bun run dev &
+DEV_PID=$!
+
+echo ""
+echo "✅ Full-stack rodando!"
+echo "📍 Frontend: http://localhost:3000"
+echo "📍 NocoDB: http://localhost:8080"
+echo ""
+echo "Para parar:"
+echo "  - Dev server: Ctrl+C"
+echo "  - NocoDB: mise nocodb:stop"
+echo ""
+echo "PID do dev server: $DEV_PID"
+
+# Esperar Ctrl+C
+wait $DEV_PID
+"""
+
+[tasks.setup]
+description = "Setup completo do projeto (install + nocodb:setup)"
+run = """
+#!/bin/bash
+set -e
+echo "🚀 Setup completo do projeto..."
+echo ""
+
+# 1. Instalar dependências
+echo "📦 1/3: Instalando dependências..."
+mise install
+
+# 2. Setup NocoDB
+echo "🐳 2/3: Setup NocoDB..."
+mise nocodb:setup
+
+# 3. Instalar browsers Playwright
+echo "🎭 3/3: Instalando browsers Playwright..."
+mise e2e:install
+
+echo ""
+echo "✅ Setup completo!"
+echo ""
+echo "Próximos passos:"
+echo "  1. mise dev              # Iniciar dev server"
+echo "  2. mise nocodb:health    # Verificar NocoDB"
+echo "  3. mise e2e:ui           # Rodar testes E2E"
+"""
+
+[tasks.check]
+description = "Verifica se tudo está rodando"
+run = """
+#!/bin/bash
+echo "🔍 Verificando ambiente..."
+echo ""
+
+# 1. Ferramentas instaladas
+echo "📦 Ferramentas:"
+echo "  Bun: $(bun --version 2>/dev/null || echo '❌ Não instalado')"
+echo "  Node: $(node --version 2>/dev/null || echo '⚠️  Não instalado')"
+echo "  Docker: $(docker --version 2>/dev/null || echo '❌ Não instalado')"
+echo ""
+
+# 2. Dev server
+echo "🔥 Dev server:"
+if curl -s http://localhost:3000 > /dev/null 2>&1; then
+    echo "  ✅ Rodando (http://localhost:3000)"
+else
+    echo "  ❌ Não está rodando"
+    echo "     💡 Execute: mise dev"
+fi
+echo ""
+
+# 3. NocoDB
+echo "🐳 NocoDB:"
+mise nocodb:health
+echo ""
+
+# 4. Testes
+echo "🧪 Testes:"
+if [ -d "node_modules" ]; then
+    echo "  ✅ Dependências instaladas"
+else
+    echo "  ❌ Dependências não instaladas"
+    echo "     💡 Execute: mise install"
+fi
+"""
+
+[tasks."test:all"]
+description = "Executa TODOS os testes (lint + unit + e2e)"
+run = """
+#!/bin/bash
+set -e
+echo "🧪 Executando todos os testes..."
+echo ""
+
+# 1. Lint
+echo "📝 1/3: ESLint..."
+mise lint
+
+# 2. Unit tests
+echo "🧪 2/3: Testes unitários..."
+mise test
+
+# 3. E2E (se serviços estiverem rodando)
+echo "🎭 3/3: Testes E2E..."
+if curl -s http://localhost:3000 > /dev/null 2>&1 && curl -s http://localhost:8080 > /dev/null 2>&1; then
+    mise e2e:headless
+else
+    echo "  ⏭️  Pulando (serviços não estão rodando)"
+fi
+
+echo ""
+echo "✅ Todos os testes passaram!"
+"""
+
+# =============================================================================
+# TAREFAS MCP (Model Context Protocol)
+# =============================================================================
+
+[tasks.chrome-debug]
+description = "Inicia Chrome com remote debugging para MCP"
+run = "./scripts/start-chrome-debug.sh"
+
+# =============================================================================
+# TAREFAS DE DOCUMENTAÇÃO
+# =============================================================================
+
+[tasks.docs]
+description = "Mostra links de documentação importante"
+run = """
+echo "📚 Documentação do projeto:"
+echo ""
+echo "🎯 Quickstart:"
+echo "   docs/backend/NOCODB-QUICKSTART.md"
+echo ""
+echo "👥 Personas (como usar NocoDB):"
+echo "   docs/backend/PERSONAS-NAO-TECNICAS.md"
+echo ""
+echo "🗄️  Banco de dados:"
+echo "   database/README.md"
+echo ""
+echo "🏭 Factory Droid:"
+echo "   .factory/README.md"
+echo "   .factory/AGENTS.md"
+echo ""
+echo "📋 Roadmap:"
+echo "   docs/backlog/ROADMAP.md"
+"""
+
+[tasks.help]
+description = "Mostra todos os comandos disponíveis"
+run = "mise tasks"
+
+# =============================================================================
+# ALIASES ÚTEIS (sintaxe atual do mise)
+# =============================================================================
+
+[alias.bun.versions]
+latest = "1.3.3"
+current = "1.3.3"
+
+[alias.node.versions]
+lts = "24.11.1"
+current = "24.11.1"
+
+[alias.python.versions]
+default = "3.12"
+
+# =============================================================================
+# CONFIGURAÇÕES LOCAIS
+# =============================================================================
+
+[settings]
+# Confirmar automaticamente instalações
+yes = true
+
+# Modo verboso desativado
+verbose = false
+
+# Usar recursos experimentais (shims para IDEs)
+experimental = true
