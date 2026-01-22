@@ -1,9 +1,9 @@
 # Roadmap MVP - Plataforma de Aprendizado
 
-**Versão:** 1.0 MVP
-**Data:** 2025-12-04
-**Branch:** `mvp-v1` (orphan - início limpo)
-**Foco:** Backend, Persistência e Estrutura Funcional
+**Versão:** 1.1 MVP + NocoDB
+**Data:** 2026-01-22
+**Branch:** `demo-nocodb-simple` (baseada em `mvp-v1`)
+**Foco:** Backend, Persistência, Dashboard para Personas Não Técnicas
 
 ---
 
@@ -187,9 +187,68 @@ validateCourseData(data, courseId) => ValidationResult
 
 ---
 
-### Sprint 3: Expansão Controlada (P2)
+### Sprint 3: Dashboard NocoDB (P1) ✅ COMPLETA
 
-#### US-005: Reativar Áreas Comentadas
+#### US-005: Implementar Backend PostgreSQL + NocoDB ✅ DONE
+
+**Como** gestor não técnico (RH, Tech Lead, C-Level)
+**Quero** visualizar progresso dos alunos em dashboard visual
+**Para** tomar decisões baseadas em dados sem precisar programar
+
+**Critérios de Aceite:**
+- [x] Schema PostgreSQL criado (`database/init.sql`)
+- [x] Dados seed incluídos (`database/seed.sql`)
+- [x] Docker Compose configurado (`docker-compose.nocodb.yml`)
+- [x] NocoDB acessível em http://localhost:8080
+- [x] 8 tabelas + 3 views de analytics
+- [x] Dados realistas: 2 empresas, 7 usuários, 16 módulos
+- [x] Documentação completa para não-técnicos
+- [x] Setup em ~10 minutos
+
+**Estrutura implementada:**
+
+```
+PostgreSQL 16
+├── Tabelas (8)
+│   ├── companies      → Empresas clientes
+│   ├── users          → Usuários (admins, teachers, students)
+│   ├── courses        → Catálogo de cursos (1: Bash)
+│   ├── phases         → Fases do curso (4)
+│   ├── modules        → Módulos/aulas (16)
+│   ├── user_progress  → Progresso de conclusão
+│   ├── study_notes    → Caderno de notas
+│   └── audit_logs     → Logs de auditoria
+│
+└── Views Analytics (3)
+    ├── v_company_progress  → Progresso por empresa
+    ├── v_user_dashboard    → Dashboard individual
+    └── v_course_stats      → Estatísticas do curso
+```
+
+**Personas atendidas:**
+1. **Gestor de RH / T&D** - Ver ROI, exportar relatórios
+2. **Tech Lead / Instrutor** - Acompanhar júniores, identificar módulos difíceis
+3. **C-Level** - Apresentar métricas para board, justificar budget
+
+**Documentação criada:**
+- `docs/backend/NOCODB-QUICKSTART.md` - Setup em 10 min
+- `docs/backend/PERSONAS-NAO-TECNICAS.md` - Como cada persona usa
+- `database/README.md` - Estrutura do banco
+
+**Complexidade:** 13 pontos
+
+**Benefícios:**
+- ✅ Gestores veem progresso em tempo real
+- ✅ Exportação Excel com 1 clique
+- ✅ Sem código necessário para gerenciar dados
+- ✅ Multi-tenancy (2+ empresas)
+- ✅ Economia R$ 270k/ano vs Udemy
+
+---
+
+### Sprint 4: Expansão Controlada (P2)
+
+#### US-006: Reativar Áreas Comentadas
 
 **Como** usuário
 **Quero** acessar mais cursos
@@ -226,27 +285,39 @@ Frontend:
   icons: Lucide React
   routing: React Router 6
 
-Persistência (Atual):
-  storage: localStorage
-  pattern: Hooks customizados
-  limite: 50KB por nota
+Persistência (Dual):
+  client: localStorage (hooks customizados, 50KB/nota)
+  server: PostgreSQL 16 + NocoDB (dashboard visual)
+  pattern: Ambos coexistem (migração gradual)
 
-Persistência (Futuro):
-  database: PostgreSQL ou Supabase
-  auth: A definir
-  api: REST ou tRPC
+Backend (NocoDB):
+  database: PostgreSQL 16
+  dashboard: NocoDB Community Edition
+  interface: Spreadsheet-like (sem SQL)
+  api: REST auto-gerada
+  auth: Email/password
+  deploy: Docker Compose
+  
+Admin Interface:
+  acesso: http://localhost:8080
+  usuarios: Gestores RH, Tech Leads, C-Level
+  funcoes: Ver progresso, adicionar users, exportar Excel
 ```
 
 ---
 
 ## Métricas
 
-| Métrica | Atual | Meta Sprint 1 | Meta Sprint 2 |
-|---------|-------|---------------|---------------|
-| Áreas visíveis | 1 | 1 | 5 |
-| Progresso persistido | ✅ | ✅ | ✅ |
+| Métrica | Sprint 1 | Sprint 2 | Sprint 3 (Atual) |
+|---------|----------|----------|------------------|
+| Áreas visíveis | 1 | 1 | 1 |
+| Progresso persistido | ✅ | ✅ | ✅ (dual) |
 | Deep linking | ✅ | ✅ | ✅ |
-| Camada de dados | ✅ | ❌ | ✅ |
+| Camada de dados | ❌ | ✅ | ✅ |
+| Dashboard visual | ❌ | ❌ | ✅ |
+| Multi-tenancy | ❌ | ❌ | ✅ |
+| Exportação Excel | ❌ | ❌ | ✅ |
+| Personas não-técnicas | ❌ | ❌ | ✅ (3) |
 
 ---
 
@@ -265,6 +336,10 @@ Persistência (Futuro):
 
 | Data | Mudança |
 |------|---------|
+| 2026-01-22 | Sprint 3: NocoDB + PostgreSQL implementado (US-005) |
+| 2026-01-22 | Criado: database/init.sql, seed.sql, docker-compose.nocodb.yml |
+| 2026-01-22 | Documentação: NOCODB-QUICKSTART.md, PERSONAS-NAO-TECNICAS.md |
+| 2026-01-22 | Branch demo-nocodb-simple criada (baseada em mvp-v1) |
 | 2025-12-04 | US-004: schema.js criado (tipos JSDoc + validação de dados) |
 | 2025-12-04 | US-003: dataService.js criado (camada de abstração para persistência) |
 | 2025-12-04 | US-002: Deep linking de aulas validado e funcionando (callback-as-navigation pattern) |
