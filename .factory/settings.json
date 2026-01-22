@@ -1,0 +1,69 @@
+{
+  "model": "claude-sonnet-4-5-20250929",
+  "reasoningEffort": "medium",
+  "autonomyLevel": "medium",
+  "diffMode": "unified",
+  "cloudSessionSync": true,
+  "soundNotifications": false,
+  "allowedCommands": [
+    "bun",
+    "mise",
+    "git",
+    "grep",
+    "find",
+    "cat",
+    "ls",
+    "pwd",
+    "echo",
+    "mkdir",
+    "touch",
+    "rm",
+    "mv",
+    "cp",
+    "npx"
+  ],
+  "deniedCommands": [
+    "sudo",
+    "rm -rf /",
+    "dd",
+    "mkfs",
+    "shutdown",
+    "reboot"
+  ],
+  "customDroidsEnabled": true,
+  "mcpEnabled": true,
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "description": "Browser automation for E2E testing using Playwright - preferred for test flows",
+      "env": {}
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "@benjaminr/chrome-devtools-mcp"],
+      "description": "Chrome DevTools integration for debugging and inspection",
+      "env": {
+        "CHROME_DEBUG_PORT": "9222"
+      }
+    }
+  },
+  "projectPaths": [
+    "/home/notebook/workspace/app-controle"
+  ],
+  "fileIgnorePatterns": [
+    "node_modules/**",
+    "dist/**",
+    "coverage/**",
+    ".git/**",
+    "*.log"
+  ],
+  "maxFileSize": 1048576,
+  "defaultBranch": "desenvolvimento",
+  "requireTestsForPR": true,
+  "requireLintForPR": true,
+  "autoFixLint": false,
+  "commitConvention": "conventional",
+  "coAuthorEnabled": true,
+  "coAuthor": "factory-droid[bot] <138933559+factory-droid[bot]@users.noreply.github.com>"
+}
