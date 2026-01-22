@@ -243,12 +243,84 @@ mcp__chrome-devtools__list_network_requests()
 ✅ NocoDB :8080    → Dashboard visual (PostgreSQL 16)
 ✅ Docker          → WSL2 integration active
 ✅ mise v2         → Hooks + 22 tasks (91% conformidade)
+⚠️  Auth/RBAC     → Em implementação (Sprint 6)
 ```
 
-**Acesso Backend:**
+**Acesso Backend (NocoDB Admin):**
 - URL: http://localhost:8080
 - Email: admin@ultrathink.com
 - Senha: UltraThink@Admin2026!
+
+---
+
+## 🚀 Sprint 6: Demo B2B (Em Andamento)
+
+**ROADMAP:** `docs/backlog/ROADMAP-DEMO-B2B.md`
+**Análise:** `docs/backlog/ANALISE-PLANEJAMENTO-DEMO-B2B.md`
+
+### Próximos Passos
+
+| Prioridade | Tarefa | Complexidade | US |
+|------------|--------|--------------|-----|
+| **Alta** | Aplicar migrations no banco | [L] | US-063 |
+| **Alta** | Implementar LoginView.jsx | [M] | US-065 |
+| **Alta** | Criar AuthContext + useAuth | [M] | US-064 |
+| **Alta** | Definir matriz RBAC | [L] | US-072 |
+| **Média** | Criar apiService.js (NocoDB) | [M] | US-068 |
+| **Média** | Conectar progresso ao backend | [H] | US-069 |
+| **Baixa** | Onboarding wizard | [M] | - |
+
+### Manejo de Banco de Dados
+
+**Scripts SQL prontos para execução:**
+```bash
+# 1. Migration (schema RBAC + Learning Paths)
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle \
+  < database/migration-001-rbac.sql
+
+# 2. Seed (dados de demo - 12 usuários, 4 roles)
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle \
+  < database/seed-demo-completo.sql
+```
+
+### Credenciais de Demo (após seed)
+
+```
+Senha padrão: Demo@2026
+
+ACME TECH SOLUTIONS:
+  ceo@acmetech.com       (c_level)
+  admin@acmetech.com     (admin)
+  prof@acmetech.com      (instructor)
+  maria@acmetech.com     (student)
+
+DEVCORP CONSULTING:
+  cto@devcorp.com        (c_level)
+  admin@devcorp.com      (admin)
+  prof@devcorp.com       (instructor)
+  julia@devcorp.com      (student)
+```
+
+### Arquivos a Criar (Frontend)
+
+```
+src/contexts/
+  AuthContext.jsx        → Estado de autenticação
+  TenantContext.jsx      → Multi-tenancy
+
+src/hooks/
+  useAuth.js             → Hook de autenticação
+  usePermissions.js      → Hook de permissões
+
+src/services/
+  apiService.js          → Comunicação NocoDB
+  authService.js         → Serviço de auth
+
+src/components/
+  LoginView.jsx          → Tela de login
+  PrivateRoute.jsx       → Proteção de rotas
+  RoleBasedAccess.jsx    → Controle por role
+```
 
 ---
 

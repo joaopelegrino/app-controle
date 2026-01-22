@@ -19,8 +19,11 @@ import ClaudeCodeLearningSystem from './ClaudeCodeLearningSystem';
 import ClaudeCodeNotesView from './ClaudeCodeNotesView';
 import { FlashcardModal } from './FlashcardModal';
 import LearningPathView from './LearningPathView';
+import LoginView from './LoginView';
+import PrivateRoute from './PrivateRoute';
 import NotFoundPage from '../pages/NotFoundPage';
 import { useModuleProgress } from '../hooks/useModuleProgress';
+import { useAuth } from '../hooks/useAuth';
 
 const SistemaEducacionalCompleto = () => {
   const navigate = useNavigate();
@@ -379,27 +382,53 @@ const SistemaEducacionalCompleto = () => {
   return (
     <div>
       <Routes>
-        {/* Hub - Rota principal */}
+        {/* Login - Rota pública */}
+        <Route path="/login" element={<LoginView />} />
+
+        {/* Hub - Rota principal (protegida) */}
         <Route
           path="/"
           element={
-            <HubView
-              studyAreas={studyAreas}
-              calculateStats={calculateStats}
-              openArea={openArea}
-              openLearningPath={openLearningPath}
-            />
+            <PrivateRoute>
+              <HubView
+                studyAreas={studyAreas}
+                calculateStats={calculateStats}
+                openArea={openArea}
+                openLearningPath={openLearningPath}
+              />
+            </PrivateRoute>
           }
         />
 
-        {/* Trilhas de Aprendizado */}
-        <Route path="/trilha/:pathId" element={<LearningPathRoute />} />
+        {/* Trilhas de Aprendizado (protegida) */}
+        <Route
+          path="/trilha/:pathId"
+          element={
+            <PrivateRoute>
+              <LearningPathRoute />
+            </PrivateRoute>
+          }
+        />
 
-        {/* Cursos Integrados */}
-        <Route path="/curso/:courseId" element={<CourseRoute />} />
+        {/* Cursos Integrados (protegida) */}
+        <Route
+          path="/curso/:courseId"
+          element={
+            <PrivateRoute>
+              <CourseRoute />
+            </PrivateRoute>
+          }
+        />
 
-        {/* Notas de Aula (para Claude Code) */}
-        <Route path="/curso/:courseId/aula/:moduleId" element={<ModuleNotesRoute />} />
+        {/* Notas de Aula (protegida) */}
+        <Route
+          path="/curso/:courseId/aula/:moduleId"
+          element={
+            <PrivateRoute>
+              <ModuleNotesRoute />
+            </PrivateRoute>
+          }
+        />
 
         {/* 404 - Página não encontrada */}
         <Route path="*" element={<NotFoundPage />} />
