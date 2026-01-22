@@ -18,22 +18,59 @@ Plataforma B2B de treinamento técnico corporativo - React SPA for technical tra
 
 ## Environment Management
 
-The project supports **mise** for automated environment setup (optional but recommended):
+The project uses **mise v2** for automated environment setup with hooks (91% conformidade com diretrizes padrão).
 
-**If mise is configured** (`.mise.toml` exists):
+**Setup once per machine:**
 ```bash
-# Setup once per machine
 curl https://mise.jdx.dev/install.sh | sh
 echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
+source ~/.zshrc
+```
 
-# Enter project → automatic setup via hooks
+**Enter project → automatic setup via hooks:**
+```bash
 cd app-controle
 
-# Use mise tasks
-mise run dev              # Dev server
-mise run test             # Tests
-mise run security         # Security scan
-mise run help             # Show all commands
+# Hook enter executes automatically:
+# ✅ Verifica e instala dependências (se necessário)
+# ✅ Verifica .env.nocodb
+# ✅ Verifica Docker instalado
+# ✅ Exibe menu de comandos
+
+╔════════════════════════════════════════════╗
+║  📦 app-controle - MVP Simples             ║
+╠════════════════════════════════════════════╣
+║  Frontend:  mise dev                       ║
+║  Backend:   mise nocodb:start              ║
+║  Full:      mise full-stack                ║
+║  E2E:       mise e2e:ui                    ║
+║  Verify:    mise check                     ║
+╚════════════════════════════════════════════╝
+```
+
+**Main tasks (mise v2):**
+```bash
+# Development
+mise dev                  # Start dev server (:3000)
+mise test                 # Run Vitest tests
+mise lint                 # ESLint
+mise build                # Production build
+
+# NocoDB (Backend Dashboard)
+mise nocodb:setup         # Setup completo (primeira vez)
+mise nocodb:start         # Iniciar containers
+mise nocodb:stop          # Parar containers
+mise nocodb:health        # Verificar status
+mise nocodb:logs          # Ver logs
+
+# E2E Testing
+mise e2e:ui               # Playwright UI
+mise e2e:headless         # Playwright headless
+
+# Workflows
+mise full-stack           # Frontend + Backend
+mise check                # Verificar ambiente completo
+mise help                 # Lista todos comandos
 ```
 
 **Standard commands** (always work):
@@ -43,7 +80,7 @@ bun run dev
 bun run test
 ```
 
-**For details:** See `documentacao-interna/05-workflows/setup-ambiente-mise.md`
+**Configuration:** `.mise.toml` (556 lines, hooks enabled, 22 tasks)
 
 ## Project Layout
 
@@ -174,19 +211,40 @@ A pull request is reviewable when it includes:
 
 ## External Services
 
-### Current State (Dual Persistence)
+### Current State (Branch: demo-nocodb-simple) ✅ ACTIVE
 
 **Client-side:**
 - localStorage: Student progress and notes (hooks: useModuleProgress, useAutoSaveNotes)
 - Pattern: Hooks customizados with error handling
 - Limite: 50KB per course notes
 
-**Server-side (Branch: demo-nocodb-simple):**
-- PostgreSQL 16 + NocoDB dashboard
-- Purpose: Visual dashboard for non-technical personas (RH, Tech Leads, C-Level)
-- Access: http://localhost:8080
-- Setup: `docker-compose -f docker-compose.nocodb.yml up -d`
-- Documentation: `docs/backend/NOCODB-QUICKSTART.md`
+**Server-side (PostgreSQL + NocoDB):**
+- **Status:** ✅ RODANDO em localhost
+- **PostgreSQL 16:** Healthy, porta 5432
+- **NocoDB:** Healthy, porta 8080 (0.0.0.0:8080->8080/tcp)
+- **Docker:** 29.1.3, WSL2 integration ativa
+- **Dados seed:** 2 empresas, 7 usuários, 16 módulos (Bash), 16 progresso
+
+**Access URLs:**
+- Frontend: http://localhost:3000 (React + Vite)
+- Backend: http://localhost:8080 (NocoDB Dashboard)
+  - Login: admin@ultrathink.com
+  - Senha: UltraThink@Admin2026!
+
+**Setup:**
+```bash
+# Via mise (recomendado)
+mise nocodb:setup
+
+# Manual
+docker-compose -f docker-compose.nocodb.yml up -d
+```
+
+**Documentation:**
+- Setup guide: `docs/backend/NOCODB-QUICKSTART.md`
+- Personas: `docs/backend/PERSONAS-NAO-TECNICAS.md`
+- Access guide: `LOCALHOST-ACESSO.md`
+- Database schema: `database/README.md`
 
 **Future integrations:**
 - Full migration localStorage → PostgreSQL

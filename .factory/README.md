@@ -699,30 +699,52 @@ For issues or questions:
 
 ---
 
-## 🆕 Branch: demo-nocodb-simple (2026-01-22)
+## 🆕 Branch: demo-nocodb-simple (2026-01-22) ✅ ACTIVE
 
-**Purpose:** Dashboard visual para personas não técnicas
+**Purpose:** Dashboard visual para personas não técnicas + mise v2 automation
 
 **What's new:**
-- PostgreSQL 16 + NocoDB Community Edition
+- ✅ **mise v2** (556 lines, 91% conformidade): Hooks enter/leave + 22 tasks
+- ✅ **PostgreSQL 16 + NocoDB** RODANDO em localhost:8080
+- ✅ **Frontend React** RODANDO em localhost:3000
+- ✅ **Docker 29.1.3** configurado no WSL2
 - 8 tables + 3 analytics views
 - Seed data: 2 companies, 7 users, 16 modules (Bash course only)
 - Complete documentation: `docs/backend/NOCODB-QUICKSTART.md`
-- Setup time: ~10 minutes
 
-**Quick Start:**
+**System Status:**
+```
+✅ Frontend :3000  → React + Vite (Hub + Bash course)
+✅ NocoDB :8080    → Dashboard visual (PostgreSQL 16)
+✅ Docker          → WSL2 integration active
+✅ mise v2         → Hooks + 22 tasks (91% conformidade)
+⏸️ FluSisTip      → Pausado (porta 8080 liberada)
+```
+
+**Quick Start (mise v2):**
 ```bash
 # 1. Checkout branch
 git checkout demo-nocodb-simple
 
-# 2. Setup
-cp .env.nocodb.example .env.nocodb
-source .env.nocodb
-docker-compose -f docker-compose.nocodb.yml up -d
+# 2. Enter project (hooks auto-setup)
+cd app-controle
+# Menu automático exibido ↓
 
-# 3. Access: http://localhost:8080
-# Email: admin@ultrathink.com
-# Senha: UltraThink@Admin2026!
+# 3. Start services
+mise full-stack              # Frontend + Backend
+# ou
+mise dev                     # Frontend only
+mise nocodb:start            # Backend only
+
+# 4. Access
+# Frontend: http://localhost:3000
+# Backend:  http://localhost:8080
+#   Email: admin@ultrathink.com
+#   Senha: UltraThink@Admin2026!
+
+# 5. Verify
+mise check                   # Verificar tudo
+mise nocodb:health           # Status NocoDB
 ```
 
 **Personas served:**
@@ -730,10 +752,20 @@ docker-compose -f docker-compose.nocodb.yml up -d
 2. **Tech Lead / Instrutor** - Track junior developers
 3. **C-Level** - Board presentations, business case
 
-**Full report:** `.factory/relatorios/nocodb-mvp-simple-2026-01-22.md`
+**Documentation created (2026-01-22):**
+- `LOCALHOST-ACESSO.md` - Guia completo de acesso
+- `PROBLEMA-PORTA-8080.md` - Resolução conflito porta
+- `.mise.toml.RECOMENDACAO-FINAL.md` - Por que v2
+- `.mise.toml.ANALISE-DIRETRIZES.md` - Análise conformidade
+- `.mise.toml.CHANGES.md` - Guia completo de tasks
+
+**Full reports:**
+- `.factory/relatorios/nocodb-mvp-simple-2026-01-22.md`
+- `auditoria-forense-completa-2026-01-20.md`
 
 ---
 
-**Last Updated:** 2026-01-22  
-**Version:** 1.1.0 (+ NocoDB integration in demo branch)  
-**Audit Report:** See `relatorios/auditoria-forense-completa-2026-01-20.md`
+**Last Updated:** 2026-01-22 12:30  
+**Version:** 1.2.0 (+ mise v2 + localhost active)  
+**Status:** 🟢 SISTEMA COMPLETO OPERACIONAL  
+**Commits:** 3 novos (mise v2 + docs + problema porta 8080)
