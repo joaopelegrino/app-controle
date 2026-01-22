@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Target, BookOpen, Clock, CheckCircle } from 'lucide-react';
 import { caminhosPropostos } from '../data/caminhoExemploData';
+import UserHeader from './UserHeader';
 
 /**
  * HubView - Página inicial do Hub de Aprendizado (MVP Simplificado)
@@ -138,9 +139,12 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
+    <div className="min-h-screen bg-gray-50">
+      {/* User Header */}
+      <UserHeader />
+
+      <div className="max-w-6xl mx-auto p-4">
+        {/* Title */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">🚀 Hub de Aprendizado</h1>
           <p className="text-xl text-gray-600">Sistema Integrado de Educação em Tecnologia</p>

@@ -1,4 +1,4 @@
-# Retomada Sprint 6 - Autenticação Frontend
+# Retomada Sprint 6 - Autenticação Frontend + RBAC
 
 **Data:** 2026-01-22
 **Branch:** demo-nocodb-simple
@@ -16,15 +16,20 @@
 | US-064 | Criar AuthContext + useAuth | ✅ DONE |
 | US-065 | Criar LoginView.jsx | ✅ DONE |
 | US-066 | Criar PrivateRoute.jsx | ✅ DONE |
-| US-067 | Integrar Auth no App | ✅ DONE |
+| US-067 | Integrar Auth no App + UserHeader | ✅ DONE |
+| US-072 | Criar usePermissions hook | ✅ DONE |
+| US-073 | Criar RoleBasedAccess component | ✅ DONE |
 
 ### Arquivos Criados
 
 ```
 src/contexts/AuthContext.jsx     → Contexto de autenticação com dados mock
 src/hooks/useAuth.js             → Hook para consumir AuthContext
+src/hooks/usePermissions.js      → Hook RBAC com matriz de permissões
 src/components/LoginView.jsx     → Tela de login com UI Tailwind
 src/components/PrivateRoute.jsx  → Proteção de rotas + verificação de roles
+src/components/RoleBasedAccess.jsx → Renderização condicional por role
+src/components/UserHeader.jsx    → Header com info do usuário + logout
 ```
 
 ### Arquivos Modificados
@@ -32,6 +37,7 @@ src/components/PrivateRoute.jsx  → Proteção de rotas + verificação de role
 ```
 src/main.jsx                           → AuthProvider adicionado
 src/components/SistemaEducacionalCompleto.jsx → Rotas protegidas + /login
+src/components/HubView.jsx             → UserHeader adicionado
 ```
 
 ---
@@ -66,7 +72,7 @@ DEVCORP CONSULTING:
 
 ---
 
-## Próximos Passos (FASE 3 e 4)
+## Próximos Passos (FASE 3 e 5)
 
 ### FASE 3: Integração API
 
@@ -77,14 +83,23 @@ DEVCORP CONSULTING:
 | US-070 | Refatorar dataService | [M] |
 | US-071 | Carregar Cursos da API | [M] |
 
-### FASE 4: RBAC & Permissões
+### FASE 4: RBAC & Permissões ✅ COMPLETA
+
+| US | Descrição | Status |
+|----|-----------|--------|
+| US-072 | Criar usePermissions | ✅ DONE |
+| US-073 | Criar RoleBasedAccess | ✅ DONE |
+| US-074 | UserHeader com role badge | ✅ DONE |
+| US-075 | Filtrar Dados por Tenant | Pendente |
+
+### FASE 5: Dashboards por Role
 
 | US | Descrição | Complexidade |
 |----|-----------|--------------|
-| US-072 | Criar usePermissions | [M] |
-| US-073 | Criar RoleBasedAccess | [L] |
-| US-074 | Aplicar RBAC nas Rotas | [M] |
-| US-075 | Filtrar Dados por Tenant | [M] |
+| US-076 | Dashboard Aluno (progresso pessoal) | [M] |
+| US-077 | Dashboard Instrutor (turmas) | [M] |
+| US-078 | Dashboard Admin (empresa) | [H] |
+| US-079 | Dashboard C-Level (analytics) | [H] |
 
 ---
 
@@ -151,4 +166,12 @@ Iniciar FASE 3 (Integração API) ou FASE 4 (RBAC):
 ---
 
 **Última atualização:** 2026-01-22
-**Status:** FASE 2 COMPLETA
+**Status:** FASE 2 + FASE 4 (parcial) COMPLETAS
+
+### Funcionalidades RBAC Implementadas
+
+1. **usePermissions hook** - Matriz RBAC com 20+ permissões
+2. **RoleBasedAccess** - Componente para renderização condicional
+3. **AdminOnly, InstructorOrAbove** - Helpers de conveniência
+4. **UserHeader** - Header com nome, empresa, role badge e logout
+5. **PrivateRoute** - Suporte a roles específicos por rota
