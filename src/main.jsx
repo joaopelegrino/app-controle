@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext.jsx'
+import { TenantProvider } from './contexts/TenantContext.jsx'
 import SistemaEducacionalCompleto from './components/SistemaEducacionalCompleto.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import './utils/debugLogger.js'
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <ErrorBoundary componentName="App Root">
         <AuthProvider>
-          <SistemaEducacionalCompleto />
+          <TenantProvider>
+            <SistemaEducacionalCompleto />
+          </TenantProvider>
         </AuthProvider>
       </ErrorBoundary>
     </BrowserRouter>

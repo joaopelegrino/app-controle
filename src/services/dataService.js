@@ -20,6 +20,7 @@
 
 import { studyAreas } from '../data/studyAreas';
 import { fasesBash, modulosBash, startDateBash } from '../data/bashLearningData';
+import { apiService } from './apiService';
 
 // ============================================
 // CONSTANTES E CONFIGURAÇÃO
@@ -202,7 +203,7 @@ export function getCourse(courseId) {
 }
 
 /**
- * Retorna módulos de um curso específico
+ * Retorna módulos de um curso específico (versão síncrona)
  * @param {string} courseId - ID do curso
  * @returns {Object|null} - { fases, modulos, startDate }
  */
@@ -218,6 +219,116 @@ export function getCourseModules(courseId) {
 
   // Outros cursos podem ser adicionados aqui
   return null;
+}
+
+// ============================================
+// API PÚBLICA - CURSOS (ASYNC COM API)
+// ============================================
+
+/**
+ * Retorna lista de cursos da API com fallback para dados estáticos
+ * US-071: Carregar cursos da API
+ * @returns {Promise<Course[]>}
+ */
+export async function getCoursesAsync() {
+  try {
+    const apiCourses = await apiService.getCourses();
+    if (apiCourses && apiCourses.length > 0) {
+      return apiCourses.map((course) => ({
+        id: course.id,
+        name: course.name,
+        icon: course.icon || studyAreas[course.id]?.icon || '📚',
+        description: course.description || studyAreas[course.id]?.description || '',
+        status: course.status || 'active',
+        badge: course.badge || studyAreas[course.id]?.badge || null,
+        modules: course.total_modules || studyAreas[course.id]?.modules || 0,
+        hours: course.duration_hours || studyAreas[course.id]?.hours || 0,
+        hasIntegratedApp: course.status === 'active',
+        flashcards: studyAreas[course.id]?.flashcards || {},
+      }));
+    }
+  } catch (error) {
+    console.warn('[dataService] API indisponível para cursos:', error.message);
+  }
+
+  // Fallback: dados estáticos
+  return getCourses();
+}
+
+/**
+ * Retorna dados de um curso da API com fallback
+ * @param {string} courseId - ID do curso
+ * @returns {Promise<Course|null>}
+ */
+export async function getCourseAsync(courseId) {
+  try {
+    const apiCourse = await apiService.getCourse(courseId);
+    if (apiCourse) {
+      const staticData = studyAreas[courseId] || {};
+      return {
+        id: apiCourse.id,
+        name: apiCourse.name,
+        icon: apiCourse.icon || staticData.icon || '📚',
+        description: apiCourse.description || staticData.description || '',
+        status: apiCourse.status || 'active',
+        badge: apiCourse.badge || staticData.badge || null,
+        modules: apiCourse.total_modules || staticData.modules || 0,
+        hours: apiCourse.duration_hours || staticData.hours || 0,
+        hasIntegratedApp: apiCourse.status === 'active',
+        flashcards: staticData.flashcards || {},
+      };
+    }
+  } catch (error) {
+    console.warn('[dataService] API indisponível para curso:', error.message);
+  }
+
+  // Fallback
+  return getCourse(courseId);
+}
+
+/**
+ * Retorna módulos e fases de um curso da API com fallback
+ * @param {string} courseId - ID do curso
+ * @returns {Promise<Object|null>} - { fases, modulos }
+ */
+export async function getCourseModulesAsync(courseId) {
+  try {
+    const [apiModules, apiPhases] = await Promise.all([
+      apiService.getCourseModules(courseId),
+      apiService.getCoursePhases(courseId),
+    ]);
+
+    if (apiModules?.length > 0 || apiPhases?.length > 0) {
+      // Mapear módulos da API para formato local
+      const modulos = (apiModules || []).map((mod, index) => ({
+        id: mod.id,
+        titulo: mod.name,
+        semana: mod.week || index + 1,
+        duracao: mod.duration || '2h',
+        entregavel: mod.deliverable || '',
+        temCaderno: mod.has_notes || false,
+        fase: mod.phase_id || null,
+      }));
+
+      // Mapear fases da API para formato local
+      const fases = (apiPhases || []).map((phase, index) => ({
+        id: phase.id,
+        titulo: phase.name,
+        semanas: phase.weeks || '',
+        cor: phase.color || 'gray-500',
+        corClara: phase.light_color || 'gray-100',
+        icone: phase.icon || '📚',
+        descricao: phase.description || '',
+      }));
+
+      return { fases, modulos };
+    }
+  } catch (error) {
+    console.warn('[dataService] API indisponível para módulos:', error.message);
+  }
+
+  // Fallback
+  return getCourseModules(courseId);
 }
 
 // ============================================
@@ -297,32 +408,96 @@ export function clearProgress(courseId) {
 // ============================================
 
 /**
- * Retorna notas de um curso
+ * Retorna notas de um curso (API + fallback localStorage)
  * @param {string} courseId - ID do curso
- * @returns {NoteData}
+ * @param {string} [userId] - ID do usuário (opcional, para API)
+ * @returns {Promise<NoteData>}
  */
-export function getNotes(courseId) {
+export async function getNotes(courseId, userId = null) {
   const key = STORAGE_KEYS.notes(courseId);
+
+  // Se tiver userId, tentar API primeiro
+  if (userId) {
+    try {
+      const apiData = await apiService.getNotes(userId, courseId);
+      if (apiData.content) {
+        const size = calculateSize(apiData.content);
+        // Salvar no localStorage como cache
+        safeSetItem(key, apiData.content);
+        return { content: apiData.content, ...size };
+      }
+    } catch (error) {
+      console.warn('[dataService] API indisponível para notas, usando localStorage:', error.message);
+    }
+  }
+
+  // Fallback: localStorage
   const content = safeGetItem(key) || '';
   const size = calculateSize(content);
-
-  return {
-    content,
-    ...size,
-  };
+  return { content, ...size };
 }
 
 /**
- * Salva notas de um curso
+ * Versão síncrona para compatibilidade (apenas localStorage)
+ * @param {string} courseId - ID do curso
+ * @returns {NoteData}
+ */
+export function getNotesSync(courseId) {
+  const key = STORAGE_KEYS.notes(courseId);
+  const content = safeGetItem(key) || '';
+  const size = calculateSize(content);
+  return { content, ...size };
+}
+
+/**
+ * Salva notas de um curso (API + localStorage)
  * @param {string} courseId - ID do curso
  * @param {string} content - Conteúdo da nota
- * @returns {SaveResult & { sizeInfo: { sizeBytes: number, sizeKB: string, percentage: string } }}
+ * @param {string} [userId] - ID do usuário (opcional, para API)
+ * @param {string} [companyId] - ID da empresa (opcional, para API)
+ * @returns {Promise<SaveResult & { sizeInfo: object }>}
  */
-export function saveNotes(courseId, content) {
+export async function saveNotes(courseId, content, userId = null, companyId = null) {
   const key = STORAGE_KEYS.notes(courseId);
   const sizeInfo = calculateSize(content);
 
   // Validar tamanho antes de salvar
+  if (sizeInfo.sizeBytes > MAX_NOTE_SIZE_BYTES) {
+    return {
+      success: false,
+      error: `Nota excede limite de 50KB (atual: ${sizeInfo.sizeKB} KB)`,
+      storage: null,
+      sizeInfo,
+    };
+  }
+
+  // Sempre salvar no localStorage (offline-first)
+  const localResult = safeSetItem(key, content);
+
+  // Se tiver userId e companyId, salvar na API também
+  if (userId && companyId) {
+    try {
+      await apiService.saveNotes(userId, companyId, courseId, content);
+      return { ...localResult, sizeInfo, syncedToApi: true };
+    } catch (error) {
+      console.warn('[dataService] Erro ao sincronizar notas com API:', error.message);
+      return { ...localResult, sizeInfo, syncedToApi: false, syncError: error.message };
+    }
+  }
+
+  return { ...localResult, sizeInfo, syncedToApi: false };
+}
+
+/**
+ * Versão síncrona para compatibilidade (apenas localStorage)
+ * @param {string} courseId - ID do curso
+ * @param {string} content - Conteúdo da nota
+ * @returns {SaveResult & { sizeInfo: object }}
+ */
+export function saveNotesSync(courseId, content) {
+  const key = STORAGE_KEYS.notes(courseId);
+  const sizeInfo = calculateSize(content);
+
   if (sizeInfo.sizeBytes > MAX_NOTE_SIZE_BYTES) {
     return {
       success: false,
@@ -398,20 +573,29 @@ export function getStorageStats() {
 // ============================================
 
 export const dataService = {
-  // Cursos
+  // Cursos (sync - dados estáticos)
   getCourses,
   getCourse,
   getCourseModules,
+
+  // Cursos (async - API + fallback)
+  getCoursesAsync,
+  getCourseAsync,
+  getCourseModulesAsync,
 
   // Progresso
   getProgress,
   saveProgress,
   clearProgress,
 
-  // Notas
+  // Notas (async com API)
   getNotes,
   saveNotes,
   clearNotes,
+
+  // Notas (sync apenas localStorage)
+  getNotesSync,
+  saveNotesSync,
 
   // Utilitários
   checkStorageAvailable,

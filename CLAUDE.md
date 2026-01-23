@@ -1,11 +1,12 @@
 # app-controle (UltraThink) - Configuração Claude Code
 
-**Version:** 3.0.0 | **Date:** 2026-01-22 | **Status:** Production
+**Version:** 4.0.0 | **Date:** 2026-01-22 | **Status:** Production
 **Project Type:** Plataforma B2B de treinamento técnico corporativo
+**Sprint:** 6 - Demo B2B COMPLETO (Auth + RBAC + API + Dashboards)
 
 ---
 
-## 🎯 Quick Start
+## Quick Start
 
 ```bash
 # Desenvolvimento
@@ -15,8 +16,9 @@ bun run test         # Rodar testes com Vitest
 
 # Com mise (se configurado)
 mise dev             # Servidor dev
-mise test            # Testes
+mise nocodb:start    # Backend (PostgreSQL + NocoDB)
 mise full-stack      # Frontend + Backend
+mise check           # Verificar ambiente
 
 # Slash Commands (Claude Code)
 /quick-audit         # Verificação rápida de saúde
@@ -26,74 +28,48 @@ mise full-stack      # Frontend + Backend
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 app-controle/
 ├── src/
-│   ├── components/         → Componentes React (hierarquia de 4 níveis)
-│   │   ├── HubView.jsx     → Hub principal para cursos e trilhas
-│   │   ├── LearningPathView.jsx → Display de trilhas de aprendizado
-│   │   ├── GenericLearningSystem.jsx → Componente unificado de curso
-│   │   ├── UserDashboard.jsx → Dashboard de progresso do usuário
-│   │   └── AdminDashboard.jsx → Dashboard de analytics admin
-│   ├── data/               → Definições e conteúdo de cursos
-│   │   ├── studyAreas.js   → Configuração de cursos ativos (SSOT)
-│   │   └── *LearningData.js → Conteúdo de curso (estrutura flat)
+│   ├── components/         → Componentes React
+│   │   ├── HubView.jsx     → Hub principal
+│   │   ├── LoginView.jsx   → Tela de login
+│   │   ├── PrivateRoute.jsx → Proteção de rotas
+│   │   ├── RoleBasedAccess.jsx → Controle por role
+│   │   ├── UserHeader.jsx  → Header com usuário
+│   │   ├── AdminDashboard.jsx → Dashboard admin
+│   │   ├── ExecutiveDashboard.jsx → Dashboard C-Level
+│   │   ├── UserDashboard.jsx → Dashboard do aluno
+│   │   ├── LearningPathView.jsx → Display de trilhas
+│   │   └── BashLearningSystem.jsx → Curso Bash
+│   ├── contexts/           → React Contexts
+│   │   ├── AuthContext.jsx → Estado de autenticação
+│   │   └── TenantContext.jsx → Multi-tenancy
 │   ├── hooks/              → Custom React hooks
+│   │   ├── useAuth.js      → Hook de autenticação
+│   │   ├── usePermissions.js → Hook RBAC
+│   │   ├── useTenant.js    → Hook de tenant
+│   │   ├── useCourses.js   → Hook para cursos API
 │   │   └── useModuleProgress.js → Persistência de progresso
 │   ├── services/           → Camadas de abstração
-│   │   └── dataService.js  → Operações localStorage
+│   │   ├── apiService.js   → Comunicação NocoDB API
+│   │   └── dataService.js  → Operações de dados
+│   ├── data/               → Definições e conteúdo
+│   │   ├── studyAreas.js   → Configuração de cursos
+│   │   └── *LearningData.js → Conteúdo de curso
 │   └── tests/              → Arquivos de teste Vitest
-├── docs/                   → Documentação do projeto
-│   └── backlog/ROADMAP.md  → Status atual do sprint (SSOT)
-├── .claude/                → Configuração Claude Code
-│   ├── agents/             → Agents especializados
-│   ├── commands/           → Slash commands customizados
-│   ├── settings.local.json → Configurações locais
-│   └── hooks.toml          → Hooks de automação
-├── .factory/               → Configuração Factory Droid CLI
-└── dist/                   → Output de build de produção
+├── database/               → Scripts SQL
+│   ├── migration-001-rbac.sql → Schema RBAC
+│   └── seed-demo-completo.sql → Dados de demo
+├── docs/backlog/           → Documentação do projeto
+└── dist/                   → Output de build
 ```
 
 ---
 
-## 🤖 Agents Disponíveis
-
-Agents especializados em `.claude/agents/`:
-
-| Agent | Propósito | Quando Usar |
-|-------|-----------|-------------|
-| `code-reviewer` | Revisão de código | Antes de PRs, validar mudanças |
-| `security-auditor` | Auditoria de segurança | Scans periódicos, antes de releases |
-| `test-generator` | Criar/melhorar testes | Aumentar cobertura, novas features |
-| `docs-engineer` | Documentação técnica | Documentar componentes, criar contexto |
-| `dev-environment-specialist` | Ambiente de desenvolvimento | Setup, troubleshooting mise |
-| `config-optimizer` | Otimização de configuração | Análise e melhoria de .claude/ |
-
-**Uso:**
-```
-"Use code-reviewer agent para revisar minhas mudanças staged"
-"Use test-generator agent para criar testes para src/hooks/useModuleProgress.js"
-"Use security-auditor agent para fazer scan do codebase"
-```
-
----
-
-## 📝 Slash Commands
-
-Commands customizados em `.claude/commands/`:
-
-| Command | Descrição | Uso |
-|---------|-----------|-----|
-| `/quick-audit` | Verificação rápida de saúde | Antes de features, PRs, diariamente |
-| `/full-coverage` | Relatório de cobertura detalhado | Antes de releases, semanalmente |
-| `/pr-ready` | Checklist pré-PR completo | Antes de criar PRs |
-| `/browser-testing` | Testes E2E com MCP | Testes de interface |
-
----
-
-## 🔧 Stack Tecnológica
+## Stack Tecnológica
 
 | Categoria | Tecnologia | Versão |
 |-----------|------------|--------|
@@ -102,66 +78,178 @@ Commands customizados em `.claude/commands/`:
 | **Styling** | Tailwind CSS | 3.4 |
 | **Routing** | React Router | 6 |
 | **Runtime** | Bun | 1.3.3 |
-| **Node (fallback)** | Node.js | 24+ |
+| **Backend** | NocoDB | latest |
+| **Database** | PostgreSQL | 16 |
 | **Testing** | Vitest | latest |
-| **Package Manager** | Bun | (NUNCA use npm/yarn) |
 
 ---
 
-## 📋 Padrões de Desenvolvimento
+## Estrutura de Rotas
 
-### Hierarquia de Componentes (4 níveis)
+| Rota | Componente | Acesso |
+|------|------------|--------|
+| `/login` | LoginView | Público |
+| `/` | HubView | Todos autenticados |
+| `/curso/:id` | CourseRoute | Todos autenticados |
+| `/curso/:id/aula/:n` | ModuleNotesRoute | Todos autenticados |
+| `/trilha/:id` | LearningPathView | Todos autenticados |
+| `/dashboard` | UserDashboard | Todos autenticados |
+| `/admin` | AdminDashboard | admin, c_level |
+| `/admin/executive` | ExecutiveDashboard | c_level |
+
+---
+
+## Sistema Atual (Branch: demo-nocodb-simple)
+
+**Status:**
+```
+✅ Frontend :3000  → React + Vite (Hub + Bash course)
+✅ NocoDB :8080    → Dashboard visual (PostgreSQL 16)
+✅ Docker          → WSL2 integration active
+✅ mise v2         → Hooks + 22 tasks
+✅ Auth            → Login funcional com 4 roles
+✅ RBAC            → Matriz de permissões (20+)
+✅ API Integration → apiService.js completo
+✅ Multi-tenancy   → TenantContext implementado
+✅ Dashboards      → Admin, Executive, User
+```
+
+**Acesso Backend (NocoDB Admin):**
+- URL: http://localhost:8080
+- Email: admin@ultrathink.com
+- Senha: UltraThink@Admin2026!
+
+---
+
+## Sprint 6: Demo B2B - COMPLETO
+
+**ROADMAP:** `docs/backlog/ROADMAP-DEMO-B2B.md`
+**Retomada:** `docs/backlog/RETOMADA-2026-01-22-API-SERVICE.md`
+
+### Progresso das Fases
+
+| Fase | Descrição | Status |
+|------|-----------|--------|
+| **FASE 1** | Schema & Dados de Demo | ✅ DONE |
+| **FASE 2** | Autenticação Frontend | ✅ DONE |
+| **FASE 3** | Integração API | ✅ DONE |
+| **FASE 4** | RBAC & Permissões | ✅ DONE |
+| **FASE 5** | Dashboard & Polish | ✅ DONE |
+
+### User Stories Implementadas (19/19)
 
 ```
-1. Root: SistemaEducacionalCompleto.jsx (Routes + State)
-   └─ 2. Views: HubView, LearningPathView, etc.
-      └─ 3. Systems: GenericLearningSystem
-         └─ 4. Subcomponents: NotesView, etc.
+FASE 1: US-060 ✅ US-061 ✅ US-062 ✅ US-063 ✅
+FASE 2: US-064 ✅ US-065 ✅ US-066 ✅ US-067 ✅
+FASE 3: US-068 ✅ US-069 ✅ US-070 ✅ US-071 ✅
+FASE 4: US-072 ✅ US-073 ✅ US-074 ✅ US-075 ✅
+FASE 5: US-076 ✅ US-077 ✅ US-078 ✅
 ```
 
-### Fluxo de Dados
+### Credenciais de Demo
 
 ```
-studyAreas.js (config)
-    ↓
-GenericLearningSystem (component)
-    ↓
-*LearningData.js (content)
-    ↓
-useModuleProgress (state)
-    ↓
-dataService (persistence)
-    ↓
-localStorage (storage)
-```
+Senha padrão: Demo@2026
 
-### Padrões localStorage
+ACME TECH SOLUTIONS:
+  ceo@acmetech.com       (c_level)   → /admin/executive
+  admin@acmetech.com     (admin)     → /admin
+  prof@acmetech.com      (instructor)→ /dashboard
+  maria@acmetech.com     (student)   → /dashboard
 
-- Todas operações wrapped em try/catch
-- Fallback para sessionStorage em QuotaExceededError
-- Tratar SecurityError (modo navegação privada)
-- Limite de 50KB por notas de curso
-- Formato de chave: `{courseId}-learning-notes` para notas
-- Formato de chave: `ultrathink_progress_{courseId}` para progresso
-
-### Estrutura de Rotas
-
-```
-/                    → Hub
-/curso/:id           → Visualização de curso
-/curso/:id/aula/:n   → Aula específica
-/trilha/:id          → Trilha de aprendizado
-/curso/:id/caderno   → Caderno do curso
-/dashboard           → Dashboard do usuário
-/admin               → Dashboard admin
+DEVCORP CONSULTING:
+  cto@devcorp.com        (c_level)   → /admin/executive
+  admin@devcorp.com      (admin)     → /admin
+  prof@devcorp.com       (instructor)→ /dashboard
+  julia@devcorp.com      (student)   → /dashboard
 ```
 
 ---
 
-## ✅ Regras - SEMPRE
+## Arquivos Implementados
+
+### Contexts
+```
+src/contexts/
+  AuthContext.jsx        ✅ Estado de autenticação
+  TenantContext.jsx      ✅ Multi-tenancy
+```
+
+### Hooks
+```
+src/hooks/
+  useAuth.js             ✅ Hook de autenticação
+  usePermissions.js      ✅ Hook RBAC (20+ permissões)
+  useTenant.js           ✅ Hook de tenant
+  useCourses.js          ✅ Hook para cursos da API
+  useModuleProgress.js   ✅ Progresso com API + fallback
+```
+
+### Services
+```
+src/services/
+  apiService.js          ✅ Comunicação NocoDB API v2
+  dataService.js         ✅ Dados com API + fallback localStorage
+```
+
+### Components
+```
+src/components/
+  LoginView.jsx          ✅ Tela de login
+  PrivateRoute.jsx       ✅ Proteção de rotas
+  RoleBasedAccess.jsx    ✅ Controle por role
+  UserHeader.jsx         ✅ Header com usuário + logout
+  AdminDashboard.jsx     ✅ Dashboard administrativo
+  ExecutiveDashboard.jsx ✅ Dashboard C-Level (KPIs, ROI)
+  UserDashboard.jsx      ✅ Dashboard do aluno
+```
+
+---
+
+## API Service - Métodos Disponíveis
+
+### Autenticação
+```javascript
+apiService.initialize()
+apiService.login(email, password)
+apiService.logout()
+apiService.isAuthenticated()
+```
+
+### Cursos
+```javascript
+apiService.getCourses()
+apiService.getCourse(id)
+apiService.getCourseModules(id)
+apiService.getCoursePhases(id)
+```
+
+### Progresso
+```javascript
+apiService.getProgress(userId, courseId)
+apiService.completeModule(userId, companyId, courseId, moduleId)
+apiService.uncompleteModule(userId, moduleId)
+```
+
+### Notas
+```javascript
+apiService.getNotes(userId, courseId)
+apiService.saveNotes(userId, companyId, courseId, content)
+```
+
+### Analytics
+```javascript
+apiService.getCompanyAnalytics(companyId)
+apiService.getUsersDashboard(companyId)
+apiService.getCourseStats()
+apiService.getCompanyProgress(companyId)
+```
+
+---
+
+## Regras - SEMPRE
 
 - Usar TodoWrite tool para tarefas multi-step
-- Consultar `docs/backlog/ROADMAP.md` no início de cada sessão (SSOT)
 - Verificar arquivo antes de editar com Read
 - Usar comandos `bun` para testes e build
 - Manter código limpo sem console.log em produção
@@ -172,44 +260,18 @@ localStorage (storage)
 
 ---
 
-## 🚫 Regras - NUNCA
+## Regras - NUNCA
 
 - Criar arquivos desnecessários
-- Adicionar comentários excessivos
 - Usar jQuery ou bibliotecas não instaladas
 - Modificar configurações de build sem necessidade
 - Commitar sem rodar testes
 - Duplicar código (refatorar para componentes genéricos)
 - Usar npm ou yarn (somente Bun!)
-- Carregar README.md no contexto (é para humanos)
 
 ---
 
-## 🔍 Ao Debugar
-
-1. Verificar console do browser primeiro
-2. Checar Network tab para requisições
-3. Validar props dos componentes
-4. Testar em diferentes tamanhos de tela
-5. Verificar localStorage para persistência
-6. Usar MCP Chrome DevTools para inspeção programática
-
----
-
-## 🛠️ Ao Implementar Features
-
-1. Verificar User Story correspondente em `docs/backlog/ROADMAP.md`
-2. Ler critérios de aceite e contexto B2B
-3. Criar branch: `feature/US-XXX-descricao`
-4. Implementar conforme critérios
-5. Escrever testes (se aplicável)
-6. Atualizar documentação
-7. Commitar com mensagem convencional
-8. Atualizar status da US: TODO → IN PROGRESS → DONE
-
----
-
-## 🌐 MCP Browser Testing
+## MCP Browser Testing
 
 ### Chrome DevTools MCP
 
@@ -223,9 +285,6 @@ mcp__chrome-devtools__take_snapshot()
 // Screenshot
 mcp__chrome-devtools__take_screenshot({ format: "png" })
 
-// Clicar elemento
-mcp__chrome-devtools__click({ uid: "[uid]" })
-
 // Verificar console
 mcp__chrome-devtools__list_console_messages()
 
@@ -235,122 +294,12 @@ mcp__chrome-devtools__list_network_requests()
 
 ---
 
-## 📊 Sistema Atual (Branch: demo-nocodb-simple)
-
-**Status:**
-```
-✅ Frontend :3000  → React + Vite (Hub + Bash course)
-✅ NocoDB :8080    → Dashboard visual (PostgreSQL 16)
-✅ Docker          → WSL2 integration active
-✅ mise v2         → Hooks + 22 tasks (91% conformidade)
-⚠️  Auth/RBAC     → Em implementação (Sprint 6)
-```
-
-**Acesso Backend (NocoDB Admin):**
-- URL: http://localhost:8080
-- Email: admin@ultrathink.com
-- Senha: UltraThink@Admin2026!
-
----
-
-## 🚀 Sprint 6: Demo B2B (Em Andamento)
-
-**ROADMAP:** `docs/backlog/ROADMAP-DEMO-B2B.md`
-**Análise:** `docs/backlog/ANALISE-PLANEJAMENTO-DEMO-B2B.md`
-
-### Próximos Passos
-
-| Prioridade | Tarefa | Complexidade | US |
-|------------|--------|--------------|-----|
-| **Alta** | Aplicar migrations no banco | [L] | US-063 |
-| **Alta** | Implementar LoginView.jsx | [M] | US-065 |
-| **Alta** | Criar AuthContext + useAuth | [M] | US-064 |
-| **Alta** | Definir matriz RBAC | [L] | US-072 |
-| **Média** | Criar apiService.js (NocoDB) | [M] | US-068 |
-| **Média** | Conectar progresso ao backend | [H] | US-069 |
-| **Baixa** | Onboarding wizard | [M] | - |
-
-### Manejo de Banco de Dados
-
-**Scripts SQL prontos para execução:**
-```bash
-# 1. Migration (schema RBAC + Learning Paths)
-docker exec -i app-controle-db psql -U nocodb_user -d app_controle \
-  < database/migration-001-rbac.sql
-
-# 2. Seed (dados de demo - 12 usuários, 4 roles)
-docker exec -i app-controle-db psql -U nocodb_user -d app_controle \
-  < database/seed-demo-completo.sql
-```
-
-### Credenciais de Demo (após seed)
-
-```
-Senha padrão: Demo@2026
-
-ACME TECH SOLUTIONS:
-  ceo@acmetech.com       (c_level)
-  admin@acmetech.com     (admin)
-  prof@acmetech.com      (instructor)
-  maria@acmetech.com     (student)
-
-DEVCORP CONSULTING:
-  cto@devcorp.com        (c_level)
-  admin@devcorp.com      (admin)
-  prof@devcorp.com       (instructor)
-  julia@devcorp.com      (student)
-```
-
-### Arquivos a Criar (Frontend)
-
-```
-src/contexts/
-  AuthContext.jsx        → Estado de autenticação
-  TenantContext.jsx      → Multi-tenancy
-
-src/hooks/
-  useAuth.js             → Hook de autenticação
-  usePermissions.js      → Hook de permissões
-
-src/services/
-  apiService.js          → Comunicação NocoDB
-  authService.js         → Serviço de auth
-
-src/components/
-  LoginView.jsx          → Tela de login
-  PrivateRoute.jsx       → Proteção de rotas
-  RoleBasedAccess.jsx    → Controle por role
-```
-
----
-
-## 📚 Documentação de Referência
-
-### Documentos Ativos
-- **CLAUDE.md** - Este arquivo (configuração Claude Code)
-- **docs/backlog/ROADMAP.md** - SSOT para planejamento
-- **.factory/AGENTS.md** - Instruções para Factory Droid
-
-### Configuração Claude Code
-- **.claude/agents/** - Agents especializados
-- **.claude/commands/** - Slash commands
-- **.claude/settings.local.json** - Configurações
-- **.claude/hooks.toml** - Hooks de automação
-
-### Configuração Factory Droid
-- **.factory/droids/** - Droids (subagents)
-- **.factory/commands/** - Commands
-- **.factory/settings.json** - Settings
-
----
-
-## 🔄 Git Workflow
+## Git Workflow
 
 ### Branching Strategy
 - Main branch: `desenvolvimento`
 - Feature branches: `feature/US-XXX-description`
 - Bug fixes: `fix/bug-description`
-- Refactoring: `refactor/area`
 
 ### Commit Conventions
 ```
@@ -362,27 +311,27 @@ test(scope): descrição      # Testes
 chore(scope): descrição     # Manutenção
 ```
 
-### Pre-commit Checklist
-1. `bun run lint`
-2. `bun run test`
-3. `git diff` para verificar mudanças
-4. Mensagem de commit descritiva
-5. Verificar dados sensíveis no diff
-
 ---
 
-## 📝 Política de Estimativas de Tempo
+## Comandos de Verificação
 
-- NUNCA usar estimativas de tempo (dias, semanas, meses) em planejamento
-- Usar estados de completude de tarefa: [L] [M] [H] [D]
-  - [L] Baixa complexidade (tarefa simples, atômica)
-  - [M] Média complexidade (requer planejamento)
-  - [H] Alta complexidade (multi-step, pesquisa necessária)
-  - [D] Done (completado e verificado)
+```bash
+# Verificar ambiente completo
+mise check
+
+# Verificar containers
+docker ps
+
+# Verificar dados no PostgreSQL
+mise db:verify
+
+# Health check NocoDB
+mise nocodb:health
+```
 
 ---
 
 **Última atualização:** 2026-01-22
-**Versão:** 3.0.0 (migração .factory → .claude)
+**Versão:** 4.0.0 (Sprint 6 Completo)
 **Projeto:** app-controle (UltraThink)
-**Responsável:** João Pelegrino
+**Status:** Demo B2B pronto para apresentação

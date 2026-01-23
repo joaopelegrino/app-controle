@@ -2,7 +2,9 @@
 
 **Branch:** demo-nocodb-simple
 **Data Início:** 2026-01-22
+**Data Conclusão:** 2026-01-22
 **Objetivo:** Demo B2B com autenticação, RBAC e integração FE↔BE
+**Status:** ✅ COMPLETO
 
 ---
 
@@ -10,16 +12,16 @@
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
-║  SPRINT 6: AUTENTICAÇÃO E RBAC                                   ║
+║  SPRINT 6: AUTENTICAÇÃO E RBAC - COMPLETO ✅                     ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                   ║
-║  FASE 1: Schema & Dados         ████████░░░░░░░░  [4 tasks]      ║
-║  FASE 2: Autenticação Frontend  ████████░░░░░░░░  [4 tasks]      ║
-║  FASE 3: Integração API         ████████░░░░░░░░  [4 tasks]      ║
-║  FASE 4: RBAC & Permissões      ████████░░░░░░░░  [4 tasks]      ║
-║  FASE 5: Dashboard & Polish     ████░░░░░░░░░░░░  [3 tasks]      ║
+║  FASE 1: Schema & Dados         ████████████████  [4/4] ✅       ║
+║  FASE 2: Autenticação Frontend  ████████████████  [4/4] ✅       ║
+║  FASE 3: Integração API         ████████████████  [4/4] ✅       ║
+║  FASE 4: RBAC & Permissões      ████████████████  [4/4] ✅       ║
+║  FASE 5: Dashboard & Polish     ████████████████  [3/3] ✅       ║
 ║                                                                   ║
-║  Total: 19 tasks | Status: TODO                                  ║
+║  Total: 19/19 tasks | Status: COMPLETO                           ║
 ║                                                                   ║
 ╚══════════════════════════════════════════════════════════════════╝
 ```
@@ -651,16 +653,16 @@ Como aluno, preciso que meu dashboard pessoal mostre dados reais do backend.
 
 ### Demo MVP Funcional
 
-- [ ] Login funciona com 4 roles diferentes
-- [ ] RBAC aplicado em todas as rotas
-- [ ] Progresso sincroniza com PostgreSQL
-- [ ] Notas sincronizam com PostgreSQL
-- [ ] Admin vê todos da empresa
-- [ ] C-Level vê métricas executivas
-- [ ] Multi-tenancy: isolamento entre empresas
-- [ ] Caminho "Desenvolvedor Backend" funciona
-- [ ] Curso Bash com 16 módulos funciona
-- [ ] Módulo 1.1 com notas funciona
+- [x] Login funciona com 4 roles diferentes
+- [x] RBAC aplicado em todas as rotas
+- [x] Progresso sincroniza com PostgreSQL
+- [x] Notas sincronizam com PostgreSQL
+- [x] Admin vê todos da empresa
+- [x] C-Level vê métricas executivas
+- [x] Multi-tenancy: isolamento entre empresas
+- [x] Caminho "Desenvolvedor Backend" funciona
+- [x] Curso Bash com 16 módulos funciona
+- [x] Módulo 1.1 com notas funciona
 
 ### Credenciais de Demo Documentadas
 
@@ -675,8 +677,22 @@ Como aluno, preciso que meu dashboard pessoal mostre dados reais do backend.
 ╚══════════════════════════════════════════════════════════════════╝
 ```
 
+### Rotas de Dashboard por Role
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  ROTAS DE ACESSO POR ROLE                                        ║
+╠══════════════════════════════════════════════════════════════════╣
+║  /admin/executive  → C-Level apenas (KPIs, ROI)                 ║
+║  /admin            → Admin e C-Level (gestão usuários)          ║
+║  /dashboard        → Todos (progresso pessoal)                  ║
+║  /                 → Todos (Hub de cursos)                      ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
 ---
 
 **Última atualização:** 2026-01-22
-**Status:** TODO
-**Próximo passo:** Implementar FASE 1 (US-060 a US-063)
+**Status:** COMPLETO (19/19 User Stories implementadas)
+**Validado via:** MCP Chrome DevTools
+**Próximo passo:** Demo pronto para apresentação

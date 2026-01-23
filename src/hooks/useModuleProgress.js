@@ -1,115 +1,211 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useAuth } from './useAuth';
+import { apiService } from '../services/apiService';
 
 /**
- * Hook para persistência de progresso de módulos em localStorage
+ * Hook para persistência de progresso de módulos
  *
- * Implementa padrões da skill DS-005 (localStorage-patterns):
- * - Try/catch em todas operações localStorage
- * - Tratamento de QuotaExceededError
- * - Graceful degradation (fallback para sessionStorage)
- * - User-friendly error messages
- * - Sincronização bidirecional React ↔ localStorage
+ * US-069: Integração com API NocoDB + fallback localStorage
  *
- * @param {string} courseId - ID do curso ('bash', 'clang', 'rust', 'vscode', 'claudecode')
- * @returns {[Set, function, object]} [completedModules, toggleModule, progressInfo]
+ * Estratégia de sincronização:
+ * - Carregamento: API primeiro, fallback para localStorage
+ * - Salvamento: API + localStorage (para offline)
+ * - Offline: usa localStorage e sincroniza quando online
  *
- * @example
- * ```jsx
- * function BashLearningSystem() {
- *   const [completedModules, toggleModule, progressInfo] = useModuleProgress('bash');
- *
- *   return (
- *     <div>
- *       <span>{progressInfo.completed}/{progressInfo.total} módulos</span>
- *       <button onClick={() => toggleModule('1.1')}>
- *         {completedModules.has('1.1') ? '✅' : '⬜'} Módulo 1.1
- *       </button>
- *     </div>
- *   );
- * }
- * ```
+ * @param {string} courseId - ID do curso ('bash', 'linux', etc.)
+ * @returns {[Set, function, object]} [completedModules, setCompletedModules, helpers]
  */
 export function useModuleProgress(courseId) {
-  const key = `ultrathink_progress_${courseId}`;
+  const { user, isAuthenticated } = useAuth();
+  const localStorageKey = `ultrathink_progress_${courseId}`;
 
-  // Lazy initialization: carrega do localStorage no primeiro render
-  const [completedModules, setCompletedModules] = useState(() => {
-    try {
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        const data = JSON.parse(saved);
-        if (data.completedModules && Array.isArray(data.completedModules)) {
-          return new Set(data.completedModules);
-        }
-      }
-    } catch (error) {
-      console.error(`[useModuleProgress] Erro ao carregar progresso (${key}):`, error);
-    }
-    return new Set();
-  });
-
+  const [completedModules, setCompletedModules] = useState(new Set());
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
   const [storageAvailable, setStorageAvailable] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState(() => {
-    try {
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        const data = JSON.parse(saved);
-        return data.lastUpdated || null;
-      }
-    } catch {
-      // Ignora erro - já tratado acima
-    }
-    return null;
-  });
+  const [syncError, setSyncError] = useState(null);
 
-  // Track if user has made changes (not just initial load)
+  // Track user changes vs initial load
   const hasUserChanges = useRef(false);
+  const pendingSync = useRef(new Set()); // Módulos pendentes de sync
 
-  // Salvar progresso quando completedModules mudar (apenas após interação do usuário)
+  // ============================================
+  // CARREGAR PROGRESSO (INICIAL)
+  // ============================================
+
   useEffect(() => {
-    // Só salva se o usuário fez mudanças (não no carregamento inicial)
-    if (!hasUserChanges.current) {
-      return;
+    loadProgress();
+  }, [courseId, user?.id]);
+
+  /**
+   * Carrega progresso da API ou localStorage
+   */
+  const loadProgress = useCallback(async () => {
+    setIsLoading(true);
+    setSyncError(null);
+    hasUserChanges.current = false;
+
+    // Se autenticado, tentar API primeiro
+    if (isAuthenticated && user?.id) {
+      try {
+        const { completedModules: apiModules, lastUpdated: apiLastUpdated } =
+          await apiService.getProgress(user.id, courseId);
+
+        setCompletedModules(new Set(apiModules));
+        setLastUpdated(apiLastUpdated);
+
+        // Salvar no localStorage como cache
+        saveToLocalStorage(apiModules, apiLastUpdated);
+
+        setIsLoading(false);
+        return;
+      } catch (error) {
+        console.warn('[useModuleProgress] API indisponível, usando localStorage:', error.message);
+        setSyncError('offline');
+      }
     }
 
-    if (!storageAvailable) {
-      console.warn('[useModuleProgress] Storage indisponível, skip save');
-      return;
-    }
+    // Fallback: localStorage
+    const localData = loadFromLocalStorage();
+    setCompletedModules(new Set(localData.completedModules));
+    setLastUpdated(localData.lastUpdated);
+    setIsLoading(false);
+  }, [courseId, user?.id, isAuthenticated]);
 
+  // ============================================
+  // SALVAR PROGRESSO
+  // ============================================
+
+  /**
+   * Efeito para salvar mudanças do usuário
+   */
+  useEffect(() => {
+    if (!hasUserChanges.current) return;
+    if (!storageAvailable) return;
+
+    const modulesArray = Array.from(completedModules);
     const timestamp = new Date().toISOString();
-    const data = {
-      completedModules: Array.from(completedModules),
-      lastUpdated: timestamp,
-      totalModules: completedModules.size
-    };
+
+    // Sempre salvar no localStorage (offline-first)
+    saveToLocalStorage(modulesArray, timestamp);
+    setLastUpdated(timestamp);
+
+    // Se autenticado, sincronizar com API
+    if (isAuthenticated && user?.id) {
+      syncWithApi();
+    }
+  }, [completedModules]);
+
+  /**
+   * Sincroniza mudanças pendentes com a API
+   */
+  const syncWithApi = useCallback(async () => {
+    if (!user?.id || !user?.companyId) return;
+    if (isSyncing) return;
+
+    setIsSyncing(true);
+    setSyncError(null);
 
     try {
-      localStorage.setItem(key, JSON.stringify(data));
-      setLastUpdated(timestamp);
+      // Buscar estado atual da API
+      const { completedModules: apiModules } = await apiService.getProgress(user.id, courseId);
+      const apiSet = new Set(apiModules);
+      const localSet = completedModules;
+
+      // Módulos para marcar como completo (local tem, API não)
+      const toComplete = [...localSet].filter(m => !apiSet.has(m));
+
+      // Módulos para desmarcar (API tem, local não)
+      const toUncomplete = [...apiSet].filter(m => !localSet.has(m));
+
+      // Executar operações
+      for (const moduleId of toComplete) {
+        await apiService.completeModule(user.id, user.companyId, courseId, moduleId);
+      }
+
+      for (const moduleId of toUncomplete) {
+        await apiService.uncompleteModule(user.id, moduleId);
+      }
+
+      pendingSync.current.clear();
     } catch (error) {
-      console.error(`[useModuleProgress] Erro ao salvar progresso (${key}):`, error);
+      console.error('[useModuleProgress] Erro ao sincronizar:', error);
+      setSyncError('sync_failed');
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [user?.id, user?.companyId, courseId, completedModules, isSyncing]);
+
+  // ============================================
+  // HELPERS LOCALSTORAGE
+  // ============================================
+
+  /**
+   * Salva no localStorage
+   */
+  const saveToLocalStorage = useCallback((modules, timestamp) => {
+    try {
+      const data = {
+        completedModules: Array.isArray(modules) ? modules : Array.from(modules),
+        lastUpdated: timestamp,
+        totalModules: modules.length
+      };
+      localStorage.setItem(localStorageKey, JSON.stringify(data));
+    } catch (error) {
+      console.error('[useModuleProgress] Erro ao salvar localStorage:', error);
 
       if (error.name === 'QuotaExceededError') {
-        console.error('[useModuleProgress] QuotaExceededError: Storage cheio');
-
-        // Fallback: Tentar salvar em sessionStorage
         try {
-          sessionStorage.setItem(`${key}_temp`, JSON.stringify(data));
-          console.log('[useModuleProgress] Fallback: Progresso salvo em sessionStorage');
-        } catch (sessionError) {
-          console.error('[useModuleProgress] Fallback falhou');
+          sessionStorage.setItem(`${localStorageKey}_temp`, JSON.stringify({
+            completedModules: modules,
+            lastUpdated: timestamp
+          }));
+        } catch {
+          // Ignorar
         }
       } else if (error.name === 'SecurityError') {
         setStorageAvailable(false);
-        console.error('[useModuleProgress] SecurityError: Modo privado detectado');
       }
     }
-  }, [completedModules, key, storageAvailable]);
+  }, [localStorageKey]);
 
   /**
-   * Toggle module completion status
-   * @param {string} moduleId - ID do módulo (ex: '1.1', '2.3')
+   * Carrega do localStorage
+   */
+  const loadFromLocalStorage = useCallback(() => {
+    try {
+      const saved = localStorage.getItem(localStorageKey);
+      if (saved) {
+        const data = JSON.parse(saved);
+        return {
+          completedModules: data.completedModules || [],
+          lastUpdated: data.lastUpdated || null
+        };
+      }
+
+      // Tentar sessionStorage (fallback)
+      const tempSaved = sessionStorage.getItem(`${localStorageKey}_temp`);
+      if (tempSaved) {
+        const data = JSON.parse(tempSaved);
+        return {
+          completedModules: data.completedModules || [],
+          lastUpdated: data.lastUpdated || null
+        };
+      }
+    } catch (error) {
+      console.error('[useModuleProgress] Erro ao ler localStorage:', error);
+    }
+
+    return { completedModules: [], lastUpdated: null };
+  }, [localStorageKey]);
+
+  // ============================================
+  // AÇÕES DO USUÁRIO
+  // ============================================
+
+  /**
+   * Toggle module completion
    */
   const toggleModule = useCallback((moduleId) => {
     hasUserChanges.current = true;
@@ -125,8 +221,7 @@ export function useModuleProgress(courseId) {
   }, []);
 
   /**
-   * Mark module as completed
-   * @param {string} moduleId - ID do módulo
+   * Marca módulo como completo
    */
   const markCompleted = useCallback((moduleId) => {
     hasUserChanges.current = true;
@@ -139,8 +234,7 @@ export function useModuleProgress(courseId) {
   }, []);
 
   /**
-   * Mark module as incomplete
-   * @param {string} moduleId - ID do módulo
+   * Marca módulo como incompleto
    */
   const markIncomplete = useCallback((moduleId) => {
     hasUserChanges.current = true;
@@ -153,17 +247,47 @@ export function useModuleProgress(courseId) {
   }, []);
 
   /**
-   * Reset all progress for this course
+   * Reseta todo o progresso
    */
-  const resetProgress = useCallback(() => {
+  const resetProgress = useCallback(async () => {
     hasUserChanges.current = true;
     setCompletedModules(new Set());
+
     try {
-      localStorage.removeItem(key);
+      localStorage.removeItem(localStorageKey);
+      sessionStorage.removeItem(`${localStorageKey}_temp`);
     } catch (error) {
-      console.error('[useModuleProgress] Erro ao resetar progresso:', error);
+      console.error('[useModuleProgress] Erro ao resetar:', error);
     }
-  }, [key]);
+
+    // Se autenticado, resetar na API também
+    if (isAuthenticated && user?.id) {
+      try {
+        const { completedModules: apiModules } = await apiService.getProgress(user.id, courseId);
+        for (const moduleId of apiModules) {
+          await apiService.uncompleteModule(user.id, moduleId);
+        }
+      } catch (error) {
+        console.error('[useModuleProgress] Erro ao resetar na API:', error);
+      }
+    }
+  }, [localStorageKey, courseId, user?.id, isAuthenticated]);
+
+  /**
+   * Força sincronização com API
+   */
+  const forceSync = useCallback(async () => {
+    if (!isAuthenticated || !user?.id) {
+      return { success: false, error: 'not_authenticated' };
+    }
+
+    try {
+      await syncWithApi();
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }, [isAuthenticated, user?.id, syncWithApi]);
 
   // Wrapper para setCompletedModules que marca como mudança do usuário
   const setCompletedModulesWithSave = useCallback((valueOrUpdater) => {
@@ -171,13 +295,32 @@ export function useModuleProgress(courseId) {
     setCompletedModules(valueOrUpdater);
   }, []);
 
-  // Info object for UI
+  // ============================================
+  // RETORNO
+  // ============================================
+
   const progressInfo = {
     completed: completedModules.size,
     lastUpdated,
     storageAvailable,
-    key
+    isLoading,
+    isSyncing,
+    syncError,
+    isOnline: !syncError || syncError !== 'offline',
+    key: localStorageKey
   };
 
-  return [completedModules, setCompletedModulesWithSave, { toggleModule, markCompleted, markIncomplete, resetProgress, ...progressInfo }];
+  const helpers = {
+    toggleModule,
+    markCompleted,
+    markIncomplete,
+    resetProgress,
+    forceSync,
+    reload: loadProgress,
+    ...progressInfo
+  };
+
+  return [completedModules, setCompletedModulesWithSave, helpers];
 }
+
+export default useModuleProgress;

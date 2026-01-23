@@ -21,9 +21,13 @@ import { FlashcardModal } from './FlashcardModal';
 import LearningPathView from './LearningPathView';
 import LoginView from './LoginView';
 import PrivateRoute from './PrivateRoute';
+import AdminDashboard from './AdminDashboard';
+import ExecutiveDashboard from './ExecutiveDashboard';
+import UserDashboard from './UserDashboard';
 import NotFoundPage from '../pages/NotFoundPage';
 import { useModuleProgress } from '../hooks/useModuleProgress';
 import { useAuth } from '../hooks/useAuth';
+import { usePermissions } from '../hooks/usePermissions';
 
 const SistemaEducacionalCompleto = () => {
   const navigate = useNavigate();
@@ -426,6 +430,36 @@ const SistemaEducacionalCompleto = () => {
           element={
             <PrivateRoute>
               <ModuleNotesRoute />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Admin Dashboard (protegida - admin e c_level) */}
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute roles={['admin', 'c_level']}>
+              <AdminDashboard />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Executive Dashboard (protegida - c_level apenas) */}
+        <Route
+          path="/admin/executive"
+          element={
+            <PrivateRoute roles={['c_level']}>
+              <ExecutiveDashboard />
+            </PrivateRoute>
+          }
+        />
+
+        {/* User Dashboard (protegida - todos) */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <UserDashboard />
             </PrivateRoute>
           }
         />
