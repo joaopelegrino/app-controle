@@ -8,6 +8,9 @@ import {
 import { useAuth } from '../hooks/useAuth';
 import { useTenant } from '../hooks/useTenant';
 import { apiService } from '../services/apiService';
+import { ExportAllButton } from './ExportButton';
+import { ModuleDifficultyCard } from './ModuleDifficultyCard';
+import { SkeletonCard } from './LoadingComponents';
 
 /**
  * ExecutiveDashboard - Dashboard Executivo para C-Level
@@ -28,6 +31,7 @@ export function ExecutiveDashboard() {
   const [companyStats, setCompanyStats] = useState(null);
   const [courseStats, setCourseStats] = useState([]);
   const [progressHistory, setProgressHistory] = useState([]);
+  const [moduleStats, setModuleStats] = useState({ difficultModules: [], summary: {} });
 
   /**
    * Carrega dados do dashboard
@@ -37,15 +41,17 @@ export function ExecutiveDashboard() {
 
     setIsLoading(true);
     try {
-      const [stats, courses, progress] = await Promise.all([
+      const [stats, courses, progress, modules] = await Promise.all([
         apiService.getCompanyAnalytics(tenantId),
         apiService.getCourseStats(),
         apiService.getCompanyProgress(tenantId),
+        apiService.getModuleStats(tenantId),
       ]);
 
       setCompanyStats(stats);
       setCourseStats(courses);
       setProgressHistory(progress);
+      setModuleStats(modules);
     } catch (error) {
       console.error('[ExecutiveDashboard] Erro:', error);
     } finally {
@@ -119,12 +125,115 @@ export function ExecutiveDashboard() {
     </div>
   );
 
+  /**
+   * Skeleton KPI Card para loading
+   */
+  const SkeletonKPICard = () => (
+    <div className="bg-white rounded-xl shadow-lg p-6 animate-pulse">
+      <div className="flex items-start justify-between mb-4">
+        <div className="w-12 h-12 bg-gray-200 rounded-lg" />
+        <div className="w-16 h-5 bg-gray-200 rounded" />
+      </div>
+      <div className="h-10 bg-gray-200 rounded w-24 mb-2" />
+      <div className="h-4 bg-gray-200 rounded w-32" />
+    </div>
+  );
+
+  /**
+   * Skeleton ROI Card para loading
+   */
+  const SkeletonROICard = () => (
+    <div className="bg-white rounded-xl shadow-lg p-8 mb-8 animate-pulse">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
+          <div className="w-12 h-12 bg-gray-200 rounded-lg mr-4" />
+          <div className="space-y-2">
+            <div className="h-6 bg-gray-200 rounded w-32" />
+            <div className="h-4 bg-gray-200 rounded w-48" />
+          </div>
+        </div>
+        <div className="text-right space-y-2">
+          <div className="h-10 bg-gray-200 rounded w-20 ml-auto" />
+          <div className="h-4 bg-gray-200 rounded w-10 ml-auto" />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="bg-gray-50 rounded-lg p-4">
+            <div className="h-4 bg-gray-200 rounded w-24 mb-2" />
+            <div className="h-8 bg-gray-200 rounded w-32" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Loading state com skeletons (US-103)
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="w-10 h-10 text-blue-400 animate-spin mx-auto mb-4" />
-          <p className="text-gray-300">Carregando métricas executivas...</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
+        {/* Header Skeleton */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-white/20 rounded-lg mr-4 animate-pulse" />
+                <div className="space-y-2">
+                  <div className="h-6 bg-white/20 rounded w-48 animate-pulse" />
+                  <div className="h-4 bg-white/20 rounded w-32 animate-pulse" />
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="h-10 bg-white/20 rounded w-32 animate-pulse" />
+                <div className="h-10 bg-white/20 rounded w-28 animate-pulse" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Skeleton */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* KPIs Grid Skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <SkeletonKPICard key={i} />
+            ))}
+          </div>
+
+          {/* ROI Card Skeleton */}
+          <SkeletonROICard />
+
+          {/* Bottom Grid Skeleton */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl shadow-lg p-6 animate-pulse">
+              <div className="h-6 bg-gray-200 rounded w-48 mb-6" />
+              <div className="space-y-4">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="space-y-2">
+                    <div className="flex justify-between">
+                      <div className="h-4 bg-gray-200 rounded w-32" />
+                      <div className="h-4 bg-gray-200 rounded w-12" />
+                    </div>
+                    <div className="h-3 bg-gray-200 rounded w-full" />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg p-6 animate-pulse">
+              <div className="h-6 bg-gray-200 rounded w-40 mb-6" />
+              <div className="space-y-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="w-5 h-5 bg-gray-200 rounded mr-3" />
+                      <div className="h-4 bg-gray-200 rounded w-32" />
+                    </div>
+                    <div className="h-4 bg-gray-200 rounded w-16" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -149,6 +258,7 @@ export function ExecutiveDashboard() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <ExportAllButton companyId={tenantId} />
               <button
                 onClick={loadData}
                 className="flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition"
@@ -305,6 +415,16 @@ export function ExecutiveDashboard() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Módulos que Precisam Atenção (US-101) */}
+        <div className="mt-6">
+          <ModuleDifficultyCard
+            difficultModules={moduleStats.difficultModules}
+            summary={moduleStats.summary}
+            isLoading={isLoading}
+            compact={false}
+          />
         </div>
       </div>
     </div>

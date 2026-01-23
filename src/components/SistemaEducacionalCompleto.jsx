@@ -23,6 +23,7 @@ import LoginView from './LoginView';
 import PrivateRoute from './PrivateRoute';
 import AdminDashboard from './AdminDashboard';
 import ExecutiveDashboard from './ExecutiveDashboard';
+import InstructorDashboard from './InstructorDashboard';
 import UserDashboard from './UserDashboard';
 import NotFoundPage from '../pages/NotFoundPage';
 import { useModuleProgress } from '../hooks/useModuleProgress';
@@ -450,6 +451,16 @@ const SistemaEducacionalCompleto = () => {
           element={
             <PrivateRoute roles={['c_level']}>
               <ExecutiveDashboard />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Instructor Dashboard (protegida - instructor, admin, c_level) US-096 */}
+        <Route
+          path="/instructor"
+          element={
+            <PrivateRoute roles={['instructor', 'admin', 'c_level']}>
+              <InstructorDashboard />
             </PrivateRoute>
           }
         />

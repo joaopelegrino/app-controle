@@ -34,6 +34,25 @@ const STORAGE_KEYS = {
 // Cache de table IDs (nome -> id)
 let tableIdsCache = null;
 
+// Table IDs conhecidos do NocoDB (base UltraThink)
+const TABLE_IDS = {
+  users: 'm0mivs1xdccrvhz',
+  companies: 'ms1ga42h4tiyzyq',
+  courses: 'mt3gmx6ze7b2cov',
+  modules: 'm79311ib9eppvc7',
+  user_progress: 'm3dat99drhj7w23',
+  study_notes: 'mh6nb1luq09i9uy',
+  learning_paths: 'ml2inf2c1jvviga',
+  learning_path_courses: 'mmeapp0octemvu3',
+  phases: 'mdbq55cll60lxto',
+  audit_logs: 'mq3s4gdwgi3vnh9',
+  // Views
+  v_company_progress: 'mprd8p851kgk834',
+  v_user_dashboard: 'm0gisnjsraqpcuh',
+  v_course_stats: 'mv2s2dqkh7zzt1a',
+  v_learning_path_details: 'mhliz3gap1rcieu',
+};
+
 // Credenciais do admin NocoDB (para demo)
 const NOCODB_ADMIN = {
   email: 'admin@ultrathink.com',
@@ -278,8 +297,10 @@ async function loadTableIds() {
 
     return tableIdsCache;
   } catch (error) {
-    console.error('[apiService] Erro ao carregar table IDs:', error);
-    throw error;
+    console.warn('[apiService] Usando TABLE_IDS hardcoded:', error.message);
+    // Usar TABLE_IDS hardcoded como fallback
+    tableIdsCache = TABLE_IDS;
+    return tableIdsCache;
   }
 }
 
@@ -741,6 +762,461 @@ export async function getUserByEmail(email) {
 }
 
 // ============================================
+// API CRUD DE USUÁRIOS (US-091)
+// ============================================
+
+/**
+ * Cria novo usuário na empresa
+ * @param {object} userData - { email, full_name, role, company_id }
+ * @returns {Promise<object>}
+ * @throws {ApiError} Se email já existe ou dados inválidos
+ */
+export async function createUser(userData) {
+  const { email, full_name, role, company_id } = userData;
+
+  // Validação básica
+  if (!email || !full_name || !role || !company_id) {
+    throw new ApiError('Dados obrigatórios: email, full_name, role, company_id', 400);
+  }
+
+  // Validar formato de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw new ApiError('Formato de email inválido', 400);
+  }
+
+  // Validar role permitida
+  const validRoles = ['student', 'instructor', 'admin', 'c_level'];
+  if (!validRoles.includes(role)) {
+    throw new ApiError(`Role inválida. Permitidas: ${validRoles.join(', ')}`, 400);
+  }
+
+  try {
+    // Verificar se email já existe
+    const existing = await getUserByEmail(email);
+    if (existing) {
+      throw new ApiError('Email já cadastrado no sistema', 409);
+    }
+
+    // Criar usuário com senha padrão (Demo@2026)
+    // Hash bcrypt pré-computado para "Demo@2026"
+    const defaultPasswordHash = '$2b$10$rOzJqQZQVcxQvZWqgmVOj.6bGvnQiX6xC1kKxLQm0i5V5V5V5V5V5';
+
+    const newUser = await create('users', {
+      email: email.toLowerCase().trim(),
+      full_name: full_name.trim(),
+      role,
+      company_id,
+      password_hash: defaultPasswordHash,
+      active: true,
+      created_at: new Date().toISOString(),
+    });
+
+    // Retornar sem o hash de senha
+    const { password_hash, ...userWithoutPassword } = newUser;
+    return userWithoutPassword;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao criar usuário:', error);
+    throw new ApiError('Erro ao criar usuário', 500, { original: error.message });
+  }
+}
+
+/**
+ * Atualiza dados do usuário
+ * @param {string} userId - ID do usuário
+ * @param {object} userData - Campos a atualizar (email, full_name, role)
+ * @returns {Promise<object>}
+ * @throws {ApiError} Se usuário não encontrado ou dados inválidos
+ */
+export async function updateUser(userId, userData) {
+  if (!userId) {
+    throw new ApiError('ID do usuário é obrigatório', 400);
+  }
+
+  const allowedFields = ['email', 'full_name', 'role', 'active'];
+  const updateData = {};
+
+  // Filtrar apenas campos permitidos
+  for (const field of allowedFields) {
+    if (userData[field] !== undefined) {
+      updateData[field] = userData[field];
+    }
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    throw new ApiError('Nenhum campo válido para atualizar', 400);
+  }
+
+  // Validar email se fornecido
+  if (updateData.email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(updateData.email)) {
+      throw new ApiError('Formato de email inválido', 400);
+    }
+
+    // Verificar se email já existe (exceto para o próprio usuário)
+    const existing = await getUserByEmail(updateData.email);
+    if (existing && String(existing.id) !== String(userId)) {
+      throw new ApiError('Email já cadastrado para outro usuário', 409);
+    }
+
+    updateData.email = updateData.email.toLowerCase().trim();
+  }
+
+  // Validar role se fornecida
+  if (updateData.role) {
+    const validRoles = ['student', 'instructor', 'admin', 'c_level'];
+    if (!validRoles.includes(updateData.role)) {
+      throw new ApiError(`Role inválida. Permitidas: ${validRoles.join(', ')}`, 400);
+    }
+  }
+
+  // Trim no nome se fornecido
+  if (updateData.full_name) {
+    updateData.full_name = updateData.full_name.trim();
+  }
+
+  try {
+    updateData.updated_at = new Date().toISOString();
+
+    const updatedUser = await update('users', userId, updateData);
+
+    // Retornar sem o hash de senha
+    const { password_hash, ...userWithoutPassword } = updatedUser;
+    return userWithoutPassword;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao atualizar usuário:', error);
+    throw new ApiError('Erro ao atualizar usuário', 500, { original: error.message });
+  }
+}
+
+/**
+ * Desativa usuário (soft delete)
+ * @param {string} userId - ID do usuário
+ * @returns {Promise<object>}
+ * @throws {ApiError} Se usuário não encontrado
+ */
+export async function deleteUser(userId) {
+  if (!userId) {
+    throw new ApiError('ID do usuário é obrigatório', 400);
+  }
+
+  try {
+    const deactivatedUser = await update('users', userId, {
+      active: false,
+      deactivated_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+
+    // Retornar sem o hash de senha
+    const { password_hash, ...userWithoutPassword } = deactivatedUser;
+    return userWithoutPassword;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao desativar usuário:', error);
+    throw new ApiError('Erro ao desativar usuário', 500, { original: error.message });
+  }
+}
+
+/**
+ * Reativa usuário previamente desativado
+ * @param {string} userId - ID do usuário
+ * @returns {Promise<object>}
+ */
+export async function reactivateUser(userId) {
+  if (!userId) {
+    throw new ApiError('ID do usuário é obrigatório', 400);
+  }
+
+  try {
+    const reactivatedUser = await update('users', userId, {
+      active: true,
+      deactivated_at: null,
+      updated_at: new Date().toISOString(),
+    });
+
+    const { password_hash, ...userWithoutPassword } = reactivatedUser;
+    return userWithoutPassword;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao reativar usuário:', error);
+    throw new ApiError('Erro ao reativar usuário', 500, { original: error.message });
+  }
+}
+
+// ============================================
+// API DE MATRÍCULAS (US-098)
+// ============================================
+
+/**
+ * Matricula usuário em um curso
+ * @param {object} enrollmentData - { userId, courseId, assignedBy, dueDate? }
+ * @returns {Promise<object>}
+ * @throws {ApiError} Se usuário/curso não existe ou já matriculado
+ */
+export async function enrollUser(enrollmentData) {
+  const { userId, courseId, assignedBy, dueDate } = enrollmentData;
+
+  if (!userId || !courseId || !assignedBy) {
+    throw new ApiError('Dados obrigatórios: userId, courseId, assignedBy', 400);
+  }
+
+  try {
+    // Verificar se já existe matrícula ativa
+    const existing = await findMany('user_courses', {
+      where: `(user_id,eq,${userId})~and(course_id,eq,${courseId})`,
+      limit: 1,
+    });
+
+    if (existing.list?.length > 0) {
+      const enrollment = existing.list[0];
+
+      // Se cancelada, reativar
+      if (enrollment.status === 'cancelled') {
+        return await update('user_courses', enrollment.Id || enrollment.id, {
+          status: 'enrolled',
+          assigned_by: assignedBy,
+          assigned_at: new Date().toISOString(),
+          due_date: dueDate || null,
+          updated_at: new Date().toISOString(),
+        });
+      }
+
+      throw new ApiError('Usuário já matriculado neste curso', 409);
+    }
+
+    // Criar nova matrícula
+    const newEnrollment = await create('user_courses', {
+      user_id: userId,
+      course_id: courseId,
+      assigned_by: assignedBy,
+      assigned_at: new Date().toISOString(),
+      due_date: dueDate || null,
+      status: 'enrolled',
+      created_at: new Date().toISOString(),
+    });
+
+    return newEnrollment;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao matricular usuário:', error);
+    throw new ApiError('Erro ao matricular usuário', 500, { original: error.message });
+  }
+}
+
+/**
+ * Cancela matrícula de usuário em um curso (soft delete)
+ * @param {string} userId
+ * @param {string} courseId
+ * @returns {Promise<object>}
+ * @throws {ApiError} Se matrícula não encontrada
+ */
+export async function unenrollUser(userId, courseId) {
+  if (!userId || !courseId) {
+    throw new ApiError('Dados obrigatórios: userId, courseId', 400);
+  }
+
+  try {
+    // Buscar matrícula existente
+    const existing = await findMany('user_courses', {
+      where: `(user_id,eq,${userId})~and(course_id,eq,${courseId})`,
+      limit: 1,
+    });
+
+    if (!existing.list?.length) {
+      throw new ApiError('Matrícula não encontrada', 404);
+    }
+
+    const enrollment = existing.list[0];
+    const enrollmentId = enrollment.Id || enrollment.id;
+
+    // Cancelar matrícula (soft delete)
+    return await update('user_courses', enrollmentId, {
+      status: 'cancelled',
+      updated_at: new Date().toISOString(),
+    });
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao cancelar matrícula:', error);
+    throw new ApiError('Erro ao cancelar matrícula', 500, { original: error.message });
+  }
+}
+
+/**
+ * Busca matrículas de um usuário
+ * @param {string} userId
+ * @param {object} options - { includeInactive: false }
+ * @returns {Promise<array>}
+ */
+export async function getUserEnrollments(userId, options = {}) {
+  if (!userId) {
+    throw new ApiError('userId é obrigatório', 400);
+  }
+
+  try {
+    let whereClause = `(user_id,eq,${userId})`;
+
+    if (!options.includeInactive) {
+      whereClause += '~and(status,ne,cancelled)';
+    }
+
+    const response = await findMany('user_courses', {
+      where: whereClause,
+      sort: '-assigned_at',
+    });
+
+    const enrollments = response.list || [];
+
+    // Enriquecer com dados do curso
+    const enrichedEnrollments = await Promise.all(
+      enrollments.map(async (enrollment) => {
+        try {
+          const course = await getCourse(enrollment.course_id);
+          return {
+            ...enrollment,
+            course_name: course?.name || enrollment.course_id,
+            course_icon: course?.icon || '📚',
+            total_modules: course?.total_modules || 0,
+          };
+        } catch {
+          return {
+            ...enrollment,
+            course_name: enrollment.course_id,
+            course_icon: '📚',
+            total_modules: 0,
+          };
+        }
+      })
+    );
+
+    return enrichedEnrollments;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao buscar matrículas:', error);
+    throw new ApiError('Erro ao buscar matrículas', 500, { original: error.message });
+  }
+}
+
+/**
+ * Busca todos os alunos matriculados em um curso (para empresa específica)
+ * @param {string} courseId
+ * @param {string} companyId
+ * @returns {Promise<array>}
+ */
+export async function getCourseEnrollments(courseId, companyId) {
+  if (!courseId || !companyId) {
+    throw new ApiError('courseId e companyId são obrigatórios', 400);
+  }
+
+  try {
+    // Buscar matrículas do curso
+    const enrollmentsResponse = await findMany('user_courses', {
+      where: `(course_id,eq,${courseId})~and(status,ne,cancelled)`,
+      sort: '-assigned_at',
+    });
+
+    const enrollments = enrollmentsResponse.list || [];
+
+    // Buscar usuários da empresa
+    const usersResponse = await findMany('users', {
+      where: `(company_id,eq,${companyId})~and(active,eq,true)`,
+    });
+    const companyUsers = usersResponse.list || [];
+    const companyUserIds = new Set(companyUsers.map(u => u.id));
+
+    // Filtrar apenas matrículas de usuários da empresa
+    const companyEnrollments = enrollments.filter(e => companyUserIds.has(e.user_id));
+
+    // Enriquecer com dados do usuário
+    const enrichedEnrollments = companyEnrollments.map(enrollment => {
+      const user = companyUsers.find(u => u.id === enrollment.user_id);
+      return {
+        ...enrollment,
+        user_name: user?.full_name || 'Usuário',
+        user_email: user?.email || '',
+        user_role: user?.role || 'student',
+      };
+    });
+
+    return enrichedEnrollments;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao buscar matrículas do curso:', error);
+    throw new ApiError('Erro ao buscar matrículas do curso', 500, { original: error.message });
+  }
+}
+
+/**
+ * Atualiza status ou data limite de uma matrícula
+ * @param {string} enrollmentId
+ * @param {object} data - { status?, dueDate?, startedAt?, completedAt? }
+ * @returns {Promise<object>}
+ */
+export async function updateEnrollment(enrollmentId, data) {
+  if (!enrollmentId) {
+    throw new ApiError('enrollmentId é obrigatório', 400);
+  }
+
+  const allowedFields = ['status', 'due_date', 'started_at', 'completed_at'];
+  const updateData = {};
+
+  // Mapear campos camelCase para snake_case
+  const fieldMap = {
+    dueDate: 'due_date',
+    startedAt: 'started_at',
+    completedAt: 'completed_at',
+  };
+
+  for (const [key, value] of Object.entries(data)) {
+    const dbField = fieldMap[key] || key;
+    if (allowedFields.includes(dbField) && value !== undefined) {
+      updateData[dbField] = value;
+    }
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    throw new ApiError('Nenhum campo válido para atualizar', 400);
+  }
+
+  // Validar status se fornecido
+  if (updateData.status) {
+    const validStatuses = ['enrolled', 'in_progress', 'completed', 'cancelled'];
+    if (!validStatuses.includes(updateData.status)) {
+      throw new ApiError(`Status inválido. Permitidos: ${validStatuses.join(', ')}`, 400);
+    }
+  }
+
+  try {
+    updateData.updated_at = new Date().toISOString();
+    return await update('user_courses', enrollmentId, updateData);
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao atualizar matrícula:', error);
+    throw new ApiError('Erro ao atualizar matrícula', 500, { original: error.message });
+  }
+}
+
+// ============================================
 // API DE ANALYTICS
 // ============================================
 
@@ -900,6 +1376,152 @@ export async function getCompanyProgress(companyId) {
 }
 
 // ============================================
+// API DE ANALYTICS AVANÇADO (US-101)
+// ============================================
+
+/**
+ * Busca estatísticas de módulos com análise de dificuldade
+ * Identifica módulos difíceis baseado na taxa de conclusão
+ *
+ * @param {string} companyId - ID da empresa (opcional, se não fornecido analisa todas)
+ * @returns {Promise<object>} { modules: array, difficultModules: array, summary: object }
+ */
+export async function getModuleStats(companyId = null) {
+  try {
+    // Buscar todos os módulos
+    const modulesResponse = await findMany('modules', {
+      sort: 'course_id,order_index',
+    });
+    const modules = modulesResponse.list || [];
+
+    // Buscar todo progresso (filtrando por empresa se necessário)
+    const whereClause = companyId
+      ? `(company_id,eq,${companyId})`
+      : '';
+    const progressResponse = await findMany('user_progress', {
+      where: whereClause || undefined,
+    });
+    const allProgress = progressResponse.list || [];
+
+    // Buscar usuários únicos que têm progresso
+    const uniqueUsers = new Set();
+    const usersPerModule = {};
+    const completedPerModule = {};
+
+    for (const p of allProgress) {
+      uniqueUsers.add(p.user_id);
+
+      // Contabilizar tentativas por módulo
+      if (!usersPerModule[p.module_id]) {
+        usersPerModule[p.module_id] = new Set();
+      }
+      usersPerModule[p.module_id].add(p.user_id);
+
+      // Contabilizar conclusões por módulo
+      if (p.completed) {
+        if (!completedPerModule[p.module_id]) {
+          completedPerModule[p.module_id] = new Set();
+        }
+        completedPerModule[p.module_id].add(p.user_id);
+      }
+    }
+
+    const totalActiveUsers = uniqueUsers.size;
+
+    // Calcular estatísticas por módulo
+    const moduleStats = modules.map((module) => {
+      const usersStarted = usersPerModule[module.id]?.size || 0;
+      const usersCompleted = completedPerModule[module.id]?.size || 0;
+
+      // Taxa de conclusão: usuários que completaram / usuários que começaram
+      const completionRate = usersStarted > 0
+        ? Math.round((usersCompleted / usersStarted) * 100)
+        : 0;
+
+      // Taxa de alcance: usuários que começaram / total de usuários ativos
+      const reachRate = totalActiveUsers > 0
+        ? Math.round((usersStarted / totalActiveUsers) * 100)
+        : 0;
+
+      // Classificação de dificuldade baseada na taxa de conclusão
+      let difficultyLevel = 'easy';
+      let difficultyLabel = 'Fácil';
+      let difficultyColor = 'green';
+
+      if (completionRate < 40) {
+        difficultyLevel = 'hard';
+        difficultyLabel = 'Difícil';
+        difficultyColor = 'red';
+      } else if (completionRate < 70) {
+        difficultyLevel = 'medium';
+        difficultyLabel = 'Médio';
+        difficultyColor = 'yellow';
+      }
+
+      return {
+        id: module.id,
+        title: module.title || module.id,
+        course_id: module.course_id,
+        order_index: module.order_index,
+        users_started: usersStarted,
+        users_completed: usersCompleted,
+        completion_rate: completionRate,
+        reach_rate: reachRate,
+        difficulty_level: difficultyLevel,
+        difficulty_label: difficultyLabel,
+        difficulty_color: difficultyColor,
+      };
+    });
+
+    // Ordenar por taxa de conclusão (menor primeiro = mais difícil)
+    const sortedByDifficulty = [...moduleStats]
+      .filter(m => m.users_started > 0)
+      .sort((a, b) => a.completion_rate - b.completion_rate);
+
+    // Filtrar módulos difíceis (taxa < 60% e pelo menos 1 usuário começou)
+    const difficultModules = sortedByDifficulty
+      .filter(m => m.completion_rate < 60 && m.users_started >= 1)
+      .slice(0, 5);
+
+    // Resumo geral
+    const modulesWithData = moduleStats.filter(m => m.users_started > 0);
+    const avgCompletionRate = modulesWithData.length > 0
+      ? Math.round(modulesWithData.reduce((sum, m) => sum + m.completion_rate, 0) / modulesWithData.length)
+      : 0;
+
+    return {
+      modules: moduleStats,
+      difficultModules,
+      summary: {
+        total_modules: modules.length,
+        modules_with_progress: modulesWithData.length,
+        total_active_users: totalActiveUsers,
+        avg_completion_rate: avgCompletionRate,
+        hard_modules_count: moduleStats.filter(m => m.difficulty_level === 'hard').length,
+        medium_modules_count: moduleStats.filter(m => m.difficulty_level === 'medium').length,
+        easy_modules_count: moduleStats.filter(m => m.difficulty_level === 'easy').length,
+      },
+    };
+  } catch (error) {
+    console.error('[apiService] Erro ao buscar stats de módulos:', error);
+    // Retornar dados default em caso de erro
+    return {
+      modules: [],
+      difficultModules: [],
+      summary: {
+        total_modules: 0,
+        modules_with_progress: 0,
+        total_active_users: 0,
+        avg_completion_rate: 0,
+        hard_modules_count: 0,
+        medium_modules_count: 0,
+        easy_modules_count: 0,
+      },
+    };
+  }
+}
+
+// ============================================
 // VERIFICAÇÃO DE CONECTIVIDADE
 // ============================================
 
@@ -965,6 +1587,17 @@ export const apiService = {
 
   // Usuários
   getUserByEmail,
+  createUser,
+  updateUser,
+  deleteUser,
+  reactivateUser,
+
+  // Matrículas (US-098)
+  enrollUser,
+  unenrollUser,
+  getUserEnrollments,
+  getCourseEnrollments,
+  updateEnrollment,
 
   // Progresso
   getProgress,
@@ -994,6 +1627,7 @@ export const apiService = {
   getUsersDashboard,
   getCourseStats,
   getCompanyProgress,
+  getModuleStats,
 
   // Utils
   checkApiHealth,

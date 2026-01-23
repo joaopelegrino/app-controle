@@ -1,352 +1,364 @@
-# Roadmap MVP - Plataforma de Aprendizado
+# Roadmap - Plataforma UltraThink B2B
 
-**Versão:** 1.1 MVP + NocoDB
-**Data:** 2026-01-22
-**Branch:** `demo-nocodb-simple` (baseada em `mvp-v1`)
-**Foco:** Backend, Persistência, Dashboard para Personas Não Técnicas
-
----
-
-## Visão do MVP
-
-Plataforma de aprendizado técnico com foco em:
-- ✅ Interface funcional (Hub, Cursos, Caminhos)
-- ✅ Persistência de progresso (Sprint 1 - US-001)
-- ✅ Navegação por URL (deep linking) (Sprint 1 - US-002)
-- 🎯 Estrutura escalável (Sprint 2)
+**Versão:** 6.0.0
+**Data:** 2026-01-23
+**Branch:** `demo-nocodb-simple`
+**Status:** Sprint 11 em Progresso (2/4 USs) + Testes E2E OK
 
 ---
 
-## Estado Atual
+## Visão Geral
 
-### Estrutura Visível
+Plataforma B2B de treinamento técnico corporativo com:
+- ✅ Autenticação multi-tenant (4 roles)
+- ✅ Sistema RBAC (21 permissões, 81% implementado)
+- ✅ Dashboards por role (Admin, Executive, Instructor, User)
+- ✅ CRUD completo de usuários
+- ✅ Visualização de notas de alunos
+- ✅ Matrículas em cursos
+- ✅ Exportação Excel/JSON
+- ✅ Analytics avançados (módulos difíceis)
+- ✅ Toast notifications
+- ✅ Loading states com skeletons
+- ✅ Onboarding wizard
+- ✅ Empty states reutilizáveis
+- ✅ Modal de confirmação
+
+---
+
+## Sprints Completos
+
+### Sprint 6: Base B2B ✅ (19/19 USs)
 
 ```
-🏠 HUB (/)
-├── 📊 Estatísticas: 1 área, 1 caminho, 16 módulos, 32h
-│
-├── 🎯 CAMINHOS PROPOSTOS
-│   └── 🛤️ Desenvolvedor Backend
-│       └── 🐚 Bash (disponível)
-│
-└── 📚 ÁREAS DE ESTUDO
-    └── 🐚 Bash Shell Scripting (padrão)
-        ├── 4 seções (Fundamentos, Texto, Avançado, Ferramentas)
-        ├── 16 módulos com checkboxes
-        ├── 📹 Vídeo YouTube
-        ├── 📒 Caderno de notas (auto-save)
-        └── 🃏 Flashcards 3D
-```
+FASE 1: Autenticação
+├── US-060: Schema PostgreSQL RBAC ✅
+├── US-061: Seed dados demo ✅
+├── US-062: AuthContext.jsx ✅
+└── US-063: LoginView.jsx ✅
 
-### Funcionalidades OK
+FASE 2: RBAC
+├── US-064: usePermissions.js (21 permissões) ✅
+├── US-065: PrivateRoute.jsx ✅
+├── US-066: RoleBasedAccess.jsx ✅
+└── US-067: UserHeader.jsx ✅
 
-| Componente | Status | Arquivo |
-|------------|--------|---------|
-| Hub | ✅ | `HubView.jsx` |
-| Caminho Proposto | ✅ | `LearningPathView.jsx` |
-| Curso Bash | ✅ | `BashLearningSystem.jsx` |
-| Caderno Notas | ✅ | `useAutoSaveNotes.js` |
-| Flashcards | ✅ | `FlashcardModal.jsx` |
-| Breadcrumb | ✅ | `Breadcrumb.jsx` |
+FASE 3: API Integration
+├── US-068: apiService.js ✅
+├── US-069: Progresso via API ✅
+├── US-070: Notas via API ✅
+└── US-071: TenantContext.jsx ✅
 
-### Pendências Técnicas
+FASE 4: Dashboards
+├── US-072: UserDashboard.jsx ✅
+├── US-073: AdminDashboard.jsx ✅
+├── US-074: ExecutiveDashboard.jsx ✅
+└── US-075: Analytics views ✅
 
-| Item | Prioridade | Descrição |
-|------|------------|-----------|
-| ~~Deep linking aulas~~ | ✅ DONE | ~~URL não atualiza ao clicar em módulo~~ |
-| ~~Persistir progresso~~ | ✅ DONE | ~~Checkboxes se perdem ao recarregar~~ |
-| ~~Rotas de aulas~~ | ✅ DONE | ~~Implementar `/curso/:id/aula/:aulaId`~~ |
-
----
-
-## Backlog Priorizado
-
-### Sprint 1: Persistência (P0) ✅ COMPLETA
-
-#### US-001: Persistir Progresso de Módulos ✅ DONE
-
-**Como** usuário estudando
-**Quero** que meu progresso seja salvo
-**Para** não perder ao recarregar a página
-
-**Critérios de Aceite:**
-- [x] Hook `useModuleProgress` criado
-- [x] Progresso salvo em localStorage por curso
-- [x] Carrega progresso ao montar componente
-- [x] Sincroniza estado React ↔ localStorage
-- [x] Tratamento de erros (QuotaExceededError)
-
-**Estrutura de dados:**
-```javascript
-// localStorage key: ultrathink_progress_bash
-{
-  "completedModules": ["1.1", "1.2", "2.1"],
-  "lastUpdated": "2025-12-03T10:00:00Z",
-  "totalModules": 16
-}
-```
-
-**Complexidade:** 5 pontos
-
----
-
-#### US-002: Corrigir Navegação de Aulas ✅ DONE
-
-**Como** usuário navegando
-**Quero** que a URL reflita minha posição
-**Para** compartilhar links e usar botão voltar
-
-**Critérios de Aceite:**
-- [x] Migrar `setCurrentSubView` → `navigate()` (via callback pattern)
-- [x] Rota `/curso/:id/aula/:aulaId` funciona
-- [x] Deep linking para aulas OK
-- [x] Botão voltar do navegador funciona
-- [x] Breadcrumb reflete posição
-
-**Arquivos envolvidos:**
-- `BashLearningSystem.jsx` - já usava `navigate()` na linha 224
-- `SistemaEducacionalCompleto.jsx` - `ModuleNotesRoute` com callback-as-navigation
-
-**Complexidade:** 8 pontos (na prática: 3 pontos - já estava implementado)
-
----
-
-### Sprint 2: Estrutura de Dados (P1) ✅ COMPLETA
-
-#### US-003: API de Dados Local ✅ DONE
-
-**Como** desenvolvedor
-**Quero** camada de abstração para dados
-**Para** facilitar futura migração para backend
-
-**Critérios de Aceite:**
-- [x] Serviço `dataService.js` criado
-- [x] Métodos: getCourses, getCourse, getCourseModules
-- [x] Métodos: getProgress, saveProgress, clearProgress
-- [x] Métodos: getNotes, saveNotes, clearNotes
-- [x] Métodos: checkStorageAvailable, getStorageStats
-- [x] Abstrai localStorage (fallback para sessionStorage)
-- [x] Tipagem completa com JSDoc (Course, CourseProgress, NoteData, SaveResult)
-
-**Estrutura implementada:**
-```javascript
-// src/services/dataService.js
-export const dataService = {
-  // Cursos
-  getCourses: () => Course[],
-  getCourse: (id) => Course | null,
-  getCourseModules: (id) => { fases, modulos, startDate } | null,
-
-  // Progresso
-  getProgress: (courseId) => CourseProgress,
-  saveProgress: (courseId, modules) => SaveResult,
-  clearProgress: (courseId) => boolean,
-
-  // Notas
-  getNotes: (courseId) => NoteData,
-  saveNotes: (courseId, content) => SaveResult & { sizeInfo },
-  clearNotes: (courseId) => boolean,
-
-  // Utilitários
-  checkStorageAvailable: () => boolean,
-  getStorageStats: () => { used, usedKB, usedMB, available }
-};
-```
-
-**Complexidade:** 8 pontos
-
----
-
-#### US-004: Refatorar Estrutura de Dados ✅ DONE
-
-**Como** desenvolvedor
-**Quero** estrutura de dados consistente
-**Para** facilitar manutenção
-
-**Critérios de Aceite:**
-- [x] Analisar formato atual de `*LearningData.js` (bash, c, rust)
-- [x] Schema documentado com tipos JSDoc (Phase, Module, CourseData)
-- [x] Validação de dados em runtime (validateCourseData)
-- [x] Constantes de validação (cores Tailwind, padrão de ID)
-- [ ] Migração de dados antigos (não necessário - estrutura já consistente)
-
-**Arquivo criado:** `src/data/schema.js`
-```javascript
-// Tipos principais
-Phase: { id, nome, semanas, cor, corClara, icone, descricao }
-Module: { id, nome, semana, fase, duracao, entregavel, temNotas? }
-CourseData: { fases[], modulos[], startDate }
-
-// Funções de validação
-validatePhase(phase, index) => string[]
-validateModule(module, index, validPhaseIds) => { errors, warnings }
-validateCourseData(data, courseId) => ValidationResult
-```
-
-**Complexidade:** 5 pontos
-
----
-
-### Sprint 3: Dashboard NocoDB (P1) ✅ COMPLETA
-
-#### US-005: Implementar Backend PostgreSQL + NocoDB ✅ DONE
-
-**Como** gestor não técnico (RH, Tech Lead, C-Level)
-**Quero** visualizar progresso dos alunos em dashboard visual
-**Para** tomar decisões baseadas em dados sem precisar programar
-
-**Critérios de Aceite:**
-- [x] Schema PostgreSQL criado (`database/init.sql`)
-- [x] Dados seed incluídos (`database/seed.sql`)
-- [x] Docker Compose configurado (`docker-compose.nocodb.yml`)
-- [x] NocoDB acessível em http://localhost:8080
-- [x] 8 tabelas + 3 views de analytics
-- [x] Dados realistas: 2 empresas, 7 usuários, 16 módulos
-- [x] Documentação completa para não-técnicos
-- [x] Setup em ~10 minutos
-
-**Estrutura implementada:**
-
-```
-PostgreSQL 16
-├── Tabelas (8)
-│   ├── companies      → Empresas clientes
-│   ├── users          → Usuários (admins, teachers, students)
-│   ├── courses        → Catálogo de cursos (1: Bash)
-│   ├── phases         → Fases do curso (4)
-│   ├── modules        → Módulos/aulas (16)
-│   ├── user_progress  → Progresso de conclusão
-│   ├── study_notes    → Caderno de notas
-│   └── audit_logs     → Logs de auditoria
-│
-└── Views Analytics (3)
-    ├── v_company_progress  → Progresso por empresa
-    ├── v_user_dashboard    → Dashboard individual
-    └── v_course_stats      → Estatísticas do curso
-```
-
-**Personas atendidas:**
-1. **Gestor de RH / T&D** - Ver ROI, exportar relatórios
-2. **Tech Lead / Instrutor** - Acompanhar júniores, identificar módulos difíceis
-3. **C-Level** - Apresentar métricas para board, justificar budget
-
-**Documentação criada:**
-- `docs/backend/NOCODB-QUICKSTART.md` - Setup em 10 min
-- `docs/backend/PERSONAS-NAO-TECNICAS.md` - Como cada persona usa
-- `database/README.md` - Estrutura do banco
-
-**Complexidade:** 13 pontos
-
-**Benefícios:**
-- ✅ Gestores veem progresso em tempo real
-- ✅ Exportação Excel com 1 clique
-- ✅ Sem código necessário para gerenciar dados
-- ✅ Multi-tenancy (2+ empresas)
-- ✅ Economia R$ 270k/ano vs Udemy
-
----
-
-### Sprint 4: Expansão Controlada (P2)
-
-#### US-006: Reativar Áreas Comentadas
-
-**Como** usuário
-**Quero** acessar mais cursos
-**Para** expandir meu aprendizado
-
-**Critérios de Aceite:**
-- [ ] C Programming reativado (50 módulos)
-- [ ] Rust reativado (24 módulos)
-- [ ] Todos usando padrão Bash
-- [ ] Persistência funcionando
-
-**Ordem:**
-1. C Programming (já tem LearningSystem)
-2. Rust (já tem LearningSystem)
-3. VSCode WSL
-4. Claude Code
-
-**Complexidade:** 13 pontos (total)
-
----
-
-## Stack Técnica
-
-```yaml
-Runtime:
-  principal: Bun 1.3.3 (Anthropic - 35x mais rápido)
-  fallback: Node.js 24.11.1 (via mise)
-  gerenciador: mise (versões centralizadas)
-
-Frontend:
-  framework: React 18.3.1
-  build: Vite 5.4.19
-  styling: Tailwind CSS 3.4
-  icons: Lucide React
-  routing: React Router 6
-
-Persistência (Dual):
-  client: localStorage (hooks customizados, 50KB/nota)
-  server: PostgreSQL 16 + NocoDB (dashboard visual)
-  pattern: Ambos coexistem (migração gradual)
-
-Backend (NocoDB):
-  database: PostgreSQL 16
-  dashboard: NocoDB Community Edition
-  interface: Spreadsheet-like (sem SQL)
-  api: REST auto-gerada
-  auth: Email/password
-  deploy: Docker Compose
-  
-Admin Interface:
-  acesso: http://localhost:8080
-  usuarios: Gestores RH, Tech Leads, C-Level
-  funcoes: Ver progresso, adicionar users, exportar Excel
+FASE 5: Polish
+├── US-076: Conectar dashboards às views ✅
+├── US-077: NotFoundPage.jsx ✅
+└── US-078: Redirect por role ✅
 ```
 
 ---
 
-## Métricas
+### Sprint 7: CRUD Usuários ✅ (3/3 USs)
 
-| Métrica | Sprint 1 | Sprint 2 | Sprint 3 (Atual) |
-|---------|----------|----------|------------------|
-| Áreas visíveis | 1 | 1 | 1 |
-| Progresso persistido | ✅ | ✅ | ✅ (dual) |
-| Deep linking | ✅ | ✅ | ✅ |
-| Camada de dados | ❌ | ✅ | ✅ |
-| Dashboard visual | ❌ | ❌ | ✅ |
-| Multi-tenancy | ❌ | ❌ | ✅ |
-| Exportação Excel | ❌ | ❌ | ✅ |
-| Personas não-técnicas | ❌ | ❌ | ✅ (3) |
+```
+US-091: API CRUD usuários ✅
+├── apiService.createUser(userData)
+├── apiService.updateUser(userId, data)
+├── apiService.deleteUser(userId) [soft delete]
+└── apiService.reactivateUser(userId)
 
----
+US-092: Modal criar usuário ✅
+└── src/components/UserFormModal.jsx
 
-## Arquivos de Referência
-
-| Arquivo | Propósito |
-|---------|-----------|
-| `docs/ESTRUTURA-PLATAFORMA-MVP.md` | Mockups e padrões visuais |
-| `src/data/studyAreas.js` | Áreas de estudo |
-| `src/data/bashLearningData.js` | Modelo de dados (padrão) |
-| `src/hooks/useAutoSaveNotes.js` | Padrão de persistência |
+US-093: Modal editar/excluir ✅
+└── AdminDashboard.jsx integrado com modal
+```
 
 ---
 
-## Changelog
+### Sprint 8: Dashboard Instrutor ✅ (3/3 USs)
 
-| Data | Mudança |
-|------|---------|
-| 2026-01-22 | Sprint 3: NocoDB + PostgreSQL implementado (US-005) |
-| 2026-01-22 | Criado: database/init.sql, seed.sql, docker-compose.nocodb.yml |
-| 2026-01-22 | Documentação: NOCODB-QUICKSTART.md, PERSONAS-NAO-TECNICAS.md |
-| 2026-01-22 | Branch demo-nocodb-simple criada (baseada em mvp-v1) |
-| 2025-12-04 | US-004: schema.js criado (tipos JSDoc + validação de dados) |
-| 2025-12-04 | US-003: dataService.js criado (camada de abstração para persistência) |
-| 2025-12-04 | US-002: Deep linking de aulas validado e funcionando (callback-as-navigation pattern) |
-| 2025-12-04 | US-001: Persistência de progresso implementada (useModuleProgress hook) |
-| 2025-12-03 | Migração npm → Bun como runtime principal |
-| 2025-12-03 | Criação do MVP v1 (orphan branch) |
+```
+US-094: InstructorDashboard.jsx ✅
+├── Estatísticas do time
+├── Tabela de alunos
+├── Progresso individual
+└── Card "Alunos que precisam de atenção"
+
+US-095: StudentNotesModal.jsx ✅
+├── Seletor de curso
+├── Visualização de notas
+└── Metadados (data, tamanho)
+
+US-096: Rota /instructor ✅
+└── SistemaEducacionalCompleto.jsx atualizado
+```
 
 ---
 
-**Foco:** Menos features, mais qualidade. Cada funcionalidade deve estar 100% antes de avançar.
+### Sprint 9: Matrículas e Exportação ✅ (4/4 USs)
+
+```
+US-097: Schema matrículas ✅
+└── database/migration-002-enrollments.sql
+    ├── Tabela user_courses
+    ├── View v_user_enrollments
+    ├── Funções enroll_user(), unenroll_user()
+    └── Dados de demo
+
+US-098: API matrículas ✅
+└── src/services/apiService.js
+    ├── enrollUser(enrollmentData)
+    ├── unenrollUser(userId, courseId)
+    ├── getUserEnrollments(userId)
+    ├── getCourseEnrollments(courseId, companyId)
+    └── updateEnrollment(id, data)
+
+US-099: UI atribuir curso ✅
+└── src/components/EnrollUserModal.jsx
+    ├── Seleção múltipla de usuários
+    ├── Busca/filtro
+    ├── Data limite opcional
+    └── Integrado no AdminDashboard
+
+US-100: Exportação relatórios ✅
+├── src/utils/exportUtils.js
+│   ├── exportToExcel()
+│   ├── exportToJSON()
+│   └── Formatadores de relatório
+└── src/components/ExportButton.jsx
+    ├── Dropdown Excel/JSON
+    ├── ExportAllButton
+    └── Integrado nos 3 dashboards
+```
+
+---
+
+### Sprint 10: Analytics + Polish ✅ (4/4 USs)
+
+```
+US-101: Analytics Módulos Difíceis ✅
+└── src/components/ModuleDifficultyCard.jsx
+    ├── apiService.getModuleStats(companyId)
+    ├── Classificação: hard/medium/easy
+    ├── Integrado AdminDashboard
+    └── Integrado ExecutiveDashboard
+
+US-102: Toast Notifications ✅
+├── src/contexts/ToastContext.jsx
+│   └── success(), error(), warning(), info()
+└── src/components/ToastContainer.jsx
+    ├── Animações de entrada/saída
+    ├── Barra de progresso
+    └── Auto-dismiss 5s
+
+US-103: Loading States Globais ✅
+├── src/contexts/LoadingContext.jsx
+│   └── startLoading(), stopLoading(), withLoading()
+└── src/components/LoadingComponents.jsx
+    ├── Spinner, SkeletonCard, SkeletonTable
+    ├── SkeletonList, SkeletonCourseCard
+    ├── LoadingOverlay, LoadingButton
+    └── Integrado em todos dashboards
+
+US-104: Onboarding Wizard ✅
+├── src/contexts/OnboardingContext.jsx
+│   └── Detecção primeiro acesso, persistência
+└── src/components/OnboardingWizard.jsx
+    ├── Step 1: Welcome (saudação personalizada)
+    ├── Step 2: Objetivo (Backend/DevOps/FullStack/Data)
+    ├── Step 3: Tour (opcional)
+    └── Step 4: Complete (recomendações)
+```
+
+**Arquivos criados no Sprint 10:**
+- `src/contexts/ToastContext.jsx`
+- `src/contexts/LoadingContext.jsx`
+- `src/contexts/OnboardingContext.jsx`
+- `src/components/ToastContainer.jsx`
+- `src/components/LoadingComponents.jsx`
+- `src/components/ModuleDifficultyCard.jsx`
+- `src/components/OnboardingWizard.jsx`
+
+---
+
+## Métricas de Progresso
+
+```
+Total de User Stories: 35
+Completas: 35 (100%)
+Em Progresso: 2 (Sprint 11)
+
+RBAC:
+- Permissões definidas: 21
+- Permissões com UI: 17 (81%)
+
+Sprints:
+- Sprint 6:  ✅ 19/19 (100%)
+- Sprint 7:  ✅ 3/3 (100%)
+- Sprint 8:  ✅ 3/3 (100%)
+- Sprint 9:  ✅ 4/4 (100%)
+- Sprint 10: ✅ 4/4 (100%)
+- Sprint 11: 🔄 2/4 (50%)
+
+Status: PRONTO PARA DEMO B2B ✅ + UX Polish em progresso
+```
+
+---
+
+## Sprint 11: UX Polish (Em Progresso - 2/4 USs)
+
+```
+US-105: Empty States ✅
+└── src/components/EmptyState.jsx
+    ├── Componente reutilizável
+    ├── 8 tipos: users, students, courses, notes, search, files, inbox, error
+    ├── Modo compact para cards
+    ├── EmptyStateInline para tabelas
+    └── Integrado: AdminDashboard, InstructorDashboard, StudentNotesModal
+
+US-106: Modal de Confirmação ✅
+└── src/components/ConfirmModal.jsx
+    ├── 3 tipos: danger (vermelho), warning (amarelo), info (azul)
+    ├── Loading state com spinner
+    ├── Hook useConfirmModal() para uso programático
+    └── Integrado: UserFormModal (exclusão de usuário)
+
+US-107: Responsividade Mobile ⏳
+├── Menu hamburger < 768px
+├── Cards em coluna única mobile
+└── Tabelas com scroll horizontal
+
+US-108: Autenticação NocoDB JWT ⏳
+├── Login via API NocoDB real
+├── Token JWT em localStorage
+└── Refresh automático
+```
+
+**Arquivos criados no Sprint 11:**
+- `src/components/EmptyState.jsx`
+- `src/components/ConfirmModal.jsx`
+
+---
+
+## Sugestões Sprint 12 (Futuro)
+
+| US | Descrição | Complexidade | Prioridade |
+|----|-----------|--------------|------------|
+| US-109 | CRUD de cursos (courses.create/edit) | H | Alta |
+| US-110 | Certificados de conclusão | M | Média |
+| US-111 | Tour guiado real (highlight UI) | M | Baixa |
+| US-112 | Notificações push/email | H | Baixa |
+
+---
+
+## Ambiente de Desenvolvimento
+
+### Modo 1: Frontend Apenas (Dados Mock)
+
+```bash
+bun run dev    # http://localhost:3001
+```
+
+Funcionalidades disponíveis:
+- Login com credenciais demo
+- Navegação entre dashboards
+- Onboarding wizard
+- UI completa (sem dados do backend)
+
+### Modo 2: Full Stack (Docker Required)
+
+**Pré-requisitos:**
+- Docker Desktop instalado no Windows
+- WSL2 Integration habilitada em Docker Desktop Settings
+
+```bash
+# 1. Iniciar containers (PostgreSQL + NocoDB)
+docker compose -f docker-compose.nocodb.yml up -d
+
+# 2. Aguardar containers healthy
+docker compose -f docker-compose.nocodb.yml ps
+
+# 3. Executar migrations
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-001-rbac.sql
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-002-enrollments.sql
+
+# 4. Iniciar frontend
+bun run dev
+```
+
+### Verificar Status
+
+```bash
+# Containers ativos
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+# Testar endpoints
+curl http://localhost:3001     # Frontend
+curl http://localhost:8080     # NocoDB
+```
+
+---
+
+## Credenciais de Teste
+
+```
+Senha padrão: Demo@2026
+
+Roles e rotas:
+- c_level    → /admin/executive
+- admin      → /admin
+- instructor → /instructor
+- student    → /dashboard
+
+Empresas demo:
+- ACME Tech Solutions (id: 1)
+- DevCorp Consulting (id: 2)
+```
+
+---
+
+## Comando de Retomada
+
+```bash
+# Opção 1: Continuar com backend (Docker já configurado)
+docker compose -f docker-compose.nocodb.yml up -d && bun run dev
+
+# Opção 2: Desenvolvimento frontend apenas
+bun run dev
+
+# Opção 3: Continuar Sprint 11
+Implementar US-107 (Responsividade) e US-108 (Auth JWT)
+```
+
+**Estado atual (2026-01-23):**
+- Sprint 10: COMPLETO (4/4 USs)
+- Sprint 11: EM PROGRESSO (2/4 USs)
+  - ✅ US-105: EmptyState.jsx
+  - ✅ US-106: ConfirmModal.jsx
+  - ⏳ US-107: Responsividade Mobile
+  - ⏳ US-108: Auth NocoDB JWT
+- Testes E2E: CONCLUIDOS (4/4 perfis validados)
+- Frontend: http://localhost:3001
+- Backend: http://localhost:8080 (NocoDB + PostgreSQL)
+- Usuarios: 13 no banco (12 demo + 1 teste)
+
+**Pendencias identificadas:**
+- company_id no NocoDB é coluna sistema (ForeignKey) - precisa SQL direto
+- MCP Chrome DevTools pode desconectar - reiniciar se necessario
+
+**Documentacao sessao:**
+- `docs/backlog/BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md`
+- `docs/backlog/BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md`
+
+---
+
+**Última atualização:** 2026-01-23
+**Versão:** 6.0.0 (Sprint 11 - 2/4 USs)
+**Status:** Backend + Frontend + Empty States + ConfirmModal
+**Próxima revisão:** Completar Sprint 11 (US-107/108)

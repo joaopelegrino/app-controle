@@ -3,11 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import {
   Users, BookOpen, TrendingUp, Award,
   ArrowLeft, RefreshCw, BarChart2, Clock,
-  CheckCircle, AlertCircle
+  CheckCircle, AlertCircle, Plus, Pencil, GraduationCap
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useTenant } from '../hooks/useTenant';
 import { apiService } from '../services/apiService';
+import { UserFormModal } from './UserFormModal';
+import { EnrollUserModal } from './EnrollUserModal';
+import { ExportButton } from './ExportButton';
+import { ModuleDifficultyCard } from './ModuleDifficultyCard';
+import {
+  SkeletonCard,
+  SkeletonTable,
+  SkeletonCourseCard,
+} from './LoadingComponents';
+import { EmptyState, EmptyStateInline } from './EmptyState';
 
 /**
  * AdminDashboard - Dashboard administrativo
@@ -29,6 +39,15 @@ export function AdminDashboard() {
   const [companyStats, setCompanyStats] = useState(null);
   const [usersData, setUsersData] = useState([]);
   const [courseStats, setCourseStats] = useState([]);
+  const [moduleStats, setModuleStats] = useState({ difficultModules: [], summary: {} });
+
+  // Estados do modal de usuário (US-092/093)
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  // Estados do modal de matrícula (US-099)
+  const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
+  const [enrollPreselectedUser, setEnrollPreselectedUser] = useState(null);
 
   /**
    * Carrega todos os dados do dashboard
@@ -41,15 +60,17 @@ export function AdminDashboard() {
 
     try {
       // Carregar dados em paralelo
-      const [stats, users, courses] = await Promise.all([
+      const [stats, users, courses, modules] = await Promise.all([
         apiService.getCompanyAnalytics(tenantId),
         apiService.getUsersDashboard(tenantId),
         apiService.getCourseStats(),
+        apiService.getModuleStats(tenantId),
       ]);
 
       setCompanyStats(stats);
       setUsersData(users);
       setCourseStats(courses);
+      setModuleStats(modules);
     } catch (err) {
       console.error('[AdminDashboard] Erro ao carregar dados:', err);
       setError('Erro ao carregar dados do dashboard');
@@ -106,15 +127,19 @@ export function AdminDashboard() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Última Atividade
               </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Ações
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {usersData.length === 0 ? (
-              <tr>
-                <td colSpan="4" className="px-6 py-8 text-center text-gray-500">
-                  Nenhum usuário encontrado
-                </td>
-              </tr>
+              <EmptyStateInline
+                colSpan={5}
+                type="users"
+                title="Nenhum usuário cadastrado"
+                description="Clique em 'Novo Usuário' para adicionar o primeiro colaborador."
+              />
             ) : (
               usersData.map((userData) => (
                 <tr key={userData.user_id} className="hover:bg-gray-50">
@@ -161,6 +186,40 @@ export function AdminDashboard() {
                       ? formatDate(userData.last_activity)
                       : 'Sem atividade'}
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      {userData.role === 'student' && (
+                        <button
+                          onClick={() => {
+                            setEnrollPreselectedUser({
+                              id: userData.user_id,
+                              full_name: userData.full_name,
+                            });
+                            setIsEnrollModalOpen(true);
+                          }}
+                          className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                          title="Matricular em curso"
+                        >
+                          <GraduationCap className="w-4 h-4" />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => {
+                          setSelectedUser({
+                            id: userData.user_id,
+                            email: userData.email,
+                            full_name: userData.full_name,
+                            role: userData.role,
+                          });
+                          setIsUserModalOpen(true);
+                        }}
+                        className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="Editar usuário"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             )}
@@ -178,7 +237,12 @@ export function AdminDashboard() {
       <h3 className="text-lg font-semibold text-gray-800 mb-4">Estatísticas por Curso</h3>
       <div className="space-y-4">
         {courseStats.length === 0 ? (
-          <p className="text-gray-500 text-center py-4">Nenhum curso disponível</p>
+          <EmptyState
+            type="courses"
+            title="Nenhum curso disponível"
+            description="Os cursos ativos aparecerão aqui com suas estatísticas."
+            compact={true}
+          />
         ) : (
           courseStats.map((course) => (
             <div key={course.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
@@ -238,13 +302,66 @@ export function AdminDashboard() {
     });
   };
 
-  // Loading state
+  /**
+   * Skeleton loading para stats cards
+   */
+  const SkeletonStats = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <SkeletonCard key={i} />
+      ))}
+    </div>
+  );
+
+  /**
+   * Skeleton loading para cards de curso
+   */
+  const SkeletonCourses = () => (
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="h-6 bg-gray-200 rounded w-48 mb-4 animate-pulse" />
+      <div className="space-y-4">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <SkeletonCourseCard key={i} />
+        ))}
+      </div>
+    </div>
+  );
+
+  // Loading state com skeletons (US-103)
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="w-8 h-8 text-blue-500 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Carregando dashboard...</p>
+      <div className="min-h-screen bg-gray-100">
+        {/* Header */}
+        <div className="bg-white shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-gray-200 rounded-lg mr-4 animate-pulse" />
+                <div className="space-y-2">
+                  <div className="h-6 bg-gray-200 rounded w-48 animate-pulse" />
+                  <div className="h-4 bg-gray-200 rounded w-32 animate-pulse" />
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-10 bg-gray-200 rounded w-32 animate-pulse" />
+                <div className="h-10 bg-gray-200 rounded w-28 animate-pulse" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <SkeletonStats />
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <SkeletonTable rows={5} columns={5} />
+            </div>
+            <div className="lg:col-span-1 space-y-6">
+              <SkeletonCourses />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -286,13 +403,41 @@ export function AdminDashboard() {
                 <p className="text-sm text-gray-500">{company?.name}</p>
               </div>
             </div>
-            <button
-              onClick={loadDashboardData}
-              className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
-            >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Atualizar
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  setSelectedUser(null);
+                  setIsUserModalOpen(true);
+                }}
+                className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Novo Usuário
+              </button>
+              <button
+                onClick={() => {
+                  setEnrollPreselectedUser(null);
+                  setIsEnrollModalOpen(true);
+                }}
+                className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
+              >
+                <GraduationCap className="w-4 h-4 mr-2" />
+                Matricular
+              </button>
+              <ExportButton
+                type="users"
+                companyId={tenantId}
+                label="Exportar"
+                showDropdown={true}
+              />
+              <button
+                onClick={loadDashboardData}
+                className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Atualizar
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -335,12 +480,45 @@ export function AdminDashboard() {
             <UsersTable />
           </div>
 
-          {/* Course Stats - 1 column */}
-          <div className="lg:col-span-1">
+          {/* Course Stats + Module Difficulty - 1 column */}
+          <div className="lg:col-span-1 space-y-6">
             <CourseCards />
+
+            {/* Módulos Difíceis (US-101) */}
+            <ModuleDifficultyCard
+              difficultModules={moduleStats.difficultModules}
+              summary={moduleStats.summary}
+              isLoading={isLoading}
+              compact={false}
+            />
           </div>
         </div>
       </div>
+
+      {/* Modal de criação/edição de usuário (US-092/093) */}
+      <UserFormModal
+        isOpen={isUserModalOpen}
+        onClose={() => {
+          setIsUserModalOpen(false);
+          setSelectedUser(null);
+        }}
+        user={selectedUser}
+        companyId={tenantId}
+        onSuccess={loadDashboardData}
+      />
+
+      {/* Modal de matrícula em curso (US-099) */}
+      <EnrollUserModal
+        isOpen={isEnrollModalOpen}
+        onClose={() => {
+          setIsEnrollModalOpen(false);
+          setEnrollPreselectedUser(null);
+        }}
+        companyId={tenantId}
+        assignedBy={user?.id}
+        preselectedUser={enrollPreselectedUser}
+        onSuccess={loadDashboardData}
+      />
     </div>
   );
 }

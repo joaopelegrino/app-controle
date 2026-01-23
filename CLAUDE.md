@@ -1,30 +1,39 @@
 # app-controle (UltraThink) - Configuração Claude Code
 
-**Version:** 4.0.0 | **Date:** 2026-01-22 | **Status:** Production
+**Version:** 7.3.0 | **Date:** 2026-01-23 | **Status:** Production + Sprint 11 (2/4)
 **Project Type:** Plataforma B2B de treinamento técnico corporativo
-**Sprint:** 6 - Demo B2B COMPLETO (Auth + RBAC + API + Dashboards)
+**Sprint Atual:** 11 - UX Polish (2/4 USs implementadas)
+**Sprints Completos:** 6, 7, 8, 9, 10 ✅
 
 ---
 
 ## Quick Start
 
 ```bash
-# Desenvolvimento
-bun run dev          # Servidor local porta 3000
+# Desenvolvimento (Frontend apenas - dados mock)
+bun run dev          # Servidor local porta 3001 (ou 3000 se livre)
 bun run build        # Build de produção
 bun run test         # Rodar testes com Vitest
 
-# Com mise (se configurado)
-mise dev             # Servidor dev
-mise nocodb:start    # Backend (PostgreSQL + NocoDB)
-mise full-stack      # Frontend + Backend
-mise check           # Verificar ambiente
+# Com Backend (requer Docker Desktop + WSL2 Integration)
+# 1. Ativar Docker Desktop com "Use WSL 2 based engine"
+# 2. Habilitar integração WSL em Settings > Resources > WSL Integration
+docker compose up -d           # Inicia PostgreSQL + NocoDB
+bun run dev                    # Frontend conecta ao backend
 
-# Slash Commands (Claude Code)
-/quick-audit         # Verificação rápida de saúde
-/full-coverage       # Relatório de cobertura
-/pr-ready            # Checklist pré-PR
+# Alternativa com mise
+mise nocodb:start              # Backend (PostgreSQL + NocoDB)
+mise full-stack                # Frontend + Backend
 ```
+
+### Requisitos para Testes Completos
+
+| Componente | Porta | Obrigatório |
+|------------|-------|-------------|
+| Frontend (Vite) | 3001 | Sim |
+| NocoDB | 8080 | Para dados reais |
+| PostgreSQL | 5432 | Para dados reais |
+| Docker Desktop | - | Para backend |
 
 ---
 
@@ -33,54 +42,48 @@ mise check           # Verificar ambiente
 ```
 app-controle/
 ├── src/
-│   ├── components/         → Componentes React
-│   │   ├── HubView.jsx     → Hub principal
-│   │   ├── LoginView.jsx   → Tela de login
-│   │   ├── PrivateRoute.jsx → Proteção de rotas
-│   │   ├── RoleBasedAccess.jsx → Controle por role
-│   │   ├── UserHeader.jsx  → Header com usuário
-│   │   ├── AdminDashboard.jsx → Dashboard admin
-│   │   ├── ExecutiveDashboard.jsx → Dashboard C-Level
-│   │   ├── UserDashboard.jsx → Dashboard do aluno
-│   │   ├── LearningPathView.jsx → Display de trilhas
-│   │   └── BashLearningSystem.jsx → Curso Bash
-│   ├── contexts/           → React Contexts
-│   │   ├── AuthContext.jsx → Estado de autenticação
-│   │   └── TenantContext.jsx → Multi-tenancy
-│   ├── hooks/              → Custom React hooks
-│   │   ├── useAuth.js      → Hook de autenticação
-│   │   ├── usePermissions.js → Hook RBAC
-│   │   ├── useTenant.js    → Hook de tenant
-│   │   ├── useCourses.js   → Hook para cursos API
-│   │   └── useModuleProgress.js → Persistência de progresso
-│   ├── services/           → Camadas de abstração
-│   │   ├── apiService.js   → Comunicação NocoDB API
-│   │   └── dataService.js  → Operações de dados
-│   ├── data/               → Definições e conteúdo
-│   │   ├── studyAreas.js   → Configuração de cursos
-│   │   └── *LearningData.js → Conteúdo de curso
-│   └── tests/              → Arquivos de teste Vitest
-├── database/               → Scripts SQL
-│   ├── migration-001-rbac.sql → Schema RBAC
-│   └── seed-demo-completo.sql → Dados de demo
-├── docs/backlog/           → Documentação do projeto
-└── dist/                   → Output de build
+│   ├── components/
+│   │   ├── HubView.jsx              → Hub principal
+│   │   ├── LoginView.jsx            → Tela de login
+│   │   ├── PrivateRoute.jsx         → Proteção de rotas
+│   │   ├── AdminDashboard.jsx       → Dashboard admin + CRUD usuários
+│   │   ├── ExecutiveDashboard.jsx   → Dashboard C-Level
+│   │   ├── InstructorDashboard.jsx  → Dashboard instrutor (Sprint 8) ✅
+│   │   ├── UserDashboard.jsx        → Dashboard do aluno
+│   │   ├── UserFormModal.jsx        → Modal criar/editar usuário (Sprint 7) ✅
+│   │   ├── StudentNotesModal.jsx    → Modal ver notas aluno (Sprint 8) ✅
+│   │   ├── EnrollUserModal.jsx      → Modal matricular usuário (Sprint 9) ✅
+│   │   ├── ExportButton.jsx         → Botão exportar relatórios (Sprint 9) ✅
+│   │   ├── ModuleDifficultyCard.jsx → Analytics módulos difíceis (Sprint 10) ✅
+│   │   ├── ToastContainer.jsx       → Container de toasts (Sprint 10) ✅
+│   │   ├── LoadingComponents.jsx    → Spinner, Skeletons, Overlays (Sprint 10) ✅
+│   │   ├── OnboardingWizard.jsx     → Wizard de onboarding (Sprint 10) ✅
+│   │   ├── EmptyState.jsx           → Empty states reutilizáveis (Sprint 11) ✅
+│   │   ├── ConfirmModal.jsx         → Modal confirmação (Sprint 11) ✅
+│   │   └── BashLearningSystem.jsx   → Curso Bash
+│   ├── contexts/
+│   │   ├── AuthContext.jsx          → Estado de autenticação
+│   │   ├── TenantContext.jsx        → Multi-tenancy
+│   │   ├── ToastContext.jsx         → Sistema de toasts (Sprint 10) ✅
+│   │   ├── LoadingContext.jsx       → Loading states globais (Sprint 10) ✅
+│   │   └── OnboardingContext.jsx    → Onboarding wizard state (Sprint 10) ✅
+│   ├── hooks/
+│   │   ├── useAuth.js               → Hook de autenticação
+│   │   ├── usePermissions.js        → Hook RBAC (21 permissões)
+│   │   └── useTenant.js             → Hook de tenant
+│   ├── services/
+│   │   └── apiService.js            → API NocoDB + Matrículas (Sprint 9) ✅
+│   ├── utils/
+│   │   └── exportUtils.js           → Funções exportação Excel (Sprint 9) ✅
+│   └── tests/
+│       └── apiService.users.test.js → Testes CRUD usuários ✅
+├── database/
+│   ├── migration-001-rbac.sql       → Schema RBAC
+│   ├── migration-002-enrollments.sql→ Schema Matrículas (Sprint 9) ✅
+│   └── seed-demo-completo.sql       → Dados de demo
+└── docs/backlog/
+    └── GAPS-DEMO-B2B.md             → Análise gaps v4.0.0 ✅
 ```
-
----
-
-## Stack Tecnológica
-
-| Categoria | Tecnologia | Versão |
-|-----------|------------|--------|
-| **Frontend** | React | 18.3 |
-| **Build** | Vite | 5.4 |
-| **Styling** | Tailwind CSS | 3.4 |
-| **Routing** | React Router | 6 |
-| **Runtime** | Bun | 1.3.3 |
-| **Backend** | NocoDB | latest |
-| **Database** | PostgreSQL | 16 |
-| **Testing** | Vitest | latest |
 
 ---
 
@@ -91,62 +94,69 @@ app-controle/
 | `/login` | LoginView | Público |
 | `/` | HubView | Todos autenticados |
 | `/curso/:id` | CourseRoute | Todos autenticados |
-| `/curso/:id/aula/:n` | ModuleNotesRoute | Todos autenticados |
-| `/trilha/:id` | LearningPathView | Todos autenticados |
 | `/dashboard` | UserDashboard | Todos autenticados |
+| `/instructor` | **InstructorDashboard** | instructor, admin, c_level ✅ |
 | `/admin` | AdminDashboard | admin, c_level |
 | `/admin/executive` | ExecutiveDashboard | c_level |
 
 ---
 
-## Sistema Atual (Branch: demo-nocodb-simple)
+## Status Atual
 
-**Status:**
+### Sprints Completos ✅
+
 ```
-✅ Frontend :3000  → React + Vite (Hub + Bash course)
-✅ NocoDB :8080    → Dashboard visual (PostgreSQL 16)
-✅ Docker          → WSL2 integration active
-✅ mise v2         → Hooks + 22 tasks
-✅ Auth            → Login funcional com 4 roles
-✅ RBAC            → Matriz de permissões (20+)
-✅ API Integration → apiService.js completo
-✅ Multi-tenancy   → TenantContext implementado
-✅ Dashboards      → Admin, Executive, User
+Sprint 6: Base B2B (19/19 USs)
+├── Auth + RBAC + API Integration
+├── Multi-tenancy + Dashboards
+└── Status: ✅ COMPLETO
+
+Sprint 7: CRUD Usuários (3/3 USs)
+├── US-091: apiService CRUD ✅ (createUser, updateUser, deleteUser, reactivateUser)
+├── US-092: UserFormModal criar ✅
+├── US-093: UserFormModal editar/excluir ✅
+└── Status: ✅ COMPLETO
+
+Sprint 8: Dashboard Instrutor (3/3 USs)
+├── US-094: InstructorDashboard.jsx ✅
+├── US-095: StudentNotesModal.jsx ✅
+├── US-096: Rota /instructor ✅
+└── Status: ✅ COMPLETO
+
+Sprint 9: Matrículas e Exportação (4/4 USs)
+├── US-097: migration-002-enrollments.sql ✅
+├── US-098: API matrículas (enroll/unenroll) ✅
+├── US-099: EnrollUserModal.jsx ✅
+├── US-100: exportUtils.js + ExportButton.jsx ✅
+└── Status: ✅ COMPLETO
+
+Sprint 10: Analytics + Polish (4/4 USs)
+├── US-101: ModuleDifficultyCard.jsx + getModuleStats() ✅
+├── US-102: ToastContext + ToastContainer ✅
+├── US-103: LoadingContext + LoadingComponents (Skeletons) ✅
+├── US-104: OnboardingContext + OnboardingWizard ✅
+└── Status: ✅ COMPLETO
+
+Sprint 11: UX Polish (2/4 USs) 🔄 EM PROGRESSO
+├── US-105: EmptyState.jsx + EmptyStateInline ✅
+├── US-106: ConfirmModal.jsx + useConfirmModal ✅
+├── US-107: Responsividade Mobile ⏳
+├── US-108: Auth NocoDB JWT ⏳
+└── Status: 🔄 50% COMPLETO
 ```
 
-**Acesso Backend (NocoDB Admin):**
-- URL: http://localhost:8080
-- Email: admin@ultrathink.com
-- Senha: UltraThink@Admin2026!
+### RBAC Progress
+
+```
+Permissões implementadas: 17/21 (81%)
+MVP B2B Demo: ✅ COMPLETO
+Analytics Avançado: ✅ COMPLETO (Sprint 10)
+UX Polish: 🔄 EM PROGRESSO (Sprint 11)
+```
 
 ---
 
-## Sprint 6: Demo B2B - COMPLETO
-
-**ROADMAP:** `docs/backlog/ROADMAP-DEMO-B2B.md`
-**Retomada:** `docs/backlog/RETOMADA-2026-01-22-API-SERVICE.md`
-
-### Progresso das Fases
-
-| Fase | Descrição | Status |
-|------|-----------|--------|
-| **FASE 1** | Schema & Dados de Demo | ✅ DONE |
-| **FASE 2** | Autenticação Frontend | ✅ DONE |
-| **FASE 3** | Integração API | ✅ DONE |
-| **FASE 4** | RBAC & Permissões | ✅ DONE |
-| **FASE 5** | Dashboard & Polish | ✅ DONE |
-
-### User Stories Implementadas (19/19)
-
-```
-FASE 1: US-060 ✅ US-061 ✅ US-062 ✅ US-063 ✅
-FASE 2: US-064 ✅ US-065 ✅ US-066 ✅ US-067 ✅
-FASE 3: US-068 ✅ US-069 ✅ US-070 ✅ US-071 ✅
-FASE 4: US-072 ✅ US-073 ✅ US-074 ✅ US-075 ✅
-FASE 5: US-076 ✅ US-077 ✅ US-078 ✅
-```
-
-### Credenciais de Demo
+## Credenciais de Demo
 
 ```
 Senha padrão: Demo@2026
@@ -154,184 +164,261 @@ Senha padrão: Demo@2026
 ACME TECH SOLUTIONS:
   ceo@acmetech.com       (c_level)   → /admin/executive
   admin@acmetech.com     (admin)     → /admin
-  prof@acmetech.com      (instructor)→ /dashboard
+  prof@acmetech.com      (instructor)→ /instructor ✅
   maria@acmetech.com     (student)   → /dashboard
 
 DEVCORP CONSULTING:
   cto@devcorp.com        (c_level)   → /admin/executive
   admin@devcorp.com      (admin)     → /admin
-  prof@devcorp.com       (instructor)→ /dashboard
+  prof@devcorp.com       (instructor)→ /instructor ✅
   julia@devcorp.com      (student)   → /dashboard
 ```
 
----
-
-## Arquivos Implementados
-
-### Contexts
-```
-src/contexts/
-  AuthContext.jsx        ✅ Estado de autenticação
-  TenantContext.jsx      ✅ Multi-tenancy
-```
-
-### Hooks
-```
-src/hooks/
-  useAuth.js             ✅ Hook de autenticação
-  usePermissions.js      ✅ Hook RBAC (20+ permissões)
-  useTenant.js           ✅ Hook de tenant
-  useCourses.js          ✅ Hook para cursos da API
-  useModuleProgress.js   ✅ Progresso com API + fallback
-```
-
-### Services
-```
-src/services/
-  apiService.js          ✅ Comunicação NocoDB API v2
-  dataService.js         ✅ Dados com API + fallback localStorage
-```
-
-### Components
-```
-src/components/
-  LoginView.jsx          ✅ Tela de login
-  PrivateRoute.jsx       ✅ Proteção de rotas
-  RoleBasedAccess.jsx    ✅ Controle por role
-  UserHeader.jsx         ✅ Header com usuário + logout
-  AdminDashboard.jsx     ✅ Dashboard administrativo
-  ExecutiveDashboard.jsx ✅ Dashboard C-Level (KPIs, ROI)
-  UserDashboard.jsx      ✅ Dashboard do aluno
-```
+**Backend NocoDB:**
+- URL: http://localhost:8080
+- Email: admin@ultrathink.com
+- Senha: UltraThink@Admin2026!
 
 ---
 
-## API Service - Métodos Disponíveis
+## Sprint 11: UX Polish 🔄 EM PROGRESSO (2/4)
 
-### Autenticação
+**Objetivo:** Melhorias de UX, empty states e confirmações
+
+| US | Descrição | Status |
+|----|-----------|--------|
+| **US-105** | Empty states reutilizáveis | ✅ COMPLETO |
+| **US-106** | Modal de confirmação | ✅ COMPLETO |
+| **US-107** | Responsividade mobile | ⏳ Pendente |
+| **US-108** | Auth NocoDB JWT | ⏳ Pendente |
+
+### Componentes Criados (Sprint 11)
+
 ```javascript
-apiService.initialize()
+// EmptyState.jsx - Estados vazios reutilizáveis
+<EmptyState type="users" title="..." actionLabel="..." onAction={...} />
+<EmptyStateInline colSpan={5} type="students" />  // Para tabelas
+
+// ConfirmModal.jsx - Modal de confirmação
+<ConfirmModal
+  isOpen={show}
+  onClose={handleClose}
+  onConfirm={handleDelete}
+  title="Excluir usuário"
+  message="Tem certeza?"
+  type="danger"  // danger | warning | info
+/>
+
+// Hook para uso programático
+const { showConfirm, ConfirmModalComponent } = useConfirmModal();
+const confirmed = await showConfirm({ title: '...', message: '...' });
+```
+
+---
+
+## API Service - Métodos
+
+### Implementados ✅
+
+```javascript
+// Auth
 apiService.login(email, password)
 apiService.logout()
 apiService.isAuthenticated()
-```
 
-### Cursos
-```javascript
+// Usuários (Sprint 7)
+apiService.getUserByEmail(email)
+apiService.getCompanyUsers(companyId)
+apiService.createUser(userData)      ✅
+apiService.updateUser(userId, data)  ✅
+apiService.deleteUser(userId)        ✅
+apiService.reactivateUser(userId)    ✅
+
+// Matrículas (Sprint 9)
+apiService.enrollUser(enrollmentData)     ✅
+apiService.unenrollUser(userId, courseId) ✅
+apiService.getUserEnrollments(userId)     ✅
+apiService.getCourseEnrollments(courseId) ✅
+apiService.updateEnrollment(id, data)     ✅
+
+// Cursos
 apiService.getCourses()
 apiService.getCourse(id)
 apiService.getCourseModules(id)
-apiService.getCoursePhases(id)
-```
 
-### Progresso
-```javascript
+// Progresso
 apiService.getProgress(userId, courseId)
 apiService.completeModule(userId, companyId, courseId, moduleId)
-apiService.uncompleteModule(userId, moduleId)
-```
 
-### Notas
-```javascript
+// Notas
 apiService.getNotes(userId, courseId)
 apiService.saveNotes(userId, companyId, courseId, content)
-```
 
-### Analytics
-```javascript
+// Analytics
 apiService.getCompanyAnalytics(companyId)
 apiService.getUsersDashboard(companyId)
 apiService.getCourseStats()
-apiService.getCompanyProgress(companyId)
+apiService.getModuleStats(companyId)     ✅ (Sprint 10)
 ```
 
----
-
-## Regras - SEMPRE
-
-- Usar TodoWrite tool para tarefas multi-step
-- Verificar arquivo antes de editar com Read
-- Usar comandos `bun` para testes e build
-- Manter código limpo sem console.log em produção
-- Seguir padrões Tailwind existentes
-- Preservar funcionalidades existentes
-- Rodar testes antes de commitar
-- Usar conventional commits
-
----
-
-## Regras - NUNCA
-
-- Criar arquivos desnecessários
-- Usar jQuery ou bibliotecas não instaladas
-- Modificar configurações de build sem necessidade
-- Commitar sem rodar testes
-- Duplicar código (refatorar para componentes genéricos)
-- Usar npm ou yarn (somente Bun!)
-
----
-
-## MCP Browser Testing
-
-### Chrome DevTools MCP
+### Exportação (Sprint 9) ✅
 
 ```javascript
-// Navegar
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000" })
-
-// Snapshot
-mcp__chrome-devtools__take_snapshot()
-
-// Screenshot
-mcp__chrome-devtools__take_screenshot({ format: "png" })
-
-// Verificar console
-mcp__chrome-devtools__list_console_messages()
-
-// Verificar network
-mcp__chrome-devtools__list_network_requests()
+// src/utils/exportUtils.js
+exportToExcel(data, filename, options)
+exportToJSON(data, filename)
+formatUsersProgressReport(users)
+formatCompanyAnalyticsReport(analytics, users)
+formatCourseStatsReport(stats)
 ```
 
 ---
 
-## Git Workflow
+## RBAC - Matriz de Permissões
 
-### Branching Strategy
-- Main branch: `desenvolvimento`
-- Feature branches: `feature/US-XXX-description`
-- Bug fixes: `fix/bug-description`
+| Permissão | UI Implementado |
+|-----------|-----------------|
+| `courses.view` | ✅ |
+| `courses.progress` | ✅ |
+| `courses.notes` | ✅ |
+| `courses.assign` | ✅ (Sprint 9) |
+| `dashboard.own` | ✅ |
+| `dashboard.team` | ✅ (Sprint 8) |
+| `dashboard.company` | ✅ |
+| `analytics.basic` | ✅ |
+| `analytics.export` | ✅ (Sprint 9) |
+| `users.view` | ✅ |
+| `users.create` | ✅ (Sprint 7) |
+| `users.edit` | ✅ (Sprint 7) |
+| `users.delete` | ✅ (Sprint 7) |
+| `admin.access` | ✅ |
+| `analytics.advanced` | ✅ (Sprint 10) |
 
-### Commit Conventions
-```
-feat(scope): descrição      # Nova feature
-fix(scope): descrição       # Bug fix
-refactor(scope): descrição  # Refatoração
-docs(scope): descrição      # Documentação
-test(scope): descrição      # Testes
-chore(scope): descrição     # Manutenção
-```
+**Total: 17/21 (81%)**
 
 ---
 
-## Comandos de Verificação
+## Regras
+
+### SEMPRE
+- Verificar `GAPS-DEMO-B2B.md` antes de implementar
+- Usar `bun` para build/test
+- Rodar testes antes de commit
+- Seguir padrões Tailwind existentes
+
+### NUNCA
+- Usar npm/yarn (somente Bun)
+- Commitar sem rodar testes
+- Implementar sem verificar permissão RBAC
+
+---
+
+## Referências
+
+- **Gaps:** `docs/backlog/GAPS-DEMO-B2B.md` v5.0.0
+- **Backlog Sprint 10:** `docs/backlog/BACKLOG-2026-01-23-SPRINT10-ANALYTICS.md`
+- **Testes E2E:** `docs/backlog/BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md`
+- **Personas:** `docs/conceitual/01-visao-geral/05-personas-corporativas.md`
+
+---
+
+## Ativação do Backend (Docker)
+
+Para testes completos com dados reais:
 
 ```bash
-# Verificar ambiente completo
-mise check
+# 1. Verificar Docker Desktop (Windows)
+#    - Ativar "Use WSL 2 based engine" nas configurações
+#    - Habilitar integração com sua distro WSL em Settings > Resources > WSL Integration
 
-# Verificar containers
+# 2. Iniciar containers (usar arquivo específico do NocoDB)
+docker compose -f docker-compose.nocodb.yml up -d
+
+# 3. Executar migrations (container: app-controle-db, user: nocodb_user, db: app_controle)
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-001-rbac.sql
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-002-enrollments.sql
+
+# 4. Iniciar frontend
+bun run dev
+```
+
+### Verificar Status
+
+```bash
+# Containers
 docker ps
 
-# Verificar dados no PostgreSQL
-mise db:verify
+# Portas
+lsof -i :3001 && lsof -i :8080 && lsof -i :5432
 
-# Health check NocoDB
-mise nocodb:health
+# Testar conexão NocoDB
+curl http://localhost:8080/api/v1/health
 ```
 
 ---
 
-**Última atualização:** 2026-01-22
-**Versão:** 4.0.0 (Sprint 6 Completo)
-**Projeto:** app-controle (UltraThink)
-**Status:** Demo B2B pronto para apresentação
+## Comando de Retomada
+
+Para continuar o desenvolvimento na próxima sessão:
+
+```
+# Com Docker Desktop ativo:
+docker compose -f docker-compose.nocodb.yml up -d && bun run dev
+
+# Continuar Sprint 11:
+Implementar US-107 (Responsividade Mobile) e US-108 (Auth NocoDB JWT)
+```
+
+**Contexto:** Sprint 11 em progresso (2/4 USs) + Testes E2E OK.
+
+**Estado atual (2026-01-23):**
+- Frontend: http://localhost:3001
+- Backend: http://localhost:8080 (NocoDB) + PostgreSQL 5432
+- Usuarios: 13 no banco (12 demo + 1 teste CRUD)
+- Testes E2E: Login, Dashboards, Matriculas, Exportacao - TODOS OK
+- CRUD usuarios: Leitura OK, escrita OK (company_id via SQL)
+
+**Containers Docker:**
+```bash
+docker compose -f docker-compose.nocodb.yml up -d
+```
+
+**TABLE_IDS NocoDB (ja configurados em apiService.js):**
+- users: m0mivs1xdccrvhz
+- companies: ms1ga42h4tiyzyq
+- courses: mt3gmx6ze7b2cov
+- modules: m79311ib9eppvc7
+
+**Testes E2E Completos (2026-01-23):**
+- Login Aluno: OK (maria@acmetech.com -> Hub, menu so "Sair")
+- Login C-Level: OK (ceo@acmetech.com -> Hub, acesso /admin/executive)
+- Login Admin: OK (sessao anterior)
+- Login Instrutor: OK (sessao anterior)
+
+**Sprint 11 (2/4 USs):**
+- US-105: Empty states para listas vazias - COMPLETO
+- US-106: Modal confirmacao antes de deletar - COMPLETO
+- US-107: Responsividade basica mobile - Pendente
+- US-108: Autenticacao real NocoDB JWT - Pendente
+
+**Novos Componentes:**
+- `src/components/EmptyState.jsx` - Estados vazios reutilizaveis
+- `src/components/ConfirmModal.jsx` - Modal confirmacao reutilizavel
+
+**Documentacao sessao:**
+- `docs/backlog/BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md`
+- `docs/backlog/BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md`
+- `docs/backlog/ROADMAP.md` v6.0.0
+
+**Comando de Retomada:**
+```
+Continuar Sprint 11 - Implementar US-107 (Responsividade Mobile) e US-108 (Auth NocoDB JWT).
+Backend Docker ativo. Consultar BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md
+```
+
+---
+
+**Ultima atualizacao:** 2026-01-23
+**Versao:** 7.3.0 (Sprint 11 Parcial - 2/4 USs)
+**Status:** Backend + Frontend + Empty States + ConfirmModal
+**RBAC:** 81% implementado (17/21 permissoes)

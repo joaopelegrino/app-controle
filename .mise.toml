@@ -58,11 +58,11 @@ PROJECT_TYPE = "react-vite-bun"
 
 # Configurações de desenvolvimento
 NODE_ENV = "development"
-VITE_PORT = "3000"
+VITE_PORT = "3001"  # Porta alternativa (3000 frequentemente ocupada pelo VS Code)
 
 # NocoDB URLs (para testes E2E)
 NOCODB_URL = "http://localhost:8080"
-VITE_API_URL = "http://localhost:3000"
+VITE_API_URL = "http://localhost:3001"
 
 # Configurações do editor
 EDITOR = "vim"
