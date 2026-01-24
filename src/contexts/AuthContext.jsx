@@ -1,246 +1,202 @@
+/**
+ * AuthContext - Contexto de Autenticação
+ *
+ * US-108: Autenticação real via NocoDB JWT
+ *
+ * Este contexto gerencia o estado de autenticação da aplicação:
+ * - Login via API NocoDB (busca usuário na tabela users)
+ * - Token JWT armazenado em localStorage
+ * - Validação automática de token na inicialização
+ * - Logout limpa tokens e estado
+ *
+ * @module contexts/AuthContext
+ */
+
 import React, { createContext, useState, useEffect, useCallback, useMemo } from 'react';
+import { apiService } from '../services/apiService';
 
 const AuthContext = createContext(null);
 
 const AUTH_STORAGE_KEY = 'ultrathink_auth';
 
-// Demo: senha padrão para todos os usuários
-const DEMO_PASSWORD = 'Demo@2026';
-
-// Dados de demo espelhando o banco PostgreSQL (seed-demo-completo.sql)
-const DEMO_COMPANIES = {
-  '550e8400-e29b-41d4-a716-446655440001': {
-    id: '550e8400-e29b-41d4-a716-446655440001',
-    name: 'Acme Tech Solutions',
-    slug: 'acme-tech',
-    plan: 'starter'
-  },
-  '550e8400-e29b-41d4-a716-446655440002': {
-    id: '550e8400-e29b-41d4-a716-446655440002',
-    name: 'DevCorp Consulting',
-    slug: 'devcorp',
-    plan: 'professional'
-  }
-};
-
-const DEMO_USERS = {
-  // ACME TECH SOLUTIONS
-  'ceo@acmetech.com': {
-    id: '650e8400-e29b-41d4-a716-446655440001',
-    email: 'ceo@acmetech.com',
-    fullName: 'Roberto Mendes',
-    role: 'c_level',
-    companyId: '550e8400-e29b-41d4-a716-446655440001',
-    active: true
-  },
-  'admin@acmetech.com': {
-    id: '650e8400-e29b-41d4-a716-446655440002',
-    email: 'admin@acmetech.com',
-    fullName: 'João Silva',
-    role: 'admin',
-    companyId: '550e8400-e29b-41d4-a716-446655440001',
-    active: true
-  },
-  'prof@acmetech.com': {
-    id: '650e8400-e29b-41d4-a716-446655440003',
-    email: 'prof@acmetech.com',
-    fullName: 'Fernanda Lima',
-    role: 'instructor',
-    companyId: '550e8400-e29b-41d4-a716-446655440001',
-    active: true
-  },
-  'maria@acmetech.com': {
-    id: '650e8400-e29b-41d4-a716-446655440004',
-    email: 'maria@acmetech.com',
-    fullName: 'Maria Santos',
-    role: 'student',
-    companyId: '550e8400-e29b-41d4-a716-446655440001',
-    active: true
-  },
-  'pedro@acmetech.com': {
-    id: '650e8400-e29b-41d4-a716-446655440005',
-    email: 'pedro@acmetech.com',
-    fullName: 'Pedro Costa',
-    role: 'student',
-    companyId: '550e8400-e29b-41d4-a716-446655440001',
-    active: true
-  },
-  'ana@acmetech.com': {
-    id: '650e8400-e29b-41d4-a716-446655440006',
-    email: 'ana@acmetech.com',
-    fullName: 'Ana Ferreira',
-    role: 'student',
-    companyId: '550e8400-e29b-41d4-a716-446655440001',
-    active: true
-  },
-  // DEVCORP CONSULTING
-  'cto@devcorp.com': {
-    id: '650e8400-e29b-41d4-a716-446655440007',
-    email: 'cto@devcorp.com',
-    fullName: 'Carla Souza',
-    role: 'c_level',
-    companyId: '550e8400-e29b-41d4-a716-446655440002',
-    active: true
-  },
-  'admin@devcorp.com': {
-    id: '650e8400-e29b-41d4-a716-446655440008',
-    email: 'admin@devcorp.com',
-    fullName: 'Lucas Oliveira',
-    role: 'admin',
-    companyId: '550e8400-e29b-41d4-a716-446655440002',
-    active: true
-  },
-  'prof@devcorp.com': {
-    id: '650e8400-e29b-41d4-a716-446655440009',
-    email: 'prof@devcorp.com',
-    fullName: 'Carlos Santos',
-    role: 'instructor',
-    companyId: '550e8400-e29b-41d4-a716-446655440002',
-    active: true
-  },
-  'julia@devcorp.com': {
-    id: '650e8400-e29b-41d4-a716-446655440010',
-    email: 'julia@devcorp.com',
-    fullName: 'Julia Almeida',
-    role: 'student',
-    companyId: '550e8400-e29b-41d4-a716-446655440002',
-    active: true
-  },
-  'bruno@devcorp.com': {
-    id: '650e8400-e29b-41d4-a716-446655440011',
-    email: 'bruno@devcorp.com',
-    fullName: 'Bruno Costa',
-    role: 'student',
-    companyId: '550e8400-e29b-41d4-a716-446655440002',
-    active: true
-  },
-  'camila@devcorp.com': {
-    id: '650e8400-e29b-41d4-a716-446655440012',
-    email: 'camila@devcorp.com',
-    fullName: 'Camila Rocha',
-    role: 'student',
-    companyId: '550e8400-e29b-41d4-a716-446655440002',
-    active: true
-  }
-};
-
+/**
+ * Provider de autenticação
+ *
+ * Gerencia estado de usuário, empresa e token.
+ * Persiste sessão no localStorage.
+ */
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [company, setCompany] = useState(null);
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [authError, setAuthError] = useState(null);
 
-  // Verificar autenticação ao iniciar
+  /**
+   * Verifica autenticação ao iniciar
+   * Recupera sessão do localStorage e valida token
+   */
   useEffect(() => {
     checkAuth();
   }, []);
 
-  // Verificar se há sessão salva
+  /**
+   * Verifica se há sessão salva e se o token ainda é válido
+   */
   const checkAuth = useCallback(async () => {
     setIsLoading(true);
-    try {
-      const stored = localStorage.getItem(AUTH_STORAGE_KEY);
-      if (stored) {
-        const { user: storedUser, company: storedCompany, token: storedToken } = JSON.parse(stored);
-        setUser(storedUser);
-        setCompany(storedCompany);
-        setToken(storedToken);
-      }
-    } catch (error) {
-      localStorage.removeItem(AUTH_STORAGE_KEY);
-    } finally {
-      setIsLoading(false);
-    }
-    return !!user;
-  }, [user]);
+    setAuthError(null);
 
-  // Login com email e senha
+    try {
+      // 1. Tentar recuperar sessão do localStorage
+      const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+
+      if (!stored) {
+        setIsLoading(false);
+        return false;
+      }
+
+      const { user: storedUser, company: storedCompany, token: storedToken } = JSON.parse(stored);
+
+      // 2. Validar se o token ainda funciona
+      const isValid = await apiService.validateToken();
+
+      if (!isValid) {
+        // Token expirado ou inválido - limpar sessão
+        console.log('[AuthContext] Token inválido, limpando sessão');
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        apiService.logout();
+        setIsLoading(false);
+        return false;
+      }
+
+      // 3. Sessão válida - restaurar estado
+      setUser(storedUser);
+      setCompany(storedCompany);
+      setToken(storedToken);
+      setIsLoading(false);
+      return true;
+    } catch (error) {
+      console.error('[AuthContext] Erro ao verificar autenticação:', error);
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+      setIsLoading(false);
+      return false;
+    }
+  }, []);
+
+  /**
+   * Login com email e senha
+   *
+   * @param {string} email - Email do usuário
+   * @param {string} password - Senha do usuário
+   * @returns {Promise<{ user: object, company: object }>}
+   * @throws {Error} Se credenciais inválidas
+   */
   const login = useCallback(async (email, password) => {
     setIsLoading(true);
+    setAuthError(null);
+
     try {
-      // Simular latência de rede
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Chamar API de login
+      const result = await apiService.loginUser(email, password);
 
-      // Verificar senha padrão da demo
-      if (password !== DEMO_PASSWORD) {
-        throw new Error('Credenciais inválidas');
-      }
-
-      // Buscar usuário nos dados mock
-      const userData = DEMO_USERS[email.toLowerCase()];
-
-      if (!userData) {
-        throw new Error('Usuário não encontrado');
-      }
-
-      if (!userData.active) {
-        throw new Error('Usuário inativo');
-      }
-
-      // Buscar empresa do usuário
-      const companyData = DEMO_COMPANIES[userData.companyId];
-
-      // Criar token simulado para demo
-      const demoToken = btoa(JSON.stringify({
-        userId: userData.id,
-        email: userData.email,
-        exp: Date.now() + 24 * 60 * 60 * 1000 // 24 horas
-      }));
-
-      const userPayload = {
-        id: userData.id,
-        email: userData.email,
-        fullName: userData.fullName,
-        role: userData.role,
-        companyId: userData.companyId
-      };
-
-      const companyPayload = companyData ? {
-        id: companyData.id,
-        name: companyData.name,
-        slug: companyData.slug,
-        plan: companyData.plan
-      } : null;
+      const { user: userData, company: companyData, token: authToken } = result;
 
       // Salvar no state
-      setUser(userPayload);
-      setCompany(companyPayload);
-      setToken(demoToken);
+      setUser(userData);
+      setCompany(companyData);
+      setToken(authToken);
 
       // Persistir no localStorage
       localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({
-        user: userPayload,
-        company: companyPayload,
-        token: demoToken
+        user: userData,
+        company: companyData,
+        token: authToken,
       }));
 
-      return { user: userPayload, company: companyPayload };
+      console.log('[AuthContext] Login realizado:', userData.email);
+      return { user: userData, company: companyData };
     } catch (error) {
-      throw error;
+      // Tratar erros específicos
+      let errorMessage = 'Erro ao realizar login';
+
+      if (error.status === 401) {
+        errorMessage = error.message || 'Credenciais inválidas';
+      } else if (error.status === 400) {
+        errorMessage = error.message || 'Dados de login inválidos';
+      } else if (error.isOffline) {
+        errorMessage = 'Sem conexão com o servidor';
+      }
+
+      setAuthError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  // Logout
+  /**
+   * Logout - limpa estado e localStorage
+   */
   const logout = useCallback(() => {
+    console.log('[AuthContext] Logout realizado');
+
+    // Limpar state
     setUser(null);
     setCompany(null);
     setToken(null);
+    setAuthError(null);
+
+    // Limpar localStorage
     localStorage.removeItem(AUTH_STORAGE_KEY);
+
+    // Limpar tokens do apiService
+    apiService.logout();
   }, []);
+
+  /**
+   * Limpa erro de autenticação
+   */
+  const clearError = useCallback(() => {
+    setAuthError(null);
+  }, []);
+
+  /**
+   * Atualiza dados do usuário no contexto
+   * Usado após edição de perfil, por exemplo
+   */
+  const updateUserData = useCallback((newUserData) => {
+    const updatedUser = { ...user, ...newUserData };
+    setUser(updatedUser);
+
+    // Atualizar localStorage
+    const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({
+        ...parsed,
+        user: updatedUser,
+      }));
+    }
+  }, [user]);
 
   // Valor do contexto memoizado
   const value = useMemo(() => ({
+    // Estado
     user,
     company,
     token,
-    isAuthenticated: !!user,
+    isAuthenticated: !!user && !!token,
     isLoading,
+    authError,
+
+    // Ações
     login,
     logout,
-    checkAuth
-  }), [user, company, token, isLoading, login, logout, checkAuth]);
+    checkAuth,
+    clearError,
+    updateUserData,
+  }), [user, company, token, isLoading, authError, login, logout, checkAuth, clearError, updateUserData]);
 
   return (
     <AuthContext.Provider value={value}>

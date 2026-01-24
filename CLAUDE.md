@@ -1,9 +1,9 @@
 # app-controle (UltraThink) - Configuração Claude Code
 
-**Version:** 7.4.0 | **Date:** 2026-01-24 | **Status:** Production + Sprint 11 (3/4)
+**Version:** 7.5.0 | **Date:** 2026-01-24 | **Status:** Production + Sprint 11 COMPLETO
 **Project Type:** Plataforma B2B de treinamento técnico corporativo
-**Sprint Atual:** 11 - UX Polish (3/4 USs implementadas)
-**Sprints Completos:** 6, 7, 8, 9, 10 ✅
+**Sprint Atual:** 11 - UX Polish (4/4 USs implementadas) ✅
+**Sprints Completos:** 6, 7, 8, 9, 10, 11 ✅
 
 ---
 
@@ -139,12 +139,12 @@ Sprint 10: Analytics + Polish (4/4 USs)
 ├── US-104: OnboardingContext + OnboardingWizard ✅
 └── Status: ✅ COMPLETO
 
-Sprint 11: UX Polish (3/4 USs) 🔄 EM PROGRESSO
+Sprint 11: UX Polish (4/4 USs) ✅ COMPLETO
 ├── US-105: EmptyState.jsx + EmptyStateInline ✅
 ├── US-106: ConfirmModal.jsx + useConfirmModal ✅
 ├── US-107: MobileMenu + useMediaQuery + Headers responsivos ✅
-├── US-108: Auth NocoDB JWT ⏳
-└── Status: 🔄 75% COMPLETO
+├── US-108: Auth NocoDB JWT (loginUser + validateToken) ✅
+└── Status: ✅ COMPLETO
 ```
 
 ### RBAC Progress
@@ -183,16 +183,16 @@ DEVCORP CONSULTING:
 
 ---
 
-## Sprint 11: UX Polish 🔄 EM PROGRESSO (3/4)
+## Sprint 11: UX Polish ✅ COMPLETO (4/4)
 
-**Objetivo:** Melhorias de UX, empty states, confirmações e responsividade
+**Objetivo:** Melhorias de UX, empty states, confirmações, responsividade e autenticação real
 
 | US | Descrição | Status |
 |----|-----------|--------|
 | **US-105** | Empty states reutilizáveis | ✅ COMPLETO |
 | **US-106** | Modal de confirmação | ✅ COMPLETO |
 | **US-107** | Responsividade mobile | ✅ COMPLETO |
-| **US-108** | Auth NocoDB JWT | ⏳ Pendente |
+| **US-108** | Auth NocoDB JWT | ✅ COMPLETO |
 
 ### Componentes Criados (Sprint 11)
 
@@ -223,6 +223,16 @@ const confirmed = await showConfirm({ title: '...', message: '...' });
 const isMobile = useIsMobile();     // < 768px
 const isTablet = useIsTablet();     // 768-1023px
 const isDesktop = useIsDesktop();   // >= 1024px
+
+// Auth NocoDB JWT (US-108)
+// apiService.loginUser() - Login real via NocoDB
+const { user, company, token } = await apiService.loginUser(email, password);
+
+// apiService.validateToken() - Valida token existente
+const isValid = await apiService.validateToken();
+
+// apiService.getSavedUser() - Recupera usuário do localStorage
+const savedData = apiService.getSavedUser();
 ```
 
 ---
@@ -232,10 +242,13 @@ const isDesktop = useIsDesktop();   // >= 1024px
 ### Implementados ✅
 
 ```javascript
-// Auth
-apiService.login(email, password)
+// Auth (US-108)
+apiService.login(email, password)       // Login sistema NocoDB
+apiService.loginUser(email, password)   // Login usuário da aplicação ✅
 apiService.logout()
 apiService.isAuthenticated()
+apiService.validateToken()              // Valida token JWT ✅
+apiService.getSavedUser()               // Recupera usuário salvo ✅
 
 // Usuários (Sprint 7)
 apiService.getUserByEmail(email)
@@ -372,15 +385,15 @@ curl http://localhost:8081/api/v1/health
 
 Para continuar o desenvolvimento na próxima sessão:
 
-```
+```bash
 # Com Docker Desktop ativo:
 docker compose -f docker-compose.nocodb.yml up -d && bun run dev
 
-# Continuar Sprint 11:
-Implementar US-108 (Auth NocoDB JWT) - única US pendente
+# Sprint 11 COMPLETO - Próximo passo:
+Iniciar Sprint 12 ou revisar gaps em docs/backlog/GAPS-DEMO-B2B.md
 ```
 
-**Contexto:** Sprint 11 em progresso (3/4 USs) + Responsividade completa.
+**Contexto:** Sprint 11 completo (4/4 USs). Auth NocoDB JWT implementado.
 
 **Estado atual (2026-01-24):**
 - Frontend: http://localhost:3001

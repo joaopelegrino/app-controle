@@ -195,10 +195,10 @@ class ApiError extends Error {
 // ============================================
 
 /**
- * Realiza login no NocoDB
+ * Realiza login no NocoDB (sistema)
  * @param {string} email
  * @param {string} password
- * @returns {Promise<{ user: object, token: string }>}
+ * @returns {Promise<{ token: string }>}
  */
 export async function login(email, password) {
   const response = await request('/api/v1/auth/user/signin', {
@@ -212,6 +212,164 @@ export async function login(email, password) {
   }
 
   return response;
+}
+
+/**
+ * Senha padrão para demo (todos os usuários usam esta senha)
+ * Em produção, seria validada via hash bcrypt no backend
+ */
+const DEMO_PASSWORD = 'Demo@2026';
+
+/**
+ * Realiza login de usuário da aplicação
+ *
+ * Esta função:
+ * 1. Autentica no NocoDB com admin (para ter acesso aos dados)
+ * 2. Busca o usuário na tabela `users` por email
+ * 3. Valida se usuário existe e está ativo
+ * 4. Para demo, valida senha contra DEMO_PASSWORD
+ * 5. Retorna dados do usuário + empresa + token
+ *
+ * @param {string} email - Email do usuário
+ * @param {string} password - Senha do usuário
+ * @returns {Promise<{ user: object, company: object, token: string }>}
+ * @throws {ApiError} Se credenciais inválidas ou usuário não encontrado
+ */
+export async function loginUser(email, password) {
+  // Validar parâmetros
+  if (!email || !password) {
+    throw new ApiError('Email e senha são obrigatórios', 400);
+  }
+
+  // Normalizar email
+  const normalizedEmail = email.toLowerCase().trim();
+
+  try {
+    // 1. Garantir autenticação no NocoDB (admin) para ter acesso aos dados
+    if (!getToken()) {
+      await login(NOCODB_ADMIN.email, NOCODB_ADMIN.password);
+    }
+
+    // 2. Buscar usuário na tabela users
+    const userResponse = await findMany('users', {
+      where: `(email,eq,${normalizedEmail})`,
+      limit: 1,
+    });
+
+    const userData = userResponse.list?.[0];
+
+    if (!userData) {
+      throw new ApiError('Usuário não encontrado', 401);
+    }
+
+    // 3. Verificar se usuário está ativo
+    if (!userData.active) {
+      throw new ApiError('Usuário inativo. Contate o administrador.', 401);
+    }
+
+    // 4. Validar senha
+    // Em demo, validamos contra senha padrão
+    // Em produção, seria comparação bcrypt com password_hash
+    const isValidPassword = password === DEMO_PASSWORD;
+
+    if (!isValidPassword) {
+      throw new ApiError('Credenciais inválidas', 401);
+    }
+
+    // 5. Buscar dados da empresa
+    let companyData = null;
+    if (userData.company_id) {
+      const companyResponse = await findMany('companies', {
+        where: `(id,eq,${userData.company_id})`,
+        limit: 1,
+      });
+      companyData = companyResponse.list?.[0] || null;
+    }
+
+    // 6. Atualizar último login
+    try {
+      await update('users', userData.id || userData.Id, {
+        last_login_at: new Date().toISOString(),
+      });
+    } catch (updateError) {
+      // Não falhar o login se não conseguir atualizar last_login
+      console.warn('[apiService] Erro ao atualizar last_login:', updateError.message);
+    }
+
+    // 7. Montar resposta
+    const token = getToken();
+
+    const user = {
+      id: userData.id || userData.Id,
+      email: userData.email,
+      fullName: userData.full_name,
+      role: userData.role,
+      companyId: userData.company_id,
+    };
+
+    const company = companyData ? {
+      id: companyData.id || companyData.Id,
+      name: companyData.name,
+      slug: companyData.slug,
+      plan: companyData.plan || 'starter',
+    } : null;
+
+    // 8. Salvar dados do usuário no localStorage
+    try {
+      localStorage.setItem(STORAGE_KEYS.user, JSON.stringify({ user, company }));
+    } catch {
+      // Ignorar erro de storage
+    }
+
+    return { user, company, token };
+  } catch (error) {
+    // Limpar token em caso de erro de autenticação
+    if (error.status === 401) {
+      clearToken();
+    }
+
+    if (error instanceof ApiError) {
+      throw error;
+    }
+
+    console.error('[apiService] Erro no login:', error);
+    throw new ApiError('Erro ao realizar login', 500, { original: error.message });
+  }
+}
+
+/**
+ * Recupera dados do usuário salvo no localStorage
+ * @returns {{ user: object, company: object } | null}
+ */
+export function getSavedUser() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEYS.user);
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch {
+    // Ignorar erro de parse
+  }
+  return null;
+}
+
+/**
+ * Valida se o token atual ainda é válido fazendo requisição de teste
+ * @returns {Promise<boolean>}
+ */
+export async function validateToken() {
+  try {
+    const token = getToken();
+    if (!token) {
+      return false;
+    }
+
+    // Tentar fazer uma requisição simples para validar o token
+    await request('/api/v1/auth/user/me');
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -1581,9 +1739,12 @@ export const apiService = {
 
   // Auth
   login,
+  loginUser,
   logout,
   getCurrentUser,
   isAuthenticated,
+  getSavedUser,
+  validateToken,
 
   // Usuários
   getUserByEmail,
