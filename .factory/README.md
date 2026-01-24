@@ -705,7 +705,7 @@ For issues or questions:
 
 **What's new:**
 - ✅ **mise v2** (556 lines, 91% conformidade): Hooks enter/leave + 22 tasks
-- ✅ **PostgreSQL 16 + NocoDB** RODANDO em localhost:8080
+- ✅ **PostgreSQL 16 + NocoDB** RODANDO em localhost:8081
 - ✅ **Frontend React** RODANDO em localhost:3000
 - ✅ **Docker 29.1.3** configurado no WSL2
 - 8 tables + 3 analytics views
@@ -715,7 +715,7 @@ For issues or questions:
 **System Status:**
 ```
 ✅ Frontend :3000  → React + Vite (Hub + Bash course)
-✅ NocoDB :8080    → Dashboard visual (PostgreSQL 16)
+✅ NocoDB :8081    → Dashboard visual (PostgreSQL 16)
 ✅ Docker          → WSL2 integration active
 ✅ mise v2         → Hooks + 22 tasks (91% conformidade)
 ⏸️ FluSisTip      → Pausado (porta 8080 liberada)
@@ -738,7 +738,7 @@ mise nocodb:start            # Backend only
 
 # 4. Access
 # Frontend: http://localhost:3000
-# Backend:  http://localhost:8080
+# Backend:  http://localhost:8081
 #   Email: admin@ultrathink.com
 #   Senha: UltraThink@Admin2026!
 

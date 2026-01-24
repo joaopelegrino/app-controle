@@ -31,7 +31,7 @@ mise full-stack                # Frontend + Backend
 | Componente | Porta | Obrigatório |
 |------------|-------|-------------|
 | Frontend (Vite) | 3001 | Sim |
-| NocoDB | 8080 | Para dados reais |
+| NocoDB | 8081 | Para dados reais |
 | PostgreSQL | 5432 | Para dados reais |
 | Docker Desktop | - | Para backend |
 
@@ -373,7 +373,7 @@ bun run dev
 docker ps
 
 # Portas
-lsof -i :3001 && lsof -i :8080 && lsof -i :5432
+lsof -i :3001 && lsof -i :8081 && lsof -i :5432
 
 # Testar conexão NocoDB
 curl http://localhost:8081/api/v1/health
