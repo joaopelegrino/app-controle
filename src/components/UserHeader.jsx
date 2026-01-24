@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { User, LogOut, Building2, ChevronDown, Shield } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { usePermissions } from '../hooks/usePermissions';
+import { MobileMenu, MobileMenuButton } from './MobileMenu';
 
 /**
  * Header com informações do usuário logado
@@ -12,6 +13,7 @@ export function UserHeader() {
   const { user, company, logout } = useAuth();
   const { roleLabel, roleColor, canViewAnalytics } = usePermissions();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   if (!user) return null;
 
@@ -21,21 +23,33 @@ export function UserHeader() {
   };
 
   return (
-    <div className="bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-6xl mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
-          {/* Logo e Empresa */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-gray-600">
-              <Building2 className="w-5 h-5" />
-              <span className="font-medium">{company?.name || 'Empresa'}</span>
+    <>
+      {/* Mobile Menu (US-107) */}
+      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+
+      <div className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            {/* Mobile: Hamburger + Logo */}
+            <div className="flex items-center gap-2">
+              {/* Hamburger - só aparece em mobile (US-107) */}
+              <MobileMenuButton onClick={() => setMobileMenuOpen(true)} />
+
+              {/* Logo e Empresa */}
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Building2 className="w-5 h-5 hidden sm:block" />
+                  <span className="font-medium text-sm sm:text-base truncate max-w-[120px] sm:max-w-none">
+                    {company?.name || 'Empresa'}
+                  </span>
+                </div>
+                {company?.plan && (
+                  <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded hidden sm:inline">
+                    {company.plan}
+                  </span>
+                )}
+              </div>
             </div>
-            {company?.plan && (
-              <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
-                {company.plan}
-              </span>
-            )}
-          </div>
 
           {/* Menu do Usuário */}
           <div className="relative">
@@ -93,9 +107,10 @@ export function UserHeader() {
               </>
             )}
           </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
