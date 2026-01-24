@@ -175,7 +175,7 @@ DEVCORP CONSULTING:
 ```
 
 **Backend NocoDB:**
-- URL: http://localhost:8080
+- URL: http://localhost:8081
 - Email: admin@ultrathink.com
 - Senha: UltraThink@Admin2026!
 
@@ -352,7 +352,7 @@ docker ps
 lsof -i :3001 && lsof -i :8080 && lsof -i :5432
 
 # Testar conexão NocoDB
-curl http://localhost:8080/api/v1/health
+curl http://localhost:8081/api/v1/health
 ```
 
 ---
@@ -373,7 +373,7 @@ Implementar US-107 (Responsividade Mobile) e US-108 (Auth NocoDB JWT)
 
 **Estado atual (2026-01-23):**
 - Frontend: http://localhost:3001
-- Backend: http://localhost:8080 (NocoDB) + PostgreSQL 5432
+- Backend: http://localhost:8081 (NocoDB) + PostgreSQL 5432
 - Usuarios: 13 no banco (12 demo + 1 teste CRUD)
 - Testes E2E: Login, Dashboards, Matriculas, Exportacao - TODOS OK
 - CRUD usuarios: Leitura OK, escrita OK (company_id via SQL)

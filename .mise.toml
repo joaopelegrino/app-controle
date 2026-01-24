@@ -61,7 +61,7 @@ NODE_ENV = "development"
 VITE_PORT = "3001"  # Porta alternativa (3000 frequentemente ocupada pelo VS Code)
 
 # NocoDB URLs (para testes E2E)
-NOCODB_URL = "http://localhost:8080"
+NOCODB_URL = "http://localhost:8081"
 VITE_API_URL = "http://localhost:3001"
 
 # Configurações do editor
@@ -209,7 +209,7 @@ docker-compose -f docker-compose.nocodb.yml ps
 
 echo ""
 echo "✅ Setup completo!"
-echo "📍 NocoDB: http://localhost:8080"
+echo "📍 NocoDB: http://localhost:8081"
 echo "📧 Email: admin@ultrathink.com"
 echo "🔐 Senha: UltraThink@Admin2026!"
 """
@@ -219,7 +219,7 @@ description = "Inicia containers NocoDB (PostgreSQL + NocoDB)"
 run = """
 source .env.nocodb 2>/dev/null || true
 docker-compose -f docker-compose.nocodb.yml up -d
-echo "✅ NocoDB iniciado: http://localhost:8080"
+echo "✅ NocoDB iniciado: http://localhost:8081"
 """
 
 [tasks."nocodb:stop"]
@@ -259,8 +259,8 @@ if docker-compose -f docker-compose.nocodb.yml ps | grep -q "Up"; then
     fi
     
     # Verificar NocoDB
-    if curl -s http://localhost:8080/api/v1/health > /dev/null 2>&1; then
-        echo "✅ NocoDB: OK (http://localhost:8080)"
+    if curl -s http://localhost:8081/api/v1/health > /dev/null 2>&1; then
+        echo "✅ NocoDB: OK (http://localhost:8081)"
     else
         echo "⏳ NocoDB: Ainda iniciando..."
     fi
@@ -321,7 +321,7 @@ if ! curl -s http://localhost:3000 > /dev/null 2>&1; then
 fi
 
 # Verificar se NocoDB está rodando
-if ! curl -s http://localhost:8080 > /dev/null 2>&1; then
+if ! curl -s http://localhost:8081 > /dev/null 2>&1; then
     echo "⚠️  NocoDB não está rodando!"
     echo "💡 Execute: mise nocodb:start"
     exit 1
@@ -342,7 +342,7 @@ if ! curl -s http://localhost:3000 > /dev/null 2>&1; then
 fi
 
 # Verificar se NocoDB está rodando
-if ! curl -s http://localhost:8080 > /dev/null 2>&1; then
+if ! curl -s http://localhost:8081 > /dev/null 2>&1; then
     echo "❌ NocoDB não está rodando"
     exit 1
 fi
@@ -380,7 +380,7 @@ DEV_PID=$!
 echo ""
 echo "✅ Full-stack rodando!"
 echo "📍 Frontend: http://localhost:3000"
-echo "📍 NocoDB: http://localhost:8080"
+echo "📍 NocoDB: http://localhost:8081"
 echo ""
 echo "Para parar:"
 echo "  - Dev server: Ctrl+C"
@@ -478,7 +478,7 @@ mise test
 
 # 3. E2E (se serviços estiverem rodando)
 echo "🎭 3/3: Testes E2E..."
-if curl -s http://localhost:3000 > /dev/null 2>&1 && curl -s http://localhost:8080 > /dev/null 2>&1; then
+if curl -s http://localhost:3000 > /dev/null 2>&1 && curl -s http://localhost:8081 > /dev/null 2>&1; then
     mise e2e:headless
 else
     echo "  ⏭️  Pulando (serviços não estão rodando)"

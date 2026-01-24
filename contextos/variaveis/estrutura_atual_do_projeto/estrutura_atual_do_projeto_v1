@@ -1,0 +1,173 @@
+---
+Tipo: Contexto Variável
+Nome: estrutura_atual_do_projeto
+Função: Contextualizar agentes sobre o estado atual do projeto
+Frequência: Atualizado automaticamente via hook SessionStart
+Versão: v1
+Última Atualização: 2026-01-23T13:43:14-0300
+Gerado por: hook C session-start
+---
+
+## Estrutura do Projeto
+
+```
+/home/notebook/workspace/app-controle
+├── database
+│   ├── init.sql
+│   ├── migration-001-rbac.sql
+│   ├── migration-002-enrollments.sql
+│   ├── README.md
+│   ├── seed-demo-completo.sql
+│   └── seed.sql
+├── docs
+│   ├── backend
+│   │   ├── NOCODB-QUICKSTART.md
+│   │   └── PERSONAS-NAO-TECNICAS.md
+│   ├── backlog
+│   │   ├── acoes-usuario
+│   │   ├── ANALISE-PLANEJAMENTO-DEMO-B2B.md
+│   │   ├── BACKLOG-2026-01-23-SPRINT10-ANALYTICS.md
+│   │   ├── BACKLOG-2026-01-23-SPRINT10-US103-LOADING.md
+│   │   ├── BACKLOG-2026-01-23-SPRINT10-US104-ONBOARDING.md
+│   │   ├── BACKLOG-2026-01-23-SPRINT9-MATRICULAS.md
+│   │   ├── BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md
+│   │   ├── BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md
+│   │   ├── GAPS-DEMO-B2B.md
+│   │   ├── RETOMADA-2026-01-22-API-SERVICE.md
+│   │   ├── RETOMADA-2026-01-22-AUTH-FRONTEND.md
+│   │   ├── ROADMAP-DEMO-B2B.md
+│   │   └── ROADMAP.md
+│   ├── conceitual
+│   │   └── 01-visao-geral
+│   ├── screenshots
+│   │   ├── admin-dashboard-sprint10.png
+│   │   ├── hub-authenticated.png
+│   │   ├── hub-sem-login.png
+│   │   ├── hub-view-sprint10.png
+│   │   └── login-view.png
+│   ├── tecnico
+│   │   ├── architecture
+│   │   ├── patterns
+│   │   ├── stack-implementation
+│   │   └── testing
+│   ├── ESTRUTURA-PLATAFORMA-MVP.md
+│   ├── GUIA-TRANSCRICAO-PARA-CURSO.md
+│   ├── PLANEJAMENTO-SIX-LAYER-SISTEMA.md
+│   ├── QUICK-START-TRANSCRICAO.md
+│   ├── README.md
+│   └── TEMPLATE-CURSO-PADRAO.md
+├── documentacao-interna
+│   ├── 01-arquitetura
+│   ├── 03-servicos
+│   ├── 04-dados
+│   ├── 07-referencias
+│   └── entregaveis
+│       └── fase-1
+├── scripts
+│   ├── capture-vscode-output.js
+│   └── start-chrome-debug.sh
+├── src
+│   ├── components
+│   │   ├── AdminDashboard.jsx
+│   │   ├── AreaCard.jsx
+│   │   ├── BashLearningSystem.jsx
+│   │   ├── BashNotesView.jsx
+│   │   ├── Breadcrumb.jsx
+│   │   ├── ClaudeCodeLearningSystem.jsx
+│   │   ├── ClaudeCodeNotesView.jsx
+│   │   ├── CLearningSystem.jsx
+│   │   ├── CNotesView.jsx
+│   │   ├── CodeBlock.jsx
+│   │   ├── ConfirmModal.jsx
+│   │   ├── EmptyState.jsx
+│   │   ├── EnrollUserModal.jsx
+│   │   ├── ErrorBoundary.jsx
+│   │   ├── ExecutiveDashboard.jsx
+│   │   ├── ExportButton.jsx
+│   │   ├── FlashcardModal.jsx
+│   │   ├── HubView.jsx
+│   │   ├── InstructorDashboard.jsx
+│   │   ├── LearningPathView.jsx
+│   │   ├── LoadingComponents.jsx
+│   │   ├── LoginView.jsx
+│   │   ├── ModuleDifficultyCard.jsx
+│   │   ├── OnboardingWizard.jsx
+│   │   ├── PrivateRoute.jsx
+│   │   ├── RoleBasedAccess.jsx
+│   │   ├── RustLearningSystem.jsx
+│   │   ├── RustNotesView.jsx
+│   │   ├── SistemaEducacionalCompleto.jsx
+│   │   ├── StudentNotesModal.jsx
+│   │   ├── ToastContainer.jsx
+│   │   ├── UserDashboard.jsx
+│   │   ├── UserFormModal.jsx
+│   │   ├── UserHeader.jsx
+│   │   ├── VSCodeLearningSystem.jsx
+│   │   └── VSCodeNotesView.jsx
+│   ├── contexts
+│   │   ├── AuthContext.jsx
+│   │   ├── LoadingContext.jsx
+│   │   ├── OnboardingContext.jsx
+│   │   ├── TenantContext.jsx
+│   │   └── ToastContext.jsx
+│   ├── data
+│   │   ├── bashLearningData.js
+│   │   ├── caminhoExemploData.js
+│   │   ├── claudeCodeLearningData.js
+│   │   ├── cLearningData.js
+│   │   ├── rustLearningData.js
+│   │   ├── schema.js
+│   │   ├── studyAreas.js
+│   │   └── vscodeLearningData.js
+│   ├── hooks
+│   │   ├── __tests__
+│   │   ├── useAuth.js
+│   │   ├── useAutoSaveNotes.js
+│   │   ├── useCourses.js
+│   │   ├── useModuleProgress.js
+│   │   ├── usePermissions.js
+│   │   └── useTenant.js
+│   ├── pages
+│   │   └── NotFoundPage.jsx
+│   ├── services
+│   │   ├── __tests__
+│   │   ├── apiService.js
+│   │   └── dataService.js
+│   ├── tests
+│   │   ├── components
+│   │   └── setup.js
+│   ├── utils
+│   │   ├── debugLogger.js
+│   │   ├── exportUtils.js
+│   │   └── helpers.js
+│   ├── index.css
+│   └── main.jsx
+├── templates
+│   └── learningDataTemplate.js
+├── bun.lock
+├── CLAUDE.md
+├── docker-compose.nocodb.yml
+├── docker-compose.yml
+├── Dockerfile
+├── index.html
+├── LOCALHOST-ACESSO.md
+├── nginx.conf
+├── package.json
+├── package-lock.json
+├── postcss.config.js
+├── PROBLEMA-PORTA-8080.md
+├── PRODUCT-CENTRAL-DOCUMENT.md
+├── README.md
+├── README.md.backup
+├── tailwind.config.js
+├── test-usabilidade-mcp.cjs
+├── vite.config.js
+└── vitest.config.js
+
+35 directories, 117 files
+
+```
+
+---
+
+*Atualizado automaticamente por: session-start (C)*

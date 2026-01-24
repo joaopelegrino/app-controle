@@ -1,0 +1,33 @@
+{
+	"checkpoint_id":	"chk-20260123-135048",
+	"timestamp":	"2026-01-23T13:50:48-0300",
+	"type":	"session_end",
+	"session_info":	{
+		"project_dir":	"/home/notebook/workspace/app-controle"
+	},
+	"git":	{
+		"branch":	"demo-nocodb-simple",
+		"last_commit":	"e7aa047",
+		"modified_files":	[".mise.toml", "CLAUDE.md", "docker-compose.nocodb.yml", "src/services/apiService.js", "vite.config.js"]
+	},
+	"contexts":	{
+		"total":	3,
+		"stale":	0,
+		"details":	[{
+				"name":	"ativos_de_configuracao_claude_code",
+				"exists":	true,
+				"age_hours":	0,
+				"needs_update":	false
+			}, {
+				"name":	"estrutura_atual_do_projeto",
+				"exists":	true,
+				"age_hours":	0,
+				"needs_update":	false
+			}, {
+				"name":	"estrutura_projeto_flusistip",
+				"exists":	true,
+				"age_hours":	0,
+				"needs_update":	false
+			}]
+	}
+}

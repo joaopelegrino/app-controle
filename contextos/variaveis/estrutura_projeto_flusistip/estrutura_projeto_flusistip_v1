@@ -1,0 +1,511 @@
+---
+Tipo: Contexto Variavel
+Nome: estrutura_projeto_flusistip
+Funcao: Contextualizar agentes sobre a estrutura do projeto FluSisTip
+Frequencia: Atualizado automaticamente via hook SessionStart
+Versao: v1
+Ultima Atualizacao: 2026-01-23T13:43:15-0300
+Gerado por: hook C session-start
+---
+
+## Estrutura do Projeto FluSisTip
+
+**Path**: `/home/notebook/workspace/flusistip`
+**Arquivos**: 55363 | **Diretorios**: 480
+**Namespaces Clojure**: 81 | **FII-MIN**: 83
+
+### Exclusoes Inteligentes
+```
+.git|target|.cpcache|.lsp|.clj-kondo|node_modules|__pycache__|*.log|.nrepl-port
+```
+
+### Arvore de Diretorios
+
+```
+/home/notebook/workspace/flusistip
+├── data
+│   └── datomic
+│       ├── flusistip
+│       │   └── hub
+│       └── flusistip-demo
+│           └── hub-demo
+├── dev
+│   ├── apply_migrations.clj
+│   ├── demo.clj
+│   ├── run_migrations_via_api.clj
+│   └── test_gap_implementations.clj
+├── documentacao-interna
+│   ├── api
+│   │   └── README.md
+│   ├── _arquivo
+│   │   ├── backlogs
+│   │   │   ├── 2025
+│   │   │   └── 2026
+│   │   ├── conceituais
+│   │   │   ├── 00-definicoes-principais.md
+│   │   │   ├── 01-contexto-projeto.md
+│   │   │   ├── 02-caso-real-flusistip.md
+│   │   │   ├── 03-glossario.md
+│   │   │   ├── 04-monetizacao-datasets.md
+│   │   │   ├── 05-modelo-dominio-conceitual.md
+│   │   │   ├── 06-roadmap-personas.md
+│   │   │   ├── 07-user-stories-prioritarias.md
+│   │   │   ├── 08-business-case.md
+│   │   │   └── 09-compliance-seguranca.md
+│   │   ├── propostas
+│   │   │   ├── ALTERACOES-ROADMAP-20251223.md
+│   │   │   ├── ALTERACOES-ROADMAP-SEGURANCA-v2.md
+│   │   │   ├── PROPOSTA-AJUSTE-ROADMAP-v2.2.md
+│   │   │   ├── PROPOSTA-FORNECEDORES-v1.md
+│   │   │   ├── PROPOSTA-FORNECEDORES-v2.md
+│   │   │   └── ROADMAP-DOCUMENTACAO-DEMONSTRACAO.md
+│   │   ├── relatorios
+│   │   │   ├── diagnostico-2026-01-10-flusistip.md
+│   │   │   ├── REGISTRO-CORRECOES-2025-12-29.md
+│   │   │   └── RELATORIO-VALIDACAO-E2E-MCP-2026-01-12.md
+│   │   └── screenshots
+│   │       ├── frontend-screenshot.png
+│   │       └── validacao-mcp-2026-01-12.png
+│   ├── entregaveis
+│   │   ├── _arquivo
+│   │   │   ├── backlogs
+│   │   │   ├── relatorios
+│   │   │   ├── 01-hub-db-connection.md
+│   │   │   ├── 02-hub-db-schema.md
+│   │   │   ├── 03-hub-db-queries.md
+│   │   │   ├── 04-hub-db-tx.md
+│   │   │   ├── 05-hub-db-schema-test.md
+│   │   │   ├── 06-hub-domain-tenant.md
+│   │   │   ├── 07-hub-domain-usuario.md
+│   │   │   ├── 08-hub-domain-componente.md
+│   │   │   ├── 09-hub-domain-versao.md
+│   │   │   ├── 10-hub-domain-fluxo.md
+│   │   │   ├── 11-hub-domain-sistema.md
+│   │   │   ├── demonstracoes-fase1-README.md
+│   │   │   ├── demonstracoes-README.md
+│   │   │   ├── draft-entregaveis-por-persona.md
+│   │   │   ├── README.md
+│   │   │   ├── screenshot-admin.png
+│   │   │   ├── screenshot-admin-validacao.png
+│   │   │   ├── screenshot-external.png
+│   │   │   ├── screenshot-external-validacao.png
+│   │   │   ├── screenshot-hitl.png
+│   │   │   ├── screenshot-hitl-validacao.png
+│   │   │   ├── screenshot-home.png
+│   │   │   ├── screenshot-kanban.png
+│   │   │   ├── screenshot-kanban-validacao.png
+│   │   │   ├── screenshot-metrics.png
+│   │   │   ├── screenshot-metrics-validacao.png
+│   │   │   ├── screenshot-playground.png
+│   │   │   ├── screenshot-playground-validacao.png
+│   │   │   └── screenshot-workflows-validacao.png
+│   │   ├── cross-cutting
+│   │   │   ├── screenshots
+│   │   │   ├── tracer-bullets
+│   │   │   ├── vertical-slices
+│   │   │   ├── ACCESS_CONTROL_SPEC.md
+│   │   │   ├── analise-gaps-e2e-seed-minimo-2026-01-09.md
+│   │   │   ├── capability-matrix.md
+│   │   │   ├── demonstracao-completa.md
+│   │   │   ├── DIAGNOSTICO-DEMONSTRACAO-LOCALHOST-2026-01-12.md
+│   │   │   ├── diagnostico-validacao-piloto-2026-01-09.md
+│   │   │   ├── INDICE-ARTEFATOS-2026-01-16.md
+│   │   │   ├── instalacao.md
+│   │   │   ├── MATRIZ-DEPENDENCIAS.md
+│   │   │   ├── NAVIGATION_MAP.md
+│   │   │   ├── primeiros-passos.md
+│   │   │   ├── QA-COMPLEMENTAR-FUNCIONALIDADES-MVP.md
+│   │   │   ├── QA-INDICE-COBERTURA-MVP.md
+│   │   │   ├── QA-MANUAL-NAVEGADOR-SEEDMIN.md
+│   │   │   ├── QA-PILOTO-MVP.md
+│   │   │   ├── QA-PILOTO-RESULTADO-2026-01-20.md
+│   │   │   ├── RBAC_MATRIX.md
+│   │   │   ├── RELATORIO-ALINHAMENTO-DOCS-2026-01-19.md
+│   │   │   ├── relatorio-ativacao-2026-01-21.md
+│   │   │   ├── relatorio-e2e-2026-01-05.md
+│   │   │   ├── relatorio-e2e-2026-01-08.md
+│   │   │   ├── relatorio-e2e-2026-01-16.md
+│   │   │   ├── relatorio-e2e-seed-minimo-2026-01-10.md
+│   │   │   ├── RELATORIO-MANUTENCAO-2026-01-16.md
+│   │   │   ├── relatorio-testes-backend-2026-01-08.md
+│   │   │   ├── testes-e2e-manual.md
+│   │   │   ├── VALIDACAO-QA-APIS-PLAYGROUND.md
+│   │   │   └── VERIFICACAO-FORENSE-QA-2026-01-21.md
+│   │   ├── fase-1
+│   │   │   ├── 01-hub-db-connection.clj
+│   │   │   ├── 02-hub-db-schema.clj
+│   │   │   ├── 03-hub-domain-tenant.clj
+│   │   │   ├── 04-composicao-fase1.clj
+│   │   │   └── README.md
+│   │   ├── fase-2
+│   │   │   └── 01-hub-api-admin-tenants.clj
+│   │   ├── por-milestone
+│   │   │   ├── M0-auth
+│   │   │   ├── M1-foundation
+│   │   │   ├── M2-admin-saas
+│   │   │   ├── M3-playground
+│   │   │   ├── M4-workflow
+│   │   │   ├── M5-kanban
+│   │   │   ├── M6-hitl
+│   │   │   ├── M7-validacao
+│   │   │   ├── M8-frontend
+│   │   │   └── M9-integracao
+│   │   ├── por-persona
+│   │   │   ├── admin-saas
+│   │   │   ├── admin-tenant
+│   │   │   ├── dev-componentes
+│   │   │   ├── dev-team
+│   │   │   ├── profissional-saude
+│   │   │   ├── terceiro-mencionado
+│   │   │   ├── validador-cientifico
+│   │   │   └── validador-juridico
+│   │   ├── matriz-milestones.md
+│   │   └── README.md
+│   ├── fii-min
+│   │   ├── 00-ambiente-desenvolvimento.md
+│   │   ├── 00-arquitetura.md
+│   │   ├── 00-fluxo-reframe.cljs
+│   │   ├── 00-rotas-api.clj
+│   │   ├── 00-schema-datomic.clj
+│   │   ├── hub.agent.factory.clj
+│   │   ├── hub.agent.hitl.clj
+│   │   ├── hub.agent.runner.clj
+│   │   ├── hub.agent.tools.clj
+│   │   ├── hub.api.admin.credentials.clj
+│   │   ├── hub.api.admin.metrics.clj
+│   │   ├── hub.api.admin.partners.clj
+│   │   ├── hub.api.admin.tenants.clj
+│   │   ├── hub.api.admin.usuarios.clj
+│   │   ├── hub.api.auth.clj
+│   │   ├── hub.api.cljs
+│   │   ├── hub.api.execution.fluxo.clj
+│   │   ├── hub.api.execution.sistema.clj
+│   │   ├── hub.api.external.callback.clj
+│   │   ├── hub.api.external.validation.clj
+│   │   ├── hub.api.hitl.checkpoint.clj
+│   │   ├── hub.api.hitl.validacao.clj
+│   │   ├── hub.api.kanban.board.clj
+│   │   ├── hub.api.kanban.comments.clj
+│   │   ├── hub.api.kanban.move.clj
+│   │   ├── hub.api.middleware.auth.clj
+│   │   ├── hub.api.middleware.tenant.clj
+│   │   ├── hub.api.playground.config-llm.clj
+│   │   ├── hub.api.playground.contexto.clj
+│   │   ├── hub.api.playground.fluxo.clj
+│   │   ├── hub.api.playground.sistema.clj
+│   │   ├── hub.api.playground.texto-base.clj
+│   │   ├── hub.api.playground.versao.clj
+│   │   ├── hub.api.routes.clj
+│   │   ├── hub.api.tenant-isolation-test.clj
+│   │   ├── hub.api.v1.usuarios.clj
+│   │   ├── hub.api.workflow.advance.clj
+│   │   ├── hub.api.workflow.init.clj
+│   │   ├── hub.api.workflow.list.clj
+│   │   ├── hub.auth.cljs
+│   │   ├── hub.auth.firebase.clj
+│   │   ├── hub.auth.token-exchange.clj
+│   │   ├── hub.billing.external.clj
+│   │   ├── hub.components.admin.dashboard.cljs
+│   │   ├── hub.components.admin.tenant-form.cljs
+│   │   ├── hub.components.admin.usuario-form.cljs
+│   │   ├── hub.components.admin.usuarios.cljs
+│   │   ├── hub.components.common.sla-bar.cljs
+│   │   ├── hub.components.external.portal.cljs
+│   │   ├── hub.components.external.terceiro-mencionado.cljs
+│   │   ├── hub.components.hitl.interface.cljs
+│   │   ├── hub.components.kanban.board.cljs
+│   │   ├── hub.components.kanban.card.cljs
+│   │   ├── hub.components.metrics.dashboard.cljs
+│   │   ├── hub.components.notifications.in-app.cljs
+│   │   ├── hub.components.playground.biblioteca.cljs
+│   │   ├── hub.components.playground.editor.cljs
+│   │   ├── hub.components.playground.pipeline.cljs
+│   │   ├── hub.components.review.claims.cljs
+│   │   ├── hub.components.review.comments.cljs
+│   │   ├── hub.components.review.modal.cljs
+│   │   ├── hub.components.review.sensitive.cljs
+│   │   ├── hub.components.tenant.usuarios.cljs
+│   │   ├── hub.config.cljs
+│   │   ├── hub.core.cljs
+│   │   ├── hub.db.cljs
+│   │   ├── hub.db.connection.clj
+│   │   ├── hub.db.queries.clj
+│   │   ├── hub.db.schema.clj
+│   │   ├── hub.db.tx.clj
+│   │   ├── hub.domain.approval-step.clj
+│   │   ├── hub.domain.approval-workflow.clj
+│   │   ├── hub.domain.assinatura.clj
+│   │   ├── hub.domain.bloqueio.clj
+│   │   ├── hub.domain.certificado.clj
+│   │   ├── hub.domain.checklist.clj
+│   │   ├── hub.domain.compliance-checklist.clj
+│   │   ├── hub.domain.componente.clj
+│   │   ├── hub.domain.desbloqueio.clj
+│   │   ├── hub.domain.fluxo.clj
+│   │   ├── hub.domain.hash.clj
+│   │   ├── hub.domain.kanban-board.clj
+│   │   ├── hub.domain.kanban-card.clj
+│   │   ├── hub.domain.kanban-movement.clj
+│   │   ├── hub.domain.mensagem.clj
+│   │   ├── hub.domain.metricas.clj
+│   │   ├── hub.domain.parecer.clj
+│   │   ├── hub.domain.resolver.clj
+│   │   ├── hub.domain.sistema.clj
+│   │   ├── hub.domain.tenant.clj
+│   │   ├── hub.domain.usuario.clj
+│   │   ├── hub.domain.validacao.clj
+│   │   ├── hub.domain.validacao-externa.clj
+│   │   ├── hub.domain.versao.clj
+│   │   ├── hub.domain.workflow-comment.clj
+│   │   ├── hub.events.cljs
+│   │   ├── hub.integrations.vertex.clj
+│   │   ├── hub.llm.client.clj
+│   │   ├── hub.notifications.in-app.clj
+│   │   ├── hub.notifications.service.clj
+│   │   ├── hub.notifications.sla-alert.clj
+│   │   ├── hub.notifications.validacao-concluida.clj
+│   │   ├── hub.provisioning.seed.clj
+│   │   ├── hub.provisioning.tenant-piloto.clj
+│   │   ├── hub.routes.cljs
+│   │   ├── hub.server.clj
+│   │   ├── hub.sla.alerts.clj
+│   │   ├── hub.sla.monitor.clj
+│   │   ├── hub.subs.cljs
+│   │   ├── hub.views.cljs
+│   │   ├── hub.workflow.decision.clj
+│   │   ├── hub.workflow.external-trigger.clj
+│   │   ├── hub.workflow.orchestrator.clj
+│   │   ├── hub.workflow.transitions.clj
+│   │   ├── hub.workflow.unanimous.clj
+│   │   └── README.md
+│   ├── README.md
+│   └── README-usuario.md
+├── fluxo-de-sistemas
+│   ├── datomic-schema
+│   │   ├── 01-schema-core.edn
+│   │   ├── 02-schema-componentes.edn
+│   │   ├── 03-schema-versionamento.edn
+│   │   ├── 04-schema-auditoria.edn
+│   │   ├── 05-schema-hitl.edn
+│   │   ├── 06-schema-execucao.edn
+│   │   ├── 07-schema-kanban.edn
+│   │   ├── 08-notificacoes.edn
+│   │   ├── 09-schema-auth.edn
+│   │   ├── exemplo-uso.clj
+│   │   ├── MODELAGEM.md
+│   │   └── README.md
+│   ├── texto-suporte-simples-corrigido
+│   │   ├── contextos
+│   │   │   ├── estilos-texto
+│   │   │   ├── export
+│   │   │   ├── integracoes
+│   │   │   ├── metricas
+│   │   │   ├── referencias
+│   │   │   ├── seo
+│   │   │   ├── validacao
+│   │   │   └── README.md
+│   │   ├── documentacao
+│   │   │   ├── 01-modelo-interativo.md
+│   │   │   ├── 02-session-state.md
+│   │   │   ├── 03-integracoes-externas.md
+│   │   │   ├── 04-metricas-qualidade.md
+│   │   │   └── 05-export-engine.md
+│   │   ├── textos-base
+│   │   │   ├── export-engine.md
+│   │   │   ├── sistema-s1.1-extracao.md
+│   │   │   ├── sistema-s1.2-afirmativas.md
+│   │   │   ├── sistema-s2-busca-referencias.md
+│   │   │   ├── sistema-s3-2-seo-perfil.md
+│   │   │   └── sistema-s4-texto-final.md
+│   │   └── LEIAME.md
+│   └── texto-suporte-validacao-externa-juridica
+│       ├── contextos
+│       │   ├── billing
+│       │   ├── compliance
+│       │   ├── kanban
+│       │   ├── mensagens-bloqueantes
+│       │   ├── parceiro-juridico
+│       │   ├── tokens
+│       │   └── validacao-externa
+│       ├── documentacao
+│       │   ├── 01-arquitetura-multi-hitl.md
+│       │   ├── 02-papeis-validadores.md
+│       │   ├── 03-token-exchange-zero-trust.md
+│       │   ├── 04-portal-externo.md
+│       │   └── 05-schema-datomic.md
+│       ├── textos-base
+│       │   ├── hitl-1-medico-chefe.md
+│       │   ├── hitl-2-validacao-externa.md
+│       │   ├── sistema-s2.1-analise-conformidade.md
+│       │   ├── sistema-s2.2-aplicar-correcoes.md
+│       │   ├── sistema-s2.3-analise-juridica.md
+│       │   └── sistema-s2.4-alteracoes-finais.md
+│       └── LEIAME.md
+├── frontend
+│   ├── public
+│   │   ├── css
+│   │   │   └── output.css
+│   │   ├── js
+│   │   │   ├── cljs-runtime
+│   │   │   ├── main.js
+│   │   │   └── manifest.edn
+│   │   └── index.html
+│   ├── src
+│   │   ├── css
+│   │   │   └── input.css
+│   │   └── hub
+│   │       ├── components
+│   │       ├── api.cljs
+│   │       ├── auth.cljs
+│   │       ├── config.cljs
+│   │       ├── core.cljs
+│   │       ├── db.cljs
+│   │       ├── events.cljs
+│   │       ├── routes.cljs
+│   │       ├── subs.cljs
+│   │       └── views.cljs
+│   ├── test
+│   │   └── hub
+│   │       └── core_test.cljs
+│   ├── backlog-2026-01-15-diagnostico-frontend.md
+│   ├── backlog-2026-01-15-fix-navegacao-pos-login.md
+│   ├── bun.lock
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── README.md
+│   ├── shadow-cljs.edn
+│   ├── tailwind.config.js
+│   └── tree.md
+├── resources
+│   ├── migrations
+│   │   ├── 20260123-add-decision-point.edn
+│   │   └── 20260123-add-paralelismo.edn
+│   └── seed
+│       ├── admin-saas.edn
+│       ├── contextos.edn
+│       ├── fluxos.edn
+│       ├── kanban.edn
+│       ├── revisores.edn
+│       ├── sistemas.edn
+│       └── tenant-piloto.edn
+├── scripts
+│   └── validate-routes.js
+├── src
+│   └── hub
+│       ├── agent
+│       │   ├── factory.clj
+│       │   ├── hitl.clj
+│       │   ├── runner.clj
+│       │   └── tools.clj
+│       ├── api
+│       │   ├── admin
+│       │   ├── execution
+│       │   ├── external
+│       │   ├── hitl
+│       │   ├── kanban
+│       │   ├── middleware
+│       │   ├── playground
+│       │   ├── v1
+│       │   ├── workflow
+│       │   ├── auth.clj
+│       │   └── routes.clj
+│       ├── auth
+│       │   ├── firebase.clj
+│       │   └── token_exchange.clj
+│       ├── billing
+│       │   └── external.clj
+│       ├── db
+│       │   ├── connection.clj
+│       │   ├── queries.clj
+│       │   ├── schema.clj
+│       │   └── tx.clj
+│       ├── domain
+│       │   ├── approval_step.clj
+│       │   ├── approval_workflow.clj
+│       │   ├── assinatura.clj
+│       │   ├── bloqueio.clj
+│       │   ├── certificado.clj
+│       │   ├── checklist.clj
+│       │   ├── compliance_checklist.clj
+│       │   ├── componente.clj
+│       │   ├── desbloqueio.clj
+│       │   ├── fluxo.clj
+│       │   ├── hash.clj
+│       │   ├── kanban_board.clj
+│       │   ├── kanban_card.clj
+│       │   ├── kanban_movement.clj
+│       │   ├── mensagem.clj
+│       │   ├── metricas.clj
+│       │   ├── parecer.clj
+│       │   ├── resolver.clj
+│       │   ├── sistema.clj
+│       │   ├── tenant.clj
+│       │   ├── usuario.clj
+│       │   ├── validacao.clj
+│       │   ├── validacao_externa.clj
+│       │   ├── versao.clj
+│       │   └── workflow_comment.clj
+│       ├── integrations
+│       │   └── vertex.clj
+│       ├── llm
+│       │   └── client.clj
+│       ├── notifications
+│       │   ├── in_app.clj
+│       │   ├── service.clj
+│       │   ├── sla_alert.clj
+│       │   └── validacao_concluida.clj
+│       ├── provisioning
+│       │   ├── seed.clj
+│       │   └── tenant_piloto.clj
+│       ├── sla
+│       │   ├── alerts.clj
+│       │   └── monitor.clj
+│       ├── workflow
+│       │   ├── decision.clj
+│       │   ├── external_trigger.clj
+│       │   ├── orchestrator.clj
+│       │   ├── transitions.clj
+│       │   └── unanimous.clj
+│       ├── config.clj
+│       └── server.clj
+├── test
+│   └── hub
+│       ├── api
+│       │   └── tenant_isolation_test.clj
+│       ├── db
+│       │   └── schema_test.clj
+│       └── e2e
+│           ├── externa_test.clj
+│           ├── fluxo_test.clj
+│           ├── hitl_test.clj
+│           ├── notifications_test.clj
+│           ├── sla_test.clj
+│           ├── unanimous_test.clj
+│           └── workflow_test.clj
+├── textos-base
+│   └── commands
+│       └── tmp
+│           └── retomada-auth-seed-minimo-2026-01-07.md
+├── ANALISE-FORENSE-IMPLEMENTACAO-FLUXOS.md
+├── deps.edn
+├── ESTRUTURA_PROJETO.md
+├── flusistip.iml
+├── INSTRUCOES-APLICAR-MIGRATIONS.md
+├── PLANEJAMENTO-IMPLEMENTACAO-FLUXOS.md
+├── README.md
+├── RELATORIO-ANALISE-GAPS-QA-COMPLEMENTAR-2026-01-19.md
+├── RELATORIO-ATIVACAO-2026-01-23.md
+├── RELATORIO-DIAGNOSTICO-FORENSE-DEV-2026-01-19-ADENDO-QA.md
+├── RELATORIO-DIAGNOSTICO-FORENSE-DEV-2026-01-19.md
+├── RELATORIO-FINAL-GAPS-2026-01-23.md
+├── ROADMAP-MVP-PLAYGROUND.md
+├── STATUS-MIGRATIONS-APLICADAS.md
+└── SUMARIO-EXECUTIVO-IMPLEMENTACAO.md
+
+119 directories, 360 files
+
+```
+
+---
+
+*Atualizado automaticamente por: session-start (C)*

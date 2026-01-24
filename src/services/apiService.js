@@ -17,7 +17,7 @@
 // ============================================
 
 const API_CONFIG = {
-  // Em dev, usa proxy do Vite (/api -> localhost:8080)
+  // Em dev, usa proxy do Vite (/api -> localhost:8081)
   // Em prod, usa URL direta ou variável de ambiente
   baseUrl: import.meta.env.VITE_API_URL || '',
   baseId: import.meta.env.VITE_API_BASE_ID || 'phzot4i2zcjwgif',

@@ -35,7 +35,7 @@ services:
       
       # NocoDB Config
       NC_AUTH_JWT_SECRET: ${JWT_SECRET:-nocodb_jwt_secret_ultra_2026}
-      NC_PUBLIC_URL: http://localhost:8080
+      NC_PUBLIC_URL: http://localhost:8081
       NC_DISABLE_TELE: true  # Desabilitar telemetria
       
       # Admin User (primeiro acesso)
@@ -49,7 +49,7 @@ services:
     volumes:
       - nocodb_data:/usr/app/data
     ports:
-      - "8080:8080"
+      - "8081:8080"
     networks:
       - app-network
     restart: unless-stopped

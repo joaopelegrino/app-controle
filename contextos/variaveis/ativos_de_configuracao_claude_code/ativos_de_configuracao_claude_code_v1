@@ -1,0 +1,47 @@
+---
+Tipo: Contexto Variável
+Nome: ativos_de_configuracao_claude_code
+Função: Contextualizar agentes sobre a configuração atual disponível
+Frequência: Atualizado automaticamente via hook SessionStart
+Versão: v1
+Última Atualização: 2026-01-23T13:43:14-0300
+Gerado por: hook C session-start
+---
+
+## Estrutura de Configuração Claude Code
+
+**Path**: `/home/notebook/workspace/app-controle/.claude`
+**Arquivos**: 15 | **Diretórios**: 8
+
+```
+/home/notebook/workspace/app-controle/.claude
+├── agents
+│   ├── code-reviewer.md
+│   ├── config-optimizer.md
+│   ├── dev-environment-specialist.md
+│   ├── docs-engineer.md
+│   ├── security-auditor.md
+│   └── test-generator.md
+├── commands
+│   ├── browser-testing.md
+│   ├── full-coverage.md
+│   ├── pr-ready.md
+│   └── quick-audit.md
+├── docs-meta
+│   └── claude-md-modules
+├── hooks.toml
+├── logs
+│   └── hooks
+│       └── session-start.json
+├── README.md
+├── settings.local.json
+└── skills
+    └── tmp:resumo-sprint6-retomada.md
+
+8 directories, 15 files
+
+```
+
+---
+
+*Atualizado automaticamente por: session-start (C)*
