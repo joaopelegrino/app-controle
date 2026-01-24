@@ -1,8 +1,8 @@
 # app-controle (UltraThink) - Configuração Claude Code
 
-**Version:** 7.3.0 | **Date:** 2026-01-23 | **Status:** Production + Sprint 11 (2/4)
+**Version:** 7.4.0 | **Date:** 2026-01-24 | **Status:** Production + Sprint 11 (3/4)
 **Project Type:** Plataforma B2B de treinamento técnico corporativo
-**Sprint Atual:** 11 - UX Polish (2/4 USs implementadas)
+**Sprint Atual:** 11 - UX Polish (3/4 USs implementadas)
 **Sprints Completos:** 6, 7, 8, 9, 10 ✅
 
 ---
@@ -60,6 +60,7 @@ app-controle/
 │   │   ├── OnboardingWizard.jsx     → Wizard de onboarding (Sprint 10) ✅
 │   │   ├── EmptyState.jsx           → Empty states reutilizáveis (Sprint 11) ✅
 │   │   ├── ConfirmModal.jsx         → Modal confirmação (Sprint 11) ✅
+│   │   ├── MobileMenu.jsx           → Menu hamburger mobile (Sprint 11) ✅
 │   │   └── BashLearningSystem.jsx   → Curso Bash
 │   ├── contexts/
 │   │   ├── AuthContext.jsx          → Estado de autenticação
@@ -70,7 +71,8 @@ app-controle/
 │   ├── hooks/
 │   │   ├── useAuth.js               → Hook de autenticação
 │   │   ├── usePermissions.js        → Hook RBAC (21 permissões)
-│   │   └── useTenant.js             → Hook de tenant
+│   │   ├── useTenant.js             → Hook de tenant
+│   │   └── useMediaQuery.js         → Hook media queries (Sprint 11) ✅
 │   ├── services/
 │   │   └── apiService.js            → API NocoDB + Matrículas (Sprint 9) ✅
 │   ├── utils/
@@ -137,12 +139,12 @@ Sprint 10: Analytics + Polish (4/4 USs)
 ├── US-104: OnboardingContext + OnboardingWizard ✅
 └── Status: ✅ COMPLETO
 
-Sprint 11: UX Polish (2/4 USs) 🔄 EM PROGRESSO
+Sprint 11: UX Polish (3/4 USs) 🔄 EM PROGRESSO
 ├── US-105: EmptyState.jsx + EmptyStateInline ✅
 ├── US-106: ConfirmModal.jsx + useConfirmModal ✅
-├── US-107: Responsividade Mobile ⏳
+├── US-107: MobileMenu + useMediaQuery + Headers responsivos ✅
 ├── US-108: Auth NocoDB JWT ⏳
-└── Status: 🔄 50% COMPLETO
+└── Status: 🔄 75% COMPLETO
 ```
 
 ### RBAC Progress
@@ -181,15 +183,15 @@ DEVCORP CONSULTING:
 
 ---
 
-## Sprint 11: UX Polish 🔄 EM PROGRESSO (2/4)
+## Sprint 11: UX Polish 🔄 EM PROGRESSO (3/4)
 
-**Objetivo:** Melhorias de UX, empty states e confirmações
+**Objetivo:** Melhorias de UX, empty states, confirmações e responsividade
 
 | US | Descrição | Status |
 |----|-----------|--------|
 | **US-105** | Empty states reutilizáveis | ✅ COMPLETO |
 | **US-106** | Modal de confirmação | ✅ COMPLETO |
-| **US-107** | Responsividade mobile | ⏳ Pendente |
+| **US-107** | Responsividade mobile | ✅ COMPLETO |
 | **US-108** | Auth NocoDB JWT | ⏳ Pendente |
 
 ### Componentes Criados (Sprint 11)
@@ -212,6 +214,15 @@ DEVCORP CONSULTING:
 // Hook para uso programático
 const { showConfirm, ConfirmModalComponent } = useConfirmModal();
 const confirmed = await showConfirm({ title: '...', message: '...' });
+
+// MobileMenu.jsx - Menu hamburger (US-107)
+<MobileMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
+<MobileMenuButton onClick={() => setIsOpen(true)} />
+
+// useMediaQuery.js - Detecção de tela (US-107)
+const isMobile = useIsMobile();     // < 768px
+const isTablet = useIsTablet();     // 768-1023px
+const isDesktop = useIsDesktop();   // >= 1024px
 ```
 
 ---
@@ -366,17 +377,18 @@ Para continuar o desenvolvimento na próxima sessão:
 docker compose -f docker-compose.nocodb.yml up -d && bun run dev
 
 # Continuar Sprint 11:
-Implementar US-107 (Responsividade Mobile) e US-108 (Auth NocoDB JWT)
+Implementar US-108 (Auth NocoDB JWT) - única US pendente
 ```
 
-**Contexto:** Sprint 11 em progresso (2/4 USs) + Testes E2E OK.
+**Contexto:** Sprint 11 em progresso (3/4 USs) + Responsividade completa.
 
-**Estado atual (2026-01-23):**
+**Estado atual (2026-01-24):**
 - Frontend: http://localhost:3001
 - Backend: http://localhost:8081 (NocoDB) + PostgreSQL 5432
 - Usuarios: 13 no banco (12 demo + 1 teste CRUD)
 - Testes E2E: Login, Dashboards, Matriculas, Exportacao - TODOS OK
 - CRUD usuarios: Leitura OK, escrita OK (company_id via SQL)
+- Responsividade: MobileMenu, useMediaQuery, Headers responsivos OK
 
 **Containers Docker:**
 ```bash
@@ -395,15 +407,22 @@ docker compose -f docker-compose.nocodb.yml up -d
 - Login Admin: OK (sessao anterior)
 - Login Instrutor: OK (sessao anterior)
 
-**Sprint 11 (2/4 USs):**
+**Sprint 11 (3/4 USs):**
 - US-105: Empty states para listas vazias - COMPLETO
 - US-106: Modal confirmacao antes de deletar - COMPLETO
-- US-107: Responsividade basica mobile - Pendente
+- US-107: Responsividade mobile (MobileMenu, useMediaQuery, Headers) - COMPLETO
 - US-108: Autenticacao real NocoDB JWT - Pendente
 
-**Novos Componentes:**
+**Novos Componentes (Sprint 11):**
 - `src/components/EmptyState.jsx` - Estados vazios reutilizaveis
 - `src/components/ConfirmModal.jsx` - Modal confirmacao reutilizavel
+- `src/components/MobileMenu.jsx` - Menu hamburger slide-over
+- `src/hooks/useMediaQuery.js` - Hook media queries (useIsMobile, useIsTablet, useIsDesktop)
+
+**Dashboards com headers responsivos:**
+- AdminDashboard.jsx - Botoes stack em mobile, icones apenas
+- InstructorDashboard.jsx - Layout responsivo
+- ExecutiveDashboard.jsx - Layout responsivo com gradiente
 
 **Documentacao sessao:**
 - `docs/backlog/BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md`
@@ -412,13 +431,13 @@ docker compose -f docker-compose.nocodb.yml up -d
 
 **Comando de Retomada:**
 ```
-Continuar Sprint 11 - Implementar US-107 (Responsividade Mobile) e US-108 (Auth NocoDB JWT).
-Backend Docker ativo. Consultar BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md
+Continuar Sprint 11 - Implementar US-108 (Auth NocoDB JWT).
+US-107 (Responsividade) COMPLETA. Backend Docker ativo.
 ```
 
 ---
 
-**Ultima atualizacao:** 2026-01-23
-**Versao:** 7.3.0 (Sprint 11 Parcial - 2/4 USs)
-**Status:** Backend + Frontend + Empty States + ConfirmModal
+**Ultima atualizacao:** 2026-01-24
+**Versao:** 7.4.0 (Sprint 11 - 3/4 USs)
+**Status:** Backend + Frontend + Empty States + ConfirmModal + Responsividade
 **RBAC:** 81% implementado (17/21 permissoes)
