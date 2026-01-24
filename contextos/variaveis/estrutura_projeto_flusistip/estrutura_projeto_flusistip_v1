@@ -4,14 +4,14 @@ Nome: estrutura_projeto_flusistip
 Funcao: Contextualizar agentes sobre a estrutura do projeto FluSisTip
 Frequencia: Atualizado automaticamente via hook SessionStart
 Versao: v1
-Ultima Atualizacao: 2026-01-23T13:43:15-0300
+Ultima Atualizacao: 2026-01-24T10:36:56-0300
 Gerado por: hook C session-start
 ---
 
 ## Estrutura do Projeto FluSisTip
 
 **Path**: `/home/notebook/workspace/flusistip`
-**Arquivos**: 55363 | **Diretorios**: 480
+**Arquivos**: 55379 | **Diretorios**: 490
 **Namespaces Clojure**: 81 | **FII-MIN**: 83
 
 ### Exclusoes Inteligentes
@@ -23,6 +23,14 @@ Gerado por: hook C session-start
 
 ```
 /home/notebook/workspace/flusistip
+├── contextos
+│   └── variaveis
+│       ├── ativos_de_configuracao_claude_code
+│       │   └── ativos_de_configuracao_claude_code_v1
+│       ├── estrutura_atual_do_projeto
+│       │   └── estrutura_atual_do_projeto_v1
+│       └── estrutura_projeto_flusistip
+│           └── estrutura_projeto_flusistip_v1
 ├── data
 │   └── datomic
 │       ├── flusistip
@@ -376,6 +384,12 @@ Gerado por: hook C session-start
 │   ├── shadow-cljs.edn
 │   ├── tailwind.config.js
 │   └── tree.md
+├── historico
+│   └── checkpoints
+│       ├── chk-20260123-135938.json
+│       ├── chk-20260123-141300.json
+│       ├── chk-20260123-141358.json
+│       └── chk-20260123-142045.json
 ├── resources
 │   ├── migrations
 │   │   ├── 20260123-add-decision-point.edn
@@ -502,7 +516,7 @@ Gerado por: hook C session-start
 ├── STATUS-MIGRATIONS-APLICADAS.md
 └── SUMARIO-EXECUTIVO-IMPLEMENTACAO.md
 
-119 directories, 360 files
+126 directories, 367 files
 
 ```
 

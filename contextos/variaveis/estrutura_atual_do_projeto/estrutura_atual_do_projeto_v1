@@ -4,7 +4,7 @@ Nome: estrutura_atual_do_projeto
 Função: Contextualizar agentes sobre o estado atual do projeto
 Frequência: Atualizado automaticamente via hook SessionStart
 Versão: v1
-Última Atualização: 2026-01-23T13:43:14-0300
+Última Atualização: 2026-01-24T10:36:56-0300
 Gerado por: hook C session-start
 ---
 
@@ -12,6 +12,11 @@ Gerado por: hook C session-start
 
 ```
 /home/notebook/workspace/app-controle
+├── contextos
+│   └── variaveis
+│       ├── ativos_de_configuracao_claude_code
+│       ├── estrutura_atual_do_projeto
+│       └── estrutura_projeto_flusistip
 ├── database
 │   ├── init.sql
 │   ├── migration-001-rbac.sql
@@ -63,6 +68,14 @@ Gerado por: hook C session-start
 │   ├── 07-referencias
 │   └── entregaveis
 │       └── fase-1
+├── historico
+│   └── checkpoints
+│       ├── chk-20260123-134602.json
+│       ├── chk-20260123-135048.json
+│       ├── chk-20260123-135405.json
+│       ├── chk-20260124-085720.json
+│       ├── chk-20260124-090608.json
+│       └── chk-20260124-095854.json
 ├── scripts
 │   ├── capture-vscode-output.js
 │   └── start-chrome-debug.sh
@@ -90,6 +103,7 @@ Gerado por: hook C session-start
 │   │   ├── LearningPathView.jsx
 │   │   ├── LoadingComponents.jsx
 │   │   ├── LoginView.jsx
+│   │   ├── MobileMenu.jsx
 │   │   ├── ModuleDifficultyCard.jsx
 │   │   ├── OnboardingWizard.jsx
 │   │   ├── PrivateRoute.jsx
@@ -124,6 +138,7 @@ Gerado por: hook C session-start
 │   │   ├── useAuth.js
 │   │   ├── useAutoSaveNotes.js
 │   │   ├── useCourses.js
+│   │   ├── useMediaQuery.js
 │   │   ├── useModuleProgress.js
 │   │   ├── usePermissions.js
 │   │   └── useTenant.js
@@ -164,7 +179,7 @@ Gerado por: hook C session-start
 ├── vite.config.js
 └── vitest.config.js
 
-35 directories, 117 files
+42 directories, 125 files
 
 ```
 
