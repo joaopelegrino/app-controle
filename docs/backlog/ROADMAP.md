@@ -1,9 +1,9 @@
 # Roadmap - Plataforma UltraThink B2B
 
-**Versão:** 6.0.0
-**Data:** 2026-01-23
+**Versão:** 7.0.0
+**Data:** 2026-01-24
 **Branch:** `demo-nocodb-simple`
-**Status:** Sprint 11 em Progresso (2/4 USs) + Testes E2E OK
+**Status:** Sprint 11 COMPLETO (4/4 USs) + Auth NocoDB JWT
 
 ---
 
@@ -23,6 +23,8 @@ Plataforma B2B de treinamento técnico corporativo com:
 - ✅ Onboarding wizard
 - ✅ Empty states reutilizáveis
 - ✅ Modal de confirmação
+- ✅ Responsividade mobile
+- ✅ Autenticação NocoDB JWT
 
 ---
 
@@ -190,9 +192,9 @@ US-104: Onboarding Wizard ✅
 ## Métricas de Progresso
 
 ```
-Total de User Stories: 35
-Completas: 35 (100%)
-Em Progresso: 2 (Sprint 11)
+Total de User Stories: 37
+Completas: 37 (100%)
+Em Progresso: 0
 
 RBAC:
 - Permissões definidas: 21
@@ -204,14 +206,14 @@ Sprints:
 - Sprint 8:  ✅ 3/3 (100%)
 - Sprint 9:  ✅ 4/4 (100%)
 - Sprint 10: ✅ 4/4 (100%)
-- Sprint 11: 🔄 3/4 (75%)
+- Sprint 11: ✅ 4/4 (100%)
 
-Status: PRONTO PARA DEMO B2B ✅ + UX Polish em progresso
+Status: PRONTO PARA DEMO B2B ✅ + Auth NocoDB JWT
 ```
 
 ---
 
-## Sprint 11: UX Polish (Em Progresso - 3/4 USs)
+## Sprint 11: UX Polish ✅ COMPLETO (4/4 USs)
 
 ```
 US-105: Empty States ✅
@@ -236,10 +238,12 @@ US-107: Responsividade Mobile ✅
 ├── Botões com ícones apenas em mobile
 └── Scroll horizontal para ações
 
-US-108: Autenticação NocoDB JWT ⏳
-├── Login via API NocoDB real
-├── Token JWT em localStorage
-└── Refresh automático
+US-108: Autenticação NocoDB JWT ✅
+├── apiService.loginUser() - Login via tabela users
+├── apiService.validateToken() - Validação de token
+├── apiService.getSavedUser() - Recuperar sessão
+├── AuthContext refatorado para API real
+└── Testes unitários (20 testes)
 ```
 
 **Arquivos criados no Sprint 11:**
@@ -247,6 +251,11 @@ US-108: Autenticação NocoDB JWT ⏳
 - `src/components/ConfirmModal.jsx`
 - `src/components/MobileMenu.jsx`
 - `src/hooks/useMediaQuery.js`
+- `src/services/__tests__/apiService.auth.test.js`
+
+**Arquivos modificados no Sprint 11:**
+- `src/services/apiService.js` - loginUser(), validateToken(), getSavedUser()
+- `src/contexts/AuthContext.jsx` - Refatorado para usar API real
 
 ---
 
@@ -336,25 +345,27 @@ docker compose -f docker-compose.nocodb.yml up -d && bun run dev
 # Opção 2: Desenvolvimento frontend apenas
 bun run dev
 
-# Opção 3: Continuar Sprint 11
-Implementar US-107 (Responsividade) e US-108 (Auth JWT)
+# Opção 3: Iniciar Sprint 12
+Verificar gaps em docs/backlog/GAPS-DEMO-B2B.md
 ```
 
 **Estado atual (2026-01-24):**
 - Sprint 10: COMPLETO (4/4 USs)
-- Sprint 11: EM PROGRESSO (3/4 USs)
+- Sprint 11: COMPLETO (4/4 USs)
   - ✅ US-105: EmptyState.jsx
   - ✅ US-106: ConfirmModal.jsx
   - ✅ US-107: Responsividade Mobile (MobileMenu, useMediaQuery, headers)
-  - ⏳ US-108: Auth NocoDB JWT
+  - ✅ US-108: Auth NocoDB JWT (loginUser, validateToken, getSavedUser)
 - Testes E2E: CONCLUIDOS (4/4 perfis validados)
+- Testes Unitários Auth: 20 testes OK
 - Frontend: http://localhost:3001
-- Backend: http://localhost:8080 (NocoDB + PostgreSQL)
+- Backend: http://localhost:8081 (NocoDB + PostgreSQL)
 - Usuarios: 13 no banco (12 demo + 1 teste)
 
-**Pendencias identificadas:**
+**Observações:**
 - company_id no NocoDB é coluna sistema (ForeignKey) - precisa SQL direto
-- MCP Chrome DevTools pode desconectar - reiniciar se necessario
+- Docker Desktop deve estar ativo para testes E2E com backend
+- Senha demo para todos usuários: Demo@2026
 
 **Documentacao sessao:**
 - `docs/backlog/BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md`
@@ -362,7 +373,7 @@ Implementar US-107 (Responsividade) e US-108 (Auth JWT)
 
 ---
 
-**Última atualização:** 2026-01-23
-**Versão:** 6.0.0 (Sprint 11 - 2/4 USs)
-**Status:** Backend + Frontend + Empty States + ConfirmModal
-**Próxima revisão:** Completar Sprint 11 (US-107/108)
+**Última atualização:** 2026-01-24
+**Versão:** 7.0.0 (Sprint 11 - COMPLETO)
+**Status:** Backend + Frontend + Auth NocoDB JWT + Responsividade
+**Próxima revisão:** Iniciar Sprint 12 ou revisar gaps

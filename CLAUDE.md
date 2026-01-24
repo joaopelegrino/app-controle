@@ -402,6 +402,7 @@ Iniciar Sprint 12 ou revisar gaps em docs/backlog/GAPS-DEMO-B2B.md
 - Testes E2E: Login, Dashboards, Matriculas, Exportacao - TODOS OK
 - CRUD usuarios: Leitura OK, escrita OK (company_id via SQL)
 - Responsividade: MobileMenu, useMediaQuery, Headers responsivos OK
+- Autenticação: loginUser via NocoDB + validateToken OK
 
 **Containers Docker:**
 ```bash
@@ -414,17 +415,11 @@ docker compose -f docker-compose.nocodb.yml up -d
 - courses: mt3gmx6ze7b2cov
 - modules: m79311ib9eppvc7
 
-**Testes E2E Completos (2026-01-23):**
-- Login Aluno: OK (maria@acmetech.com -> Hub, menu so "Sair")
-- Login C-Level: OK (ceo@acmetech.com -> Hub, acesso /admin/executive)
-- Login Admin: OK (sessao anterior)
-- Login Instrutor: OK (sessao anterior)
-
-**Sprint 11 (3/4 USs):**
-- US-105: Empty states para listas vazias - COMPLETO
-- US-106: Modal confirmacao antes de deletar - COMPLETO
-- US-107: Responsividade mobile (MobileMenu, useMediaQuery, Headers) - COMPLETO
-- US-108: Autenticacao real NocoDB JWT - Pendente
+**Sprint 11 (4/4 USs) - COMPLETO:**
+- US-105: Empty states para listas vazias ✅
+- US-106: Modal confirmacao antes de deletar ✅
+- US-107: Responsividade mobile (MobileMenu, useMediaQuery, Headers) ✅
+- US-108: Autenticacao real NocoDB JWT (loginUser, validateToken, getSavedUser) ✅
 
 **Novos Componentes (Sprint 11):**
 - `src/components/EmptyState.jsx` - Estados vazios reutilizaveis
@@ -432,25 +427,19 @@ docker compose -f docker-compose.nocodb.yml up -d
 - `src/components/MobileMenu.jsx` - Menu hamburger slide-over
 - `src/hooks/useMediaQuery.js` - Hook media queries (useIsMobile, useIsTablet, useIsDesktop)
 
-**Dashboards com headers responsivos:**
-- AdminDashboard.jsx - Botoes stack em mobile, icones apenas
-- InstructorDashboard.jsx - Layout responsivo
-- ExecutiveDashboard.jsx - Layout responsivo com gradiente
+**Arquivos modificados (US-108):**
+- `src/services/apiService.js` - loginUser(), validateToken(), getSavedUser()
+- `src/contexts/AuthContext.jsx` - Refatorado para usar API real
+- `src/services/__tests__/apiService.auth.test.js` - 20 testes unitários
 
 **Documentacao sessao:**
 - `docs/backlog/BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md`
 - `docs/backlog/BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md`
 - `docs/backlog/ROADMAP.md` v6.0.0
 
-**Comando de Retomada:**
-```
-Continuar Sprint 11 - Implementar US-108 (Auth NocoDB JWT).
-US-107 (Responsividade) COMPLETA. Backend Docker ativo.
-```
-
 ---
 
 **Ultima atualizacao:** 2026-01-24
-**Versao:** 7.4.0 (Sprint 11 - 3/4 USs)
-**Status:** Backend + Frontend + Empty States + ConfirmModal + Responsividade
+**Versao:** 7.5.0 (Sprint 11 - COMPLETO)
+**Status:** Backend + Frontend + Auth NocoDB JWT + Responsividade
 **RBAC:** 81% implementado (17/21 permissoes)
