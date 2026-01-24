@@ -204,14 +204,14 @@ Sprints:
 - Sprint 8:  ✅ 3/3 (100%)
 - Sprint 9:  ✅ 4/4 (100%)
 - Sprint 10: ✅ 4/4 (100%)
-- Sprint 11: 🔄 2/4 (50%)
+- Sprint 11: 🔄 3/4 (75%)
 
 Status: PRONTO PARA DEMO B2B ✅ + UX Polish em progresso
 ```
 
 ---
 
-## Sprint 11: UX Polish (Em Progresso - 2/4 USs)
+## Sprint 11: UX Polish (Em Progresso - 3/4 USs)
 
 ```
 US-105: Empty States ✅
@@ -229,10 +229,12 @@ US-106: Modal de Confirmação ✅
     ├── Hook useConfirmModal() para uso programático
     └── Integrado: UserFormModal (exclusão de usuário)
 
-US-107: Responsividade Mobile ⏳
-├── Menu hamburger < 768px
-├── Cards em coluna única mobile
-└── Tabelas com scroll horizontal
+US-107: Responsividade Mobile ✅
+├── Menu hamburger < 768px (MobileMenu + MobileMenuButton)
+├── useMediaQuery hook com breakpoints Tailwind
+├── Headers responsivos (stack vertical em mobile)
+├── Botões com ícones apenas em mobile
+└── Scroll horizontal para ações
 
 US-108: Autenticação NocoDB JWT ⏳
 ├── Login via API NocoDB real
@@ -243,6 +245,8 @@ US-108: Autenticação NocoDB JWT ⏳
 **Arquivos criados no Sprint 11:**
 - `src/components/EmptyState.jsx`
 - `src/components/ConfirmModal.jsx`
+- `src/components/MobileMenu.jsx`
+- `src/hooks/useMediaQuery.js`
 
 ---
 
@@ -336,12 +340,12 @@ bun run dev
 Implementar US-107 (Responsividade) e US-108 (Auth JWT)
 ```
 
-**Estado atual (2026-01-23):**
+**Estado atual (2026-01-24):**
 - Sprint 10: COMPLETO (4/4 USs)
-- Sprint 11: EM PROGRESSO (2/4 USs)
+- Sprint 11: EM PROGRESSO (3/4 USs)
   - ✅ US-105: EmptyState.jsx
   - ✅ US-106: ConfirmModal.jsx
-  - ⏳ US-107: Responsividade Mobile
+  - ✅ US-107: Responsividade Mobile (MobileMenu, useMediaQuery, headers)
   - ⏳ US-108: Auth NocoDB JWT
 - Testes E2E: CONCLUIDOS (4/4 perfis validados)
 - Frontend: http://localhost:3001
