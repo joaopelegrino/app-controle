@@ -387,42 +387,48 @@ export function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header */}
+      {/* Header (US-107: Responsivo) */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+          {/* Desktop: single row | Mobile: stack */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            {/* Title section */}
             <div className="flex items-center">
               <button
                 onClick={() => navigate('/')}
-                className="mr-4 p-2 hover:bg-gray-100 rounded-lg"
+                className="mr-3 sm:mr-4 p-2 hover:bg-gray-100 rounded-lg flex-shrink-0"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-600" />
               </button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-800">Dashboard Administrativo</h1>
-                <p className="text-sm text-gray-500">{company?.name}</p>
+              <div className="min-w-0">
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-800 truncate">
+                  Dashboard Administrativo
+                </h1>
+                <p className="text-sm text-gray-500 truncate">{company?.name}</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+
+            {/* Actions section - scrollable on mobile */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 sm:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0">
               <button
                 onClick={() => {
                   setSelectedUser(null);
                   setIsUserModalOpen(true);
                 }}
-                className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                className="flex items-center px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 whitespace-nowrap text-sm sm:text-base flex-shrink-0"
               >
-                <Plus className="w-4 h-4 mr-2" />
-                Novo Usuário
+                <Plus className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Novo Usuário</span>
               </button>
               <button
                 onClick={() => {
                   setEnrollPreselectedUser(null);
                   setIsEnrollModalOpen(true);
                 }}
-                className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
+                className="flex items-center px-3 sm:px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 whitespace-nowrap text-sm sm:text-base flex-shrink-0"
               >
-                <GraduationCap className="w-4 h-4 mr-2" />
-                Matricular
+                <GraduationCap className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Matricular</span>
               </button>
               <ExportButton
                 type="users"
@@ -432,10 +438,11 @@ export function AdminDashboard() {
               />
               <button
                 onClick={loadDashboardData}
-                className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="flex items-center px-3 sm:px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg whitespace-nowrap text-sm sm:text-base flex-shrink-0"
+                title="Atualizar dados"
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Atualizar
+                <RefreshCw className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Atualizar</span>
               </button>
             </div>
           </div>

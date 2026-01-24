@@ -241,30 +241,33 @@ export function ExecutiveDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
-      {/* Header Executivo */}
+      {/* Header Executivo (US-107: Responsivo) */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            {/* Title section */}
             <div className="flex items-center">
               <button
                 onClick={() => navigate('/')}
-                className="mr-4 p-2 hover:bg-white/20 rounded-lg transition"
+                className="mr-3 sm:mr-4 p-2 hover:bg-white/20 rounded-lg transition flex-shrink-0"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div>
-                <h1 className="text-2xl font-bold">Dashboard Executivo</h1>
-                <p className="text-blue-100 text-sm">{company?.name}</p>
+              <div className="min-w-0">
+                <h1 className="text-xl sm:text-2xl font-bold truncate">Dashboard Executivo</h1>
+                <p className="text-blue-100 text-sm truncate">{company?.name}</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            {/* Actions section */}
+            <div className="flex items-center gap-2 sm:space-x-4 overflow-x-auto pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
               <ExportAllButton companyId={tenantId} />
               <button
                 onClick={loadData}
-                className="flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition"
+                className="flex items-center px-3 sm:px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition whitespace-nowrap flex-shrink-0"
+                title="Atualizar dados"
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Atualizar
+                <RefreshCw className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Atualizar</span>
               </button>
             </div>
           </div>

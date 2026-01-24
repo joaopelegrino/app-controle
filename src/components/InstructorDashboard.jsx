@@ -405,25 +405,29 @@ export function InstructorDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header */}
+      {/* Header (US-107: Responsivo) */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            {/* Title section */}
             <div className="flex items-center">
               <button
                 onClick={() => navigate('/')}
-                className="mr-4 p-2 hover:bg-gray-100 rounded-lg"
+                className="mr-3 sm:mr-4 p-2 hover:bg-gray-100 rounded-lg flex-shrink-0"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-600" />
               </button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-800">Dashboard do Instrutor</h1>
-                <p className="text-sm text-gray-500">
+              <div className="min-w-0">
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-800 truncate">
+                  Dashboard do Instrutor
+                </h1>
+                <p className="text-sm text-gray-500 truncate">
                   {company?.name} - Acompanhamento do Time
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            {/* Actions section */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
               <ExportButton
                 type="users"
                 companyId={tenantId}
@@ -431,10 +435,11 @@ export function InstructorDashboard() {
               />
               <button
                 onClick={loadDashboardData}
-                className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="flex items-center px-3 sm:px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg whitespace-nowrap flex-shrink-0"
+                title="Atualizar dados"
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Atualizar
+                <RefreshCw className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Atualizar</span>
               </button>
             </div>
           </div>
