@@ -439,7 +439,133 @@ docker compose -f docker-compose.nocodb.yml up -d
 
 ---
 
-**Ultima atualizacao:** 2026-01-24
-**Versao:** 7.5.0 (Sprint 11 - COMPLETO)
+## Ambiente de Desenvolvimento (WSL2 + Windows + Docker)
+
+### Informações do Sistema
+
+| Item | Valor |
+|------|-------|
+| **Distro** | Ubuntu 24.04.3 LTS (Noble Numbat) |
+| **Kernel** | WSL2 (Windows Subsystem for Linux) |
+| **Shell** | Zsh 5.9 |
+| **Usuario WSL** | notebook |
+| **Usuario Windows** | valor (em `/mnt/c/Users/valor`) |
+
+### Paths Críticos
+
+| Tipo | Path |
+|------|------|
+| **Projeto** | `/home/notebook/workspace/app-controle` |
+| **Home WSL** | `/home/notebook` |
+| **Home Windows** | `/mnt/c/Users/valor` |
+| **Chezmoi source** | `/home/notebook/.local/share/chezmoi` |
+| **Mise installs** | `/home/notebook/.local/share/mise/installs` |
+
+### Ferramentas via mise
+
+| Ferramenta | Versão | Uso no Projeto |
+|------------|--------|----------------|
+| mise | 2025.12.0 | Gerenciador de versões |
+| chezmoi | 2.66.0 | Dotfiles SSOT |
+| Node.js | 24.11.1 (LTS) | Runtime alternativo |
+| **Bun** | 1.3.3 | **Runtime principal** |
+| Docker Desktop | 29.1.3 | Backend containers |
+
+### Docker Desktop + WSL2
+
+#### Configuração Obrigatória
+
+1. **Settings > General**: ✅ "Use WSL 2 based engine"
+2. **Settings > Resources > WSL Integration**: ✅ Habilitar "Ubuntu-24.04"
+
+#### Arquivo de Configuração Docker
+
+**Path WSL**: `/mnt/c/Users/valor/AppData/Roaming/Docker/settings-store.json`
+
+```json
+{
+  "EnableIntegrationWithDefaultWslDistro": true,
+  "IntegratedWslDistros": ["Ubuntu-24.04"]
+}
+```
+
+#### Troubleshooting Docker
+
+| Problema | Causa | Solução |
+|----------|-------|---------|
+| Socket não existe | Integração WSL desabilitada | Habilitar em Docker Desktop |
+| Permission denied | Grupo docker | `sudo usermod -aG docker $USER` |
+| Containers não iniciam | Docker Desktop parado | Iniciar Docker Desktop no Windows |
+
+```bash
+# Verificar Docker funcionando
+docker ps
+
+# Se socket não existe
+ls -la /var/run/docker.sock
+
+# Iniciar Docker Desktop via PowerShell
+powershell.exe -Command 'Start-Process "C:\Program Files\Docker\Docker\Docker Desktop.exe"'
+```
+
+### WSL Interop - Comandos Windows
+
+```bash
+# PowerShell
+powershell.exe -Command "Get-Process | Select -First 5"
+
+# Clipboard
+echo "texto" | clip.exe
+
+# Abrir no Explorer
+explorer.exe .
+
+# Browser padrão
+explorer.exe "https://localhost:3001"
+```
+
+### Regras de Ambiente
+
+#### SEMPRE
+- Usar **bun** (não npm/yarn)
+- Usar paths absolutos em documentação
+- Verificar Docker Desktop ativo antes de `docker compose`
+
+#### NUNCA
+- Usar `~` em documentação (substituir por `/home/notebook/`)
+- Commitar credentials ou `.env` files
+- Usar comandos destrutivos git (force push, hard reset)
+
+### Comandos de Diagnóstico
+
+```bash
+# Mise
+mise --version && mise list
+
+# Chezmoi
+chezmoi --version && chezmoi status
+
+# Docker
+docker ps && docker compose -f docker-compose.nocodb.yml ps
+
+# Portas do projeto
+lsof -i :3001 -i :5432 -i :8081
+
+# WSL Distros
+wsl.exe -l -v
+```
+
+### Checklist Pré-Desenvolvimento
+
+- [ ] Docker Desktop rodando (verificar ícone na bandeja Windows)
+- [ ] Containers ativos: `docker compose -f docker-compose.nocodb.yml up -d`
+- [ ] PostgreSQL acessível: porta 5432
+- [ ] NocoDB acessível: http://localhost:8081
+- [ ] Frontend: `bun run dev` (porta 3001)
+
+---
+
+**Ultima atualizacao:** 2026-01-25
+**Versao:** 7.5.1 (+ Diretrizes Ambiente)
 **Status:** Backend + Frontend + Auth NocoDB JWT + Responsividade
 **RBAC:** 81% implementado (17/21 permissoes)
