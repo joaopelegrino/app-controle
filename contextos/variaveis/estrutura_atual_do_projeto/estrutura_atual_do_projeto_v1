@@ -4,7 +4,7 @@ Nome: estrutura_atual_do_projeto
 Função: Contextualizar agentes sobre o estado atual do projeto
 Frequência: Atualizado automaticamente via hook SessionStart
 Versão: v1
-Última Atualização: 2026-01-24T15:12:45-0300
+Última Atualização: 2026-01-25T09:47:11-0300
 Gerado por: hook C session-start
 ---
 
@@ -37,6 +37,7 @@ Gerado por: hook C session-start
 │   │   ├── BACKLOG-2026-01-23-SPRINT9-MATRICULAS.md
 │   │   ├── BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md
 │   │   ├── BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md
+│   │   ├── backlog-2026-01-24-itens-pendentes-infra.md
 │   │   ├── GAPS-DEMO-B2B.md
 │   │   ├── RETOMADA-2026-01-22-API-SERVICE.md
 │   │   ├── RETOMADA-2026-01-22-AUTH-FRONTEND.md
@@ -76,7 +77,8 @@ Gerado por: hook C session-start
 │       ├── chk-20260124-085720.json
 │       ├── chk-20260124-090608.json
 │       ├── chk-20260124-095854.json
-│       └── chk-20260124-111010.json
+│       ├── chk-20260124-111010.json
+│       └── chk-20260124-151513.json
 ├── scripts
 │   ├── capture-vscode-output.js
 │   └── start-chrome-debug.sh
@@ -180,7 +182,7 @@ Gerado por: hook C session-start
 ├── vite.config.js
 └── vitest.config.js
 
-42 directories, 126 files
+42 directories, 128 files
 
 ```
 
