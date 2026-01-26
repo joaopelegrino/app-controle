@@ -1,10 +1,11 @@
-# 📚 Documentação Plataforma B2B de treinamento técnico corporativo - Índice Geral
+# Documentação TrainB2B - Plataforma de Treinamento Corporativo
 
-> **Plataforma B2B de treinamento técnico corporativo para Treinamento Técnico de Qualidade**
+> **Plataforma B2B White-Label de Treinamento Técnico Corporativo**
 >
-> **Versão da Documentação:** 1.0.0
-> **Data:** 2025-11-14
-> **Status:** 🔄 Em Desenvolvimento
+> **Versão da Documentação:** 9.0.0
+> **Data:** 2026-01-26
+> **Sprint Atual:** 13 (White-Label) - COMPLETO
+> **Status:** Produção
 
 ---
 
@@ -12,24 +13,35 @@
 
 ### Contexto Atual do Projeto
 
-O **Plataforma B2B de treinamento técnico corporativo** é um sistema educacional interativo que resolve a dor de **empresas que precisam estruturar treinamentos internos com qualidade**, oferecendo:
+O **TrainB2B** é uma plataforma B2B white-label de treinamento técnico corporativo, oferecendo:
 
-- ✅ **Conteúdo estruturado** em hierarquia clara (Hub → Curso → Aula → Prática)
-- ✅ **Progresso mensurável** com métricas de completude e engajamento
-- ✅ **Experiência imersiva** com flash cards 3D e vídeos integrados
-- ✅ **Autonomia de aprendizado** com sistema de notas e auto-avaliação
-- ✅ **Stack moderno e escalável** (React + Vite + Tailwind + Docker)
+- ✅ **Autenticação Multi-tenant** com 4 roles (student, instructor, admin, c_level)
+- ✅ **Sistema RBAC** com 21 permissões (81% implementado com UI)
+- ✅ **Dashboards por Role** (Admin, Executive, Instructor, User)
+- ✅ **CRUD Completo** de usuários com soft delete
+- ✅ **Matrículas em Cursos** com data limite
+- ✅ **Exportação** Excel/JSON de relatórios
+- ✅ **Analytics Avançados** (módulos difíceis, progresso)
+- ✅ **Internacionalização** i18n (pt-BR, en-US, es-ES)
+- ✅ **Arquitetura White-Label** configurável via variáveis de ambiente
+- ✅ **Stack moderno** (React + Vite + Tailwind + NocoDB + PostgreSQL)
 
-**Estado Atual:**
-- 📦 **Release 1.0** concluída (227 módulos, 692h de conteúdo)
-- 🎯 **13 áreas de estudo** (C, Rust, Bash, Docker, Kubernetes, VSCode, etc.)
-- 🚀 **5 sistemas integrados** + 1 caminho de aprendizado
-- 📊 **Nota geral:** 9.0/10 ⭐
+**Estado Atual (Sprint 13 COMPLETO):**
+- 📦 **43 User Stories** implementadas (Sprints 6-13)
+- 🎯 **4 Dashboards** funcionais por role
+- 🌐 **3 idiomas** com troca instantânea
+- 🏷️ **White-Label** com nome/prefixo configurável
+- 📊 **RBAC:** 81% completo (17/21 permissões com UI)
 
-**Próximas Releases:**
-- 🔄 **Release 2.0** (Q1 2026) - React Router, Refatoração, Testes (30%)
-- 🎨 **Release 3.0** (Q2 2026) - Dark Mode, TypeScript, Acessibilidade
-- 🚀 **Release 4.0** (Q3 2026) - PWA, Sistema de Conquistas, Recursos Sociais
+**Sprints Completos:**
+- ✅ Sprint 6: Base B2B (19 USs)
+- ✅ Sprint 7: CRUD Usuários (3 USs)
+- ✅ Sprint 8: Dashboard Instrutor (3 USs)
+- ✅ Sprint 9: Matrículas e Exportação (4 USs)
+- ✅ Sprint 10: Analytics + Polish (4 USs)
+- ✅ Sprint 11: UX Polish (4 USs)
+- ✅ Sprint 12: Internacionalização (6 USs)
+- ✅ Sprint 13: White-Label (6 USs)
 
 ---
 
@@ -146,68 +158,64 @@ O **Plataforma B2B de treinamento técnico corporativo** é um sistema educacion
 
 ---
 
-## 📊 Progresso da Documentação
+## Progresso da Documentação
 
-| Documento | Status | Completude | Prioridade | Última Atualização |
-|-----------|--------|------------|------------|-------------------|
-| **Documentação Conceitual** | | | | |
-| 00-definicoes-principais.md | 📋 Planejado | 0% | 🔴 Alta | - |
-| 01-contexto-projeto.md | 📋 Planejado | 0% | 🔴 Alta | - |
-| 03-glossario.md | 📋 Planejado | 0% | 🟡 Média | - |
-| 04-modelo-dominio.md | 📋 Planejado | 0% | 🟡 Média | - |
-| 05-personas-corporativas.md | 📋 Planejado | 0% | 🔴 Alta | - |
-| **Documentação Técnica** | | | | |
-| 01-visao-geral-arquitetura.md | 📋 Planejado | 0% | 🟡 Média | - |
-| 01-stack-tecnologico.md | 📋 Planejado | 0% | 🟢 Baixa | - |
-| 01-estrategia-testes.md | 📋 Planejado | 0% | 🟢 Baixa | - |
-| **Documentação Existente** | | | | |
-| CLAUDE.md | ✅ Completo | 100% | ⭐ Crítico | 2025-11-13 |
-| PRODUCT-CENTRAL-DOCUMENT.md | ✅ Completo | 100% | ⭐ Crítico | 2025-11-13 |
-| README.md | ✅ Completo | 100% | ⭐ Crítico | 2025-11-13 |
-| MCP-CHROME-DEVTOOLS-*.md | ✅ Completo | 100% | 🟡 Média | 2025-11-13 |
+| Documento | Status | Completude | Última Atualização |
+|-----------|--------|------------|-------------------|
+| **Backlog & Roadmap** | | | |
+| ROADMAP.md | ✅ Completo | 100% | 2026-01-26 |
+| GAPS-DEMO-B2B.md | ✅ Completo | 100% | 2026-01-26 |
+| **Documentação Conceitual** | | | |
+| 00-definicoes-principais.md | ✅ Existente | 100% | 2025-12 |
+| 01-contexto-projeto.md | ✅ Existente | 100% | 2025-12 |
+| 04-modelo-dominio.md | ✅ Existente | 100% | 2025-12 |
+| 05-personas-corporativas.md | ✅ Existente | 100% | 2025-12 |
+| **Documentação Técnica** | | | |
+| ANALISE-I18N-INTERNACIONALIZACAO.md | ✅ Completo | 100% | 2026-01-25 |
+| MCP-CHROME-DEVTOOLS-*.md | ✅ Completo | 100% | 2026-01 |
+| **Raiz do Projeto** | | | |
+| CLAUDE.md | ✅ Completo | 100% | 2026-01-26 (v9.0.0) |
+| README.md | ✅ Completo | 100% | 2026-01-26 |
 
-**Meta:** 100% da documentação conceitual até Sprint 3.2 (2 semanas)
+**Status:** Documentação alinhada com Sprint 13 (White-Label)
 
 ---
 
-## 📁 Estrutura de Documentação
+## Estrutura de Documentação
 
 ```
 docs/
-├── README.md                              # 📍 Você está aqui
+├── README.md                              # Você está aqui
 │
-├── conceitual/                            # Documentação de produto e negócio
-│   ├── README.md                          # Índice conceitual
+├── backlog/                               # Planejamento e roadmap
+│   ├── ROADMAP.md                         # Roadmap principal (v9.0.0)
+│   ├── GAPS-DEMO-B2B.md                   # Análise de gaps (v8.0.0)
+│   ├── ESTUDO-REFATORACAO-WHITE-LABEL-2026-01-26.md  # Sprint 13
+│   ├── acoes-usuario/                     # Templates de ações
+│   └── arquivo-2026-01/                   # Backlogs históricos arquivados
+│
+├── backend/                               # Documentação backend
+│   ├── NOCODB-QUICKSTART.md               # Setup NocoDB
+│   └── PERSONAS-NAO-TECNICAS.md           # Guia para não-técnicos
+│
+├── conceitual/                            # Documentação de produto
 │   └── 01-visao-geral/
-│       ├── 00-definicoes-principais.md    # 🎯 CANÔNICO - Glossário autoritativo
-│       ├── 01-contexto-projeto.md         # Problema corporativo + solução
-│       ├── 03-glossario.md                # Termos técnicos expandidos
-│       ├── 04-modelo-dominio.md           # Hierarquia Hub→Curso→Aula
-│       └── 05-personas-corporativas.md    # Admin RH, Instrutor, Colaborador
+│       ├── 00-definicoes-principais.md    # Glossário autoritativo
+│       ├── 01-contexto-projeto.md         # Problema + solução
+│       ├── 04-modelo-dominio.md           # Hierarquia de dados
+│       └── 05-personas-corporativas.md    # Personas B2B
 │
-├── tecnico/                               # Documentação de implementação
-│   ├── README.md                          # Índice técnico
-│   ├── architecture/
-│   │   ├── 01-visao-geral-arquitetura.md  # Decisões arquiteturais
-│   │   ├── 02-modelo-dados.md             # localStorage, studyAreas.js
-│   │   └── 03-componentes.md              # 18 componentes React
-│   ├── stack-implementation/
-│   │   ├── 01-stack-tecnologico.md        # React + Vite + Tailwind + Docker
-│   │   ├── 02-setup-ambiente.md           # Como rodar localmente
-│   │   └── 03-build-deploy.md             # Docker + GitHub Actions
-│   ├── testing/
-│   │   ├── 01-estrategia-testes.md        # Vitest + Playwright
-│   │   ├── 02-mcp-chrome-devtools.md      # → MCP-CHROME-DEVTOOLS-GUIA-COMPLETO.md
-│   │   ├── 03-mcp-manual-uso.md           # → MCP-CHROME-DEVTOOLS-MANUAL-USO.md
-│   │   └── 04-mcp-quick-start.md          # → MCP-CHROME-DEVTOOLS-QUICK-START.md
-│   └── patterns/
-│       ├── 01-component-patterns.md       # Padrões React (hooks, composition)
-│       └── 02-data-patterns.md            # Como estruturar dados de cursos
+├── screenshots/                           # Evidências visuais
 │
-├── MCP-CHROME-DEVTOOLS-GUIA-COMPLETO.md   # ✅ Já existe (mover para tecnico/testing/)
-├── MCP-CHROME-DEVTOOLS-MANUAL-USO.md      # ✅ Já existe (mover para tecnico/testing/)
-├── MCP-CHROME-DEVTOOLS-QUICK-START.md     # ✅ Já existe (mover para tecnico/testing/)
-└── TEMPLATE-CURSO-PADRAO.md               # ✅ Já existe (template de conteúdo)
+└── tecnico/                               # Documentação técnica
+    ├── architecture/
+    │   └── 01-visao-geral-arquitetura.md
+    ├── arquitetura/
+    │   └── ANALISE-I18N-INTERNACIONALIZACAO.md  # Sprint 12
+    └── testing/
+        ├── MCP-CHROME-DEVTOOLS-*.md       # Guias MCP
+        ├── QA-E2E-SPECS-MCP.md            # Specs de testes E2E
+        └── README.md
 ```
 
 ---
@@ -304,25 +312,24 @@ Após ler a documentação relevante para sua persona, você deve ser capaz de r
 
 ---
 
-## 🚀 Próximos Passos
+## Próximos Passos (Sprint 14)
 
-### Alta Prioridade 🔴
-1. **Criar 00-definicoes-principais.md** - Glossário canônico do Plataforma B2B de treinamento técnico corporativo
-2. **Criar 01-contexto-projeto.md** - Problema corporativo + solução
-3. **Criar 05-personas-corporativas.md** - Admin RH, Instrutor, Colaborador
+### Sugestões para próximo sprint
+- **US-125:** CRUD de cursos (courses.create/edit)
+- **US-126:** Certificados de conclusão
+- **US-127:** Tour guiado real (highlight UI)
+- **US-128:** Notificações push/email
 
-### Média Prioridade 🟡
-4. **Criar 04-modelo-dominio.md** - Hierarquia Hub→Curso→Aula detalhada
-5. **Criar 01-visao-geral-arquitetura.md** - Decisões técnicas documentadas
-6. **Reorganizar guias MCP** - Mover para tecnico/testing/
-
-### Baixa Prioridade 🟢
-7. **Expandir documentação técnica** - Component patterns, data patterns
-8. **Criar guias de setup** - Ambiente local, Docker, CI/CD
+### Merge pendente
+```bash
+# Branch feature/white-label-refactor está pronta para merge
+git checkout desenvolvimento
+git merge feature/white-label-refactor
+```
 
 ---
 
-**📍 Você está em:** `docs/README.md` - Índice Geral de Documentação
-**📅 Última atualização:** 2025-11-14
-**👤 Mantido por:** João Pelegrino + Claude Code
-**📦 Status:** 🔄 Estrutura criada, conteúdo em desenvolvimento
+**Você está em:** `docs/README.md` - Índice Geral de Documentação
+**Última atualização:** 2026-01-26
+**Mantido por:** Claude Code
+**Status:** Sprint 13 COMPLETO - Produção

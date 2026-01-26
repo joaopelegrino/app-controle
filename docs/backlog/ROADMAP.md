@@ -471,6 +471,6 @@ Verificar gaps em docs/backlog/GAPS-DEMO-B2B.md
 ---
 
 **Última atualização:** 2026-01-26
-**Versão:** 8.0.0 (Sprint 12 - i18n COMPLETO)
-**Status:** Backend + Frontend + Auth NocoDB JWT + i18n (3 idiomas)
-**Próxima revisão:** Iniciar Sprint 13 ou revisar gaps
+**Versão:** 9.0.0 (Sprint 13 - White-Label COMPLETO)
+**Status:** Backend + Frontend + Auth NocoDB JWT + i18n + White-Label
+**Próxima revisão:** Merge para desenvolvimento ou iniciar Sprint 14
