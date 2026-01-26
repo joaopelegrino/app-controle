@@ -1,11 +1,11 @@
 # app-controle (Plataforma B2B) - Configuração Claude Code
 
-**Version:** 9.0.0 | **Date:** 2026-01-26 | **Status:** Production + i18n + White-Label COMPLETO
+**Version:** 10.0.0 | **Date:** 2026-01-26 | **Status:** Production + i18n + White-Label + CRUD Cursos
 **Project Type:** Plataforma B2B de treinamento técnico corporativo
-**Sprint Atual:** 13 - White-Label ✅ COMPLETO (6 USs)
-**Sprints Completos:** 6, 7, 8, 9, 10, 11, 12, 13 ✅
+**Sprint Atual:** 14 - CRUD de Cursos ✅ COMPLETO (1 US)
+**Sprints Completos:** 6, 7, 8, 9, 10, 11, 12, 13, 14 ✅
 **Feature Branch:** `feature/white-label-refactor`
-**Estudo:** `docs/backlog/ESTUDO-REFATORACAO-WHITE-LABEL-2026-01-26.md`
+**Última US:** US-125: CRUD de Cursos (createCourse, updateCourse, deleteCourse)
 
 ---
 
@@ -64,6 +64,7 @@ app-controle/
 │   │   ├── ConfirmModal.jsx         → Modal confirmação (Sprint 11) ✅
 │   │   ├── MobileMenu.jsx           → Menu hamburger mobile (Sprint 11) ✅
 │   │   ├── LanguageSelector.jsx     → Seletor de idioma (Sprint 12) ✅
+│   │   ├── CourseFormModal.jsx      → Modal criar/editar curso (Sprint 14) ✅
 │   │   └── BashLearningSystem.jsx   → Curso Bash
 │   ├── config/                      → ✅ SPRINT 13 (White-Label)
 │   │   ├── platform.js              → Configuração centralizada (US-119) ✅
@@ -79,7 +80,7 @@ app-controle/
 │   │   └── OnboardingContext.jsx    → Onboarding wizard state (Sprint 10) ✅
 │   ├── hooks/
 │   │   ├── useAuth.js               → Hook de autenticação
-│   │   ├── usePermissions.js        → Hook RBAC (21 permissões)
+│   │   ├── usePermissions.js        → Hook RBAC (22 permissões, +courses.delete)
 │   │   ├── useTenant.js             → Hook de tenant
 │   │   └── useMediaQuery.js         → Hook media queries (Sprint 11) ✅
 │   ├── services/
@@ -173,17 +174,27 @@ Sprint 13: White-Label Refactor ✅ COMPLETO (6/6 USs)
 ├── US-123: Script de migração de localStorage ✅
 ├── US-124: Atualizar documentação principal ✅
 └── Status: ✅ COMPLETO
+
+Sprint 14: CRUD de Cursos ✅ COMPLETO (1/1 USs)
+├── US-125: CRUD completo de cursos
+│   ├── usePermissions.js: +courses.delete, canCreateCourses, canDeleteCourses
+│   ├── apiService.js: createCourse, updateCourse, deleteCourse, reactivateCourse, getAllCourses
+│   ├── CourseFormModal.jsx: Modal criar/editar/arquivar cursos
+│   ├── AdminDashboard.jsx: Integração com botão "Novo" e edição
+│   └── i18n: ~55 strings em pt-BR, en-US, es-ES
+└── Status: ✅ COMPLETO
 ```
 
 ### RBAC Progress
 
 ```
-Permissões implementadas: 17/21 (81%)
+Permissões implementadas: 18/22 (82%)
 MVP B2B Demo: ✅ COMPLETO
 Analytics Avançado: ✅ COMPLETO (Sprint 10)
 UX Polish: ✅ COMPLETO (Sprint 11)
 Internacionalização: ✅ COMPLETO (Sprint 12)
 White-Label: ✅ COMPLETO (Sprint 13)
+CRUD Cursos: ✅ COMPLETO (Sprint 14)
 ```
 
 ---
@@ -295,10 +306,15 @@ apiService.getUserEnrollments(userId)     ✅
 apiService.getCourseEnrollments(courseId) ✅
 apiService.updateEnrollment(id, data)     ✅
 
-// Cursos
+// Cursos (Sprint 14)
 apiService.getCourses()
 apiService.getCourse(id)
 apiService.getCourseModules(id)
+apiService.createCourse(courseData)      ✅
+apiService.updateCourse(courseId, data)  ✅
+apiService.deleteCourse(courseId)        ✅ // Soft delete (archived)
+apiService.reactivateCourse(courseId)    ✅
+apiService.getAllCourses()               ✅ // Inclui arquivados
 
 // Progresso
 apiService.getProgress(userId, courseId)
@@ -347,8 +363,9 @@ formatCourseStatsReport(stats)
 | `users.delete` | ✅ (Sprint 7) |
 | `admin.access` | ✅ |
 | `analytics.advanced` | ✅ (Sprint 10) |
+| `courses.delete` | ✅ (Sprint 14) |
 
-**Total: 17/21 (81%)**
+**Total: 18/22 (82%)**
 
 ---
 
@@ -419,20 +436,22 @@ Para continuar o desenvolvimento na próxima sessão:
 # Com Docker Desktop ativo:
 docker compose -f docker-compose.nocodb.yml up -d && bun run dev
 
-# Sprint 11 COMPLETO - Próximo passo:
-Iniciar Sprint 12 ou revisar gaps em docs/backlog/GAPS-DEMO-B2B.md
+# Sprint 14 COMPLETO - Próximo passo:
+Revisar gaps em docs/backlog/GAPS-DEMO-B2B.md ou iniciar Sprint 15
 ```
 
-**Contexto:** Sprint 11 completo (4/4 USs). Auth NocoDB JWT implementado.
+**Contexto:** Sprint 14 completo (1/1 USs). CRUD de Cursos implementado.
 
-**Estado atual (2026-01-24):**
+**Estado atual (2026-01-26):**
 - Frontend: http://localhost:3001
 - Backend: http://localhost:8081 (NocoDB) + PostgreSQL 5432
 - Usuarios: 13 no banco (12 demo + 1 teste CRUD)
-- Testes E2E: Login, Dashboards, Matriculas, Exportacao - TODOS OK
-- CRUD usuarios: Leitura OK, escrita OK (company_id via SQL)
-- Responsividade: MobileMenu, useMediaQuery, Headers responsivos OK
-- Autenticação: loginUser via NocoDB + validateToken OK
+- CRUD usuarios: Completo (Sprint 7) ✅
+- CRUD cursos: Completo (Sprint 14) ✅
+- Responsividade: MobileMenu, useMediaQuery, Headers responsivos ✅
+- Autenticação: loginUser via NocoDB + validateToken ✅
+- i18n: pt-BR, en-US, es-ES completo ✅
+- White-label: Configuração centralizada ✅
 
 **Containers Docker:**
 ```bash
@@ -761,8 +780,7 @@ function LoginView() {
 | `common` | app, navigation, buttons, status, time, table, modal, toast, language, hub | ~85 | Não |
 | `auth` | login, errors, roles, roleDescriptions, permissions, logout, accessDenied | ~45 | Não |
 | `errors` | validation, network, auth, crud, generic | ~20 | Não |
-| `dashboard` | user, admin, instructor, executive, common | ~100 | Não |
-| `courses` | (futuro) | - | Sim |
+| `dashboard` | user, admin, instructor, executive, common, courses (Sprint 14) | ~155 | Não |
 
 ### Teste i18n via MCP
 
@@ -869,29 +887,93 @@ git push -u origin feature/white-label-refactor
 ---
 
 **Ultima atualizacao:** 2026-01-26
-**Versao:** 9.0.0 (Sprint 13 - White-Label COMPLETO)
-**Status:** Backend + Frontend + Auth NocoDB JWT + i18n + White-Label COMPLETO
-**RBAC:** 81% implementado (17/21 permissoes)
-**i18n:** pt-BR, en-US, es-ES (Login, Hub, 4 Dashboards migrados)
-**Namespaces:** common, auth, errors, dashboard (~250 strings total)
+**Versao:** 10.0.0 (Sprint 14 - CRUD Cursos COMPLETO)
+**Status:** Backend + Frontend + Auth NocoDB JWT + i18n + White-Label + CRUD Cursos COMPLETO
+**RBAC:** 82% implementado (18/22 permissoes)
+**i18n:** pt-BR, en-US, es-ES (Login, Hub, 4 Dashboards, CRUD Cursos)
+**Namespaces:** common, auth, errors, dashboard (~305 strings total)
 **Storage:** Prefixo configuravel via VITE_STORAGE_PREFIX (default: trainb2b)
 **Branding:** Nome configuravel via traducoes i18n (default: TrainB2B)
 
-## Validacao E2E Sprint 13 (2026-01-26)
+## Sprint 14: CRUD de Cursos (2026-01-26)
+
+### Arquivos Criados/Modificados
+
+| Arquivo | Ação | Descrição |
+|---------|------|-----------|
+| `src/hooks/usePermissions.js` | Modificado | +courses.delete, canCreateCourses, canDeleteCourses |
+| `src/services/apiService.js` | Modificado | +createCourse, updateCourse, deleteCourse, reactivateCourse, getAllCourses |
+| `src/components/CourseFormModal.jsx` | **Criado** | Modal criar/editar/arquivar cursos |
+| `src/components/AdminDashboard.jsx` | Modificado | Integração com CourseFormModal |
+| `public/locales/*/dashboard.json` | Modificado | +55 strings de cursos por idioma |
+
+### Componente CourseFormModal
+
+```jsx
+import { CourseFormModal } from './CourseFormModal';
+
+// Criar novo curso
+<CourseFormModal
+  isOpen={isOpen}
+  onClose={() => setIsOpen(false)}
+  course={null}  // null = criação
+  onSuccess={reloadData}
+/>
+
+// Editar curso existente
+<CourseFormModal
+  isOpen={isOpen}
+  onClose={() => setIsOpen(false)}
+  course={selectedCourse}  // objeto curso = edição
+  onSuccess={reloadData}
+/>
+```
+
+### API CRUD de Cursos
+
+```javascript
+// Criar curso
+const newCourse = await apiService.createCourse({
+  name: 'Fundamentos de Linux',
+  description: 'Introdução ao Linux...',
+  icon: '🐧',
+  difficulty: 'beginner', // beginner | intermediate | advanced
+  duration_hours: 8,
+  total_modules: 16,
+  badge: 'new', // new | integrated | null
+});
+
+// Atualizar curso
+await apiService.updateCourse(courseId, { name: 'Novo Nome', status: 'active' });
+
+// Arquivar curso (soft delete)
+await apiService.deleteCourse(courseId);
+
+// Reativar curso
+await apiService.reactivateCourse(courseId);
+
+// Listar todos (incluindo arquivados)
+const allCourses = await apiService.getAllCourses();
+```
+
+### Permissões RBAC
+
+| Permissão | Roles | Descrição |
+|-----------|-------|-----------|
+| `courses.create` | admin | Criar novos cursos |
+| `courses.edit` | instructor, admin | Editar cursos existentes |
+| `courses.delete` | admin | Arquivar cursos |
+
+## Validacao Sprint 14 (2026-01-26)
 
 | Teste | Resultado |
 |-------|-----------|
-| Migracao localStorage | ✅ ultrathink_* -> trainb2b_* |
-| Nome na UI (Login) | ✅ TrainB2B |
-| Copyright sem hardcoded | ✅ "© 2026 - Treinamento Corporativo" |
-| Troca de idioma i18n | ✅ pt-BR, en-US, es-ES |
-| Login via NocoDB | ✅ admin@acmetech.com |
-| Hub carregado | ✅ Textos traduzidos |
-| Admin Dashboard | ✅ Funcional |
-| Build producao | ✅ Sem erros |
+| Build produção | ✅ Sem erros |
+| CourseFormModal renderiza | ✅ Campos corretos |
+| Botão "Novo" no AdminDashboard | ✅ Visível para admin |
+| Botão edição nos cards | ✅ Aparece no hover |
+| Traduções pt-BR | ✅ 55 strings |
+| Traduções en-US | ✅ 55 strings |
+| Traduções es-ES | ✅ 55 strings |
 
-**Screenshots:**
-- `.factory/relatorios/qa-sprint13-hub-trainb2b.png`
-- `.factory/relatorios/qa-sprint13-admin-dashboard.png`
-
-**Proximo:** Merge para branch desenvolvimento ou iniciar Sprint 14
+**Próximo:** Testes E2E completos via MCP ou iniciar Sprint 15
