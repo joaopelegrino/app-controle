@@ -565,7 +565,89 @@ wsl.exe -l -v
 
 ---
 
-**Ultima atualizacao:** 2026-01-25
-**Versao:** 7.5.1 (+ Diretrizes Ambiente)
-**Status:** Backend + Frontend + Auth NocoDB JWT + Responsividade
+## Ativação Automatizada do Ambiente (mise)
+
+### Comando Único de Ativação
+
+```bash
+# 1. Se Docker Desktop não estiver rodando (WSL2):
+powershell.exe -Command "Start-Process 'C:\Program Files\Docker\Docker\Docker Desktop.exe'"
+sleep 30  # Aguardar inicialização
+
+# 2. Iniciar ambiente completo via mise:
+mise run nocodb:start && bun run dev
+```
+
+### Sequência Recomendada
+
+| Passo | Comando | Verificação |
+|-------|---------|-------------|
+| 1. Docker Desktop | `powershell.exe -Command "Start-Process..."` | `docker --version` |
+| 2. Backend | `mise run nocodb:start` | `mise run nocodb:health` |
+| 3. Frontend | `bun run dev` | `curl http://localhost:3001` |
+| 4. Verificar tudo | `mise run check` | Status completo |
+
+### MCP Chrome DevTools para Testes E2E
+
+O projeto está configurado com MCP Chrome DevTools (`.factory/settings.json`):
+
+```javascript
+// Navegação
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
+
+// Snapshot da página (acessibilidade)
+mcp__chrome-devtools__take_snapshot()
+
+// Screenshot
+mcp__chrome-devtools__take_screenshot({ filePath: "/tmp/test.png" })
+
+// Clicar em elemento (usar uid do snapshot)
+mcp__chrome-devtools__click({ uid: "1_5" })
+
+// Preencher formulário
+mcp__chrome-devtools__fill({ uid: "1_3", value: "admin@acmetech.com" })
+
+// Console logs (erros)
+mcp__chrome-devtools__list_console_messages({ types: ["error"] })
+
+// Executar JavaScript
+mcp__chrome-devtools__evaluate_script({ function: "() => localStorage.clear()" })
+```
+
+### Troubleshooting Comum
+
+| Problema | Causa | Solução |
+|----------|-------|---------|
+| `docker: command not found` | Docker Desktop offline | Iniciar via PowerShell |
+| `401 Unauthorized` no login | Token NocoDB expirado | Limpar localStorage: `localStorage.clear()` |
+| `can is not a function` | Bug no MobileMenu.jsx | Usar `hasPermission` em vez de `can` |
+| Senha com `!` no curl | Bash interpreta `!` | Usar heredoc: `cat << 'EOF' \| curl...` |
+
+### Bug Fix Documentado (2026-01-26)
+
+**Arquivo:** `src/components/MobileMenu.jsx`
+**Problema:** Usava `can()` mas hook exporta `hasPermission()`
+**Correção:**
+```diff
+- const { role, roleLabel, roleColor, can } = usePermissions();
++ const { role, roleLabel, roleColor, hasPermission } = usePermissions();
+- show: can('dashboard.team'),
++ show: hasPermission('dashboard.team'),
+```
+
+### Screenshots de Referência
+
+```
+.factory/relatorios/
+├── ambiente-completo-2026-01-26.png    # Hub logado como Admin
+├── login-sucesso-admin-2026-01-26.png  # Tela pós-login
+├── hub-funcionando-2026-01-26.png      # Hub antes do login
+└── status-ambiente-2026-01-26.png      # Estado inicial
+```
+
+---
+
+**Ultima atualizacao:** 2026-01-26
+**Versao:** 7.6.0 (+ Ativação Automatizada + MCP E2E)
+**Status:** Backend + Frontend + Auth NocoDB JWT + MCP Chrome DevTools
 **RBAC:** 81% implementado (17/21 permissoes)

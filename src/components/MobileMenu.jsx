@@ -19,7 +19,7 @@ export function MobileMenu({ isOpen, onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, company, logout } = useAuth();
-  const { role, roleLabel, roleColor, can } = usePermissions();
+  const { role, roleLabel, roleColor, hasPermission } = usePermissions();
   const menuRef = useRef(null);
 
   // Fechar menu com ESC
@@ -91,13 +91,13 @@ export function MobileMenu({ isOpen, onClose }) {
       label: 'Meu Time',
       path: '/instructor',
       icon: GraduationCap,
-      show: can('dashboard.team'),
+      show: hasPermission('dashboard.team'),
     },
     {
       label: 'Administração',
       path: '/admin',
       icon: Users,
-      show: can('admin.access'),
+      show: hasPermission('admin.access'),
     },
     {
       label: 'Executivo',
