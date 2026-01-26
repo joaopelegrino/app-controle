@@ -12,6 +12,7 @@ const PERMISSIONS = {
   'courses.notes': ['student', 'instructor', 'admin', 'c_level'],
   'courses.edit': ['instructor', 'admin'],
   'courses.create': ['admin'],
+  'courses.delete': ['admin'],
 
   // Trilhas de aprendizado
   'paths.view': ['student', 'instructor', 'admin', 'c_level'],
@@ -81,7 +82,9 @@ const ROLE_COLORS = {
  *   isCLevel: boolean,
  *   canManageUsers: boolean,
  *   canViewAnalytics: boolean,
- *   canEditCourses: boolean
+ *   canEditCourses: boolean,
+ *   canCreateCourses: boolean,
+ *   canDeleteCourses: boolean
  * }}
  */
 export function usePermissions() {
@@ -122,6 +125,8 @@ export function usePermissions() {
     const canManageUsers = hasPermission('users.view');
     const canViewAnalytics = hasPermission('analytics.basic');
     const canEditCourses = hasPermission('courses.edit');
+    const canCreateCourses = hasPermission('courses.create');
+    const canDeleteCourses = hasPermission('courses.delete');
 
     return {
       hasPermission,
@@ -136,7 +141,9 @@ export function usePermissions() {
       isCLevel,
       canManageUsers,
       canViewAnalytics,
-      canEditCourses
+      canEditCourses,
+      canCreateCourses,
+      canDeleteCourses
     };
   }, [role]);
 
