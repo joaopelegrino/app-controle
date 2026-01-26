@@ -8,9 +8,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useTenant } from '../hooks/useTenant';
+import { usePermissions } from '../hooks/usePermissions';
 import { apiService } from '../services/apiService';
 import { UserFormModal } from './UserFormModal';
 import { EnrollUserModal } from './EnrollUserModal';
+import { CourseFormModal } from './CourseFormModal';
 import { ExportButton } from './ExportButton';
 import { ModuleDifficultyCard } from './ModuleDifficultyCard';
 import {
@@ -35,6 +37,7 @@ export function AdminDashboard() {
   const { t } = useTranslation('dashboard');
   const { user, company } = useAuth();
   const { tenantId } = useTenant();
+  const { canCreateCourses, canEditCourses, canDeleteCourses } = usePermissions();
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -50,6 +53,10 @@ export function AdminDashboard() {
   // Estados do modal de matrícula (US-099)
   const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
   const [enrollPreselectedUser, setEnrollPreselectedUser] = useState(null);
+
+  // Estados do modal de curso (US-125)
+  const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
   /**
    * Carrega todos os dados do dashboard
@@ -232,11 +239,26 @@ export function AdminDashboard() {
   );
 
   /**
-   * Cards de cursos
+   * Cards de cursos (US-125: com botão de edição)
    */
   const CourseCards = () => (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('admin.courseStats.title')}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-gray-800">{t('admin.courseStats.title')}</h3>
+        {canCreateCourses && (
+          <button
+            onClick={() => {
+              setSelectedCourse(null);
+              setIsCourseModalOpen(true);
+            }}
+            className="flex items-center px-3 py-1.5 text-sm bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            title={t('dashboard:courses.create', 'Novo Curso')}
+          >
+            <Plus className="w-4 h-4 mr-1" />
+            {t('dashboard:courses.create', 'Novo')}
+          </button>
+        )}
+      </div>
       <div className="space-y-4">
         {courseStats.length === 0 ? (
           <EmptyState
@@ -244,27 +266,46 @@ export function AdminDashboard() {
             title={t('admin.courseStats.empty')}
             description={t('admin.courseStats.emptyDescription')}
             compact={true}
+            actionLabel={canCreateCourses ? t('dashboard:courses.create', 'Criar Curso') : undefined}
+            onAction={canCreateCourses ? () => {
+              setSelectedCourse(null);
+              setIsCourseModalOpen(true);
+            } : undefined}
           />
         ) : (
           courseStats.map((course) => (
-            <div key={course.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center">
-                <span className="text-2xl mr-3">{course.icon || '📚'}</span>
-                <div>
-                  <p className="font-medium text-gray-800">{course.name}</p>
+            <div key={course.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg group hover:bg-gray-100 transition-colors">
+              <div className="flex items-center flex-1 min-w-0">
+                <span className="text-2xl mr-3 flex-shrink-0">{course.icon || '📚'}</span>
+                <div className="min-w-0">
+                  <p className="font-medium text-gray-800 truncate">{course.name}</p>
                   <p className="text-sm text-gray-500">
-                    {course.total_modules} módulos
+                    {course.total_modules} {t('common:modules', 'módulos')}
                   </p>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="flex items-center text-green-600">
-                  <Users className="w-4 h-4 mr-1" />
-                  <span className="font-medium">{course.enrolled_users || 0}</span>
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <div className="flex items-center text-green-600">
+                    <Users className="w-4 h-4 mr-1" />
+                    <span className="font-medium">{course.enrolled_users || 0}</span>
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    {Math.round(course.completion_rate || 0)}% {t('common:completion', 'conclusão')}
+                  </p>
                 </div>
-                <p className="text-xs text-gray-500">
-                  {Math.round(course.completion_rate || 0)}% conclusão
-                </p>
+                {canEditCourses && (
+                  <button
+                    onClick={() => {
+                      setSelectedCourse(course);
+                      setIsCourseModalOpen(true);
+                    }}
+                    className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                    title={t('dashboard:courses.edit', 'Editar Curso')}
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </div>
           ))
@@ -526,6 +567,17 @@ export function AdminDashboard() {
         companyId={tenantId}
         assignedBy={user?.id}
         preselectedUser={enrollPreselectedUser}
+        onSuccess={loadDashboardData}
+      />
+
+      {/* Modal de criação/edição de curso (US-125) */}
+      <CourseFormModal
+        isOpen={isCourseModalOpen}
+        onClose={() => {
+          setIsCourseModalOpen(false);
+          setSelectedCourse(null);
+        }}
+        course={selectedCourse}
         onSuccess={loadDashboardData}
       />
     </div>
