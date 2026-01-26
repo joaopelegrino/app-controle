@@ -207,24 +207,85 @@ src/components/ExecutiveDashboard.jsx   → ✅ Integrado
 
 ---
 
+### 2.4 Internacionalização (i18n) ✅ IMPLEMENTADO (Sprint 12)
+
+**Situação Anterior:**
+- Toda a interface em português hardcoded
+- Sem suporte a múltiplos idiomas
+- Textos espalhados nos componentes
+
+**Solução Implementada (Sprint 12):**
+```
+US-109: Infraestrutura i18next ✅
+├── i18next + react-i18next
+├── Detecção automática de idioma (localStorage/browser)
+├── Fallback para pt-BR
+└── 4 namespaces configurados
+
+US-110: Traduções base ✅
+├── common.json (~85 strings)
+├── auth.json (~45 strings)
+├── errors.json (~20 strings)
+└── dashboard.json (~100 strings)
+
+US-111: LanguageSelector.jsx ✅
+├── Variante dropdown (select)
+├── Variante buttons (bandeiras)
+└── Variante minimal (código)
+
+US-112-114: Componentes migrados ✅
+├── LoginView.jsx
+├── HubView.jsx
+├── UserHeader.jsx
+├── UserDashboard.jsx
+├── AdminDashboard.jsx
+├── InstructorDashboard.jsx
+└── ExecutiveDashboard.jsx
+```
+
+**Arquivos Criados:**
+```
+src/i18n/config.js
+src/i18n/index.js
+src/components/LanguageSelector.jsx
+public/locales/pt-BR/*.json (4 arquivos)
+public/locales/en-US/*.json (4 arquivos)
+public/locales/es-ES/*.json (4 arquivos)
+```
+
+**Impacto:**
+- ✅ Interface em 3 idiomas (pt-BR, en-US, es-ES)
+- ✅ Troca de idioma instantânea sem reload
+- ✅ Preferência persistida no localStorage
+- ✅ ~250 strings traduzidas
+
+---
+
 ## 3. Gaps Menores (Polish/Nice-to-have)
 
-### 3.1 UI/UX Polish
+### 3.1 UI/UX Polish ✅ COMPLETO (Sprint 11)
 - [x] Loading states durante requisições (US-103) ✅
 - [x] Toast notifications para feedback (sucesso/erro) (US-102) ✅
 - [x] Skeleton loaders para carregamento (US-103) ✅
-- [ ] Empty states para listas vazias
-- [ ] Confirmação antes de deletar
+- [x] Empty states para listas vazias (US-105) ✅
+- [x] Confirmação antes de deletar (US-106) ✅
 
 ### 3.2 Onboarding Wizard (First-Time User) ✅ IMPLEMENTADO (US-104)
 - [x] Tela de boas-vindas após primeiro login ✅
 - [x] Seleção de objetivo (Backend Dev, DevOps, etc.) ✅
 - [x] Tour guiado da plataforma (opção sim/pular) ✅
 
-### 3.3 Responsividade Mobile
-- [ ] Menu hamburger mobile
-- [ ] Cards adaptáveis
-- [ ] Tabelas scrolláveis
+### 3.3 Responsividade Mobile ✅ COMPLETO (US-107)
+- [x] Menu hamburger mobile (MobileMenu.jsx) ✅
+- [x] Cards adaptáveis (headers responsivos) ✅
+- [x] Tabelas scrolláveis ✅
+- [x] useMediaQuery hook (useIsMobile, useIsTablet, useIsDesktop) ✅
+
+### 3.4 Internacionalização ✅ COMPLETO (Sprint 12)
+- [x] Infraestrutura i18next ✅
+- [x] 3 idiomas (pt-BR, en-US, es-ES) ✅
+- [x] LanguageSelector com 3 variantes ✅
+- [x] ~250 strings traduzidas ✅
 
 ---
 
@@ -272,6 +333,25 @@ src/components/ExecutiveDashboard.jsx   → ✅ Integrado
 **Entregáveis:**
 - Instrutor/Admin pode matricular aluno em curso
 - Admin/C-Level pode exportar relatórios Excel
+
+---
+
+### Sprint 12: Internacionalização (i18n) ✅ COMPLETO
+
+| US | Descrição | Complexidade | Arquivos | Status |
+|----|-----------|--------------|----------|--------|
+| US-109 | Infraestrutura i18next | M | config.js, index.js | ✅ DONE |
+| US-110 | Traduções base | M | common.json, auth.json, errors.json | ✅ DONE |
+| US-111 | LanguageSelector | M | LanguageSelector.jsx | ✅ DONE |
+| US-112 | LoginView i18n | L | LoginView.jsx | ✅ DONE |
+| US-113 | HubView + Header i18n | M | HubView.jsx, UserHeader.jsx | ✅ DONE |
+| US-114 | Dashboards i18n | H | 4 dashboards, dashboard.json | ✅ DONE |
+
+**Entregáveis:**
+- Interface em 3 idiomas (pt-BR, en-US, es-ES)
+- Troca de idioma instantânea
+- ~250 strings traduzidas
+- 4 namespaces (common, auth, errors, dashboard)
 
 ---
 
@@ -348,9 +428,17 @@ src/components/ExecutiveDashboard.jsx   → ✅ Integrado
 - [x] Toast notifications implementado (US-102)
 - [x] Loading states em todas operações (US-103) ✅
 
+### Para Demo B2B Internacional (Sprint 12) ✅ COMPLETO
+- [x] Infraestrutura i18next configurada (US-109)
+- [x] Traduções em 3 idiomas (US-110)
+- [x] LanguageSelector no header (US-111)
+- [x] Login traduzido (US-112)
+- [x] Hub traduzido (US-113)
+- [x] 4 Dashboards traduzidos (US-114)
+
 ---
 
-**Última atualização:** 2026-01-23 (Sprint 10 COMPLETO: 4/4 USs)
+**Última atualização:** 2026-01-26 (Sprint 12 COMPLETO: 6/6 USs)
 **Autor:** Claude Code Analysis
-**Versão:** 6.0.0 (Sprint 10 COMPLETO - Analytics + Toasts + Loading + Onboarding)
-**Próxima revisão:** Planejamento Sprint 11
+**Versão:** 7.0.0 (Sprint 12 COMPLETO - i18n pt-BR/en-US/es-ES)
+**Próxima revisão:** Planejamento Sprint 13

@@ -96,7 +96,7 @@ Além do software, o Plataforma B2B de treinamento técnico corporativo oferecer
 
 ## ⚡ Estado Atual - Janeiro 2026
 
-### 🎯 Status: Sprint 12 EM PROGRESSO (i18n)
+### 🎯 Status: Sprint 12 COMPLETO (i18n) ✅
 
 ```
 ┌─────────────────┬────────────┬───────────────────────┐
@@ -132,22 +132,24 @@ Além do software, o Plataforma B2B de treinamento técnico corporativo oferecer
 - 🔔 **Toast Notifications**: Feedback visual
 - ⏳ **Loading States**: Skeletons e spinners
 
-**Internacionalização (Sprint 12):**
+**Internacionalização (Sprint 12) ✅ COMPLETO:**
 - 🌍 **3 Idiomas**: Português (pt-BR), Inglês (en-US), Espanhol (es-ES)
 - 🔄 **Troca Dinâmica**: LanguageSelector com 3 variantes
-- 📦 **Lazy Loading**: Namespaces por funcionalidade
+- 📦 **4 Namespaces**: common (~85), auth (~45), errors (~20), dashboard (~100)
 - 💾 **Persistência**: Preferência salva no localStorage
+- 📄 **6 Componentes**: Login, Hub, UserHeader, 4 Dashboards
 
 ### 📊 Métricas do Projeto
 
 | Métrica | Valor |
 |---------|-------|
-| Sprints Completos | 6 (Sprint 6-11) |
-| Sprint Atual | 12 (i18n) |
-| User Stories | 41/43 (95%) |
+| Sprints Completos | 7 (Sprint 6-12) |
+| Sprint Atual | ✅ Todos completos |
+| User Stories | 43/43 (100%) |
 | Permissões RBAC | 17/21 (81%) |
 | Testes E2E | 14/14 (100%) |
 | Idiomas i18n | 3 (pt-BR, en-US, es-ES) |
+| Strings i18n | ~250 (4 namespaces) |
 | Console Errors | 0 |
 
 ---
@@ -298,7 +300,7 @@ bun run test-usabilidade-mcp.cjs
 
 ## 📊 Roadmap de Produto
 
-### **Sprints 6-11** ✅ **COMPLETOS** (Janeiro 2026)
+### **Sprints 6-12** ✅ **COMPLETOS** (Janeiro 2026)
 - ✅ Auth JWT NocoDB + PostgreSQL
 - ✅ Sistema RBAC (4 roles, 21 permissões)
 - ✅ 4 Dashboards por perfil
@@ -310,8 +312,9 @@ bun run test-usabilidade-mcp.cjs
 - ✅ Onboarding wizard
 - ✅ Toast notifications
 - ✅ Loading states (skeletons)
+- ✅ Internacionalização i18n (pt-BR, en-US, es-ES)
 
-### **Sprint 12** 📋 **PRÓXIMO**
+### **Sprint 13** 📋 **PRÓXIMO**
 - [ ] CRUD de cursos (courses.create/edit)
 - [ ] Certificados de conclusão
 - [ ] Tour guiado real (highlight UI)
@@ -362,7 +365,7 @@ Este é um projeto proprietário B2B. Se você é colaborador:
 
 **Desenvolvedor:** João Pelegrino
 **Projeto:** UltraThink - Plataforma B2B de Treinamento Técnico Corporativo
-**Status:** Demo B2B Ready (Sprint 11 completo)
+**Status:** Demo B2B Ready + i18n (Sprint 12 completo)
 **Branch:** `demo-nocodb-simple`
 **Repositório:** Privado
 

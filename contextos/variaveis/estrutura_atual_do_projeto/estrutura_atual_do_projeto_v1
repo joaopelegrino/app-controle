@@ -4,7 +4,7 @@ Nome: estrutura_atual_do_projeto
 Função: Contextualizar agentes sobre o estado atual do projeto
 Frequência: Atualizado automaticamente via hook SessionStart
 Versão: v1
-Última Atualização: 2026-01-26T08:25:17-0300
+Última Atualização: 2026-01-26T11:59:53-0300
 Gerado por: hook C session-start
 ---
 
@@ -38,6 +38,7 @@ Gerado por: hook C session-start
 │   │   ├── BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md
 │   │   ├── BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md
 │   │   ├── backlog-2026-01-24-itens-pendentes-infra.md
+│   │   ├── ESTUDO-REFATORACAO-WHITE-LABEL-2026-01-26.md
 │   │   ├── GAPS-DEMO-B2B.md
 │   │   ├── RETOMADA-2026-01-22-API-SERVICE.md
 │   │   ├── RETOMADA-2026-01-22-AUTH-FRONTEND.md
@@ -53,6 +54,7 @@ Gerado por: hook C session-start
 │   │   └── login-view.png
 │   ├── tecnico
 │   │   ├── architecture
+│   │   ├── arquitetura
 │   │   ├── patterns
 │   │   ├── stack-implementation
 │   │   └── testing
@@ -78,7 +80,27 @@ Gerado por: hook C session-start
 │       ├── chk-20260124-090608.json
 │       ├── chk-20260124-095854.json
 │       ├── chk-20260124-111010.json
-│       └── chk-20260124-151513.json
+│       ├── chk-20260124-151513.json
+│       ├── chk-20260126-082942.json
+│       ├── chk-20260126-083526.json
+│       ├── chk-20260126-083718.json
+│       ├── chk-20260126-084350.json
+│       ├── chk-20260126-085156.json
+│       ├── chk-20260126-085741.json
+│       ├── chk-20260126-090128.json
+│       ├── chk-20260126-090238.json
+│       ├── chk-20260126-093133.json
+│       ├── chk-20260126-094854.json
+│       ├── chk-20260126-095854.json
+│       ├── chk-20260126-103619.json
+│       ├── chk-20260126-104153.json
+│       ├── chk-20260126-115626.json
+│       └── chk-20260126-115857.json
+├── public
+│   └── locales
+│       ├── en-US
+│       ├── es-ES
+│       └── pt-BR
 ├── scripts
 │   ├── capture-vscode-output.js
 │   └── start-chrome-debug.sh
@@ -103,6 +125,7 @@ Gerado por: hook C session-start
 │   │   ├── FlashcardModal.jsx
 │   │   ├── HubView.jsx
 │   │   ├── InstructorDashboard.jsx
+│   │   ├── LanguageSelector.jsx
 │   │   ├── LearningPathView.jsx
 │   │   ├── LoadingComponents.jsx
 │   │   ├── LoginView.jsx
@@ -145,6 +168,10 @@ Gerado por: hook C session-start
 │   │   ├── useModuleProgress.js
 │   │   ├── usePermissions.js
 │   │   └── useTenant.js
+│   ├── i18n
+│   │   ├── locales
+│   │   ├── config.js
+│   │   └── index.js
 │   ├── pages
 │   │   └── NotFoundPage.jsx
 │   ├── services
@@ -182,7 +209,7 @@ Gerado por: hook C session-start
 ├── vite.config.js
 └── vitest.config.js
 
-42 directories, 128 files
+50 directories, 147 files
 
 ```
 

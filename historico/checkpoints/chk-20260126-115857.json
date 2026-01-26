@@ -1,0 +1,33 @@
+{
+	"checkpoint_id":	"chk-20260126-115857",
+	"timestamp":	"2026-01-26T11:58:57-0300",
+	"type":	"session_end",
+	"session_info":	{
+		"project_dir":	"/home/notebook/workspace/app-controle"
+	},
+	"git":	{
+		"branch":	"feature/i18n-internacionalizacao",
+		"last_commit":	"06cd50b",
+		"modified_files":	["CLAUDE.md", "README.md", "contextos/variaveis/.last-update", "contextos/variaveis/ativos_de_configuracao_claude_code/ativos_de_configuracao_claude_code_v1", "contextos/variaveis/estrutura_atual_do_projeto/estrutura_atual_do_projeto_v1", "contextos/variaveis/estrutura_projeto_flusistip/estrutura_projeto_flusistip_v1", "docs/backlog/GAPS-DEMO-B2B.md", "docs/backlog/ROADMAP.md"]
+	},
+	"contexts":	{
+		"total":	3,
+		"stale":	0,
+		"details":	[{
+				"name":	"ativos_de_configuracao_claude_code",
+				"exists":	true,
+				"age_hours":	1,
+				"needs_update":	false
+			}, {
+				"name":	"estrutura_atual_do_projeto",
+				"exists":	true,
+				"age_hours":	1,
+				"needs_update":	false
+			}, {
+				"name":	"estrutura_projeto_flusistip",
+				"exists":	true,
+				"age_hours":	1,
+				"needs_update":	false
+			}]
+	}
+}
