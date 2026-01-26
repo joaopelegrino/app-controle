@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ArrowRight, Target, BookOpen, Clock, CheckCircle } from 'lucide-react';
 import { caminhosPropostos } from '../data/caminhoExemploData';
 import UserHeader from './UserHeader';
@@ -16,6 +17,8 @@ import UserHeader from './UserHeader';
  * @param {Function} openLearningPath - Função para abrir caminho proposto
  */
 export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath }) => {
+  const { t } = useTranslation('common');
+
   // Filtrar apenas áreas ativas (não learning paths)
   const regularAreas = Object.entries(studyAreas).filter(
     ([key, area]) => !area.isLearningPath && area.status === 'active'
@@ -57,7 +60,7 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
           <span className="text-4xl mr-4">{path.icon}</span>
           <div>
             <h3 className="text-2xl font-bold">{path.name}</h3>
-            <p className="text-purple-100 text-sm">Caminho de Aprendizado</p>
+            <p className="text-purple-100 text-sm">{t('hub.learningPaths.cardLabel')}</p>
           </div>
         </div>
 
@@ -79,7 +82,7 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
               {curso.disponivel ? (
                 <CheckCircle className="w-4 h-4 text-green-300" />
               ) : (
-                <span className="text-xs text-purple-200">Em breve</span>
+                <span className="text-xs text-purple-200">{t('hub.learningPaths.comingSoon')}</span>
               )}
             </div>
           ))}
@@ -89,11 +92,11 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
         <div className="flex justify-between items-center text-sm border-t border-purple-400 pt-3">
           <div className="flex items-center">
             <BookOpen className="w-4 h-4 mr-1" />
-            <span>{path.cursosDisponiveis}/{path.totalCursos} cursos</span>
+            <span>{path.cursosDisponiveis}/{path.totalCursos} {t('hub.stats.courses')}</span>
           </div>
           <div className="flex items-center">
             <Clock className="w-4 h-4 mr-1" />
-            <span>{path.hoursDisponiveis}h disponíveis</span>
+            <span>{path.hoursDisponiveis}{t('hub.stats.hours')} {t('hub.stats.hoursAvailable')}</span>
           </div>
           <ArrowRight className="w-4 h-4" />
         </div>
@@ -118,7 +121,7 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
           <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold text-white ${
             area.badge === 'integrated' ? 'bg-blue-500' : 'bg-green-500'
           }`}>
-            {area.badge === 'integrated' ? 'Integrado' : 'Novo'}
+            {area.badge === 'integrated' ? t('hub.studyAreas.badges.integrated') : t('hub.studyAreas.badges.new')}
           </div>
         )}
 
@@ -130,9 +133,9 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
         <p className="text-gray-600 mb-4">{area.description}</p>
 
         <div className="flex justify-between text-sm text-gray-500">
-          <span>{area.modules} módulos</span>
-          <span>{cardCount} cards</span>
-          <span>{area.hours}h</span>
+          <span>{area.modules} {t('hub.stats.modules').toLowerCase()}</span>
+          <span>{cardCount} {t('hub.stats.cards')}</span>
+          <span>{area.hours}{t('hub.stats.hours')}</span>
         </div>
       </div>
     );
@@ -146,28 +149,28 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
       <div className="max-w-6xl mx-auto p-4">
         {/* Title */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">🚀 Hub de Aprendizado</h1>
-          <p className="text-xl text-gray-600">Sistema Integrado de Educação em Tecnologia</p>
-          <p className="text-sm text-gray-400 mt-2">MVP - Padrão de Referência</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">🚀 {t('hub.title')}</h1>
+          <p className="text-xl text-gray-600">{t('hub.tagline')}</p>
+          <p className="text-sm text-gray-400 mt-2">{t('hub.mvpLabel')}</p>
         </div>
 
         {/* Estatísticas */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           <div className="bg-white rounded-lg shadow p-6 text-center">
             <div className="text-3xl font-bold text-orange-500">{stats.totalAreas}</div>
-            <div className="text-gray-500">Área de Estudo</div>
+            <div className="text-gray-500">{stats.totalAreas === 1 ? t('hub.stats.studyAreas') : t('hub.stats.studyAreasPlural')}</div>
           </div>
           <div className="bg-white rounded-lg shadow p-6 text-center">
             <div className="text-3xl font-bold text-purple-500">{stats.totalPaths}</div>
-            <div className="text-gray-500">Caminho Proposto</div>
+            <div className="text-gray-500">{stats.totalPaths === 1 ? t('hub.stats.learningPaths') : t('hub.stats.learningPathsPlural')}</div>
           </div>
           <div className="bg-white rounded-lg shadow p-6 text-center">
             <div className="text-3xl font-bold text-blue-500">{stats.totalModules}</div>
-            <div className="text-gray-500">Módulos</div>
+            <div className="text-gray-500">{t('hub.stats.modules')}</div>
           </div>
           <div className="bg-white rounded-lg shadow p-6 text-center">
-            <div className="text-3xl font-bold text-green-500">{stats.totalHours}h</div>
-            <div className="text-gray-500">Conteúdo</div>
+            <div className="text-3xl font-bold text-green-500">{stats.totalHours}{t('hub.stats.hours')}</div>
+            <div className="text-gray-500">{t('hub.stats.content')}</div>
           </div>
         </div>
 
@@ -175,8 +178,8 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
         {learningPaths.length > 0 && (
           <div className="mb-12">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">🎯 Caminhos Propostos</h2>
-              <p className="text-gray-600">Trilhas estruturadas com sequência de cursos recomendada</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">🎯 {t('hub.learningPaths.sectionTitle')}</h2>
+              <p className="text-gray-600">{t('hub.learningPaths.sectionDescription')}</p>
             </div>
             <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-6 max-w-2xl mx-auto">
               {learningPaths.map(([key, path]) => (
@@ -189,8 +192,8 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
         {/* Seção Áreas de Estudo */}
         <div className="mb-8">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">📚 Áreas de Estudo</h2>
-            <p className="text-gray-600">Cursos completos com vídeo, módulos e caderno de notas</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">📚 {t('hub.studyAreas.sectionTitle')}</h2>
+            <p className="text-gray-600">{t('hub.studyAreas.sectionDescription')}</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -202,12 +205,8 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
 
         {/* Footer informativo */}
         <div className="mt-12 text-center text-gray-400 text-sm">
-          <p>
-            Este é o MVP do Plataforma B2B de treinamento técnico corporativo. Novos cursos seguindo o padrão Bash serão adicionados em breve.
-          </p>
-          <p className="mt-1">
-            Consulte o <strong>Caminho Proposto</strong> para ver a sequência recomendada de aprendizado.
-          </p>
+          <p>{t('hub.footer.description')}</p>
+          <p className="mt-1">{t('hub.footer.tip')}</p>
         </div>
       </div>
     </div>

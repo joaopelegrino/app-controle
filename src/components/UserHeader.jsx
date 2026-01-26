@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { User, LogOut, Building2, ChevronDown, Shield } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { usePermissions } from '../hooks/usePermissions';
 import { MobileMenu, MobileMenuButton } from './MobileMenu';
+import { LanguageSelector } from './LanguageSelector';
 
 /**
  * Header com informações do usuário logado
  */
 export function UserHeader() {
   const navigate = useNavigate();
+  const { t } = useTranslation(['common', 'auth']);
   const { user, company, logout } = useAuth();
   const { roleLabel, roleColor, canViewAnalytics } = usePermissions();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,8 +54,10 @@ export function UserHeader() {
               </div>
             </div>
 
-          {/* Menu do Usuário */}
-          <div className="relative">
+          {/* Seletor de Idioma + Menu do Usuário */}
+          <div className="flex items-center gap-2">
+            <LanguageSelector variant="buttons" className="hidden sm:flex" />
+            <div className="relative">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
@@ -92,7 +97,7 @@ export function UserHeader() {
                       className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                     >
                       <Shield className="w-4 h-4" />
-                      Painel Admin
+                      {t('common:navigation.admin')}
                     </button>
                   )}
 
@@ -101,11 +106,12 @@ export function UserHeader() {
                     className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
                   >
                     <LogOut className="w-4 h-4" />
-                    Sair
+                    {t('common:navigation.logout')}
                   </button>
                 </div>
               </>
             )}
+            </div>
           </div>
           </div>
         </div>

@@ -71,5 +71,40 @@
   "language": {
     "select": "Select language",
     "current": "Current language"
+  },
+  "hub": {
+    "title": "Learning Hub",
+    "tagline": "Integrated Technology Education System",
+    "mvpLabel": "MVP - Reference Standard",
+    "stats": {
+      "studyAreas": "Study Area",
+      "studyAreasPlural": "Study Areas",
+      "learningPaths": "Learning Path",
+      "learningPathsPlural": "Learning Paths",
+      "modules": "Modules",
+      "content": "Content",
+      "courses": "courses",
+      "cards": "cards",
+      "hours": "h",
+      "hoursAvailable": "available"
+    },
+    "learningPaths": {
+      "sectionTitle": "Learning Paths",
+      "sectionDescription": "Structured tracks with recommended course sequence",
+      "cardLabel": "Learning Path",
+      "comingSoon": "Coming soon"
+    },
+    "studyAreas": {
+      "sectionTitle": "Study Areas",
+      "sectionDescription": "Complete courses with video, modules, and notebooks",
+      "badges": {
+        "integrated": "Integrated",
+        "new": "New"
+      }
+    },
+    "footer": {
+      "description": "This is the MVP of the B2B corporate technical training platform. New courses following the Bash standard will be added soon.",
+      "tip": "Check the Learning Path to see the recommended learning sequence."
+    }
   }
 }

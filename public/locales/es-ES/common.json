@@ -71,5 +71,40 @@
   "language": {
     "select": "Seleccionar idioma",
     "current": "Idioma actual"
+  },
+  "hub": {
+    "title": "Hub de Aprendizaje",
+    "tagline": "Sistema Integrado de Educación en Tecnología",
+    "mvpLabel": "MVP - Estándar de Referencia",
+    "stats": {
+      "studyAreas": "Área de Estudio",
+      "studyAreasPlural": "Áreas de Estudio",
+      "learningPaths": "Camino Propuesto",
+      "learningPathsPlural": "Caminos Propuestos",
+      "modules": "Módulos",
+      "content": "Contenido",
+      "courses": "cursos",
+      "cards": "tarjetas",
+      "hours": "h",
+      "hoursAvailable": "disponibles"
+    },
+    "learningPaths": {
+      "sectionTitle": "Caminos Propuestos",
+      "sectionDescription": "Rutas estructuradas con secuencia de cursos recomendada",
+      "cardLabel": "Camino de Aprendizaje",
+      "comingSoon": "Próximamente"
+    },
+    "studyAreas": {
+      "sectionTitle": "Áreas de Estudio",
+      "sectionDescription": "Cursos completos con video, módulos y cuaderno de notas",
+      "badges": {
+        "integrated": "Integrado",
+        "new": "Nuevo"
+      }
+    },
+    "footer": {
+      "description": "Este es el MVP de la Plataforma B2B de capacitación técnica corporativa. Nuevos cursos siguiendo el estándar Bash se agregarán pronto.",
+      "tip": "Consulte el Camino Propuesto para ver la secuencia de aprendizaje recomendada."
+    }
   }
 }
