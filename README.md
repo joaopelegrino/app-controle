@@ -16,6 +16,7 @@
 - ✅ Dashboards específicos por perfil (Student, Instructor, Admin, C-Level)
 - ✅ Analytics de ROI e módulos difíceis
 - ✅ Multi-tenancy por empresa
+- ✅ **Internacionalização (i18n)**: pt-BR, en-US, es-ES
 
 ---
 
@@ -95,7 +96,7 @@ Além do software, o Plataforma B2B de treinamento técnico corporativo oferecer
 
 ## ⚡ Estado Atual - Janeiro 2026
 
-### 🎯 Status: Sprint 11 COMPLETO (Demo B2B Ready)
+### 🎯 Status: Sprint 12 EM PROGRESSO (i18n)
 
 ```
 ┌─────────────────┬────────────┬───────────────────────┐
@@ -131,14 +132,22 @@ Além do software, o Plataforma B2B de treinamento técnico corporativo oferecer
 - 🔔 **Toast Notifications**: Feedback visual
 - ⏳ **Loading States**: Skeletons e spinners
 
+**Internacionalização (Sprint 12):**
+- 🌍 **3 Idiomas**: Português (pt-BR), Inglês (en-US), Espanhol (es-ES)
+- 🔄 **Troca Dinâmica**: LanguageSelector com 3 variantes
+- 📦 **Lazy Loading**: Namespaces por funcionalidade
+- 💾 **Persistência**: Preferência salva no localStorage
+
 ### 📊 Métricas do Projeto
 
 | Métrica | Valor |
 |---------|-------|
 | Sprints Completos | 6 (Sprint 6-11) |
-| User Stories | 37/37 (100%) |
+| Sprint Atual | 12 (i18n) |
+| User Stories | 41/43 (95%) |
 | Permissões RBAC | 17/21 (81%) |
 | Testes E2E | 14/14 (100%) |
+| Idiomas i18n | 3 (pt-BR, en-US, es-ES) |
 | Console Errors | 0 |
 
 ---

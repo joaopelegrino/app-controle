@@ -1,9 +1,10 @@
 # app-controle (UltraThink) - Configuração Claude Code
 
-**Version:** 7.5.0 | **Date:** 2026-01-24 | **Status:** Production + Sprint 11 COMPLETO
+**Version:** 8.0.0 | **Date:** 2026-01-26 | **Status:** Production + i18n Implementado
 **Project Type:** Plataforma B2B de treinamento técnico corporativo
-**Sprint Atual:** 11 - UX Polish (4/4 USs implementadas) ✅
+**Sprint Atual:** 12 - i18n (em progresso)
 **Sprints Completos:** 6, 7, 8, 9, 10, 11 ✅
+**Feature Branch:** `feature/i18n-internacionalizacao`
 
 ---
 
@@ -61,7 +62,11 @@ app-controle/
 │   │   ├── EmptyState.jsx           → Empty states reutilizáveis (Sprint 11) ✅
 │   │   ├── ConfirmModal.jsx         → Modal confirmação (Sprint 11) ✅
 │   │   ├── MobileMenu.jsx           → Menu hamburger mobile (Sprint 11) ✅
+│   │   ├── LanguageSelector.jsx     → Seletor de idioma (Sprint 12) ✅
 │   │   └── BashLearningSystem.jsx   → Curso Bash
+│   ├── i18n/
+│   │   ├── config.js                → Configuração i18next (Sprint 12) ✅
+│   │   └── index.js                 → Exports do módulo
 │   ├── contexts/
 │   │   ├── AuthContext.jsx          → Estado de autenticação
 │   │   ├── TenantContext.jsx        → Multi-tenancy
@@ -145,6 +150,15 @@ Sprint 11: UX Polish (4/4 USs) ✅ COMPLETO
 ├── US-107: MobileMenu + useMediaQuery + Headers responsivos ✅
 ├── US-108: Auth NocoDB JWT (loginUser + validateToken) ✅
 └── Status: ✅ COMPLETO
+
+Sprint 12: Internacionalização (i18n) 🔄 EM PROGRESSO
+├── US-109: Infraestrutura i18next ✅
+├── US-110: Traduções common/auth/errors (pt-BR, en-US, es-ES) ✅
+├── US-111: LanguageSelector.jsx ✅
+├── US-112: LoginView.jsx migrado para i18n ✅
+├── US-113: HubView.jsx migrado para i18n (pendente)
+├── US-114: Dashboards migrados para i18n (pendente)
+└── Status: 🔄 EM PROGRESSO (4/6 USs)
 ```
 
 ### RBAC Progress
@@ -647,7 +661,110 @@ mcp__chrome-devtools__evaluate_script({ function: "() => localStorage.clear()" }
 
 ---
 
+## Internacionalização (i18n) - IMPLEMENTADO ✅
+
+### Status: Sprint 12 em Progresso
+
+| Componente | Status | Idiomas |
+|------------|--------|---------|
+| Infraestrutura i18next | ✅ | - |
+| LoginView.jsx | ✅ | pt-BR, en-US, es-ES |
+| LanguageSelector | ✅ | 3 variantes |
+| HubView.jsx | Pendente | - |
+| Dashboards | Pendente | - |
+
+### Dependências Instaladas
+
+```bash
+bun add i18next react-i18next i18next-http-backend i18next-browser-languagedetector
+```
+
+### Estrutura de Arquivos (Implementada)
+
+```
+src/i18n/
+├── config.js              # Configuração i18next ✅
+└── index.js               # Exports do módulo ✅
+
+public/locales/
+├── pt-BR/
+│   ├── common.json        # app, navigation, buttons, status, time, table, modal, toast ✅
+│   ├── auth.json          # login, errors, roles, permissions, logout, accessDenied ✅
+│   └── errors.json        # validation, network, auth, crud, generic ✅
+├── en-US/
+│   ├── common.json ✅
+│   ├── auth.json ✅
+│   └── errors.json ✅
+└── es-ES/
+    ├── common.json ✅
+    ├── auth.json ✅
+    └── errors.json ✅
+```
+
+### Componentes i18n
+
+```jsx
+// LanguageSelector.jsx - 3 variantes
+<LanguageSelector variant="dropdown" />  // Select com bandeiras
+<LanguageSelector variant="buttons" />   // Botões lado a lado (usado no Login)
+<LanguageSelector variant="minimal" />   // Apenas código do idioma
+
+// Hook useLanguage
+const { currentCode, currentName, currentFlag, changeLanguage, isRTL } = useLanguage();
+```
+
+### Uso nos Componentes
+
+```jsx
+import { useTranslation } from 'react-i18next';
+
+function LoginView() {
+  const { t } = useTranslation(['auth', 'common']);
+
+  return (
+    <>
+      <h1>{t('common:app.name')}</h1>
+      <h2>{t('auth:login.title')}</h2>
+      <button>{t('auth:login.submitButton')}</button>
+    </>
+  );
+}
+```
+
+### Namespaces Implementados
+
+| Namespace | Conteúdo | Strings | Lazy Load |
+|-----------|----------|---------|-----------|
+| `common` | app, navigation, buttons, status, time, table, modal, toast, language | ~50 | Não |
+| `auth` | login, errors, roles, roleDescriptions, permissions, logout, accessDenied | ~45 | Não |
+| `errors` | validation, network, auth, crud, generic | ~20 | Não |
+| `dashboard` | (futuro) | - | Sim |
+| `courses` | (futuro) | - | Sim |
+
+### Teste i18n via MCP
+
+```javascript
+// Navegar para login
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/login" })
+
+// Clicar no botão de inglês (🇺🇸)
+mcp__chrome-devtools__click({ uid: "1_2" })  // uid do snapshot
+
+// Verificar tradução
+mcp__chrome-devtools__take_snapshot()
+// "Access your account" em vez de "Acesse sua conta"
+```
+
+### Referências
+
+- **Análise:** `docs/tecnico/arquitetura/ANALISE-I18N-INTERNACIONALIZACAO.md`
+- **Screenshot:** `.factory/relatorios/qa-e2e-2026-01-26/13-i18n-espanol.png`
+- **Docs:** [react-i18next.com](https://react.i18next.com/)
+
+---
+
 **Ultima atualizacao:** 2026-01-26
-**Versao:** 7.6.0 (+ Ativação Automatizada + MCP E2E)
-**Status:** Backend + Frontend + Auth NocoDB JWT + MCP Chrome DevTools
+**Versao:** 8.0.0 (+ i18n Implementado)
+**Status:** Backend + Frontend + Auth NocoDB JWT + i18n (3 idiomas)
 **RBAC:** 81% implementado (17/21 permissoes)
+**i18n:** pt-BR, en-US, es-ES (LoginView migrado)

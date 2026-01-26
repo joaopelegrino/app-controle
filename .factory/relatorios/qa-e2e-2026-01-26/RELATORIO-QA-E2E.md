@@ -16,7 +16,8 @@
 | Dashboards | 4 | 4 | 0 | 100% |
 | RBAC | 2 | 2 | 0 | 100% |
 | Modais | 2 | 2 | 0 | 100% |
-| **TOTAL** | **14** | **14** | **0** | **100%** |
+| **i18n** | **3** | **3** | **0** | **100%** |
+| **TOTAL** | **17** | **17** | **0** | **100%** |
 
 **Status Geral: APROVADO**
 
@@ -93,6 +94,32 @@ Console:    0 erros
 
 ---
 
+## Testes i18n (Internacionalização)
+
+### Troca de Idiomas na Tela de Login
+
+| Teste | Status | Evidência |
+|-------|--------|-----------|
+| Português (pt-BR) | PASS | Textos em português corretos |
+| Inglês (en-US) | PASS | "Access your account", "Sign In" |
+| Espanhol (es-ES) | PASS | 13-i18n-espanol.png |
+
+**Elementos Verificados:**
+- Título: "UltraThink" (inalterado)
+- Tagline: traduzido corretamente
+- Labels de formulário: Email, Senha/Password/Contraseña
+- Placeholders: traduzidos
+- Botão submit: Entrar/Sign In/Iniciar sesión
+- Roles de demo: traduzidos
+- Footer: copyright traduzido
+
+**Comportamento:**
+- Troca de idioma instantânea (sem reload)
+- Preferência salva no localStorage (`ultrathink_language`)
+- Botões de bandeira funcionais (🇧🇷 🇺🇸 🇪🇸)
+
+---
+
 ## Bug Encontrado
 
 ### BUG-001: Botão "Painel Admin" incorreto para Instructor
@@ -148,7 +175,8 @@ Console:    0 erros
 ├── 09-onboarding-wizard.png        (233 KB)
 ├── 10-executive-dashboard.png      (560 KB)
 ├── 11-student-dashboard.png        (240 KB)
-└── 12-rbac-acesso-negado-student.png (1.0 MB)
+├── 12-rbac-acesso-negado-student.png (1.0 MB)
+└── 13-i18n-espanol.png             (NEW - Sprint 12)
 ```
 
 ---
@@ -163,6 +191,7 @@ A plataforma UltraThink B2B está **funcionando corretamente** com:
 - **Modais**: UserFormModal e StudentNotesModal funcionando
 - **Onboarding**: Wizard exibido para novos usuários
 - **Analytics**: Métricas de módulos difíceis e ROI exibidas
+- **i18n (Sprint 12)**: Troca de idiomas funcionando (pt-BR, en-US, es-ES)
 
 **1 bug de baixa severidade identificado** (navegação do instructor).
 
