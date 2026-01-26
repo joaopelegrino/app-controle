@@ -38,8 +38,14 @@ i18n
     // Idioma padrão
     fallbackLng: 'pt-BR',
 
-    // Idiomas suportados
-    supportedLngs: ['pt-BR', 'en-US', 'es-ES'],
+    // Idiomas suportados (inclui variantes curtas para evitar warnings)
+    supportedLngs: ['pt-BR', 'pt', 'en-US', 'en', 'es-ES', 'es'],
+
+    // Carregar apenas idioma exato, não tentar variantes
+    load: 'currentOnly',
+
+    // Não usar variantes de idioma (pt -> pt-BR automaticamente)
+    nonExplicitSupportedLngs: true,
 
     // Namespaces carregados inicialmente (não lazy)
     ns: ['common', 'auth', 'errors', 'dashboard'],
