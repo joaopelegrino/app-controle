@@ -1,16 +1,21 @@
-# Plataforma B2B de treinamento técnico corporativo
+# UltraThink - Plataforma B2B de Treinamento Técnico Corporativo
 
-**Plataforma B2B de treinamento técnico corporativo** que estrutura, organiza e mensura o conhecimento interno de empresas de tecnologia.
+**Plataforma B2B multi-tenant** para treinamento técnico corporativo com autenticação JWT, RBAC (4 roles), dashboards por perfil e analytics avançado.
 
 ## 🎯 Visão Geral
 
-**Plataforma B2B de treinamento técnico corporativo** resolve o problema de empresas que gastam R$150k-200k/ano em plataformas genéricas (Udemy Business, Coursera) mas enfrentam:
+**UltraThink** resolve o problema de empresas que gastam R$150k-200k/ano em plataformas genéricas (Udemy Business, Coursera) mas enfrentam:
 - ❌ Baixa taxa de engajamento (apenas 10-15% dos colaboradores usam)
 - ❌ Conteúdo não customizável para stack específico da empresa
 - ❌ Impossibilidade de medir ROI real do treinamento
 - ❌ Onboarding técnico desorganizado (2+ meses para produtividade)
 
-**Solução:** Plataforma própria white-label que estrutura conteúdo técnico (programação, DevOps, segurança) com trilhas customizáveis, progresso rastreável e analytics corporativo.
+**Solução:** Plataforma própria white-label com:
+- ✅ Autenticação JWT real via NocoDB + PostgreSQL
+- ✅ Sistema RBAC com 4 roles e 21 permissões
+- ✅ Dashboards específicos por perfil (Student, Instructor, Admin, C-Level)
+- ✅ Analytics de ROI e módulos difíceis
+- ✅ Multi-tenancy por empresa
 
 ---
 
@@ -88,31 +93,53 @@ Além do software, o Plataforma B2B de treinamento técnico corporativo oferecer
 
 ---
 
-## ⚡ Estado Atual da Plataforma - Novembro 2025
+## ⚡ Estado Atual - Janeiro 2026
 
-### 🎯 Status do MVP (Hub Simplificado - US-044)
-- ✅ **Sistema Totalmente Funcional**: Rodando em `http://localhost:3000`
-- ✅ **MVP Focado**: 1 Área de Estudo (Bash) + 1 Caminho Proposto (Backend Developer)
-- ✅ **Arquitetura Modular B2B**: Componentes React preparados para multi-tenancy
-- ✅ **Interface Responsiva**: Desktop, tablet e mobile
-- ✅ **Persistência Local**: localStorage com tratamento de erros (US-041)
+### 🎯 Status: Sprint 11 COMPLETO (Demo B2B Ready)
 
-### 🆕 Funcionalidades Implementadas (Release 1.0)
-- 📖 **5 Cursos Técnicos Completos**: C (50 aulas), Rust (24 aulas), Bash (16 aulas), VSCode (8 aulas), Claude Code (12 aulas)
-- 🛤️ **Trilhas de Aprendizado**: Caminhos estruturados por role (Backend, DevOps, Security)
-- 🃏 **Flash Cards Interativos**: Memorização ativa com animações 3D
-- 📝 **Caderno de Notas Colaborador**: Auto-save, markdown, 50KB por curso
-- 🎥 **Vídeos Integrados**: YouTube embed para conteúdo audiovisual
-- 📊 **Progresso Visual**: Barras de conclusão por aula, seção e curso
-- 🧭 **Breadcrumb Hierárquico**: Navegação \`Hub > Curso > Aula\` (WCAG 2.1 AA)
-- 🎨 **Design System Consistente**: ÉPICO 12 - Nomenclatura 100% padronizada
+```
+┌─────────────────┬────────────┬───────────────────────┐
+│   Componente    │   Status   │          URL          │
+├─────────────────┼────────────┼───────────────────────┤
+│ Frontend (Vite) │ ✅ Rodando │ http://localhost:3001 │
+├─────────────────┼────────────┼───────────────────────┤
+│ NocoDB          │ ✅ Healthy │ http://localhost:8081 │
+├─────────────────┼────────────┼───────────────────────┤
+│ PostgreSQL      │ ✅ Healthy │ localhost:5432        │
+└─────────────────┴────────────┴───────────────────────┘
+```
 
-### 📊 Métricas do MVP
-- **1 Área Ativa (MVP)**: Bash Shell Scripting (16 módulos, 32h) - padrão de referência
-- **1 Caminho Proposto**: "Desenvolvedor Backend" (Bash → Linux → Docker → DevOps)
-- **5 Sistemas Integrados**: Bash, C, Rust, VSCode, Claude Code (apenas Bash ativo no MVP)
-- **227 Módulos Planejados**: ~692h de conteúdo (expandindo seguindo padrão Bash)
-- **Release 2.0**: 50% completa (US-040 parcial + US-041 + US-044)
+### 🆕 Funcionalidades Implementadas (Sprints 6-11)
+
+**Autenticação & RBAC:**
+- 🔐 **Auth JWT NocoDB**: Login real com validação de token
+- 👥 **4 Roles**: student, instructor, admin, c_level
+- 🛡️ **21 Permissões**: 17 com UI implementada (81%)
+- 🏢 **Multi-tenancy**: Isolamento por empresa
+
+**Dashboards por Perfil:**
+- 📊 **UserDashboard**: Progresso pessoal, notas, cursos
+- 👨‍🏫 **InstructorDashboard**: Time, alunos que precisam atenção
+- ⚙️ **AdminDashboard**: CRUD usuários, matrículas, analytics
+- 📈 **ExecutiveDashboard**: ROI, KPIs, métricas corporativas
+
+**UX Polish (Sprint 11):**
+- 📱 **Responsividade Mobile**: MobileMenu hamburger
+- 🎯 **Empty States**: Estados vazios reutilizáveis
+- ⚠️ **Confirm Modal**: Confirmação antes de ações destrutivas
+- 🎉 **Onboarding Wizard**: 4 steps para novos usuários
+- 🔔 **Toast Notifications**: Feedback visual
+- ⏳ **Loading States**: Skeletons e spinners
+
+### 📊 Métricas do Projeto
+
+| Métrica | Valor |
+|---------|-------|
+| Sprints Completos | 6 (Sprint 6-11) |
+| User Stories | 37/37 (100%) |
+| Permissões RBAC | 17/21 (81%) |
+| Testes E2E | 14/14 (100%) |
+| Console Errors | 0 |
 
 ---
 
@@ -193,42 +220,52 @@ plataforma-b2b/
 
 ### **Pré-requisitos**
 - **Bun 1.3.3+** (recomendado - via mise)
+- **Docker Desktop** com WSL2 Integration (para backend)
 - mise (gerenciador de versões) ou Node.js 24+ como fallback
-- Docker (opcional, para deploy)
 
-### **Instalação**
+### **Modo 1: Frontend Apenas (Dados Mock)**
 
-\`\`\`bash
-# Clone o repositório
-git clone <repo-url>
-cd plataforma-b2b
-
-# Instale dependências (35x mais rápido com Bun!)
+```bash
+# Instale dependências
 bun install
 
 # Rode o servidor de desenvolvimento
 bun run dev
-# Acesse: http://localhost:3000
-\`\`\`
+# Acesse: http://localhost:3001
+```
+
+### **Modo 2: Full Stack (Recomendado)**
+
+```bash
+# 1. Iniciar Docker Desktop (Windows)
+# 2. Iniciar backend (PostgreSQL + NocoDB)
+docker compose -f docker-compose.nocodb.yml up -d
+
+# 3. Executar migrations (primeira vez)
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-001-rbac.sql
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-002-enrollments.sql
+
+# 4. Iniciar frontend
+bun run dev
+```
+
+### **Credenciais de Demo**
+
+```
+Senha padrão: Demo@2026
+
+ACME Tech Solutions:
+├── ceo@acmetech.com     (C-Level)    → /admin/executive
+├── admin@acmetech.com   (Admin)      → /admin
+├── prof@acmetech.com    (Instructor) → /instructor
+└── maria@acmetech.com   (Student)    → /dashboard
+```
 
 ### **Build de Produção**
 
-\`\`\`bash
-# Build otimizado
-bun run build
-
-# Preview da build
-bun run preview
-\`\`\`
-
-### **Docker**
-
-\`\`\`bash
-# Build e suba o container
-docker-compose up -d
-
-# Acesse: http://localhost:80
-\`\`\`
+```bash
+bun run build && bun run preview
+```
 
 ---
 
@@ -252,39 +289,38 @@ bun run test-usabilidade-mcp.cjs
 
 ## 📊 Roadmap de Produto
 
-### **Release 1.0 "Foundation"** ✅ **COMPLETA** (Novembro 2025)
-- ✅ 5 cursos técnicos completos (110 aulas)
-- ✅ Flash cards interativos
-- ✅ Caderno de notas com auto-save
-- ✅ Progresso visual
-- ✅ Breadcrumb hierárquico
-- ✅ Build otimizado e Docker
+### **Sprints 6-11** ✅ **COMPLETOS** (Janeiro 2026)
+- ✅ Auth JWT NocoDB + PostgreSQL
+- ✅ Sistema RBAC (4 roles, 21 permissões)
+- ✅ 4 Dashboards por perfil
+- ✅ CRUD completo de usuários
+- ✅ Matrículas em cursos
+- ✅ Exportação Excel/JSON
+- ✅ Analytics de ROI e módulos difíceis
+- ✅ Responsividade mobile
+- ✅ Onboarding wizard
+- ✅ Toast notifications
+- ✅ Loading states (skeletons)
 
-### **Release 2.0 "Quality & Scale"** 📋 **PLANEJADA** (Q1 2026)
-- [ ] React Router (navegação por URL, deep linking)
-- [ ] Tratamento de erros localStorage (QuotaExceededError)
-- [ ] Progresso persistido no backend
-- [ ] Refatoração BaseLearningSystem (-800 linhas duplicadas)
-- [ ] Cobertura de testes >= 30%
-- [ ] Lazy loading de componentes
+### **Sprint 12** 📋 **PRÓXIMO**
+- [ ] CRUD de cursos (courses.create/edit)
+- [ ] Certificados de conclusão
+- [ ] Tour guiado real (highlight UI)
+- [ ] Correção BUG-001 (navegação instructor)
 
-### **Release 3.0 "Enterprise Features"** 📋 **PLANEJADA** (Q2 2026)
-- [ ] Backend Node.js + PostgreSQL
-- [ ] Sistema Multi-Tenant (empresas isoladas)
+### **Release 3.0 "Enterprise"** 📋 **PLANEJADA**
 - [ ] SSO Corporativo (SAML, OAuth)
-- [ ] Analytics Dashboard para RH/Gestores
 - [ ] API RESTful para criação de cursos
 - [ ] Dark mode
 - [ ] TypeScript migration (gradual)
 - [ ] Acessibilidade WCAG 2.1 AA (100%)
 
-### **Release 4.0 "Growth & Scale"** 📋 **PLANEJADA** (Q3 2026)
+### **Release 4.0 "Scale"** 📋 **PLANEJADA**
 - [ ] Marketplace B2B2C de cursos técnicos
-- [ ] Certificações customizadas por empresa
-- [ ] Gamificação corporativa (badges, leaderboards por time)
+- [ ] Gamificação (badges, leaderboards)
 - [ ] PWA com modo offline
 - [ ] Mobile apps (iOS/Android)
-- [ ] Integração Slack/Teams (notificações de progresso)
+- [ ] Integração Slack/Teams
 
 ---
 
@@ -315,9 +351,10 @@ Este é um projeto proprietário B2B. Se você é colaborador:
 
 ## 📞 Contato
 
-**Desenvolvedor:** João Pelegrino  
-**Projeto:** Plataforma B2B de treinamento técnico corporativo - Plataforma B2B de Treinamento Técnico Corporativo  
-**Status:** MVP funcional (Release 1.0 completa)  
+**Desenvolvedor:** João Pelegrino
+**Projeto:** UltraThink - Plataforma B2B de Treinamento Técnico Corporativo
+**Status:** Demo B2B Ready (Sprint 11 completo)
+**Branch:** `demo-nocodb-simple`
 **Repositório:** Privado
 
 ---
