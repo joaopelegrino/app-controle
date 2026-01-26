@@ -4,7 +4,7 @@ Nome: estrutura_atual_do_projeto
 Função: Contextualizar agentes sobre o estado atual do projeto
 Frequência: Atualizado automaticamente via hook SessionStart
 Versão: v1
-Última Atualização: 2026-01-26T11:59:53-0300
+Última Atualização: 2026-01-26T14:41:50-0300
 Gerado por: hook C session-start
 ---
 
@@ -30,19 +30,9 @@ Gerado por: hook C session-start
 │   │   └── PERSONAS-NAO-TECNICAS.md
 │   ├── backlog
 │   │   ├── acoes-usuario
-│   │   ├── ANALISE-PLANEJAMENTO-DEMO-B2B.md
-│   │   ├── BACKLOG-2026-01-23-SPRINT10-ANALYTICS.md
-│   │   ├── BACKLOG-2026-01-23-SPRINT10-US103-LOADING.md
-│   │   ├── BACKLOG-2026-01-23-SPRINT10-US104-ONBOARDING.md
-│   │   ├── BACKLOG-2026-01-23-SPRINT9-MATRICULAS.md
-│   │   ├── BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md
-│   │   ├── BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md
-│   │   ├── backlog-2026-01-24-itens-pendentes-infra.md
+│   │   ├── arquivo-2026-01
 │   │   ├── ESTUDO-REFATORACAO-WHITE-LABEL-2026-01-26.md
 │   │   ├── GAPS-DEMO-B2B.md
-│   │   ├── RETOMADA-2026-01-22-API-SERVICE.md
-│   │   ├── RETOMADA-2026-01-22-AUTH-FRONTEND.md
-│   │   ├── ROADMAP-DEMO-B2B.md
 │   │   └── ROADMAP.md
 │   ├── conceitual
 │   │   └── 01-visao-geral
@@ -95,7 +85,12 @@ Gerado por: hook C session-start
 │       ├── chk-20260126-103619.json
 │       ├── chk-20260126-104153.json
 │       ├── chk-20260126-115626.json
-│       └── chk-20260126-115857.json
+│       ├── chk-20260126-115857.json
+│       ├── chk-20260126-120558.json
+│       ├── chk-20260126-121153.json
+│       ├── chk-20260126-132554.json
+│       ├── chk-20260126-133533.json
+│       └── chk-20260126-134045.json
 ├── public
 │   └── locales
 │       ├── en-US
@@ -144,6 +139,9 @@ Gerado por: hook C session-start
 │   │   ├── UserHeader.jsx
 │   │   ├── VSCodeLearningSystem.jsx
 │   │   └── VSCodeNotesView.jsx
+│   ├── config
+│   │   ├── index.js
+│   │   └── platform.js
 │   ├── contexts
 │   │   ├── AuthContext.jsx
 │   │   ├── LoadingContext.jsx
@@ -184,7 +182,8 @@ Gerado por: hook C session-start
 │   ├── utils
 │   │   ├── debugLogger.js
 │   │   ├── exportUtils.js
-│   │   └── helpers.js
+│   │   ├── helpers.js
+│   │   └── storageMigration.js
 │   ├── index.css
 │   └── main.jsx
 ├── templates
@@ -209,7 +208,7 @@ Gerado por: hook C session-start
 ├── vite.config.js
 └── vitest.config.js
 
-50 directories, 147 files
+52 directories, 144 files
 
 ```
 
