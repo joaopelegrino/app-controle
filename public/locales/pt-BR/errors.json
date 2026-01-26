@@ -1,0 +1,31 @@
+{
+  "validation": {
+    "required": "Este campo é obrigatório",
+    "email": "Digite um email válido",
+    "minLength": "Mínimo de {{min}} caracteres",
+    "maxLength": "Máximo de {{max}} caracteres",
+    "passwordMismatch": "As senhas não conferem",
+    "invalidFormat": "Formato inválido"
+  },
+  "network": {
+    "connectionError": "Erro de conexão. Verifique sua internet.",
+    "serverError": "Erro no servidor. Tente novamente mais tarde.",
+    "timeout": "A requisição demorou muito. Tente novamente.",
+    "notFound": "Recurso não encontrado"
+  },
+  "auth": {
+    "unauthorized": "Não autorizado",
+    "forbidden": "Acesso proibido",
+    "sessionExpired": "Sessão expirada"
+  },
+  "crud": {
+    "createFailed": "Erro ao criar registro",
+    "updateFailed": "Erro ao atualizar registro",
+    "deleteFailed": "Erro ao excluir registro",
+    "loadFailed": "Erro ao carregar dados"
+  },
+  "generic": {
+    "unknownError": "Ocorreu um erro inesperado",
+    "tryAgain": "Por favor, tente novamente"
+  }
+}

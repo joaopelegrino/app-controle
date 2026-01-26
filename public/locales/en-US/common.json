@@ -1,0 +1,75 @@
+{
+  "app": {
+    "name": "UltraThink",
+    "tagline": "Corporate Training Platform",
+    "copyright": "UltraThink © 2026 - Corporate Training"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "My Dashboard",
+    "courses": "Courses",
+    "admin": "Administration",
+    "instructor": "Instructor Panel",
+    "executive": "Executive Panel",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "refresh": "Refresh",
+    "loading": "Loading...",
+    "processing": "Processing..."
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "notStarted": "Not Started"
+  },
+  "time": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "thisWeek": "This week",
+    "thisMonth": "This month",
+    "lastUpdated": "Last updated"
+  },
+  "table": {
+    "noData": "No data found",
+    "showing": "Showing",
+    "of": "of",
+    "entries": "entries",
+    "actions": "Actions"
+  },
+  "modal": {
+    "confirmDelete": "Confirm Deletion",
+    "areYouSure": "Are you sure?",
+    "cannotUndo": "This action cannot be undone."
+  },
+  "toast": {
+    "success": "Success!",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information"
+  },
+  "language": {
+    "select": "Select language",
+    "current": "Current language"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "app": {
+    "name": "UltraThink",
+    "tagline": "Plataforma de Capacitación Corporativa",
+    "copyright": "UltraThink © 2026 - Capacitación Corporativa"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "dashboard": "Mi Panel",
+    "courses": "Cursos",
+    "admin": "Administración",
+    "instructor": "Panel Instructor",
+    "executive": "Panel Ejecutivo",
+    "settings": "Configuración",
+    "profile": "Perfil",
+    "logout": "Salir"
+  },
+  "buttons": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "close": "Cerrar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "refresh": "Actualizar",
+    "loading": "Cargando...",
+    "processing": "Procesando..."
+  },
+  "status": {
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "pending": "Pendiente",
+    "completed": "Completado",
+    "inProgress": "En Progreso",
+    "notStarted": "No Iniciado"
+  },
+  "time": {
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "thisWeek": "Esta semana",
+    "thisMonth": "Este mes",
+    "lastUpdated": "Última actualización"
+  },
+  "table": {
+    "noData": "No se encontraron datos",
+    "showing": "Mostrando",
+    "of": "de",
+    "entries": "registros",
+    "actions": "Acciones"
+  },
+  "modal": {
+    "confirmDelete": "Confirmar Eliminación",
+    "areYouSure": "¿Está seguro?",
+    "cannotUndo": "Esta acción no se puede deshacer."
+  },
+  "toast": {
+    "success": "¡Éxito!",
+    "error": "Error",
+    "warning": "Atención",
+    "info": "Información"
+  },
+  "language": {
+    "select": "Seleccionar idioma",
+    "current": "Idioma actual"
+  }
+}

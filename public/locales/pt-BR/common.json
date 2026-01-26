@@ -1,0 +1,75 @@
+{
+  "app": {
+    "name": "UltraThink",
+    "tagline": "Plataforma de Treinamento Corporativo",
+    "copyright": "UltraThink © 2026 - Treinamento Corporativo"
+  },
+  "navigation": {
+    "home": "Início",
+    "dashboard": "Meu Painel",
+    "courses": "Cursos",
+    "admin": "Administração",
+    "instructor": "Painel Instrutor",
+    "executive": "Painel Executivo",
+    "settings": "Configurações",
+    "profile": "Perfil",
+    "logout": "Sair"
+  },
+  "buttons": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "close": "Fechar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "refresh": "Atualizar",
+    "loading": "Carregando...",
+    "processing": "Processando..."
+  },
+  "status": {
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "pending": "Pendente",
+    "completed": "Concluído",
+    "inProgress": "Em Progresso",
+    "notStarted": "Não Iniciado"
+  },
+  "time": {
+    "today": "Hoje",
+    "yesterday": "Ontem",
+    "thisWeek": "Esta semana",
+    "thisMonth": "Este mês",
+    "lastUpdated": "Última atualização"
+  },
+  "table": {
+    "noData": "Nenhum dado encontrado",
+    "showing": "Mostrando",
+    "of": "de",
+    "entries": "registros",
+    "actions": "Ações"
+  },
+  "modal": {
+    "confirmDelete": "Confirmar Exclusão",
+    "areYouSure": "Tem certeza?",
+    "cannotUndo": "Esta ação não pode ser desfeita."
+  },
+  "toast": {
+    "success": "Sucesso!",
+    "error": "Erro",
+    "warning": "Atenção",
+    "info": "Informação"
+  },
+  "language": {
+    "select": "Selecionar idioma",
+    "current": "Idioma atual"
+  }
+}

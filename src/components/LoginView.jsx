@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { BookOpen, Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { LanguageSelector } from './LanguageSelector';
 
 export function LoginView() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, isLoading: authLoading } = useAuth();
+  const { t } = useTranslation(['auth', 'common']);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,12 +25,12 @@ export function LoginView() {
 
     // Validação básica
     if (!email.trim()) {
-      setError('Digite seu email');
+      setError(t('auth:errors.emailRequired'));
       return;
     }
 
     if (!password) {
-      setError('Digite sua senha');
+      setError(t('auth:errors.passwordRequired'));
       return;
     }
 
@@ -37,7 +40,7 @@ export function LoginView() {
       await login(email.trim(), password);
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message || 'Erro ao fazer login');
+      setError(err.message || t('auth:errors.loginFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -47,27 +50,32 @@ export function LoginView() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
+      {/* Seletor de idioma no canto superior direito */}
+      <div className="absolute top-4 right-4">
+        <LanguageSelector variant="buttons" />
+      </div>
+
       <div className="w-full max-w-md">
         {/* Logo e Título */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4">
             <BookOpen className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">UltraThink</h1>
-          <p className="text-gray-400">Plataforma de Treinamento Corporativo</p>
+          <h1 className="text-3xl font-bold text-white mb-2">{t('common:app.name')}</h1>
+          <p className="text-gray-400">{t('common:app.tagline')}</p>
         </div>
 
         {/* Card do Formulário */}
         <div className="bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-700">
           <h2 className="text-xl font-semibold text-white mb-6 text-center">
-            Acesse sua conta
+            {t('auth:login.title')}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Campo Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                Email
+                {t('auth:login.emailLabel')}
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
@@ -76,7 +84,7 @@ export function LoginView() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu@email.com"
+                  placeholder={t('auth:login.emailPlaceholder')}
                   className="w-full pl-11 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   disabled={isLoading}
                   autoComplete="email"
@@ -87,7 +95,7 @@ export function LoginView() {
             {/* Campo Senha */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                Senha
+                {t('auth:login.passwordLabel')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
@@ -96,7 +104,7 @@ export function LoginView() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Digite sua senha"
+                  placeholder={t('auth:login.passwordPlaceholder')}
                   className="w-full pl-11 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   disabled={isLoading}
                   autoComplete="current-password"
@@ -121,10 +129,10 @@ export function LoginView() {
               {isLoading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>Entrando...</span>
+                  <span>{t('auth:login.submitting')}</span>
                 </>
               ) : (
-                'Entrar'
+                t('auth:login.submitButton')
               )}
             </button>
           </form>
@@ -132,9 +140,9 @@ export function LoginView() {
           {/* Link de Recuperação (placeholder) */}
           <div className="mt-6 text-center">
             <span className="text-gray-500 text-sm">
-              Esqueceu a senha?{' '}
+              {t('auth:login.forgotPassword')}{' '}
               <span className="text-gray-400 cursor-not-allowed">
-                Entre em contato com o administrador
+                {t('auth:login.contactAdmin')}
               </span>
             </span>
           </div>
@@ -143,7 +151,7 @@ export function LoginView() {
         {/* Credenciais de Demo */}
         <div className="mt-6 p-4 bg-gray-800/50 rounded-xl border border-gray-700">
           <p className="text-gray-400 text-xs text-center mb-3">
-            Credenciais de demonstração (senha: Demo@2026)
+            {t('auth:login.demoCredentials')}
           </p>
           <div className="grid grid-cols-2 gap-2 text-xs">
             <button
@@ -151,35 +159,35 @@ export function LoginView() {
               onClick={() => { setEmail('ceo@acmetech.com'); setPassword('Demo@2026'); }}
               className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-gray-300 transition-colors"
             >
-              C-Level
+              {t('auth:roles.c_level')}
             </button>
             <button
               type="button"
               onClick={() => { setEmail('admin@acmetech.com'); setPassword('Demo@2026'); }}
               className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-gray-300 transition-colors"
             >
-              Admin
+              {t('auth:roles.admin')}
             </button>
             <button
               type="button"
               onClick={() => { setEmail('prof@acmetech.com'); setPassword('Demo@2026'); }}
               className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-gray-300 transition-colors"
             >
-              Instrutor
+              {t('auth:roles.instructor')}
             </button>
             <button
               type="button"
               onClick={() => { setEmail('maria@acmetech.com'); setPassword('Demo@2026'); }}
               className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-gray-300 transition-colors"
             >
-              Aluno
+              {t('auth:roles.student')}
             </button>
           </div>
         </div>
 
         {/* Footer */}
         <p className="mt-6 text-center text-gray-600 text-xs">
-          UltraThink © 2026 - Treinamento Corporativo
+          {t('common:app.copyright')}
         </p>
       </div>
     </div>
