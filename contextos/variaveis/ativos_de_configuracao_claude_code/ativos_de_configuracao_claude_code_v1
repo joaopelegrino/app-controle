@@ -2,16 +2,16 @@
 Tipo: Contexto Variável
 Nome: ativos_de_configuracao_claude_code
 Função: Contextualizar agentes sobre a configuração atual disponível
-Frequência: Atualizado automaticamente via hook SessionStart
+Frequência: Atualizado automaticamente via hook PostToolUse
 Versão: v1
-Última Atualização: 2026-01-26T14:41:50-0300
-Gerado por: hook C session-start
+Última Atualização: 2026-01-26T15:04:23-0300
+Gerado por: hook C post-tool-use
 ---
 
 ## Estrutura de Configuração Claude Code
 
 **Path**: `/home/notebook/workspace/app-controle/.claude`
-**Arquivos**: 19 | **Diretórios**: 8
+**Arquivos**: 21 | **Diretórios**: 8
 
 ```
 /home/notebook/workspace/app-controle/.claude
@@ -26,7 +26,8 @@ Gerado por: hook C session-start
 │   ├── browser-testing.md
 │   ├── full-coverage.md
 │   ├── pr-ready.md
-│   └── quick-audit.md
+│   ├── quick-audit.md
+│   └── transcrever-curso.md
 ├── docs-meta
 │   └── claude-md-modules
 ├── hooks.toml
@@ -40,12 +41,13 @@ Gerado por: hook C session-start
 ├── README.md
 ├── settings.local.json
 └── skills
-    └── tmp:resumo-sprint6-retomada.md
+    ├── tmp:resumo-sprint6-retomada.md
+    └── transcrever-video-para-curso.md
 
-8 directories, 19 files
+8 directories, 21 files
 
 ```
 
 ---
 
-*Atualizado automaticamente por: session-start (C)*
+*Atualizado automaticamente por: post-tool-use (C)*
