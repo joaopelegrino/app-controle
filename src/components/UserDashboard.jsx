@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Clock, CheckCircle, TrendingUp,
   ArrowLeft, RefreshCw, FileText, Award,
@@ -21,6 +22,7 @@ import { apiService } from '../services/apiService';
  */
 export function UserDashboard() {
   const navigate = useNavigate();
+  const { t } = useTranslation('dashboard');
   const { user, company } = useAuth();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -110,7 +112,7 @@ export function UserDashboard() {
             <div>
               <h3 className="font-semibold text-gray-800">{course.name}</h3>
               <p className="text-sm text-gray-500">
-                {course.duration_hours || 0}h de conteúdo
+                {course.duration_hours || 0}{t('user.hoursOfContent')}
               </p>
             </div>
           </div>
@@ -118,7 +120,7 @@ export function UserDashboard() {
             <Play className="w-5 h-5 text-blue-500" />
           ) : (
             <span className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">
-              Em breve
+              {t('user.comingSoon')}
             </span>
           )}
         </div>
@@ -126,7 +128,7 @@ export function UserDashboard() {
         {/* Barra de progresso */}
         <div className="mb-3">
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-gray-600">Progresso</span>
+            <span className="text-gray-600">{t('common.progress')}</span>
             <span className="font-medium text-gray-800">{courseProgress.percentage}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
@@ -144,15 +146,15 @@ export function UserDashboard() {
         </div>
 
         <div className="flex justify-between text-sm text-gray-500">
-          <span>{courseProgress.completed} de {courseProgress.total} módulos</span>
+          <span>{courseProgress.completed} {t('common.ofModules', { total: courseProgress.total })}</span>
           {isActive && courseProgress.percentage < 100 && (
             <span className="text-blue-600 flex items-center">
-              Continuar <ChevronRight className="w-4 h-4" />
+              {t('user.continue')} <ChevronRight className="w-4 h-4" />
             </span>
           )}
           {courseProgress.percentage === 100 && (
             <span className="text-green-600 flex items-center">
-              <CheckCircle className="w-4 h-4 mr-1" /> Concluído
+              <CheckCircle className="w-4 h-4 mr-1" /> {t('user.completed')}
             </span>
           )}
         </div>
@@ -182,7 +184,7 @@ export function UserDashboard() {
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 text-blue-500 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Carregando seu progresso...</p>
+          <p className="text-gray-600">{t('user.loadingProgress')}</p>
         </div>
       </div>
     );
@@ -202,9 +204,9 @@ export function UserDashboard() {
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div>
-                <h1 className="text-2xl font-bold">Meu Progresso</h1>
+                <h1 className="text-2xl font-bold">{t('user.title')}</h1>
                 <p className="text-blue-100 text-sm">
-                  Olá, {user?.fullName?.split(' ')[0] || 'Aluno'}!
+                  {t('user.greeting', { name: user?.fullName?.split(' ')[0] || 'Aluno' })}
                 </p>
               </div>
             </div>
@@ -213,7 +215,7 @@ export function UserDashboard() {
               className="flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
-              Atualizar
+              {t('common.refresh')}
             </button>
           </div>
         </div>
@@ -225,32 +227,32 @@ export function UserDashboard() {
           <StatMini
             icon={CheckCircle}
             value={totalCompleted}
-            label="Módulos Concluídos"
+            label={t('user.stats.modulesCompleted')}
             color="green"
           />
           <StatMini
             icon={TrendingUp}
             value={`${overallProgress}%`}
-            label="Progresso Geral"
+            label={t('user.stats.overallProgress')}
             color="blue"
           />
           <StatMini
             icon={BookOpen}
             value={courses.filter(c => c.status === 'active').length}
-            label="Cursos Disponíveis"
+            label={t('user.stats.availableCourses')}
             color="purple"
           />
           <StatMini
             icon={Clock}
             value={`${totalCompleted * 2}h`}
-            label="Tempo de Estudo"
+            label={t('user.stats.studyTime')}
             color="orange"
           />
         </div>
 
         {/* Cursos em Andamento */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Meus Cursos</h2>
+          <h2 className="text-xl font-bold text-gray-800 mb-4">{t('user.myCourses')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
               <CourseCard key={course.id} course={course} />
@@ -262,7 +264,7 @@ export function UserDashboard() {
         {recentNotes.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-gray-800">Notas Recentes</h2>
+              <h2 className="text-lg font-bold text-gray-800">{t('user.recentNotes')}</h2>
               <FileText className="w-5 h-5 text-gray-400" />
             </div>
             <div className="space-y-4">
@@ -292,9 +294,9 @@ export function UserDashboard() {
           <div className="flex items-center">
             <Award className="w-12 h-12 mr-4" />
             <div>
-              <h3 className="text-xl font-bold">Continue Aprendendo!</h3>
+              <h3 className="text-xl font-bold">{t('user.keepLearning')}</h3>
               <p className="text-yellow-100">
-                Complete mais {totalModules - totalCompleted} módulos para terminar todos os cursos.
+                {t('user.completeModules', { count: totalModules - totalCompleted })}
               </p>
             </div>
           </div>

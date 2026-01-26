@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Users, BookOpen, TrendingUp, Award,
   ArrowLeft, RefreshCw, Eye, Clock,
@@ -27,6 +28,7 @@ import { EmptyStateInline } from './EmptyState';
  */
 export function InstructorDashboard() {
   const navigate = useNavigate();
+  const { t } = useTranslation('dashboard');
   const { user, company } = useAuth();
   const { tenantId } = useTenant();
   const { hasPermission } = usePermissions();
@@ -80,7 +82,7 @@ export function InstructorDashboard() {
       });
     } catch (err) {
       console.error('[InstructorDashboard] Erro ao carregar dados:', err);
-      setError('Erro ao carregar dados do time');
+      setError(t('instructor.error'));
     } finally {
       setIsLoading(false);
     }
@@ -147,27 +149,27 @@ export function InstructorDashboard() {
   const StudentsTable = () => (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-800">Alunos do Time</h3>
-        <p className="text-sm text-gray-500">Acompanhe o progresso de cada aluno</p>
+        <h3 className="text-lg font-semibold text-gray-800">{t('instructor.studentsTable.title')}</h3>
+        <p className="text-sm text-gray-500">{t('instructor.studentsTable.subtitle')}</p>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Aluno
+                {t('instructor.studentsTable.student')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Progresso
+                {t('common.progress')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Módulos
+                {t('common.modules')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Última Atividade
+                {t('common.lastActivity')}
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Ações
+                {t('common.actions')}
               </th>
             </tr>
           </thead>
@@ -176,8 +178,8 @@ export function InstructorDashboard() {
               <EmptyStateInline
                 colSpan={5}
                 type="students"
-                title="Nenhum aluno no seu time"
-                description="Quando alunos forem matriculados, eles aparecerão aqui para acompanhamento."
+                title={t('instructor.studentsTable.empty')}
+                description={t('instructor.studentsTable.emptyDescription')}
               />
             ) : (
               students.map((student) => (
@@ -237,10 +239,10 @@ export function InstructorDashboard() {
                         setIsNotesModalOpen(true);
                       }}
                       className="inline-flex items-center px-3 py-1.5 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="Ver notas do aluno"
+                      title={t('instructor.studentsTable.viewNotes')}
                     >
                       <Eye className="w-4 h-4 mr-1" />
-                      Ver Notas
+                      {t('instructor.studentsTable.viewNotes')}
                     </button>
                   </td>
                 </tr>
@@ -266,7 +268,7 @@ export function InstructorDashboard() {
       <div className="bg-white rounded-lg shadow-md p-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
           <AlertCircle className="w-5 h-5 mr-2 text-yellow-500" />
-          Alunos que Precisam de Atenção
+          {t('instructor.attention.title')}
         </h3>
         <div className="space-y-3">
           {needsAttention.slice(0, 5).map((student) => (
@@ -284,8 +286,8 @@ export function InstructorDashboard() {
                   <p className="text-sm font-medium text-gray-800">{student.full_name}</p>
                   <p className="text-xs text-gray-500">
                     {!student.last_activity
-                      ? 'Nunca acessou'
-                      : `${student.completion_percentage || 0}% concluído`}
+                      ? t('instructor.attention.neverAccessed')
+                      : t('instructor.attention.percentCompleted', { percent: student.completion_percentage || 0 })}
                   </p>
                 </div>
               </div>
@@ -396,7 +398,7 @@ export function InstructorDashboard() {
             onClick={loadDashboardData}
             className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
           >
-            Tentar novamente
+            {t('common.tryAgain')}
           </button>
         </div>
       </div>
@@ -419,10 +421,10 @@ export function InstructorDashboard() {
               </button>
               <div className="min-w-0">
                 <h1 className="text-xl sm:text-2xl font-bold text-gray-800 truncate">
-                  Dashboard do Instrutor
+                  {t('instructor.title')}
                 </h1>
                 <p className="text-sm text-gray-500 truncate">
-                  {company?.name} - Acompanhamento do Time
+                  {company?.name} - {t('instructor.subtitle')}
                 </p>
               </div>
             </div>
@@ -431,15 +433,15 @@ export function InstructorDashboard() {
               <ExportButton
                 type="users"
                 companyId={tenantId}
-                label="Exportar"
+                label={t('common.export')}
               />
               <button
                 onClick={loadDashboardData}
                 className="flex items-center px-3 sm:px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg whitespace-nowrap flex-shrink-0"
-                title="Atualizar dados"
+                title={t('common.refresh')}
               >
                 <RefreshCw className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Atualizar</span>
+                <span className="hidden sm:inline">{t('common.refresh')}</span>
               </button>
             </div>
           </div>
@@ -452,33 +454,33 @@ export function InstructorDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             icon={Users}
-            label="Total de Alunos"
+            label={t('instructor.stats.totalStudents')}
             value={teamStats?.totalStudents || 0}
-            subValue={`${teamStats?.activeStudents || 0} ativos`}
+            subValue={`${teamStats?.activeStudents || 0} ${t('common.active')}`}
             color="green"
           />
           <StatCard
             icon={CheckCircle}
-            label="Módulos Concluídos"
+            label={t('instructor.stats.modulesCompleted')}
             value={teamStats?.totalModulesCompleted || 0}
-            subValue="pelo time"
+            subValue={t('instructor.stats.byTeam')}
             color="blue"
           />
           <StatCard
             icon={TrendingUp}
-            label="Média de Conclusão"
+            label={t('instructor.stats.avgCompletion')}
             value={`${teamStats?.avgCompletion || 0}%`}
             color="purple"
           />
           <StatCard
             icon={Award}
-            label="Engajamento"
+            label={t('instructor.stats.engagement')}
             value={
               teamStats?.totalStudents > 0
                 ? `${Math.round((teamStats.activeStudents / teamStats.totalStudents) * 100)}%`
                 : '0%'
             }
-            subValue="alunos ativos"
+            subValue={t('instructor.stats.activeStudents')}
             color="orange"
           />
         </div>
@@ -496,19 +498,19 @@ export function InstructorDashboard() {
 
             {/* Quick Tips Card */}
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Dicas</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('instructor.tips.title')}</h3>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  Clique em "Ver Notas" para acompanhar as anotações de cada aluno
+                  {t('instructor.tips.tip1')}
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  Alunos com menos de 25% de progresso aparecem em destaque
+                  {t('instructor.tips.tip2')}
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  Use a última atividade para identificar alunos inativos
+                  {t('instructor.tips.tip3')}
                 </li>
               </ul>
             </div>

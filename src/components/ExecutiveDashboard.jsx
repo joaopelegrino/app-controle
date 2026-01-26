@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Users, TrendingUp, Award, DollarSign,
   ArrowLeft, RefreshCw, BarChart2, Target,
@@ -24,6 +25,7 @@ import { SkeletonCard } from './LoadingComponents';
  */
 export function ExecutiveDashboard() {
   const navigate = useNavigate();
+  const { t } = useTranslation('dashboard');
   const { user, company } = useAuth();
   const { tenantId } = useTenant();
 
@@ -254,7 +256,7 @@ export function ExecutiveDashboard() {
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="min-w-0">
-                <h1 className="text-xl sm:text-2xl font-bold truncate">Dashboard Executivo</h1>
+                <h1 className="text-xl sm:text-2xl font-bold truncate">{t('executive.title')}</h1>
                 <p className="text-blue-100 text-sm truncate">{company?.name}</p>
               </div>
             </div>
@@ -264,10 +266,10 @@ export function ExecutiveDashboard() {
               <button
                 onClick={loadData}
                 className="flex items-center px-3 sm:px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition whitespace-nowrap flex-shrink-0"
-                title="Atualizar dados"
+                title={t('common.refresh')}
               >
                 <RefreshCw className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Atualizar</span>
+                <span className="hidden sm:inline">{t('common.refresh')}</span>
               </button>
             </div>
           </div>
@@ -281,32 +283,32 @@ export function ExecutiveDashboard() {
           <KPICard
             icon={Users}
             value={metrics.activeUsers}
-            label="Usuários Ativos"
-            subLabel={`de ${metrics.totalUsers} total`}
+            label={t('executive.stats.activeUsers')}
+            subLabel={t('executive.stats.ofTotal', { total: metrics.totalUsers })}
             trend="up"
             trendValue="+12%"
           />
           <KPICard
             icon={Target}
             value={`${metrics.completionRate}%`}
-            label="Taxa de Conclusão"
-            subLabel={`${metrics.modulesCompleted} módulos`}
+            label={t('executive.stats.completionRate')}
+            subLabel={t('executive.stats.modulesCount', { count: metrics.modulesCompleted })}
             trend={metrics.completionRate > 50 ? 'up' : 'down'}
             trendValue={metrics.completionRate > 50 ? '+8%' : '-3%'}
           />
           <KPICard
             icon={TrendingUp}
             value={`${metrics.engagementRate}%`}
-            label="Engajamento"
-            subLabel="usuários ativos/total"
+            label={t('executive.stats.engagement')}
+            subLabel={t('executive.stats.usersRatio')}
             trend="up"
             trendValue="+5%"
           />
           <KPICard
             icon={Award}
             value={metrics.modulesCompleted}
-            label="Módulos Concluídos"
-            subLabel="total acumulado"
+            label={t('executive.stats.modulesCompleted')}
+            subLabel={t('executive.stats.totalAccumulated')}
           />
         </div>
 
@@ -318,8 +320,8 @@ export function ExecutiveDashboard() {
                 <DollarSign className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-gray-800">ROI Estimado</h2>
-                <p className="text-gray-500 text-sm">Retorno sobre investimento em treinamento</p>
+                <h2 className="text-xl font-bold text-gray-800">{t('executive.roi.title')}</h2>
+                <p className="text-gray-500 text-sm">{t('executive.roi.subtitle')}</p>
               </div>
             </div>
             <div className="text-right">
@@ -332,19 +334,19 @@ export function ExecutiveDashboard() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500 mb-1">Investimento</p>
+              <p className="text-sm text-gray-500 mb-1">{t('executive.roi.investment')}</p>
               <p className="text-2xl font-bold text-gray-800">
                 R$ {metrics.investmentValue.toLocaleString('pt-BR')}
               </p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500 mb-1">Retorno Estimado</p>
+              <p className="text-sm text-gray-500 mb-1">{t('executive.roi.estimatedReturn')}</p>
               <p className="text-2xl font-bold text-green-600">
                 R$ {metrics.estimatedReturn.toLocaleString('pt-BR')}
               </p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500 mb-1">Lucro Projetado</p>
+              <p className="text-sm text-gray-500 mb-1">{t('executive.roi.projectedProfit')}</p>
               <p className={`text-2xl font-bold ${metrics.estimatedReturn - metrics.investmentValue >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                 R$ {(metrics.estimatedReturn - metrics.investmentValue).toLocaleString('pt-BR')}
               </p>
@@ -356,10 +358,10 @@ export function ExecutiveDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Performance por Curso */}
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-lg font-bold text-gray-800 mb-6">Performance por Curso</h3>
+            <h3 className="text-lg font-bold text-gray-800 mb-6">{t('executive.coursePerformance')}</h3>
             <div className="space-y-4">
               {courseStats.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">Nenhum dado disponível</p>
+                <p className="text-gray-500 text-center py-4">{t('executive.noData')}</p>
               ) : (
                 courseStats.map((course) => (
                   <ProgressBar
@@ -375,12 +377,12 @@ export function ExecutiveDashboard() {
 
           {/* Resumo Executivo */}
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-lg font-bold text-gray-800 mb-6">Resumo Executivo</h3>
+            <h3 className="text-lg font-bold text-gray-800 mb-6">{t('executive.summary.title')}</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
                 <div className="flex items-center">
                   <Briefcase className="w-5 h-5 text-blue-600 mr-3" />
-                  <span className="text-gray-700">Plano Atual</span>
+                  <span className="text-gray-700">{t('executive.summary.currentPlan')}</span>
                 </div>
                 <span className="font-medium text-blue-600 capitalize">
                   {company?.plan || 'Starter'}
@@ -390,7 +392,7 @@ export function ExecutiveDashboard() {
               <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
                 <div className="flex items-center">
                   <Users className="w-5 h-5 text-green-600 mr-3" />
-                  <span className="text-gray-700">Colaboradores Treinando</span>
+                  <span className="text-gray-700">{t('executive.summary.collaboratorsTraining')}</span>
                 </div>
                 <span className="font-medium text-green-600">
                   {metrics.activeUsers} de {metrics.totalUsers}
@@ -400,7 +402,7 @@ export function ExecutiveDashboard() {
               <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
                 <div className="flex items-center">
                   <BarChart2 className="w-5 h-5 text-purple-600 mr-3" />
-                  <span className="text-gray-700">Cursos Disponíveis</span>
+                  <span className="text-gray-700">{t('executive.summary.availableCourses')}</span>
                 </div>
                 <span className="font-medium text-purple-600">
                   {courseStats.length}
@@ -410,7 +412,7 @@ export function ExecutiveDashboard() {
               <div className="flex items-center justify-between p-4 bg-orange-50 rounded-lg">
                 <div className="flex items-center">
                   <Award className="w-5 h-5 text-orange-600 mr-3" />
-                  <span className="text-gray-700">Horas de Treinamento</span>
+                  <span className="text-gray-700">{t('executive.summary.trainingHours')}</span>
                 </div>
                 <span className="font-medium text-orange-600">
                   {Math.round(metrics.modulesCompleted * 2)}h

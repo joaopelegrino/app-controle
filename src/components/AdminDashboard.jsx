@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Users, BookOpen, TrendingUp, Award,
   ArrowLeft, RefreshCw, BarChart2, Clock,
@@ -31,6 +32,7 @@ import { EmptyState, EmptyStateInline } from './EmptyState';
  */
 export function AdminDashboard() {
   const navigate = useNavigate();
+  const { t } = useTranslation('dashboard');
   const { user, company } = useAuth();
   const { tenantId } = useTenant();
 
@@ -73,7 +75,7 @@ export function AdminDashboard() {
       setModuleStats(modules);
     } catch (err) {
       console.error('[AdminDashboard] Erro ao carregar dados:', err);
-      setError('Erro ao carregar dados do dashboard');
+      setError(t('admin.error'));
     } finally {
       setIsLoading(false);
     }
@@ -109,26 +111,26 @@ export function AdminDashboard() {
   const UsersTable = () => (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-800">Usuários da Empresa</h3>
+        <h3 className="text-lg font-semibold text-gray-800">{t('admin.usersTable.title')}</h3>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Usuário
+                {t('admin.usersTable.user')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Role
+                {t('admin.usersTable.role')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Progresso
+                {t('common.progress')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Última Atividade
+                {t('common.lastActivity')}
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Ações
+                {t('common.actions')}
               </th>
             </tr>
           </thead>
@@ -137,8 +139,8 @@ export function AdminDashboard() {
               <EmptyStateInline
                 colSpan={5}
                 type="users"
-                title="Nenhum usuário cadastrado"
-                description="Clique em 'Novo Usuário' para adicionar o primeiro colaborador."
+                title={t('admin.usersTable.empty')}
+                description={t('admin.usersTable.emptyDescription')}
               />
             ) : (
               usersData.map((userData) => (
@@ -178,13 +180,13 @@ export function AdminDashboard() {
                       </span>
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
-                      {userData.modules_completed || 0} de {userData.total_modules_tracked || 0} módulos
+                      {userData.modules_completed || 0} {t('common.ofModules', { total: userData.total_modules_tracked || 0 })}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {userData.last_activity
                       ? formatDate(userData.last_activity)
-                      : 'Sem atividade'}
+                      : t('common.noActivity')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
                     <div className="flex items-center justify-end gap-1">
@@ -198,7 +200,7 @@ export function AdminDashboard() {
                             setIsEnrollModalOpen(true);
                           }}
                           className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                          title="Matricular em curso"
+                          title={t('admin.usersTable.enrollTooltip')}
                         >
                           <GraduationCap className="w-4 h-4" />
                         </button>
@@ -214,7 +216,7 @@ export function AdminDashboard() {
                           setIsUserModalOpen(true);
                         }}
                         className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Editar usuário"
+                        title={t('admin.usersTable.editTooltip')}
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
@@ -234,13 +236,13 @@ export function AdminDashboard() {
    */
   const CourseCards = () => (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Estatísticas por Curso</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('admin.courseStats.title')}</h3>
       <div className="space-y-4">
         {courseStats.length === 0 ? (
           <EmptyState
             type="courses"
-            title="Nenhum curso disponível"
-            description="Os cursos ativos aparecerão aqui com suas estatísticas."
+            title={t('admin.courseStats.empty')}
+            description={t('admin.courseStats.emptyDescription')}
             compact={true}
           />
         ) : (
@@ -378,7 +380,7 @@ export function AdminDashboard() {
             onClick={loadDashboardData}
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
           >
-            Tentar novamente
+            {t('common.tryAgain')}
           </button>
         </div>
       </div>
@@ -402,7 +404,7 @@ export function AdminDashboard() {
               </button>
               <div className="min-w-0">
                 <h1 className="text-xl sm:text-2xl font-bold text-gray-800 truncate">
-                  Dashboard Administrativo
+                  {t('admin.title')}
                 </h1>
                 <p className="text-sm text-gray-500 truncate">{company?.name}</p>
               </div>
@@ -418,7 +420,7 @@ export function AdminDashboard() {
                 className="flex items-center px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 whitespace-nowrap text-sm sm:text-base flex-shrink-0"
               >
                 <Plus className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Novo Usuário</span>
+                <span className="hidden sm:inline">{t('admin.newUser')}</span>
               </button>
               <button
                 onClick={() => {
@@ -428,21 +430,21 @@ export function AdminDashboard() {
                 className="flex items-center px-3 sm:px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 whitespace-nowrap text-sm sm:text-base flex-shrink-0"
               >
                 <GraduationCap className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Matricular</span>
+                <span className="hidden sm:inline">{t('admin.enroll')}</span>
               </button>
               <ExportButton
                 type="users"
                 companyId={tenantId}
-                label="Exportar"
+                label={t('common.export')}
                 showDropdown={true}
               />
               <button
                 onClick={loadDashboardData}
                 className="flex items-center px-3 sm:px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg whitespace-nowrap text-sm sm:text-base flex-shrink-0"
-                title="Atualizar dados"
+                title={t('common.refresh')}
               >
                 <RefreshCw className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Atualizar</span>
+                <span className="hidden sm:inline">{t('common.refresh')}</span>
               </button>
             </div>
           </div>
@@ -455,26 +457,26 @@ export function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             icon={Users}
-            label="Total de Usuários"
+            label={t('admin.stats.totalUsers')}
             value={companyStats?.total_users || 0}
-            subValue={`${companyStats?.active_users || 0} ativos`}
+            subValue={`${companyStats?.active_users || 0} ${t('common.active')}`}
             color="blue"
           />
           <StatCard
             icon={CheckCircle}
-            label="Módulos Concluídos"
+            label={t('admin.stats.modulesCompleted')}
             value={companyStats?.total_modules_completed || 0}
             color="green"
           />
           <StatCard
             icon={TrendingUp}
-            label="Taxa de Conclusão"
+            label={t('admin.stats.completionRate')}
             value={`${Math.round(companyStats?.avg_completion_rate || 0)}%`}
             color="purple"
           />
           <StatCard
             icon={BookOpen}
-            label="Cursos Disponíveis"
+            label={t('admin.stats.availableCourses')}
             value={courseStats.length}
             color="orange"
           />

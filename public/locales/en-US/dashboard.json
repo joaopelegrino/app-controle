@@ -1,0 +1,126 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "refresh": "Refresh",
+    "tryAgain": "Try again",
+    "export": "Export",
+    "actions": "Actions",
+    "progress": "Progress",
+    "modules": "Modules",
+    "lastActivity": "Last Activity",
+    "noActivity": "No activity",
+    "ofModules": "of {{total}} modules",
+    "active": "active",
+    "completion": "completion",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{count}} days ago",
+    "weeksAgo": "{{count}} weeks ago"
+  },
+  "user": {
+    "title": "My Progress",
+    "greeting": "Hello, {{name}}!",
+    "loadingProgress": "Loading your progress...",
+    "stats": {
+      "modulesCompleted": "Modules Completed",
+      "overallProgress": "Overall Progress",
+      "availableCourses": "Available Courses",
+      "studyTime": "Study Time"
+    },
+    "myCourses": "My Courses",
+    "recentNotes": "Recent Notes",
+    "keepLearning": "Keep Learning!",
+    "completeModules": "Complete {{count}} more modules to finish all courses.",
+    "hoursOfContent": "h of content",
+    "comingSoon": "Coming soon",
+    "continue": "Continue",
+    "completed": "Completed"
+  },
+  "admin": {
+    "title": "Administrative Dashboard",
+    "newUser": "New User",
+    "enroll": "Enroll",
+    "error": "Error loading dashboard data",
+    "stats": {
+      "totalUsers": "Total Users",
+      "modulesCompleted": "Modules Completed",
+      "completionRate": "Completion Rate",
+      "availableCourses": "Available Courses"
+    },
+    "usersTable": {
+      "title": "Company Users",
+      "user": "User",
+      "role": "Role",
+      "empty": "No users registered",
+      "emptyDescription": "Click 'New User' to add the first collaborator.",
+      "enrollTooltip": "Enroll in course",
+      "editTooltip": "Edit user"
+    },
+    "courseStats": {
+      "title": "Course Statistics",
+      "empty": "No courses available",
+      "emptyDescription": "Active courses will appear here with their statistics."
+    }
+  },
+  "instructor": {
+    "title": "Instructor Dashboard",
+    "subtitle": "Team Monitoring",
+    "error": "Error loading team data",
+    "stats": {
+      "totalStudents": "Total Students",
+      "modulesCompleted": "Modules Completed",
+      "byTeam": "by team",
+      "avgCompletion": "Average Completion",
+      "engagement": "Engagement",
+      "activeStudents": "active students"
+    },
+    "studentsTable": {
+      "title": "Team Students",
+      "subtitle": "Track each student's progress",
+      "student": "Student",
+      "empty": "No students in your team",
+      "emptyDescription": "When students are enrolled, they will appear here for monitoring.",
+      "viewNotes": "View Notes"
+    },
+    "attention": {
+      "title": "Students Needing Attention",
+      "neverAccessed": "Never accessed",
+      "percentCompleted": "{{percent}}% completed"
+    },
+    "tips": {
+      "title": "Tips",
+      "tip1": "Click 'View Notes' to track each student's notes",
+      "tip2": "Students with less than 25% progress are highlighted",
+      "tip3": "Use last activity to identify inactive students"
+    }
+  },
+  "executive": {
+    "title": "Executive Dashboard",
+    "stats": {
+      "activeUsers": "Active Users",
+      "ofTotal": "of {{total}} total",
+      "completionRate": "Completion Rate",
+      "modulesCount": "{{count}} modules",
+      "engagement": "Engagement",
+      "usersRatio": "active users/total",
+      "modulesCompleted": "Modules Completed",
+      "totalAccumulated": "total accumulated"
+    },
+    "roi": {
+      "title": "Estimated ROI",
+      "subtitle": "Return on investment in training",
+      "investment": "Investment",
+      "estimatedReturn": "Estimated Return",
+      "projectedProfit": "Projected Profit"
+    },
+    "coursePerformance": "Course Performance",
+    "noData": "No data available",
+    "summary": {
+      "title": "Executive Summary",
+      "currentPlan": "Current Plan",
+      "collaboratorsTraining": "Collaborators Training",
+      "availableCourses": "Available Courses",
+      "trainingHours": "Training Hours"
+    }
+  }
+}

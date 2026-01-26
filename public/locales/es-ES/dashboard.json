@@ -1,0 +1,126 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "refresh": "Actualizar",
+    "tryAgain": "Intentar de nuevo",
+    "export": "Exportar",
+    "actions": "Acciones",
+    "progress": "Progreso",
+    "modules": "Módulos",
+    "lastActivity": "Última Actividad",
+    "noActivity": "Sin actividad",
+    "ofModules": "de {{total}} módulos",
+    "active": "activos",
+    "completion": "conclusión",
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "daysAgo": "hace {{count}} días",
+    "weeksAgo": "hace {{count}} semanas"
+  },
+  "user": {
+    "title": "Mi Progreso",
+    "greeting": "¡Hola, {{name}}!",
+    "loadingProgress": "Cargando tu progreso...",
+    "stats": {
+      "modulesCompleted": "Módulos Completados",
+      "overallProgress": "Progreso General",
+      "availableCourses": "Cursos Disponibles",
+      "studyTime": "Tiempo de Estudio"
+    },
+    "myCourses": "Mis Cursos",
+    "recentNotes": "Notas Recientes",
+    "keepLearning": "¡Sigue Aprendiendo!",
+    "completeModules": "Completa {{count}} módulos más para terminar todos los cursos.",
+    "hoursOfContent": "h de contenido",
+    "comingSoon": "Próximamente",
+    "continue": "Continuar",
+    "completed": "Completado"
+  },
+  "admin": {
+    "title": "Dashboard Administrativo",
+    "newUser": "Nuevo Usuario",
+    "enroll": "Matricular",
+    "error": "Error al cargar datos del dashboard",
+    "stats": {
+      "totalUsers": "Total de Usuarios",
+      "modulesCompleted": "Módulos Completados",
+      "completionRate": "Tasa de Conclusión",
+      "availableCourses": "Cursos Disponibles"
+    },
+    "usersTable": {
+      "title": "Usuarios de la Empresa",
+      "user": "Usuario",
+      "role": "Rol",
+      "empty": "Ningún usuario registrado",
+      "emptyDescription": "Haga clic en 'Nuevo Usuario' para agregar el primer colaborador.",
+      "enrollTooltip": "Matricular en curso",
+      "editTooltip": "Editar usuario"
+    },
+    "courseStats": {
+      "title": "Estadísticas por Curso",
+      "empty": "Ningún curso disponible",
+      "emptyDescription": "Los cursos activos aparecerán aquí con sus estadísticas."
+    }
+  },
+  "instructor": {
+    "title": "Dashboard del Instructor",
+    "subtitle": "Seguimiento del Equipo",
+    "error": "Error al cargar datos del equipo",
+    "stats": {
+      "totalStudents": "Total de Alumnos",
+      "modulesCompleted": "Módulos Completados",
+      "byTeam": "por el equipo",
+      "avgCompletion": "Media de Conclusión",
+      "engagement": "Compromiso",
+      "activeStudents": "alumnos activos"
+    },
+    "studentsTable": {
+      "title": "Alumnos del Equipo",
+      "subtitle": "Acompañe el progreso de cada alumno",
+      "student": "Alumno",
+      "empty": "Ningún alumno en tu equipo",
+      "emptyDescription": "Cuando los alumnos estén matriculados, aparecerán aquí para seguimiento.",
+      "viewNotes": "Ver Notas"
+    },
+    "attention": {
+      "title": "Alumnos que Necesitan Atención",
+      "neverAccessed": "Nunca accedió",
+      "percentCompleted": "{{percent}}% completado"
+    },
+    "tips": {
+      "title": "Consejos",
+      "tip1": "Haga clic en 'Ver Notas' para acompañar las anotaciones de cada alumno",
+      "tip2": "Alumnos con menos del 25% de progreso aparecen destacados",
+      "tip3": "Use la última actividad para identificar alumnos inactivos"
+    }
+  },
+  "executive": {
+    "title": "Dashboard Ejecutivo",
+    "stats": {
+      "activeUsers": "Usuarios Activos",
+      "ofTotal": "de {{total}} total",
+      "completionRate": "Tasa de Conclusión",
+      "modulesCount": "{{count}} módulos",
+      "engagement": "Compromiso",
+      "usersRatio": "usuarios activos/total",
+      "modulesCompleted": "Módulos Completados",
+      "totalAccumulated": "total acumulado"
+    },
+    "roi": {
+      "title": "ROI Estimado",
+      "subtitle": "Retorno sobre inversión en capacitación",
+      "investment": "Inversión",
+      "estimatedReturn": "Retorno Estimado",
+      "projectedProfit": "Lucro Proyectado"
+    },
+    "coursePerformance": "Rendimiento por Curso",
+    "noData": "Ningún dato disponible",
+    "summary": {
+      "title": "Resumen Ejecutivo",
+      "currentPlan": "Plan Actual",
+      "collaboratorsTraining": "Colaboradores Capacitando",
+      "availableCourses": "Cursos Disponibles",
+      "trainingHours": "Horas de Capacitación"
+    }
+  }
+}

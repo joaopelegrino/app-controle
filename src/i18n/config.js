@@ -41,7 +41,7 @@ i18n
     supportedLngs: ['pt-BR', 'en-US', 'es-ES'],
 
     // Namespaces carregados inicialmente (não lazy)
-    ns: ['common', 'auth', 'errors'],
+    ns: ['common', 'auth', 'errors', 'dashboard'],
     defaultNS: 'common',
 
     // Configuração do backend HTTP
