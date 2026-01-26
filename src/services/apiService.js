@@ -821,6 +821,278 @@ export async function getCoursePhases(courseId) {
 }
 
 // ============================================
+// API CRUD DE CURSOS (US-125)
+// ============================================
+
+/**
+ * Gera um ID slug a partir do nome do curso
+ * @param {string} name - Nome do curso
+ * @returns {string} - ID slug (ex: "Fundamentos de Linux" -> "fundamentos-de-linux")
+ */
+function generateCourseId(name) {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+    .replace(/[^a-z0-9\s-]/g, '') // Remove caracteres especiais
+    .trim()
+    .replace(/\s+/g, '-') // Espaços para hifens
+    .replace(/-+/g, '-'); // Remove hifens duplicados
+}
+
+/**
+ * Cria um novo curso
+ * @param {object} courseData - { name, description?, icon?, difficulty, duration_hours?, total_modules?, badge? }
+ * @returns {Promise<object>}
+ * @throws {ApiError} Se dados inválidos ou ID já existe
+ */
+export async function createCourse(courseData) {
+  const { name, description, icon, difficulty, duration_hours, total_modules, badge } = courseData;
+
+  // Validação básica
+  if (!name || name.trim().length < 3) {
+    throw new ApiError('Nome do curso é obrigatório (mínimo 3 caracteres)', 400);
+  }
+
+  // Validar difficulty
+  const validDifficulties = ['beginner', 'intermediate', 'advanced'];
+  if (!difficulty || !validDifficulties.includes(difficulty)) {
+    throw new ApiError(`Dificuldade inválida. Permitidas: ${validDifficulties.join(', ')}`, 400);
+  }
+
+  try {
+    // Gerar ID baseado no nome
+    const courseId = generateCourseId(name);
+
+    // Verificar se ID já existe
+    const existing = await getCourse(courseId);
+    if (existing) {
+      throw new ApiError('Já existe um curso com este nome/ID', 409);
+    }
+
+    // Buscar maior order_index atual
+    const coursesResponse = await findMany('courses', {
+      sort: '-order_index',
+      limit: 1,
+    });
+    const maxOrderIndex = coursesResponse.list?.[0]?.order_index || 0;
+
+    // Criar curso
+    const newCourse = await create('courses', {
+      id: courseId,
+      name: name.trim(),
+      description: description?.trim() || null,
+      icon: icon || '📚',
+      difficulty,
+      duration_hours: duration_hours || null,
+      total_modules: total_modules || 0,
+      status: 'in-development', // Novos cursos começam em desenvolvimento
+      badge: badge || null,
+      order_index: maxOrderIndex + 1,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+
+    return newCourse;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao criar curso:', error);
+    throw new ApiError('Erro ao criar curso', 500, { original: error.message });
+  }
+}
+
+/**
+ * Atualiza dados de um curso
+ * @param {string} courseId - ID do curso
+ * @param {object} courseData - Campos a atualizar
+ * @returns {Promise<object>}
+ * @throws {ApiError} Se curso não encontrado ou dados inválidos
+ */
+export async function updateCourse(courseId, courseData) {
+  if (!courseId) {
+    throw new ApiError('ID do curso é obrigatório', 400);
+  }
+
+  const allowedFields = ['name', 'description', 'icon', 'difficulty', 'duration_hours', 'total_modules', 'status', 'badge', 'video_url', 'order_index'];
+  const updateData = {};
+
+  // Filtrar apenas campos permitidos
+  for (const field of allowedFields) {
+    if (courseData[field] !== undefined) {
+      updateData[field] = courseData[field];
+    }
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    throw new ApiError('Nenhum campo válido para atualizar', 400);
+  }
+
+  // Validar difficulty se fornecido
+  if (updateData.difficulty) {
+    const validDifficulties = ['beginner', 'intermediate', 'advanced'];
+    if (!validDifficulties.includes(updateData.difficulty)) {
+      throw new ApiError(`Dificuldade inválida. Permitidas: ${validDifficulties.join(', ')}`, 400);
+    }
+  }
+
+  // Validar status se fornecido
+  if (updateData.status) {
+    const validStatuses = ['active', 'in-development', 'archived'];
+    if (!validStatuses.includes(updateData.status)) {
+      throw new ApiError(`Status inválido. Permitidos: ${validStatuses.join(', ')}`, 400);
+    }
+  }
+
+  // Trim em campos de texto
+  if (updateData.name) {
+    if (updateData.name.trim().length < 3) {
+      throw new ApiError('Nome do curso deve ter mínimo 3 caracteres', 400);
+    }
+    updateData.name = updateData.name.trim();
+  }
+  if (updateData.description) {
+    updateData.description = updateData.description.trim();
+  }
+
+  try {
+    // Verificar se curso existe
+    const existing = await getCourse(courseId);
+    if (!existing) {
+      throw new ApiError('Curso não encontrado', 404);
+    }
+
+    updateData.updated_at = new Date().toISOString();
+
+    // NocoDB usa 'Id' interno, mas nosso schema usa 'id' customizado
+    // Precisamos buscar o Id real do registro
+    const courseResponse = await findMany('courses', {
+      where: `(id,eq,${courseId})`,
+      limit: 1,
+    });
+
+    if (!courseResponse.list?.length) {
+      throw new ApiError('Curso não encontrado', 404);
+    }
+
+    const recordId = courseResponse.list[0].Id || courseResponse.list[0].id;
+    const updatedCourse = await update('courses', recordId, updateData);
+
+    return updatedCourse;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao atualizar curso:', error);
+    throw new ApiError('Erro ao atualizar curso', 500, { original: error.message });
+  }
+}
+
+/**
+ * Arquiva um curso (soft delete)
+ * Marca status='archived' em vez de excluir
+ * @param {string} courseId - ID do curso
+ * @returns {Promise<object>}
+ * @throws {ApiError} Se curso não encontrado
+ */
+export async function deleteCourse(courseId) {
+  if (!courseId) {
+    throw new ApiError('ID do curso é obrigatório', 400);
+  }
+
+  try {
+    // Verificar se curso existe
+    const existing = await getCourse(courseId);
+    if (!existing) {
+      throw new ApiError('Curso não encontrado', 404);
+    }
+
+    // Buscar Id interno do NocoDB
+    const courseResponse = await findMany('courses', {
+      where: `(id,eq,${courseId})`,
+      limit: 1,
+    });
+
+    const recordId = courseResponse.list[0].Id || courseResponse.list[0].id;
+
+    // Soft delete: marcar como archived
+    const archivedCourse = await update('courses', recordId, {
+      status: 'archived',
+      archived_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+
+    return archivedCourse;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao arquivar curso:', error);
+    throw new ApiError('Erro ao arquivar curso', 500, { original: error.message });
+  }
+}
+
+/**
+ * Reativa um curso arquivado
+ * @param {string} courseId - ID do curso
+ * @returns {Promise<object>}
+ * @throws {ApiError} Se curso não encontrado
+ */
+export async function reactivateCourse(courseId) {
+  if (!courseId) {
+    throw new ApiError('ID do curso é obrigatório', 400);
+  }
+
+  try {
+    // Buscar curso (incluindo arquivados)
+    const courseResponse = await findMany('courses', {
+      where: `(id,eq,${courseId})`,
+      limit: 1,
+    });
+
+    if (!courseResponse.list?.length) {
+      throw new ApiError('Curso não encontrado', 404);
+    }
+
+    const recordId = courseResponse.list[0].Id || courseResponse.list[0].id;
+
+    // Reativar: marcar como active
+    const reactivatedCourse = await update('courses', recordId, {
+      status: 'active',
+      archived_at: null,
+      updated_at: new Date().toISOString(),
+    });
+
+    return reactivatedCourse;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    console.error('[apiService] Erro ao reativar curso:', error);
+    throw new ApiError('Erro ao reativar curso', 500, { original: error.message });
+  }
+}
+
+/**
+ * Busca todos os cursos (incluindo inativos e arquivados)
+ * Para uso administrativo
+ * @returns {Promise<array>}
+ */
+export async function getAllCourses() {
+  try {
+    const response = await findMany('courses', {
+      sort: 'order_index',
+    });
+
+    return response.list || [];
+  } catch (error) {
+    console.error('[apiService] Erro ao buscar todos os cursos:', error);
+    throw error;
+  }
+}
+
+// ============================================
 // API DE LEARNING PATHS
 // ============================================
 
@@ -1776,6 +2048,12 @@ export const apiService = {
   getCourse,
   getCourseModules,
   getCoursePhases,
+  // CRUD Cursos (US-125)
+  createCourse,
+  updateCourse,
+  deleteCourse,
+  reactivateCourse,
+  getAllCourses,
 
   // Learning Paths
   getLearningPaths,
