@@ -94,6 +94,60 @@
       "tip3": "Use last activity to identify inactive students"
     }
   },
+  "courses": {
+    "create": "New Course",
+    "createButton": "Create Course",
+    "edit": "Edit Course",
+    "archive": "Archive",
+    "archiveTitle": "Archive Course",
+    "archiveMessage": "Are you sure you want to archive \"{{name}}\"? The course will no longer appear to users, but progress data will be retained.",
+    "archiveConfirm": "Archive",
+    "fields": {
+      "name": "Course Name",
+      "description": "Description",
+      "icon": "Icon",
+      "difficulty": "Difficulty",
+      "duration": "Duration (hours)",
+      "modules": "Total Modules",
+      "status": "Status",
+      "badge": "Badge"
+    },
+    "placeholders": {
+      "name": "Ex: Linux Fundamentals",
+      "description": "Course description..."
+    },
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "status": {
+      "active": "Active",
+      "inDevelopment": "In Development",
+      "archived": "Archived"
+    },
+    "badge": {
+      "none": "None",
+      "new": "New",
+      "integrated": "Integrated"
+    },
+    "messages": {
+      "created": "{{name}} created successfully!",
+      "createdTitle": "Course Created",
+      "updated": "{{name}} updated successfully!",
+      "updatedTitle": "Course Updated",
+      "archived": "{{name}} archived successfully!",
+      "archivedTitle": "Course Archived"
+    },
+    "errors": {
+      "nameRequired": "Course name is required",
+      "nameMinLength": "Name must have at least 3 characters",
+      "invalidDuration": "Duration must be a positive number",
+      "invalidModules": "Total modules must be a positive number",
+      "saveFailed": "Error saving course",
+      "archiveFailed": "Error archiving course"
+    }
+  },
   "executive": {
     "title": "Executive Dashboard",
     "stats": {

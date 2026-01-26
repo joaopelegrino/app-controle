@@ -94,6 +94,60 @@
       "tip3": "Use la última actividad para identificar alumnos inactivos"
     }
   },
+  "courses": {
+    "create": "Nuevo Curso",
+    "createButton": "Crear Curso",
+    "edit": "Editar Curso",
+    "archive": "Archivar",
+    "archiveTitle": "Archivar Curso",
+    "archiveMessage": "¿Está seguro de que desea archivar \"{{name}}\"? El curso ya no aparecerá para los usuarios, pero los datos de progreso se conservarán.",
+    "archiveConfirm": "Archivar",
+    "fields": {
+      "name": "Nombre del Curso",
+      "description": "Descripción",
+      "icon": "Icono",
+      "difficulty": "Dificultad",
+      "duration": "Duración (horas)",
+      "modules": "Total de Módulos",
+      "status": "Estado",
+      "badge": "Insignia"
+    },
+    "placeholders": {
+      "name": "Ej: Fundamentos de Linux",
+      "description": "Descripción del curso..."
+    },
+    "difficulty": {
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado"
+    },
+    "status": {
+      "active": "Activo",
+      "inDevelopment": "En Desarrollo",
+      "archived": "Archivado"
+    },
+    "badge": {
+      "none": "Ninguno",
+      "new": "Nuevo",
+      "integrated": "Integrado"
+    },
+    "messages": {
+      "created": "¡{{name}} creado con éxito!",
+      "createdTitle": "Curso Creado",
+      "updated": "¡{{name}} actualizado con éxito!",
+      "updatedTitle": "Curso Actualizado",
+      "archived": "¡{{name}} archivado con éxito!",
+      "archivedTitle": "Curso Archivado"
+    },
+    "errors": {
+      "nameRequired": "El nombre del curso es obligatorio",
+      "nameMinLength": "El nombre debe tener al menos 3 caracteres",
+      "invalidDuration": "La duración debe ser un número positivo",
+      "invalidModules": "El total de módulos debe ser un número positivo",
+      "saveFailed": "Error al guardar el curso",
+      "archiveFailed": "Error al archivar el curso"
+    }
+  },
   "executive": {
     "title": "Dashboard Ejecutivo",
     "stats": {
