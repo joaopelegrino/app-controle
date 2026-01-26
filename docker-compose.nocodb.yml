@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: app_controle
       POSTGRES_USER: nocodb_user
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-UltraThink_2026_Secure}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-TrainB2B_Secure_2026}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql
@@ -31,16 +31,16 @@ services:
         condition: service_healthy
     environment:
       # Database Connection
-      NC_DB: "pg://postgres:5432?u=nocodb_user&p=${DB_PASSWORD:-UltraThink_2026_Secure}&d=app_controle"
-      
+      NC_DB: "pg://postgres:5432?u=nocodb_user&p=${DB_PASSWORD:-TrainB2B_Secure_2026}&d=app_controle"
+
       # NocoDB Config
-      NC_AUTH_JWT_SECRET: ${JWT_SECRET:-nocodb_jwt_secret_ultra_2026}
+      NC_AUTH_JWT_SECRET: ${JWT_SECRET:-nocodb_jwt_secret_trainb2b_2026}
       NC_PUBLIC_URL: http://localhost:8081
       NC_DISABLE_TELE: true  # Desabilitar telemetria
-      
+
       # Admin User (primeiro acesso)
-      NC_ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@ultrathink.com}
-      NC_ADMIN_PASSWORD: ${ADMIN_PASSWORD:-UltraThink@Admin2026!}
+      NC_ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@trainb2b.local}
+      NC_ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin@TrainB2B2026!}
       
       # Limits
       NC_MAX_ATTACHMENTS_ALLOWED: 10
@@ -64,8 +64,8 @@ services:
     image: dpage/pgadmin4:latest
     container_name: app-controle-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@ultrathink.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-UltraThink@Admin2026!}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@trainb2b.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-Admin@TrainB2B2026!}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
       - "5050:80"

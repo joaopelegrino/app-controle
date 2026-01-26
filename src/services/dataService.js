@@ -21,12 +21,12 @@
 import { studyAreas } from '../data/studyAreas';
 import { fasesBash, modulosBash, startDateBash } from '../data/bashLearningData';
 import { apiService } from './apiService';
+import { getProgressKey, getNotesKey } from '../config/platform';
 
 // ============================================
 // CONSTANTES E CONFIGURAÇÃO
 // ============================================
 
-const STORAGE_PREFIX = 'ultrathink';
 const MAX_NOTE_SIZE_BYTES = 50 * 1024; // 50KB
 
 /**
@@ -34,8 +34,8 @@ const MAX_NOTE_SIZE_BYTES = 50 * 1024; // 50KB
  * @type {Object}
  */
 const STORAGE_KEYS = {
-  progress: (courseId) => `${STORAGE_PREFIX}_progress_${courseId}`,
-  notes: (courseId) => `${courseId}-learning-notes`, // Compatibilidade com formato antigo
+  progress: (courseId) => getProgressKey(courseId),
+  notes: (courseId) => getNotesKey(courseId),
 };
 
 // ============================================

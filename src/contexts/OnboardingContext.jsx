@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { getStorageKey } from '../config/platform';
 
 /**
  * OnboardingContext - Gerenciamento do wizard de onboarding
@@ -12,7 +13,7 @@ import { useAuth } from '../hooks/useAuth';
  * - Persistir conclusão do onboarding no localStorage
  */
 
-const ONBOARDING_STORAGE_KEY = 'ultrathink_onboarding';
+const ONBOARDING_STORAGE_KEY = getStorageKey('onboarding');
 
 // Steps do wizard
 export const ONBOARDING_STEPS = {

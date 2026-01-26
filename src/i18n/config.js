@@ -1,14 +1,15 @@
 /**
- * Configuração i18next - UltraThink
+ * Configuração i18next - Plataforma de Treinamento B2B
  *
  * @description Internacionalização com lazy loading por namespace
- * @version 1.0.0
+ * @version 1.1.0
  * @date 2026-01-26
  */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { getStorageKey, platformConfig } from '../config/platform';
 
 // Idiomas suportados
 export const SUPPORTED_LANGUAGES = [
@@ -55,8 +56,8 @@ i18n
       order: ['localStorage', 'navigator', 'htmlTag'],
       // Onde salvar a preferência
       caches: ['localStorage'],
-      // Chave no localStorage
-      lookupLocalStorage: 'ultrathink_language',
+      // Chave no localStorage (usando config centralizada)
+      lookupLocalStorage: getStorageKey('language'),
     },
 
     // Integração React

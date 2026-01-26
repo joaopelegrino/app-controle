@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from './useAuth';
 import { apiService } from '../services/apiService';
+import { getProgressKey } from '../config/platform';
 
 /**
  * Hook para persistência de progresso de módulos
@@ -17,7 +18,7 @@ import { apiService } from '../services/apiService';
  */
 export function useModuleProgress(courseId) {
   const { user, isAuthenticated } = useAuth();
-  const localStorageKey = `ultrathink_progress_${courseId}`;
+  const localStorageKey = getProgressKey(courseId);
 
   const [completedModules, setCompletedModules] = useState(new Set());
   const [isLoading, setIsLoading] = useState(true);

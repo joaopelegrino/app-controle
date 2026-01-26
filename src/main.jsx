@@ -13,6 +13,15 @@ import ErrorBoundary from './components/ErrorBoundary.jsx'
 import './utils/debugLogger.js'
 import './index.css'
 
+// Migração de localStorage (Sprint 13 - White-Label)
+import { migrateLocalStorage } from './utils/storageMigration'
+
+// Executar migração de storage antes de qualquer coisa
+const migrationResult = migrateLocalStorage()
+if (migrationResult.migrated) {
+  console.log(`[App] Storage migrado: ${migrationResult.count} chaves`)
+}
+
 // Inicialização i18n - deve ser importado antes dos componentes que usam traduções
 import './i18n'
 

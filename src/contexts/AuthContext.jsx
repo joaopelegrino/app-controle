@@ -14,10 +14,11 @@
 
 import React, { createContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { apiService } from '../services/apiService';
+import { getStorageKey } from '../config/platform';
 
 const AuthContext = createContext(null);
 
-const AUTH_STORAGE_KEY = 'ultrathink_auth';
+const AUTH_STORAGE_KEY = getStorageKey('auth');
 
 /**
  * Provider de autenticação

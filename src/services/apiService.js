@@ -12,6 +12,8 @@
  * @module services/apiService
  */
 
+import { platformConfig, getStorageKey } from '../config/platform';
+
 // ============================================
 // CONFIGURAÇÃO
 // ============================================
@@ -21,14 +23,14 @@ const API_CONFIG = {
   // Em prod, usa URL direta ou variável de ambiente
   baseUrl: import.meta.env.VITE_API_URL || '',
   baseId: import.meta.env.VITE_API_BASE_ID || 'phzot4i2zcjwgif',
-  timeout: 10000,
+  timeout: platformConfig.api.timeout,
 };
 
 const STORAGE_KEYS = {
-  token: 'ultrathink_api_token',
-  refreshToken: 'ultrathink_refresh_token',
-  user: 'ultrathink_user',
-  tableIds: 'ultrathink_table_ids',
+  token: getStorageKey('api_token'),
+  refreshToken: getStorageKey('refresh_token'),
+  user: getStorageKey('user'),
+  tableIds: getStorageKey('table_ids'),
 };
 
 // Cache de table IDs (nome -> id)
@@ -53,10 +55,10 @@ const TABLE_IDS = {
   v_learning_path_details: 'mhliz3gap1rcieu',
 };
 
-// Credenciais do admin NocoDB (para demo)
+// Credenciais do admin NocoDB (via variáveis de ambiente)
 const NOCODB_ADMIN = {
-  email: 'admin@ultrathink.com',
-  password: 'UltraThink@Admin2026!',
+  email: import.meta.env.VITE_NOCODB_ADMIN_EMAIL || 'admin@trainb2b.local',
+  password: import.meta.env.VITE_NOCODB_ADMIN_PASSWORD || 'Admin@2026!',
 };
 
 // Flag de inicialização

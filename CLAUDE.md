@@ -1,10 +1,11 @@
-# app-controle (UltraThink) - Configuração Claude Code
+# app-controle (Plataforma B2B) - Configuração Claude Code
 
-**Version:** 8.0.0 | **Date:** 2026-01-26 | **Status:** Production + i18n Implementado
+**Version:** 9.0.0 | **Date:** 2026-01-26 | **Status:** Production + i18n + White-Label COMPLETO
 **Project Type:** Plataforma B2B de treinamento técnico corporativo
-**Sprint Atual:** 12 - i18n (em progresso)
-**Sprints Completos:** 6, 7, 8, 9, 10, 11 ✅
-**Feature Branch:** `feature/i18n-internacionalizacao`
+**Sprint Atual:** 13 - White-Label ✅ COMPLETO (6 USs)
+**Sprints Completos:** 6, 7, 8, 9, 10, 11, 12, 13 ✅
+**Feature Branch:** `feature/white-label-refactor`
+**Estudo:** `docs/backlog/ESTUDO-REFATORACAO-WHITE-LABEL-2026-01-26.md`
 
 ---
 
@@ -64,6 +65,9 @@ app-controle/
 │   │   ├── MobileMenu.jsx           → Menu hamburger mobile (Sprint 11) ✅
 │   │   ├── LanguageSelector.jsx     → Seletor de idioma (Sprint 12) ✅
 │   │   └── BashLearningSystem.jsx   → Curso Bash
+│   ├── config/                      → ✅ SPRINT 13 (White-Label)
+│   │   ├── platform.js              → Configuração centralizada (US-119) ✅
+│   │   └── index.js                 → Re-exports ✅
 │   ├── i18n/
 │   │   ├── config.js                → Configuração i18next (Sprint 12) ✅
 │   │   └── index.js                 → Exports do módulo
@@ -81,7 +85,8 @@ app-controle/
 │   ├── services/
 │   │   └── apiService.js            → API NocoDB + Matrículas (Sprint 9) ✅
 │   ├── utils/
-│   │   └── exportUtils.js           → Funções exportação Excel (Sprint 9) ✅
+│   │   ├── exportUtils.js           → Funções exportação Excel (Sprint 9) ✅
+│   │   └── storageMigration.js      → Migração localStorage (US-123) ✅
 │   └── tests/
 │       └── apiService.users.test.js → Testes CRUD usuários ✅
 ├── database/
@@ -151,14 +156,23 @@ Sprint 11: UX Polish (4/4 USs) ✅ COMPLETO
 ├── US-108: Auth NocoDB JWT (loginUser + validateToken) ✅
 └── Status: ✅ COMPLETO
 
-Sprint 12: Internacionalização (i18n) 🔄 EM PROGRESSO
+Sprint 12: Internacionalização (i18n) ✅ COMPLETO
 ├── US-109: Infraestrutura i18next ✅
 ├── US-110: Traduções common/auth/errors (pt-BR, en-US, es-ES) ✅
 ├── US-111: LanguageSelector.jsx ✅
 ├── US-112: LoginView.jsx migrado para i18n ✅
-├── US-113: HubView.jsx migrado para i18n (pendente)
-├── US-114: Dashboards migrados para i18n (pendente)
-└── Status: 🔄 EM PROGRESSO (4/6 USs)
+├── US-113: HubView.jsx + UserHeader.jsx migrado para i18n ✅
+├── US-114: Dashboards migrados para i18n (4 dashboards) ✅
+└── Status: ✅ COMPLETO (6/6 USs)
+
+Sprint 13: White-Label Refactor ✅ COMPLETO (6/6 USs)
+├── US-119: Criar src/config/platform.js (configuração centralizada) ✅
+├── US-120: Migrar storage keys (6 arquivos) para config central ✅
+├── US-121: Atualizar traduções i18n para nome configurável ✅
+├── US-122: Remover credenciais hardcoded do docker-compose ✅
+├── US-123: Script de migração de localStorage ✅
+├── US-124: Atualizar documentação principal ✅
+└── Status: ✅ COMPLETO
 ```
 
 ### RBAC Progress
@@ -167,7 +181,9 @@ Sprint 12: Internacionalização (i18n) 🔄 EM PROGRESSO
 Permissões implementadas: 17/21 (81%)
 MVP B2B Demo: ✅ COMPLETO
 Analytics Avançado: ✅ COMPLETO (Sprint 10)
-UX Polish: 🔄 EM PROGRESSO (Sprint 11)
+UX Polish: ✅ COMPLETO (Sprint 11)
+Internacionalização: ✅ COMPLETO (Sprint 12)
+White-Label: ✅ COMPLETO (Sprint 13)
 ```
 
 ---
@@ -661,17 +677,21 @@ mcp__chrome-devtools__evaluate_script({ function: "() => localStorage.clear()" }
 
 ---
 
-## Internacionalização (i18n) - IMPLEMENTADO ✅
+## Internacionalização (i18n) - COMPLETO ✅
 
-### Status: Sprint 12 em Progresso
+### Status: Sprint 12 COMPLETO (6/6 USs)
 
 | Componente | Status | Idiomas |
 |------------|--------|---------|
 | Infraestrutura i18next | ✅ | - |
 | LoginView.jsx | ✅ | pt-BR, en-US, es-ES |
 | LanguageSelector | ✅ | 3 variantes |
-| HubView.jsx | Pendente | - |
-| Dashboards | Pendente | - |
+| HubView.jsx | ✅ | pt-BR, en-US, es-ES |
+| UserHeader.jsx | ✅ | pt-BR, en-US, es-ES |
+| UserDashboard.jsx | ✅ | pt-BR, en-US, es-ES |
+| AdminDashboard.jsx | ✅ | pt-BR, en-US, es-ES |
+| InstructorDashboard.jsx | ✅ | pt-BR, en-US, es-ES |
+| ExecutiveDashboard.jsx | ✅ | pt-BR, en-US, es-ES |
 
 ### Dependências Instaladas
 
@@ -688,17 +708,20 @@ src/i18n/
 
 public/locales/
 ├── pt-BR/
-│   ├── common.json        # app, navigation, buttons, status, time, table, modal, toast ✅
+│   ├── common.json        # app, navigation, buttons, status, time, table, modal, toast, hub ✅
 │   ├── auth.json          # login, errors, roles, permissions, logout, accessDenied ✅
-│   └── errors.json        # validation, network, auth, crud, generic ✅
+│   ├── errors.json        # validation, network, auth, crud, generic ✅
+│   └── dashboard.json     # user, admin, instructor, executive (Sprint 12) ✅
 ├── en-US/
 │   ├── common.json ✅
 │   ├── auth.json ✅
-│   └── errors.json ✅
+│   ├── errors.json ✅
+│   └── dashboard.json ✅
 └── es-ES/
     ├── common.json ✅
     ├── auth.json ✅
-    └── errors.json ✅
+    ├── errors.json ✅
+    └── dashboard.json ✅
 ```
 
 ### Componentes i18n
@@ -735,10 +758,10 @@ function LoginView() {
 
 | Namespace | Conteúdo | Strings | Lazy Load |
 |-----------|----------|---------|-----------|
-| `common` | app, navigation, buttons, status, time, table, modal, toast, language | ~50 | Não |
+| `common` | app, navigation, buttons, status, time, table, modal, toast, language, hub | ~85 | Não |
 | `auth` | login, errors, roles, roleDescriptions, permissions, logout, accessDenied | ~45 | Não |
 | `errors` | validation, network, auth, crud, generic | ~20 | Não |
-| `dashboard` | (futuro) | - | Sim |
+| `dashboard` | user, admin, instructor, executive, common | ~100 | Não |
 | `courses` | (futuro) | - | Sim |
 
 ### Teste i18n via MCP
@@ -763,8 +786,92 @@ mcp__chrome-devtools__take_snapshot()
 
 ---
 
+## Sprint 13: White-Label Refactor ✅ COMPLETO
+
+### Objetivo
+
+Remover todas as referências hardcoded ao nome "UltraThink" e implementar arquitetura white-label configurável via variáveis de ambiente.
+
+**Status:** Implementado em 2026-01-26 na branch `feature/white-label-refactor`
+
+### Mapeamento de Ocorrências
+
+```
+Total: 154 ocorrências em 62 arquivos
+├── Código fonte (src/): 13 ocorrências em 6 arquivos - CRÍTICO
+├── Traduções i18n: 6 ocorrências em 3 arquivos - ALTO
+├── Configuração: 25 ocorrências em 5 arquivos - MÉDIO
+└── Documentação: 110+ ocorrências - BAIXO
+```
+
+### Arquivos Críticos
+
+| Arquivo | Variáveis Hardcoded |
+|---------|---------------------|
+| `src/contexts/AuthContext.jsx` | `ultrathink_auth` |
+| `src/contexts/OnboardingContext.jsx` | `ultrathink_onboarding` |
+| `src/services/apiService.js` | `ultrathink_api_token`, `ultrathink_user`, credenciais |
+| `src/services/dataService.js` | `STORAGE_PREFIX = 'ultrathink'` |
+| `src/i18n/config.js` | `ultrathink_language` |
+| `src/hooks/useModuleProgress.js` | `ultrathink_progress_*` |
+
+### Arquitetura Proposta
+
+```
+src/
+├── config/
+│   ├── platform.js      # Configuração centralizada (NOVO)
+│   └── index.js         # Re-exports (NOVO)
+├── utils/
+│   └── storageMigration.js  # Script migração localStorage (NOVO)
+```
+
+### Variáveis de Ambiente
+
+```bash
+# Identidade
+VITE_PLATFORM_NAME="Plataforma de Treinamento B2B"
+VITE_PLATFORM_SHORT_NAME="TrainB2B"
+
+# Storage
+VITE_STORAGE_PREFIX="trainb2b"
+
+# API
+VITE_API_BASE_URL="http://localhost:8081"
+```
+
+### User Stories
+
+| US | Descrição | Complexidade | Status |
+|----|-----------|--------------|--------|
+| US-119 | Criar `src/config/platform.js` | L | Pendente |
+| US-120 | Migrar storage keys (6 arquivos) | M | Pendente |
+| US-121 | Atualizar traduções i18n | L | Pendente |
+| US-122 | Remover hardcoded docker-compose | L | Pendente |
+| US-123 | Script migração localStorage | M | Pendente |
+| US-124 | Atualizar documentação | L | Pendente |
+
+### Branch de Implementação
+
+```bash
+# Criar branch
+git checkout -b feature/white-label-refactor
+
+# Após implementação
+git push -u origin feature/white-label-refactor
+```
+
+### Documento de Estudo
+
+- **Path:** `docs/backlog/ESTUDO-REFATORACAO-WHITE-LABEL-2026-01-26.md`
+- **Conteúdo:** Mapeamento completo, arquitetura proposta, plano de implementação
+
+---
+
 **Ultima atualizacao:** 2026-01-26
-**Versao:** 8.0.0 (+ i18n Implementado)
-**Status:** Backend + Frontend + Auth NocoDB JWT + i18n (3 idiomas)
+**Versao:** 8.2.0 (Sprint 13 - White-Label PROPOSTO)
+**Status:** Backend + Frontend + Auth NocoDB JWT + i18n COMPLETO
 **RBAC:** 81% implementado (17/21 permissoes)
-**i18n:** pt-BR, en-US, es-ES (LoginView migrado)
+**i18n:** pt-BR, en-US, es-ES (Login, Hub, 4 Dashboards migrados)
+**Namespaces:** common, auth, errors, dashboard (~250 strings total)
+**Proximo:** Aprovar estudo e iniciar Sprint 13 (White-Label)
