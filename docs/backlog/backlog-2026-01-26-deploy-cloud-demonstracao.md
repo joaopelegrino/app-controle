@@ -1,8 +1,9 @@
 # Backlog: Deploy Cloud para Demonstração
 
-**Data:** 2026-01-26
+**Data:** 2026-01-27 (atualizado)
 **Branch:** feature/white-label-refactor
 **Objetivo:** Disponibilizar plataforma B2B em nuvem para demonstração comercial
+**Plataforma escolhida:** Fly.io
 
 ---
 
@@ -99,7 +100,10 @@ O projeto app-controle está com 14 sprints completos, incluindo:
 ```
 .github/
 └── workflows/
-    └── deploy.yml              # CI/CD Pipeline
+    └── fly-deploy.yml          # CI/CD Pipeline ✅ CRIADO
+
+fly.toml                        # Configuração Fly.io ✅ CRIADO
+.dockerignore                   # Otimização build ✅ CRIADO
 
 docs/deploy/
 └── DEPLOY-GUIDE.md             # Documentação completa
@@ -111,6 +115,15 @@ database/
 .env.production.example         # Template variáveis prod
 docker-compose.prod.yml         # Compose para produção
 ```
+
+## Arquivos Criados (2026-01-27)
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `fly.toml` | Configuração Fly.io (região gru, scale-to-zero) |
+| `.github/workflows/fly-deploy.yml` | CI/CD com testes + deploy automático |
+| `.dockerignore` | Exclusões para build otimizado |
+| `CLAUDE.md` (seção Fly.io) | Documentação completa de deploy |
 
 ---
 

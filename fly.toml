@@ -1,0 +1,49 @@
+# fly.toml - Configuração Fly.io para app-controle (Frontend)
+# Documentação: https://fly.io/docs/reference/configuration/
+
+app = "trainb2b-demo"
+primary_region = "gru"  # São Paulo - menor latência para Brasil
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  # Variáveis públicas (não sensíveis)
+  # Variáveis sensíveis devem ser configuradas via `flyctl secrets set`
+  NODE_ENV = "production"
+
+[http_service]
+  internal_port = 80          # nginx escuta na porta 80
+  force_https = true          # Redireciona HTTP para HTTPS
+  auto_stop_machines = "stop" # Scale to zero após inatividade
+  auto_start_machines = true  # Acorda automaticamente em requests
+  min_machines_running = 0    # Permite parar completamente (economia)
+  processes = ["app"]
+
+[http_service.concurrency]
+  type = "connections"
+  hard_limit = 25
+  soft_limit = 20
+
+[[vm]]
+  memory = "256mb"            # Suficiente para nginx servindo React
+  cpu_kind = "shared"
+  cpus = 1
+
+[checks]
+  [checks.health]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    path = "/"
+    port = 80
+    timeout = "5s"
+    type = "http"
+
+# Configuração de deploy
+[deploy]
+  release_command = ""        # Sem comando de release (frontend estático)
+  strategy = "rolling"        # Deploy gradual
+
+# Kill timeout para graceful shutdown
+kill_timeout = "5s"

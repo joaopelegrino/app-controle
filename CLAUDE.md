@@ -384,6 +384,101 @@ formatCourseStatsReport(stats)
 
 ---
 
+## GitHub CLI (gh) - Integração
+
+### Status da Integração
+
+| Item | Valor |
+|------|-------|
+| **Conta** | joaopelegrino |
+| **Repositório** | joaopelegrino/app-controle |
+| **Branch padrão** | desenvolvimento |
+| **Scopes** | repo, gist, read:org |
+
+### Comandos Disponíveis
+
+```bash
+# === SECRETS (variáveis sensíveis para CI/CD) ===
+gh secret set FLY_API_TOKEN              # Configurar token Fly.io
+gh secret set VITE_API_BASE_URL          # URL da API (se sensível)
+gh secret list                           # Listar secrets configurados
+gh secret delete SECRET_NAME             # Remover secret
+
+# === VARIABLES (variáveis públicas de build) ===
+gh variable set VITE_PLATFORM_NAME --body "TrainB2B"
+gh variable set VITE_STORAGE_PREFIX --body "trainb2b"
+gh variable list                         # Listar variáveis
+gh variable delete VAR_NAME              # Remover variável
+
+# === WORKFLOWS (CI/CD) ===
+gh workflow list                         # Listar workflows
+gh workflow view fly-deploy.yml          # Ver detalhes do workflow
+gh workflow run fly-deploy.yml           # Disparar manualmente
+gh run list                              # Ver execuções recentes
+gh run view [run-id]                     # Ver detalhes de execução
+gh run watch                             # Acompanhar execução em tempo real
+
+# === PULL REQUESTS ===
+gh pr create --title "feat: ..." --body "..."
+gh pr list                               # Listar PRs abertas
+gh pr view [number]                      # Ver detalhes
+gh pr merge [number]                     # Fazer merge
+gh pr checkout [number]                  # Checkout local
+
+# === ISSUES ===
+gh issue create --title "..." --body "..."
+gh issue list                            # Listar issues
+gh issue close [number]                  # Fechar issue
+
+# === REPOSITÓRIO ===
+gh repo view                             # Ver detalhes do repo
+gh repo clone                            # Clonar
+gh browse                                # Abrir no browser
+```
+
+### Configuração de Secrets para Deploy Fly.io
+
+```bash
+# 1. Gerar token no Fly.io (executar localmente)
+flyctl tokens create deploy -x 999999h
+# Copiar token COMPLETO (incluindo "FlyV1 ")
+
+# 2. Configurar secret no GitHub
+gh secret set FLY_API_TOKEN
+# Cole o token quando solicitado
+
+# 3. Verificar
+gh secret list
+# Deve mostrar: FLY_API_TOKEN
+```
+
+### Configuração de Variables para Build
+
+```bash
+# Variáveis de ambiente para Vite (públicas)
+gh variable set VITE_PLATFORM_NAME --body "TrainB2B Demo"
+gh variable set VITE_PLATFORM_SHORT_NAME --body "TrainB2B"
+gh variable set VITE_STORAGE_PREFIX --body "trainb2b"
+
+# Verificar
+gh variable list
+```
+
+### Diretrizes de Uso
+
+#### SEMPRE
+- Usar `gh secret` para tokens, senhas e dados sensíveis
+- Usar `gh variable` para configurações públicas de build
+- Verificar `gh run list` após push para confirmar CI/CD
+- Usar `gh pr create` para PRs (gera template automático)
+
+#### NUNCA
+- Commitar secrets diretamente no código
+- Usar `gh secret` para variáveis que precisam ser públicas no build
+- Ignorar falhas de workflow sem investigar (`gh run view`)
+
+---
+
 ## Referências
 
 - **Gaps:** `docs/backlog/GAPS-DEMO-B2B.md` v5.0.0
@@ -977,3 +1072,315 @@ const allCourses = await apiService.getAllCourses();
 | Traduções es-ES | ✅ 55 strings |
 
 **Próximo:** Testes E2E completos via MCP ou iniciar Sprint 15
+
+---
+
+## Deploy em Nuvem: Fly.io
+
+### Visão Geral
+
+Fly.io é a plataforma recomendada para deploy de demonstração por:
+- Deploy direto de Docker containers
+- PostgreSQL managed ou self-hosted
+- SSL/HTTPS automático
+- Scale to zero (economia de custos)
+- Rede privada entre serviços
+
+**Custo estimado:** ~$5-10/mês para demonstração (dentro do free allowance)
+
+### Estrutura de Arquivos para Deploy
+
+```
+app-controle/
+├── Dockerfile                    # ✅ Já existe (multi-stage nginx)
+├── nginx.conf                    # ✅ Já existe (configurado para SPA)
+├── fly.toml                      # CRIAR: Configuração Fly.io
+├── .github/
+│   └── workflows/
+│       └── fly-deploy.yml        # CRIAR: CI/CD automático
+└── .dockerignore                 # Verificar se existe
+```
+
+### Configuração fly.toml
+
+```toml
+# fly.toml - Configuração para app-controle
+app = "trainb2b-demo"
+primary_region = "gru"  # São Paulo (mais próximo)
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  VITE_PLATFORM_NAME = "TrainB2B Demo"
+  VITE_PLATFORM_SHORT_NAME = "TrainB2B"
+
+[http_service]
+  internal_port = 80          # nginx escuta na 80
+  force_https = true
+  auto_stop_machines = "stop" # Scale to zero após inatividade
+  auto_start_machines = true  # Acorda automaticamente
+  min_machines_running = 0    # Permite parar completamente
+  processes = ["app"]
+
+[http_service.concurrency]
+  type = "connections"
+  hard_limit = 25
+  soft_limit = 20
+
+[[vm]]
+  memory = "256mb"            # Suficiente para nginx + React
+  cpu_kind = "shared"
+  cpus = 1
+
+[checks]
+  [checks.health]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    path = "/"
+    port = 80
+    timeout = "5s"
+    type = "http"
+```
+
+### Regiões Fly.io Recomendadas
+
+| Região | Código | Latência Brasil |
+|--------|--------|-----------------|
+| São Paulo | `gru` | ~5ms (melhor) |
+| Rio de Janeiro | `gig` | ~10ms |
+| Miami | `mia` | ~120ms |
+| Ashburn | `iad` | ~150ms |
+
+### GitHub Actions para Deploy Automático
+
+```yaml
+# .github/workflows/fly-deploy.yml
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches: [main, desenvolvimento]
+  workflow_dispatch:  # Deploy manual
+
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    concurrency: deploy-group  # Evita deploys simultâneos
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run tests
+        run: bun run test --run
+
+      - name: Build
+        run: bun run build
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_PLATFORM_NAME: ${{ vars.VITE_PLATFORM_NAME }}
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+```
+
+### Comandos flyctl Essenciais
+
+```bash
+# Instalação (macOS/Linux)
+curl -L https://fly.io/install.sh | sh
+
+# Autenticação
+flyctl auth login
+
+# Criar app (primeira vez)
+flyctl launch --name trainb2b-demo --region gru
+
+# Deploy
+flyctl deploy --remote-only
+
+# Ver logs em tempo real
+flyctl logs
+
+# Status da aplicação
+flyctl status
+
+# Abrir no browser
+flyctl open
+
+# Escalar (se necessário)
+flyctl scale memory 512  # Aumentar RAM
+flyctl scale count 2     # Mais instâncias
+
+# Secrets (variáveis sensíveis)
+flyctl secrets set VITE_API_BASE_URL=https://api.trainb2b.com
+flyctl secrets list
+
+# SSH na máquina (debug)
+flyctl ssh console
+
+# Destruir app (cuidado!)
+flyctl apps destroy trainb2b-demo
+```
+
+### PostgreSQL no Fly.io
+
+```bash
+# Criar cluster PostgreSQL (Development - gratuito)
+flyctl postgres create \
+  --name trainb2b-db \
+  --region gru \
+  --initial-cluster-size 1 \
+  --vm-size shared-cpu-1x \
+  --volume-size 1
+
+# Conectar app ao banco
+flyctl postgres attach trainb2b-db --app trainb2b-demo
+
+# String de conexão (adicionada automaticamente como secret)
+# DATABASE_URL=postgres://...
+
+# Acessar psql
+flyctl postgres connect -a trainb2b-db
+
+# Executar migrations
+flyctl ssh console -a trainb2b-demo -C "psql \$DATABASE_URL < /app/database/migration-001-rbac.sql"
+```
+
+### Configuração NocoDB no Fly.io
+
+Para backend completo com NocoDB:
+
+```toml
+# fly.nocodb.toml
+app = "trainb2b-api"
+primary_region = "gru"
+
+[build]
+  image = "nocodb/nocodb:latest"
+
+[env]
+  NC_DB = "pg://trainb2b-db.internal:5432/nocodb"
+  NC_PUBLIC_URL = "https://trainb2b-api.fly.dev"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+[mounts]
+  source = "nocodb_data"
+  destination = "/usr/app/data"
+```
+
+### Secrets e Variáveis
+
+```bash
+# Gerar token de deploy (CI/CD)
+flyctl tokens create deploy -x 999999h
+# Copiar token COMPLETO incluindo "FlyV1 " no início
+
+# Adicionar ao GitHub Secrets:
+# Settings > Secrets > Actions > New repository secret
+# Nome: FLY_API_TOKEN
+# Valor: FlyV1 fm2_xxxxx...
+
+# Variáveis de ambiente (não sensíveis) - usar GitHub Variables
+# Settings > Variables > Actions > New repository variable
+# VITE_PLATFORM_NAME = "TrainB2B Demo"
+```
+
+### Troubleshooting Fly.io
+
+| Problema | Causa | Solução |
+|----------|-------|---------|
+| "Welcome to nginx" | Build não copiou dist | Verificar Dockerfile COPY |
+| Página em branco | Assets não carregam | Verificar nginx.conf try_files |
+| 502 Bad Gateway | App não iniciou | `flyctl logs` para ver erro |
+| Slow cold start | Scale to zero | Aumentar `min_machines_running` |
+| Out of memory | 256MB insuficiente | `flyctl scale memory 512` |
+| Deploy falha | Token expirado | Gerar novo token |
+
+### Checklist Deploy Fly.io
+
+- [ ] `flyctl auth login` executado
+- [ ] `fly.toml` criado na raiz do projeto
+- [ ] Dockerfile funciona localmente (`docker build -t test . && docker run -p 8080:80 test`)
+- [ ] `.dockerignore` inclui `node_modules`, `.git`, `*.log`
+- [ ] Secrets configurados no Fly.io (`flyctl secrets list`)
+- [ ] GitHub Actions secret `FLY_API_TOKEN` configurado
+- [ ] Variáveis de build configuradas (VITE_*)
+- [ ] Região escolhida (`gru` para Brasil)
+
+### URLs de Demonstração (após deploy)
+
+```
+Frontend: https://trainb2b-demo.fly.dev
+API:      https://trainb2b-api.fly.dev (se NocoDB deployado)
+Health:   https://trainb2b-demo.fly.dev/health
+```
+
+### Billing e Custos
+
+**Guia completo:** `docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md`
+
+| Recurso | Free Allowance | Custo Extra |
+|---------|----------------|-------------|
+| VMs shared-cpu-1x (256MB) | 3 unidades | ~$1.94/mês cada |
+| Volumes | 3GB | $0.15/GB/mês |
+| Bandwidth (saída) | 160GB/mês | $0.02/GB |
+| PostgreSQL Dev | 1GB storage | ~$2/mês |
+
+**Limites recomendados para demo:**
+```
+Soft Limit: $5  (alerta por email)
+Hard Limit: $10 (para recursos automaticamente)
+```
+
+**Comandos de billing:**
+```bash
+# Ver uso atual
+flyctl billing show
+
+# Parar app (economia total)
+flyctl apps suspend trainb2b-demo
+
+# Reativar
+flyctl apps resume trainb2b-demo
+```
+
+### Referências
+
+- [Fly.io Docs - Deploy Docker](https://fly.io/docs/languages-and-frameworks/dockerfile/)
+- [Fly.io Docs - fly.toml](https://fly.io/docs/reference/configuration/)
+- [Fly.io Docs - PostgreSQL](https://fly.io/docs/postgres/)
+- [Fly.io Docs - GitHub Actions](https://fly.io/docs/launch/continuous-deployment-with-github-actions/)
+- [Fly.io Docs - Pricing](https://fly.io/docs/about/pricing/)
+- [GitHub - flyctl-actions](https://github.com/superfly/flyctl-actions)
+- **Ações do Usuário (Billing):** `docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md`
+
+---
+
+**Última atualização seção Fly.io:** 2026-01-27
