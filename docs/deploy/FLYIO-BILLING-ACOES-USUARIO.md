@@ -282,11 +282,109 @@ flyctl apps destroy [cada-app]
 
 ---
 
+## 11. Ações Externas Obrigatórias
+
+Ações que **devem ser realizadas manualmente** pelo usuário (não podem ser automatizadas pelo Claude Code).
+
+### 11.1 GitHub CLI - Adicionar Scope Workflow
+
+**Problema:** Push de arquivos `.github/workflows/*.yml` requer scope `workflow` no token OAuth.
+
+**Erro típico:**
+```
+refusing to allow an OAuth App to create or update workflow without `workflow` scope
+```
+
+**Solução:**
+```bash
+# Adicionar scope ao token existente (abre browser)
+gh auth refresh --scopes workflow
+
+# Ou reautenticar completamente
+gh auth login --scopes repo,workflow,gist,read:org
+```
+
+**Verificar:**
+```bash
+gh auth status
+# Deve mostrar: Token scopes: 'gist', 'read:org', 'repo', 'workflow'
+```
+
+### 11.2 Fly.io - Gerar Token de Deploy
+
+**Ação:** Gerar token para CI/CD no GitHub Actions.
+
+```bash
+# Instalar flyctl (se não instalado)
+curl -L https://fly.io/install.sh | sh
+
+# Login no Fly.io (abre browser)
+flyctl auth login
+
+# Gerar token de deploy (copiar COMPLETO incluindo "FlyV1 ")
+flyctl tokens create deploy -x 999999h
+```
+
+**Configurar no GitHub:**
+```bash
+# Via gh CLI
+gh secret set FLY_API_TOKEN
+# Cole o token quando solicitado
+
+# Ou via browser:
+# https://github.com/[user]/[repo]/settings/secrets/actions/new
+```
+
+### 11.3 Fly.io - Criar App (Primeira Vez)
+
+**Ação:** Criar aplicação no Fly.io antes do primeiro deploy.
+
+```bash
+# Criar app (não faz deploy ainda)
+flyctl launch --name trainb2b-demo --region gru --no-deploy
+
+# Ou se app já existe, apenas associar
+flyctl apps create trainb2b-demo --org personal
+```
+
+### 11.4 GitHub - Configurar Variables de Build
+
+**Ação:** Configurar variáveis públicas para o build Vite.
+
+```bash
+# Via gh CLI
+gh variable set VITE_PLATFORM_NAME --body "TrainB2B Demo"
+gh variable set VITE_PLATFORM_SHORT_NAME --body "TrainB2B"
+gh variable set VITE_STORAGE_PREFIX --body "trainb2b"
+gh variable set VITE_API_BASE_URL --body "https://trainb2b-api.fly.dev"
+
+# Verificar
+gh variable list
+```
+
+### 11.5 Checklist de Ações Externas
+
+**Ordem de execução recomendada:**
+
+- [ ] 1. `gh auth refresh --scopes workflow` (permissão GitHub)
+- [ ] 2. `flyctl auth login` (login Fly.io)
+- [ ] 3. `flyctl launch --name trainb2b-demo --region gru --no-deploy` (criar app)
+- [ ] 4. `flyctl tokens create deploy -x 999999h` (gerar token)
+- [ ] 5. `gh secret set FLY_API_TOKEN` (configurar secret)
+- [ ] 6. `gh variable set VITE_*` (configurar variables)
+- [ ] 7. `git push origin feature/white-label-refactor` (push com workflow)
+- [ ] 8. Adicionar cartão de crédito no Fly.io (billing)
+- [ ] 9. Configurar spending limits ($5/$10)
+
+---
+
 ## Referências
 
 - [Fly.io Pricing](https://fly.io/docs/about/pricing/)
 - [Fly.io Billing Dashboard](https://fly.io/dashboard)
 - [Fly.io Free Allowances](https://fly.io/docs/about/pricing/#free-allowances)
+- [GitHub CLI Auth Scopes](https://cli.github.com/manual/gh_auth_login)
+- [GitHub Actions Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
 - [Community Forum](https://community.fly.io)
 
 ---

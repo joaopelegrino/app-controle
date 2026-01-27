@@ -4,14 +4,14 @@ Nome: estrutura_projeto_flusistip
 Funcao: Contextualizar agentes sobre a estrutura do projeto FluSisTip
 Frequencia: Atualizado automaticamente via hook SessionStart
 Versao: v1
-Ultima Atualizacao: 2026-01-27T07:48:01-0300
+Ultima Atualizacao: 2026-01-27T14:11:05-0300
 Gerado por: hook C session-start
 ---
 
 ## Estrutura do Projeto FluSisTip
 
 **Path**: `/home/notebook/workspace/flusistip`
-**Arquivos**: 55425 | **Diretorios**: 499
+**Arquivos**: 55446 | **Diretorios**: 501
 **Namespaces Clojure**: 85 | **FII-MIN**: 83
 
 ### Exclusoes Inteligentes
@@ -118,6 +118,7 @@ Gerado por: hook C session-start
 │   │   │   ├── DIAGNOSTICO-DEMONSTRACAO-LOCALHOST-2026-01-12.md
 │   │   │   ├── diagnostico-validacao-piloto-2026-01-09.md
 │   │   │   ├── INDICE-ARTEFATOS-2026-01-16.md
+│   │   │   ├── Iniciarqae2e.md
 │   │   │   ├── instalacao.md
 │   │   │   ├── MATRIZ-DEPENDENCIAS.md
 │   │   │   ├── NAVIGATION_MAP.md
@@ -387,28 +388,47 @@ Gerado por: hook C session-start
 │   ├── tailwind.config.js
 │   └── tree.md
 ├── historico
-│   └── checkpoints
-│       ├── chk-20260123-135938.json
-│       ├── chk-20260123-141300.json
-│       ├── chk-20260123-141358.json
-│       ├── chk-20260123-142045.json
-│       ├── chk-20260126-103606.json
-│       ├── chk-20260126-104401.json
-│       ├── chk-20260126-105754.json
-│       ├── chk-20260126-115834.json
-│       ├── chk-20260126-120806.json
-│       ├── chk-20260126-121301.json
-│       ├── chk-20260126-132254.json
-│       ├── chk-20260126-132604.json
-│       ├── chk-20260126-133400.json
-│       ├── chk-20260126-135025.json
-│       ├── chk-20260126-144901.json
-│       ├── chk-20260126-145330.json
-│       ├── chk-20260126-154053.json
-│       ├── chk-20260126-154747.json
-│       ├── chk-20260126-155038.json
-│       ├── chk-20260126-155311.json
-│       └── chk-20260127-074744.json
+│   ├── backlogs
+│   │   ├── backlog-2026-01-27-consolidacao-qa.md
+│   │   └── backlog-2026-01-27-qa-e2e-vertex-ai.md
+│   ├── checkpoints
+│   │   ├── chk-20260123-135938.json
+│   │   ├── chk-20260123-141300.json
+│   │   ├── chk-20260123-141358.json
+│   │   ├── chk-20260123-142045.json
+│   │   ├── chk-20260126-103606.json
+│   │   ├── chk-20260126-104401.json
+│   │   ├── chk-20260126-105754.json
+│   │   ├── chk-20260126-115834.json
+│   │   ├── chk-20260126-120806.json
+│   │   ├── chk-20260126-121301.json
+│   │   ├── chk-20260126-132254.json
+│   │   ├── chk-20260126-132604.json
+│   │   ├── chk-20260126-133400.json
+│   │   ├── chk-20260126-135025.json
+│   │   ├── chk-20260126-144901.json
+│   │   ├── chk-20260126-145330.json
+│   │   ├── chk-20260126-154053.json
+│   │   ├── chk-20260126-154747.json
+│   │   ├── chk-20260126-155038.json
+│   │   ├── chk-20260126-155311.json
+│   │   ├── chk-20260127-074744.json
+│   │   ├── chk-20260127-075411.json
+│   │   ├── chk-20260127-080019.json
+│   │   ├── chk-20260127-080347.json
+│   │   ├── chk-20260127-080848.json
+│   │   ├── chk-20260127-083045.json
+│   │   ├── chk-20260127-084111.json
+│   │   ├── chk-20260127-085043.json
+│   │   ├── chk-20260127-090955.json
+│   │   ├── chk-20260127-100346.json
+│   │   ├── chk-20260127-103018.json
+│   │   ├── chk-20260127-103856.json
+│   │   ├── chk-20260127-104250.json
+│   │   ├── chk-20260127-104555.json
+│   │   ├── chk-20260127-114724.json
+│   │   └── chk-20260127-115108.json
+│   └── INDEX.md
 ├── resources
 │   ├── migrations
 │   │   ├── 20260123-add-decision-point.edn
@@ -540,7 +560,7 @@ Gerado por: hook C session-start
 ├── STATUS-MIGRATIONS-APLICADAS.md
 └── SUMARIO-EXECUTIVO-IMPLEMENTACAO.md
 
-127 directories, 390 files
+128 directories, 409 files
 
 ```
 
