@@ -4,14 +4,14 @@ Nome: estrutura_projeto_flusistip
 Funcao: Contextualizar agentes sobre a estrutura do projeto FluSisTip
 Frequencia: Atualizado automaticamente via hook SessionStart
 Versao: v1
-Ultima Atualizacao: 2026-01-26T14:41:50-0300
+Ultima Atualizacao: 2026-01-26T15:46:59-0300
 Gerado por: hook C session-start
 ---
 
 ## Estrutura do Projeto FluSisTip
 
 **Path**: `/home/notebook/workspace/flusistip`
-**Arquivos**: 55413 | **Diretorios**: 497
+**Arquivos**: 55420 | **Diretorios**: 499
 **Namespaces Clojure**: 85 | **FII-MIN**: 83
 
 ### Exclusoes Inteligentes
@@ -134,6 +134,7 @@ Gerado por: hook C session-start
 │   │   │   ├── relatorio-e2e-2026-01-08.md
 │   │   │   ├── relatorio-e2e-2026-01-16.md
 │   │   │   ├── relatorio-e2e-seed-minimo-2026-01-10.md
+│   │   │   ├── RELATORIO-FORENSE-QA-2026-01-26.md
 │   │   │   ├── RELATORIO-MANUTENCAO-2026-01-16.md
 │   │   │   ├── relatorio-testes-backend-2026-01-08.md
 │   │   │   ├── testes-e2e-manual.md
@@ -400,7 +401,10 @@ Gerado por: hook C session-start
 │       ├── chk-20260126-132254.json
 │       ├── chk-20260126-132604.json
 │       ├── chk-20260126-133400.json
-│       └── chk-20260126-135025.json
+│       ├── chk-20260126-135025.json
+│       ├── chk-20260126-144901.json
+│       ├── chk-20260126-145330.json
+│       └── chk-20260126-154053.json
 ├── resources
 │   ├── migrations
 │   │   ├── 20260123-add-decision-point.edn
@@ -502,14 +506,16 @@ Gerado por: hook C session-start
 │       │   └── tenant_isolation_test.clj
 │       ├── db
 │       │   └── schema_test.clj
-│       └── e2e
-│           ├── externa_test.clj
-│           ├── fluxo_test.clj
-│           ├── hitl_test.clj
-│           ├── notifications_test.clj
-│           ├── sla_test.clj
-│           ├── unanimous_test.clj
-│           └── workflow_test.clj
+│       ├── e2e
+│       │   ├── externa_test.clj
+│       │   ├── fluxo_test.clj
+│       │   ├── hitl_test.clj
+│       │   ├── notifications_test.clj
+│       │   ├── sla_test.clj
+│       │   ├── unanimous_test.clj
+│       │   └── workflow_test.clj
+│       └── llm
+│           └── executor_test.clj
 ├── textos-base
 │   └── commands
 │       └── tmp
@@ -530,7 +536,7 @@ Gerado por: hook C session-start
 ├── STATUS-MIGRATIONS-APLICADAS.md
 └── SUMARIO-EXECUTIVO-IMPLEMENTACAO.md
 
-126 directories, 381 files
+127 directories, 386 files
 
 ```
 
