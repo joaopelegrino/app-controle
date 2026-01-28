@@ -7,6 +7,20 @@
 
 ---
 
+> **Nota (2026-01-28):** Após push do workflow atualizado, novas tasks mise disponíveis:
+> - `mise run security:scan` - Verificação de secrets (gitleaks)
+> - `mise run security:scan-staged` - Verificação em arquivos staged
+> - `mise run deploy:check` - Verifica pré-requisitos de deploy
+> - `mise run deploy:prod` - Deploy para Fly.io
+> - `mise run deploy:logs` - Logs em tempo real
+> - `mise run deploy:status` - Status da aplicação
+> - `mise run deploy:suspend` - Pausar app (economia)
+> - `mise run deploy:resume` - Reativar app
+>
+> **CI/CD atualizado:** Workflow agora usa `jdx/mise-action@v2` para garantir mesmas versões.
+
+---
+
 ## Prioridade P0 - BLOCKER (Urgente)
 
 > Ações críticas que bloqueiam desenvolvimento ou releases. Devem ser resolvidas imediatamente.

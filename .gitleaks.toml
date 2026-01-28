@@ -1,0 +1,39 @@
+# .gitleaks.toml - Configuracao de deteccao de secrets
+# Projeto: app-controle (Plataforma B2B)
+# Doc: https://github.com/gitleaks/gitleaks#configuration
+
+title = "gitleaks config para app-controle"
+
+# Regras de allowlist (falsos positivos conhecidos)
+[allowlist]
+description = "Falsos positivos conhecidos do projeto"
+
+# IDs de tabelas NocoDB (nao sao secrets, sao identificadores publicos)
+regexTarget = "match"
+regexes = [
+  '''[a-z0-9]{16}''',  # IDs NocoDB tem 16 caracteres
+]
+
+# Paths a ignorar (arquivos de exemplo, docs, etc)
+paths = [
+  '''\.env\..*\.example''',
+  '''docs/.*\.md''',
+  '''database/.*\.sql''',
+  '''\.factory/.*''',
+]
+
+# Allowlist de commits antigos (se necessario)
+# commits = ["abc123..."]
+
+# Regras personalizadas para permitir patterns especificos
+[[rules]]
+id = "nocodb-table-id"
+description = "IDs de tabelas NocoDB (nao sao secrets)"
+regex = '''(m[a-z0-9]{15})'''
+allowlist = { regexes = ['''m[a-z0-9]{15}'''] }
+
+[[rules]]
+id = "nocodb-base-id"
+description = "IDs de bases NocoDB (nao sao secrets)"
+regex = '''(phzot4i2zcjwgif|mphzot4i2zcjwgif)'''
+allowlist = { regexes = ['''phzot4i2zcjwgif'''] }

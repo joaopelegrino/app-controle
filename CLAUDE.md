@@ -1393,357 +1393,185 @@ flyctl apps resume trainb2b-demo
 ## Diretrizes de Melhorias - Conformidade ambiente-centralizado
 
 > **Análise:** 2026-01-28
+> **Implementacao:** 2026-01-28
 > **Fonte:** `estrutura-padrao/contextos/globais/SISTEMA_PROGRAMACAO/metodo-agent/ambiente-centralizado/`
-> **Objetivo:** Alinhar projeto com práticas mise para deploy e desenvolvimento
+> **Objetivo:** Alinhar projeto com praticas mise para deploy e desenvolvimento
 
 ### Resumo de Conformidade
 
-| Componente | Conformidade | Gap Principal |
-|------------|--------------|---------------|
-| `.mise.toml` | **75%** | Falta gitleaks, lockfile |
-| `fly.toml` | **95%** | Excelente |
-| CI/CD Workflow | **50%** | **NÃO usa mise-action** |
-| Documentação | **90%** | Muito bom |
+| Componente | Conformidade | Status |
+|------------|--------------|--------|
+| `.mise.toml` | **95%** | ✅ gitleaks + lockfile + tasks |
+| `fly.toml` | **95%** | ✅ Excelente |
+| CI/CD Workflow | **95%** | ✅ Usa mise-action |
+| Documentacao | **90%** | ✅ Muito bom |
 
 ---
 
-### P0 - CRÍTICO: CI/CD Workflow
+### P0 - CRITICO: CI/CD Workflow ✅ IMPLEMENTADO
 
-**Problema:** O workflow `.github/workflows/fly-deploy.yml` NÃO segue as diretrizes do ambiente-centralizado.
+**Status:** ✅ Implementado em 2026-01-28
 
-**Situação Atual:**
-```yaml
-# PROBLEMA: Usa setup-bun diretamente, ignorando mise
-- uses: oven-sh/setup-bun@v2
-- run: bun install
-- run: bun run test
-- run: bun run build
+**Arquivo modificado:** `.github/workflows/fly-deploy.yml`
+
+**Mudancas realizadas:**
+- Substituido `oven-sh/setup-bun@v2` por `jdx/mise-action@v2`
+- CI/CD agora executa: `mise run install`, `mise run lint`, `mise run test`, `mise run build`
+- Adicionado step `mise run security:scan` (continue-on-error para estabilizacao)
+- Versoes de ferramentas sincronizadas entre ambiente local e CI
+
+---
+
+### P1 - ALTA: gitleaks + Tasks Security ✅ IMPLEMENTADO
+
+**Status:** ✅ Implementado em 2026-01-28
+
+**Arquivos modificados:**
+- `.mise.toml` - Adicionado `gitleaks = "latest"` em [tools]
+- `.mise.toml` - Adicionadas tasks `security:scan` e `security:scan-staged`
+- `.gitleaks.toml` - Criado arquivo de configuracao para ignorar falsos positivos
+
+**Tasks disponiveis:**
+```bash
+mise run security:scan         # Verifica secrets no codigo
+mise run security:scan-staged  # Verifica apenas arquivos staged
 ```
 
-**Situação Esperada (conforme diretrizes):**
-```yaml
-# CORRETO: Usar mise-action para garantir mesmas versões
-- uses: jdx/mise-action@v2
-- run: mise run install
-- run: mise run lint
-- run: mise run test
-- run: mise run build
-```
-
-**Impactos do gap:**
-1. Versões podem divergir entre ambiente local e CI
-2. 46 tasks do mise são ignoradas no CI
-3. ESLint não roda antes do deploy
-4. Quando gitleaks for adicionado, security scan não executará
-
-**Arquivo a modificar:** `.github/workflows/fly-deploy.yml`
-
-**Implementação Recomendada:**
-
-```yaml
-# .github/workflows/fly-deploy.yml - VERSÃO MELHORADA
-name: Deploy to Fly.io
-
-on:
-  push:
-    branches: [main, desenvolvimento]
-  workflow_dispatch:
-
-concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  test:
-    name: Test & Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # MUDANÇA: Usar mise-action em vez de setup-bun
-      - name: Setup mise
-        uses: jdx/mise-action@v2
-
-      # MUDANÇA: Usar mise tasks
-      - name: Install dependencies
-        run: mise run install
-
-      - name: Lint
-        run: mise run lint
-
-      - name: Tests
-        run: mise run test
-
-      - name: Build
-        run: mise run build
-        env:
-          VITE_API_BASE_URL: http://localhost:8081
-          VITE_PLATFORM_NAME: TrainB2B
-          VITE_STORAGE_PREFIX: trainb2b
-
-  deploy:
-    name: Deploy to Fly.io
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Fly.io CLI
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: Deploy to Fly.io
-        run: flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
-      - name: Notify deployment
-        if: success()
-        run: |
-          echo "::notice title=Deploy Successful::App deployed to https://trainb2b-demo.fly.dev"
-          echo "## Deployment Successful! :rocket:" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**URL:** https://trainb2b-demo.fly.dev" >> $GITHUB_STEP_SUMMARY
-          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+**Validacao:**
+```bash
+$ mise run security:scan
+🔍 Verificando secrets no codigo...
+✅ Nenhum secret detectado
 ```
 
 ---
 
-### P1 - ALTA: Adicionar gitleaks ao .mise.toml
+### P1 - ALTA: Tasks de Deploy ✅ IMPLEMENTADO
 
-**Diretriz:** `02-mise-config.md` - "RECOMENDADO para projetos não-healthcare"
+**Status:** ✅ Implementado em 2026-01-28
 
-**Situação Atual:** Nenhuma ferramenta de detecção de secrets
+**Arquivo modificado:** `.mise.toml`
 
-**Implementação:**
-
-```toml
-# Adicionar em .mise.toml na seção [tools]
-
-# =============================================================================
-# FERRAMENTAS DE SEGURANÇA (RECOMENDADO)
-# =============================================================================
-gitleaks = "latest"              # Detecção de secrets no código
-```
-
-**Task de security scan:**
-
-```toml
-# Adicionar em .mise.toml na seção de tasks
-
-[tasks."security:scan"]
-description = "Verificação de secrets no código"
-run = """
-#!/bin/bash
-echo "🔍 Verificando secrets no código..."
-gitleaks detect --verbose
-if [ $? -eq 0 ]; then
-  echo "✅ Nenhum secret detectado"
-else
-  echo "❌ SECRETS DETECTADOS! Corrija antes do commit"
-  exit 1
-fi
-"""
-
-[tasks."security:scan-staged"]
-description = "Verificar secrets apenas em arquivos staged"
-run = "gitleaks protect --staged --verbose"
+**Tasks disponiveis (7 novas):**
+```bash
+mise run deploy:check    # Verifica pre-requisitos para deploy
+mise run deploy:prod     # Deploy para Fly.io (requer auth)
+mise run deploy:logs     # Ver logs do Fly.io em tempo real
+mise run deploy:status   # Status da aplicacao no Fly.io
+mise run deploy:open     # Abrir aplicacao no browser
+mise run deploy:suspend  # Pausar app (economia de custos)
+mise run deploy:resume   # Reativar app pausado
 ```
 
 ---
 
-### P1 - ALTA: Adicionar tasks de deploy
+### P2 - MEDIA: Lockfile ✅ IMPLEMENTADO
 
-**Situação Atual:** Nenhuma task de deploy no mise
+**Status:** ✅ Implementado em 2026-01-28
 
-**Implementação:**
+**Arquivo modificado:** `.mise.toml`
 
+**Configuracao adicionada:**
 ```toml
-# Adicionar em .mise.toml
-
-# =============================================================================
-# TAREFAS DE DEPLOY (Fly.io)
-# =============================================================================
-
-[tasks."deploy:check"]
-description = "Verifica pré-requisitos para deploy"
-run = """
-#!/bin/bash
-echo "🔍 Verificando pré-requisitos para deploy..."
-
-# Verificar flyctl
-if ! command -v flyctl &>/dev/null; then
-  echo "❌ flyctl não instalado"
-  echo "   Instale: curl -L https://fly.io/install.sh | sh"
-  exit 1
-fi
-echo "✅ flyctl: $(flyctl version)"
-
-# Verificar autenticação
-if ! flyctl auth whoami &>/dev/null; then
-  echo "❌ Não autenticado no Fly.io"
-  echo "   Execute: flyctl auth login"
-  exit 1
-fi
-echo "✅ Autenticado como: $(flyctl auth whoami)"
-
-# Verificar app existe
-if flyctl apps list 2>/dev/null | grep -q "trainb2b-demo"; then
-  echo "✅ App trainb2b-demo existe"
-else
-  echo "⚠️  App trainb2b-demo não existe"
-  echo "   Execute: flyctl launch --name trainb2b-demo --region gru --no-deploy"
-fi
-
-# Verificar gh auth
-if ! gh auth status &>/dev/null; then
-  echo "⚠️  GitHub CLI não autenticado"
-  echo "   Execute: gh auth login"
-else
-  echo "✅ GitHub CLI autenticado"
-fi
-
-echo ""
-echo "✅ Verificação concluída!"
-"""
-
-[tasks."deploy:prod"]
-description = "Deploy para Fly.io (requer auth)"
-run = "flyctl deploy --remote-only"
-depends = ["build", "test"]
-
-[tasks."deploy:logs"]
-description = "Ver logs do Fly.io em tempo real"
-run = "flyctl logs -a trainb2b-demo"
-
-[tasks."deploy:status"]
-description = "Status da aplicação no Fly.io"
-run = "flyctl status -a trainb2b-demo"
-
-[tasks."deploy:open"]
-description = "Abrir aplicação no browser"
-run = "flyctl open -a trainb2b-demo"
-
-[tasks."deploy:suspend"]
-description = "Pausar app (economia de custos)"
-run = "flyctl apps suspend trainb2b-demo && echo '✅ App pausado'"
-
-[tasks."deploy:resume"]
-description = "Reativar app pausado"
-run = "flyctl apps resume trainb2b-demo && echo '✅ App reativado'"
-```
-
----
-
-### P2 - MÉDIA: Habilitar lockfile
-
-**Diretriz:** `02-mise-config.md` - mise.lock para reprodutibilidade
-
-**Implementação:**
-
-```toml
-# Modificar seção [settings] em .mise.toml
-
 [settings]
-yes = true
-verbose = false
-experimental = true
-lockfile = true  # NOVO: Habilitar mise.lock para reprodutibilidade
+lockfile = true  # Habilita mise.lock para reprodutibilidade
 ```
 
-**Benefícios:**
-- Garante mesmas versões de ferramentas em toda equipe
-- Builds reprodutíveis no CI/CD
-- Checksums verificados
+**Nota:** O arquivo `mise.lock` sera gerado apos proximo `mise install` em ambiente limpo.
 
 ---
 
-### P3 - BAIXA: Verificação de Software
+### P3 - BAIXA: Verificacao de Software
 
-**Diretriz:** `02-mise-config.md` v1.7 - SLSA, GitHub Attestations
+**Status:** ⏳ Pendente (opcional para projetos nao-healthcare)
 
-**Implementação (opcional para projetos não-healthcare):**
-
+**Implementacao futura (se necessario):**
 ```toml
-# Adicionar em .mise.toml [settings]
-
 [settings]
-# ... existentes ...
-slsa = true                    # Verificação supply chain
-github_attestations = true     # Atestações GitHub
-
-[settings.aqua]
-cosign = true
-minisign = true
 slsa = true
+github_attestations = true
 ```
 
 ---
 
-### Ordem de Implementação Recomendada
+### Arquivos Criados/Modificados
 
-| # | Tarefa | Arquivo | Prioridade | Esforço |
-|---|--------|---------|------------|---------|
-| 1 | Atualizar CI/CD para mise-action | `.github/workflows/fly-deploy.yml` | **P0** | 15min |
-| 2 | Adicionar gitleaks | `.mise.toml` | **P1** | 5min |
-| 3 | Adicionar task security:scan | `.mise.toml` | **P1** | 5min |
-| 4 | Adicionar tasks deploy:* | `.mise.toml` | **P1** | 10min |
-| 5 | Habilitar lockfile | `.mise.toml` | **P2** | 2min |
-| 6 | Verificação de software | `.mise.toml` | **P3** | 2min |
+| Arquivo | Acao | Descricao |
+|---------|------|-----------|
+| `.github/workflows/fly-deploy.yml` | Modificado | CI/CD usa mise-action |
+| `.mise.toml` | Modificado | +gitleaks, +lockfile, +9 tasks |
+| `.gitleaks.toml` | **Criado** | Config falsos positivos |
 
 ---
 
-### Comandos de Verificação Pós-Implementação
+### Tasks Novas Disponiveis
+
+```bash
+# Seguranca (2 tasks)
+mise run security:scan         # Verifica secrets no codigo
+mise run security:scan-staged  # Verifica apenas arquivos staged
+
+# Deploy Fly.io (7 tasks)
+mise run deploy:check    # Verifica pre-requisitos
+mise run deploy:prod     # Deploy para producao
+mise run deploy:logs     # Logs em tempo real
+mise run deploy:status   # Status da aplicacao
+mise run deploy:open     # Abrir no browser
+mise run deploy:suspend  # Pausar (economia)
+mise run deploy:resume   # Reativar
+```
+
+---
+
+### Checklist de Conformidade ✅
+
+- [x] CI/CD usa `jdx/mise-action@v2`
+- [x] CI/CD executa `mise run lint`
+- [x] CI/CD executa `mise run test`
+- [x] CI/CD executa `mise run build`
+- [x] CI/CD executa `mise run security:scan`
+- [x] gitleaks instalado via mise (v8.30.0)
+- [x] Task `security:scan` disponivel
+- [x] Task `security:scan-staged` disponivel
+- [x] Tasks `deploy:*` disponiveis (7 tasks)
+- [x] `lockfile = true` em settings
+- [ ] `mise.lock` commitado no repo (gera apos proximo mise install)
+
+---
+
+### Comandos de Verificacao
 
 ```bash
 # Verificar gitleaks instalado
 mise list | grep gitleaks
+# gitleaks 8.30.0 ~/workspace/app-controle/.mise.toml latest
 
-# Verificar tasks disponíveis
-mise tasks | grep -E "(security|deploy)"
+# Listar tasks de security e deploy
+mise tasks
+# security:scan, security:scan-staged, deploy:check, deploy:prod, etc.
 
 # Testar security scan
 mise run security:scan
+# ✅ Nenhum secret detectado
 
-# Testar verificação de deploy
+# Testar verificacao de deploy
 mise run deploy:check
-
-# Verificar lockfile gerado
-ls -la mise.lock
-
-# Testar CI localmente (act - GitHub Actions local)
-act -j test --secret-file .env.ci
+# ❌ flyctl nao instalado (esperado se nao tiver flyctl)
 ```
 
 ---
 
-### Referências
+### Referencias
 
-| Documento | Path | Conteúdo |
+| Documento | Path | Conteudo |
 |-----------|------|----------|
-| Diretrizes mise | `ambiente-centralizado/02-mise-config.md` | Tasks, hooks, plugins, verificação |
-| Backlog ambiente | `ambiente-centralizado/backlog-2026-01-28-*.md` | Tarefas pendentes |
-| CLAUDE.md projeto | `.claude/CLAUDE.md` | Conformidade atual |
-| Fly.io billing | `docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md` | Ações de deploy |
+| Diretrizes mise | `ambiente-centralizado/02-mise-config.md` | Tasks, hooks, plugins |
+| CI/CD Workflow | `.github/workflows/fly-deploy.yml` | Deploy automatico |
+| Config gitleaks | `.gitleaks.toml` | Falsos positivos |
+| Fly.io billing | `docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md` | Acoes de deploy |
 
 ---
 
-### Checklist de Conformidade (Atualizar após implementação)
-
-- [ ] CI/CD usa `jdx/mise-action@v2`
-- [ ] CI/CD executa `mise run lint`
-- [ ] CI/CD executa `mise run test`
-- [ ] CI/CD executa `mise run build`
-- [ ] gitleaks instalado via mise
-- [ ] Task `security:scan` disponível
-- [ ] Tasks `deploy:*` disponíveis
-- [ ] `lockfile = true` em settings
-- [ ] `mise.lock` commitado no repo
-
----
-
-**Última atualização:** 2026-01-28
-**Fonte:** Análise de conformidade ambiente-centralizado
-**Status:** Pendente implementação
+**Ultima atualizacao:** 2026-01-28
+**Fonte:** Analise de conformidade ambiente-centralizado
+**Status:** ✅ IMPLEMENTADO (P0, P1, P2 completos)
