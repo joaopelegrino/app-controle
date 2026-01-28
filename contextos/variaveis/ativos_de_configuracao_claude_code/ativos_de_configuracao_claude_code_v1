@@ -4,14 +4,14 @@ Nome: ativos_de_configuracao_claude_code
 Função: Contextualizar agentes sobre a configuração atual disponível
 Frequência: Atualizado automaticamente via hook SessionStart
 Versão: v1
-Última Atualização: 2026-01-28T09:23:14-0300
+Última Atualização: 2026-01-28T13:28:57-0300
 Gerado por: hook C session-start
 ---
 
 ## Estrutura de Configuração Claude Code
 
 **Path**: `/home/notebook/workspace/app-controle/.claude`
-**Arquivos**: 21 | **Diretórios**: 8
+**Arquivos**: 22 | **Diretórios**: 8
 
 ```
 /home/notebook/workspace/app-controle/.claude
@@ -22,6 +22,7 @@ Gerado por: hook C session-start
 │   ├── docs-engineer.md
 │   ├── security-auditor.md
 │   └── test-generator.md
+├── CLAUDE.md
 ├── commands
 │   ├── browser-testing.md
 │   ├── full-coverage.md
@@ -44,7 +45,7 @@ Gerado por: hook C session-start
     ├── tmp:resumo-sprint6-retomada.md
     └── transcrever-video-para-curso.md
 
-8 directories, 21 files
+8 directories, 22 files
 
 ```
 
