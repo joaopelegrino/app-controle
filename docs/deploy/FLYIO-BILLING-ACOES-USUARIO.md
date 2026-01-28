@@ -1,8 +1,13 @@
-# Fly.io - Ações do Usuário: Pagamentos e Assinaturas
+# Fly.io - Referência Técnica de Billing e Configuração
 
 **Projeto:** app-controle (TrainB2B)
-**Data:** 2026-01-27
-**Objetivo:** Guia de ações manuais para configuração de billing no Fly.io
+**Data:** 2026-01-28
+**Tipo:** Documentação técnica de referência
+
+> **IMPORTANTE:** As ações manuais pendentes estão centralizadas em:
+> [`docs/backlog/acoes-usuario/ACOES-PENDENTES.md`](../backlog/acoes-usuario/ACOES-PENDENTES.md)
+>
+> Este documento serve como referência técnica detalhada para execução das ações.
 
 ---
 
@@ -389,4 +394,17 @@ gh variable list
 
 ---
 
-**Última atualização:** 2026-01-27
+## Integração com Sistema de Ações
+
+Este documento é **referência técnica**. As ações pendentes estão em:
+
+| Documento | Propósito |
+|-----------|-----------|
+| [`ACOES-PENDENTES.md`](../backlog/acoes-usuario/ACOES-PENDENTES.md) | Lista de ações a executar |
+| [`ACOES-CONCLUIDAS.md`](../backlog/acoes-usuario/ACOES-CONCLUIDAS.md) | Histórico de ações |
+| [`README.md`](../backlog/acoes-usuario/README.md) | Guia do sistema de ações |
+
+---
+
+**Última atualização:** 2026-01-28
+**Tipo:** Referência técnica (não checklist)

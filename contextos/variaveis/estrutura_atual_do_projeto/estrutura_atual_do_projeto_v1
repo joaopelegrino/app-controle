@@ -4,7 +4,7 @@ Nome: estrutura_atual_do_projeto
 Função: Contextualizar agentes sobre o estado atual do projeto
 Frequência: Atualizado automaticamente via hook SessionStart
 Versão: v1
-Última Atualização: 2026-01-27T15:29:02-0300
+Última Atualização: 2026-01-28T09:23:14-0300
 Gerado por: hook C session-start
 ---
 
@@ -113,7 +113,8 @@ Gerado por: hook C session-start
 │       ├── chk-20260127-140715.json
 │       ├── chk-20260127-140746.json
 │       ├── chk-20260127-141205.json
-│       └── chk-20260127-141304.json
+│       ├── chk-20260127-141304.json
+│       └── chk-20260127-153355.json
 ├── public
 │   └── locales
 │       ├── en-US
@@ -233,7 +234,7 @@ Gerado por: hook C session-start
 ├── vite.config.js
 └── vitest.config.js
 
-54 directories, 167 files
+54 directories, 168 files
 
 ```
 

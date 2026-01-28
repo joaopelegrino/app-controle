@@ -1,9 +1,10 @@
-# Sistema de Ações Manuais - Plataforma B2B de treinamento técnico corporativo
+# Sistema de Ações Manuais - Plataforma TrainB2B
 
-**Versão:** 1.0.0
-**Data:** 2025-11-17
+**Versão:** 2.0.0
+**Data:** 2026-01-28
 **Autor:** Tech Lead
 **Status:** Operacional
+**Sprint Atual:** 14 (CRUD Cursos) + Deploy Cloud (Fly.io)
 
 ---
 
@@ -440,7 +441,21 @@ templates/ACTION-XXX.md (detalhes de cada ação)
 
 ---
 
-#### 5. documentation (Documentação Externa)
+#### 5. deploy-cloud (Infraestrutura Cloud) *NOVO*
+**O que é:** Configuração de plataformas cloud, CI/CD, secrets, billing
+
+**Exemplos:**
+- Criar conta no Fly.io/Railway/AWS
+- Configurar cartão de crédito e spending limits
+- Gerar tokens de deploy para CI/CD
+- Configurar secrets no GitHub Actions
+- Criar clusters PostgreSQL managed
+
+**Quando usar:** Tarefa envolve **infraestrutura cloud ou CI/CD**
+
+---
+
+#### 6. documentation (Documentação Externa)
 **O que é:** Documentação fora do repositório (wikis, guias, apresentações)
 
 **Exemplos:**
@@ -770,7 +785,14 @@ Se possível, considerar automatizar com script + cron job.
 
 ---
 
-**Última Atualização:** 2025-11-17
-**Versão:** 1.0.0
+**Última Atualização:** 2026-01-28
+**Versão:** 2.0.0
 **Status:** Operacional
-**Próxima Review:** Após implementação de 10 ações
+**Próxima Review:** Após deploy inicial no Fly.io
+
+---
+
+## Documentação Técnica de Referência
+
+Para ações de deploy cloud, consulte também:
+- **Fly.io Billing:** [docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md](../../deploy/FLYIO-BILLING-ACOES-USUARIO.md)
