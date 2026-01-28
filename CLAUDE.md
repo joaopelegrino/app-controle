@@ -1,4 +1,7 @@
-# app-controle (Plataforma B2B) - Configuração Claude Code
+> **NOTA:** O arquivo principal de configuracao Claude Code foi movido para `.claude/CLAUDE.md`
+> Este arquivo e mantido como referencia detalhada. Para diretrizes de conformidade, consulte `.claude/CLAUDE.md`
+
+# app-controle (Plataforma B2B) - Configuracao Claude Code (Referencia Detalhada)
 
 **Version:** 10.0.0 | **Date:** 2026-01-26 | **Status:** Production + i18n + White-Label + CRUD Cursos
 **Project Type:** Plataforma B2B de treinamento técnico corporativo
