@@ -4,14 +4,14 @@ Nome: estrutura_projeto_flusistip
 Funcao: Contextualizar agentes sobre a estrutura do projeto FluSisTip
 Frequencia: Atualizado automaticamente via hook SessionStart
 Versao: v1
-Ultima Atualizacao: 2026-01-28T13:28:57-0300
+Ultima Atualizacao: 2026-01-29T08:03:16-0300
 Gerado por: hook C session-start
 ---
 
 ## Estrutura do Projeto FluSisTip
 
 **Path**: `/home/notebook/workspace/flusistip`
-**Arquivos**: 55446 | **Diretorios**: 501
+**Arquivos**: 55477 | **Diretorios**: 511
 **Namespaces Clojure**: 85 | **FII-MIN**: 83
 
 ### Exclusoes Inteligentes
@@ -122,6 +122,8 @@ Gerado por: hook C session-start
 │   │   │   ├── instalacao.md
 │   │   │   ├── MATRIZ-DEPENDENCIAS.md
 │   │   │   ├── NAVIGATION_MAP.md
+│   │   │   ├── PLANO-CORRECAO-BUGS-PERSONAS-2026-01-28.md
+│   │   │   ├── PLANO-VALIDACAO-PERSONAS-E2E-2026-01-28.md
 │   │   │   ├── primeiros-passos.md
 │   │   │   ├── QA-COMPLEMENTAR-FUNCIONALIDADES-MVP.md
 │   │   │   ├── QA-INDICE-COBERTURA-MVP.md
@@ -138,6 +140,8 @@ Gerado por: hook C session-start
 │   │   │   ├── RELATORIO-FORENSE-QA-2026-01-26.md
 │   │   │   ├── RELATORIO-MANUTENCAO-2026-01-16.md
 │   │   │   ├── relatorio-testes-backend-2026-01-08.md
+│   │   │   ├── RELATORIO-VALIDACAO-E2E-2026-01-28.md
+│   │   │   ├── RELATORIO-VALIDACAO-PERSONAS-CONSOLIDADO-2026-01-28.md
 │   │   │   ├── testes-e2e-manual.md
 │   │   │   ├── VALIDACAO-QA-APIS-PLAYGROUND.md
 │   │   │   └── VERIFICACAO-FORENSE-QA-2026-01-21.md
@@ -390,7 +394,9 @@ Gerado por: hook C session-start
 ├── historico
 │   ├── backlogs
 │   │   ├── backlog-2026-01-27-consolidacao-qa.md
-│   │   └── backlog-2026-01-27-qa-e2e-vertex-ai.md
+│   │   ├── backlog-2026-01-27-qa-e2e-vertex-ai.md
+│   │   ├── backlog-2026-01-28-correcao-bugs-e2e.md
+│   │   └── backlog-2026-01-28-implementacao-correcoes-e2e.md
 │   ├── checkpoints
 │   │   ├── chk-20260123-135938.json
 │   │   ├── chk-20260123-141300.json
@@ -427,7 +433,12 @@ Gerado por: hook C session-start
 │   │   ├── chk-20260127-104250.json
 │   │   ├── chk-20260127-104555.json
 │   │   ├── chk-20260127-114724.json
-│   │   └── chk-20260127-115108.json
+│   │   ├── chk-20260127-115108.json
+│   │   ├── chk-20260128-152838.json
+│   │   ├── chk-20260128-154606.json
+│   │   ├── chk-20260128-200041.json
+│   │   ├── chk-20260128-200926.json
+│   │   └── chk-20260128-221621.json
 │   └── INDEX.md
 ├── resources
 │   ├── migrations
@@ -560,7 +571,7 @@ Gerado por: hook C session-start
 ├── STATUS-MIGRATIONS-APLICADAS.md
 └── SUMARIO-EXECUTIVO-IMPLEMENTACAO.md
 
-128 directories, 409 files
+128 directories, 420 files
 
 ```
 

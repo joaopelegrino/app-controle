@@ -1,13 +1,61 @@
+---
+Tipo: Referencia Tecnica
+Nome: Fly.io Billing e Configuracao
+Funcao: Guia de deploy e billing para Fly.io
+Versao: v1.1
+Data: 2026-01-29
+Projeto: app-controle (TrainB2B)
+Conformidade: ambiente-centralizado/acoes-usuario.md
+Changelog: |
+  v1.1 - Alinhamento com diretrizes ambiente-centralizado, tasks mise
+  v1.0 - Versao inicial
+---
+
 # Fly.io - Referência Técnica de Billing e Configuração
 
 **Projeto:** app-controle (TrainB2B)
-**Data:** 2026-01-28
+**Data:** 2026-01-29
 **Tipo:** Documentação técnica de referência
 
 > **IMPORTANTE:** As ações manuais pendentes estão centralizadas em:
 > [`docs/backlog/acoes-usuario/ACOES-PENDENTES.md`](../backlog/acoes-usuario/ACOES-PENDENTES.md)
 >
 > Este documento serve como referência técnica detalhada para execução das ações.
+
+---
+
+## 0. Tasks mise (RECOMENDADO)
+
+> **Conformidade:** `ambiente-centralizado/02-mise-config.md` - Declarativo sobre Imperativo
+
+Para operações de deploy, **prefira usar tasks mise** em vez de comandos `flyctl` diretos:
+
+| Ação | Comando mise | Comando flyctl equivalente |
+|------|--------------|---------------------------|
+| Verificar pré-requisitos | `mise run deploy:check` | - |
+| Deploy produção | `mise run deploy:prod` | `flyctl deploy --remote-only` |
+| Ver logs | `mise run deploy:logs` | `flyctl logs -a trainb2b-demo` |
+| Status | `mise run deploy:status` | `flyctl status -a trainb2b-demo` |
+| Abrir no browser | `mise run deploy:open` | `flyctl open` |
+| Pausar (economia) | `mise run deploy:suspend` | `flyctl apps suspend trainb2b-demo` |
+| Reativar | `mise run deploy:resume` | `flyctl apps resume trainb2b-demo` |
+| Scan de segurança | `mise run security:scan` | - |
+
+**Benefícios das tasks mise:**
+- Verificações automáticas de pré-requisitos
+- Mensagens padronizadas e coloridas
+- Dependências (build + test antes de deploy)
+- Idempotência garantida
+
+```bash
+# Verificar todas as tasks disponíveis
+mise tasks | grep deploy
+
+# Fluxo recomendado para deploy
+mise run deploy:check    # 1. Verificar ambiente
+mise run deploy:prod     # 2. Deploy (roda build + test antes)
+mise run deploy:status   # 3. Confirmar status
+```
 
 ---
 
@@ -406,5 +454,30 @@ Este documento é **referência técnica**. As ações pendentes estão em:
 
 ---
 
-**Última atualização:** 2026-01-28
+## 12. LOG DE AÇÕES EXECUTADAS
+
+> **Conformidade:** `ambiente-centralizado/acoes-usuario.md`
+
+| Data | Ação | Status | Usuário | Observação |
+|------|------|--------|---------|------------|
+| 2026-01-28 | Documento criado | ✅ OK | sistema | Versão inicial |
+| 2026-01-29 | Alinhamento ambiente-centralizado | ✅ OK | sistema | +tasks mise, +LOG |
+| | Criar conta Fly.io | ⏳ PENDENTE | - | Seção 1 |
+| | Adicionar cartão crédito | ⏳ PENDENTE | - | Seção 2 |
+| | Configurar spending limits | ⏳ PENDENTE | - | Seção 4 |
+| | GitHub scope workflow | ⏳ PENDENTE | - | Seção 11.1 |
+| | Gerar token Fly.io | ⏳ PENDENTE | - | Seção 11.2 |
+| | Criar app Fly.io | ⏳ PENDENTE | - | Seção 11.3 |
+| | Configurar secrets GitHub | ⏳ PENDENTE | - | Seção 11.4 |
+
+**Legenda:**
+- ✅ OK - Ação concluída
+- ⏳ PENDENTE - Aguardando execução pelo usuário
+- ❌ ERRO - Falhou, verificar observação
+- 🔄 EM PROGRESSO - Em andamento
+
+---
+
+**Última atualização:** 2026-01-29
 **Tipo:** Referência técnica (não checklist)
+**Conformidade:** ambiente-centralizado v1.0

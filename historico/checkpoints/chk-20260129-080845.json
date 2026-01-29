@@ -1,0 +1,33 @@
+{
+	"checkpoint_id":	"chk-20260129-080845",
+	"timestamp":	"2026-01-29T08:08:45-0300",
+	"type":	"session_end",
+	"session_info":	{
+		"project_dir":	"/home/notebook/workspace/app-controle"
+	},
+	"git":	{
+		"branch":	"dev",
+		"last_commit":	"4ec36f6",
+		"modified_files":	[".claude/CLAUDE.md", "contextos/variaveis/.last-update", "contextos/variaveis/ativos_de_configuracao_claude_code/ativos_de_configuracao_claude_code_v1", "contextos/variaveis/estrutura_atual_do_projeto/estrutura_atual_do_projeto_v1", "contextos/variaveis/estrutura_projeto_flusistip/estrutura_projeto_flusistip_v1", "docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md"]
+	},
+	"contexts":	{
+		"total":	3,
+		"stale":	0,
+		"details":	[{
+				"name":	"ativos_de_configuracao_claude_code",
+				"exists":	true,
+				"age_hours":	0,
+				"needs_update":	false
+			}, {
+				"name":	"estrutura_atual_do_projeto",
+				"exists":	true,
+				"age_hours":	0,
+				"needs_update":	false
+			}, {
+				"name":	"estrutura_projeto_flusistip",
+				"exists":	true,
+				"age_hours":	0,
+				"needs_update":	false
+			}]
+	}
+}

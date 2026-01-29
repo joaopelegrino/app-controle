@@ -2,11 +2,12 @@
 Tipo: Contexto de Projeto
 Nome: app-controle
 Descricao: Plataforma B2B de treinamento tecnico corporativo
-Versao: v10.0.1
-Data: 2026-01-28
+Versao: v10.0.2
+Data: 2026-01-29
 Stack: React + Vite + Bun + NocoDB + PostgreSQL
 Healthcare: false
 Changelog: |
+  v10.0.2 - Secao Deploy Fly.io, tasks mise deploy:*, conformidade acoes-usuario
   v10.0.1 - Conformidade com ambiente-centralizado, frontmatter padrao
   v10.0.0 - Sprint 14 CRUD Cursos completo
   v9.0.0 - Sprint 13 White-Label refactor
@@ -15,7 +16,7 @@ Diretrizes: contextos/globais/SISTEMA_PROGRAMACAO/metodo-agent/ambiente-centrali
 
 # app-controle (Plataforma B2B) - Configuracao Claude Code
 
-> **Version:** 10.0.1 | **Date:** 2026-01-28 | **Status:** Production + i18n + White-Label + CRUD Cursos
+> **Version:** 10.0.2 | **Date:** 2026-01-29 | **Status:** Production + i18n + White-Label + CRUD Cursos + Deploy
 > **Project Type:** Plataforma B2B de treinamento tecnico corporativo
 > **Sprint Atual:** 14 - CRUD de Cursos COMPLETO (1 US)
 > **Sprints Completos:** 6, 7, 8, 9, 10, 11, 12, 13, 14
@@ -37,25 +38,23 @@ Diretrizes: contextos/globais/SISTEMA_PROGRAMACAO/metodo-agent/ambiente-centrali
 
 | Criterio | Status | Observacao |
 |----------|--------|------------|
-| `.mise.toml` presente | SIM | 557 linhas, 46 tasks |
-| Hooks enter/leave | SIM | Menu interativo |
-| bun como runtime | SIM | Nao usa npm |
-| Security Tools | PARCIAL | Falta gitleaks (RECOMENDADO) |
+| `.mise.toml` presente | ✅ SIM | 600+ linhas, 53+ tasks |
+| Hooks enter/leave | ✅ SIM | Menu interativo |
+| bun como runtime | ✅ SIM | Nao usa npm |
+| Security Tools | ✅ SIM | gitleaks configurado |
+| Tasks deploy:* | ✅ SIM | 7 tasks Fly.io |
+| Tasks security:* | ✅ SIM | 2 tasks gitleaks |
+| Lockfile mise | ✅ SIM | `lockfile = true` |
 | Feature Flags | NAO | Implementar |
-| CLAUDE.md em .claude/ | SIM | Este arquivo |
+| CLAUDE.md em .claude/ | ✅ SIM | Este arquivo |
+| Docs deploy alinhados | ✅ SIM | Conformidade acoes-usuario |
 
-### Acao Recomendada
+### Proximas Acoes (Opcional)
 
-```bash
-# Adicionar gitleaks ao projeto (RECOMENDADO para nao-healthcare)
-# Em .mise.toml, adicionar:
-# gitleaks = "latest"
-
-# Adicionar task de seguranca:
-# [tasks."security:check"]
-# description = "Verificar secrets no codigo"
-# run = "gitleaks detect"
-```
+| Acao | Prioridade | Descricao |
+|------|------------|-----------|
+| Feature Flags | P3 | Implementar sistema de feature flags |
+| Paranoid Mode | P3 | Habilitar para producao |
 
 ---
 
@@ -130,14 +129,38 @@ export FEATURE_MULTI_TENANT=true
 
 ## Commands Disponiveis
 
+### Desenvolvimento
+
 | Command | Funcao |
 |---------|--------|
 | `mise run dev` | Start frontend |
 | `mise run build` | Build producao |
 | `mise run test` | Testes Vitest |
+| `mise run lint` | Linting |
 | `mise run nocodb:start` | Backend containers |
 | `mise run full-stack` | Frontend + Backend |
 | `mise run help` | Lista todos comandos |
+
+### Deploy Fly.io
+
+> **Referencia:** `docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md`
+
+| Command | Funcao |
+|---------|--------|
+| `mise run deploy:check` | Verifica pre-requisitos |
+| `mise run deploy:prod` | Deploy para Fly.io |
+| `mise run deploy:logs` | Logs em tempo real |
+| `mise run deploy:status` | Status da aplicacao |
+| `mise run deploy:open` | Abrir no browser |
+| `mise run deploy:suspend` | Pausar (economia) |
+| `mise run deploy:resume` | Reativar app |
+
+### Seguranca
+
+| Command | Funcao |
+|---------|--------|
+| `mise run security:scan` | Scan gitleaks completo |
+| `mise run security:scan-staged` | Scan arquivos staged |
 
 ---
 
@@ -199,11 +222,14 @@ DEVCORP CONSULTING:
 |-----------|------|
 | Gaps | `docs/backlog/GAPS-DEMO-B2B.md` v5.0.0 |
 | Roadmap | `docs/backlog/ROADMAP.md` v6.0.0 |
+| Deploy Fly.io | `docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md` v1.1 |
+| Acoes Usuario | `docs/backlog/acoes-usuario/ACOES-PENDENTES.md` |
 | Diretrizes Ambiente | `estrutura-padrao/.../ambiente-centralizado/` |
 | Arquivo Original | `/home/notebook/workspace/app-controle/CLAUDE.md` |
 
 ---
 
-*app-controle v10.0.1 | 2026-01-28 | Conformidade ambiente-centralizado*
+*app-controle v10.0.2 | 2026-01-29 | Conformidade ambiente-centralizado + Deploy Fly.io*
 *Stack: React + Vite + Bun + NocoDB + PostgreSQL*
 *RBAC: 82% (18/22 permissoes) | i18n: pt-BR, en-US, es-ES*
+*Tasks: 53+ (dev, deploy:*, security:*, nocodb:*)*
