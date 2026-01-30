@@ -4,15 +4,15 @@ Nome: estrutura_projeto_flusistip
 Funcao: Contextualizar agentes sobre a estrutura do projeto FluSisTip
 Frequencia: Atualizado automaticamente via hook SessionStart
 Versao: v1
-Ultima Atualizacao: 2026-01-29T08:03:16-0300
+Ultima Atualizacao: 2026-01-30T18:19:16-0300
 Gerado por: hook C session-start
 ---
 
 ## Estrutura do Projeto FluSisTip
 
 **Path**: `/home/notebook/workspace/flusistip`
-**Arquivos**: 55477 | **Diretorios**: 511
-**Namespaces Clojure**: 85 | **FII-MIN**: 83
+**Arquivos**: 55447 | **Diretorios**: 505
+**Namespaces Clojure**: 86 | **FII-MIN**: 88
 
 ### Exclusoes Inteligentes
 ```
@@ -108,43 +108,34 @@ Gerado por: hook C session-start
 │   │   │   ├── screenshot-playground-validacao.png
 │   │   │   └── screenshot-workflows-validacao.png
 │   │   ├── cross-cutting
+│   │   │   ├── arquivo
+│   │   │   ├── data
 │   │   │   ├── screenshots
 │   │   │   ├── tracer-bullets
 │   │   │   ├── vertical-slices
 │   │   │   ├── ACCESS_CONTROL_SPEC.md
-│   │   │   ├── analise-gaps-e2e-seed-minimo-2026-01-09.md
+│   │   │   ├── backlog-2026-01-30-validacao-e2e-gaps-pendentes.md
 │   │   │   ├── capability-matrix.md
-│   │   │   ├── demonstracao-completa.md
-│   │   │   ├── DIAGNOSTICO-DEMONSTRACAO-LOCALHOST-2026-01-12.md
-│   │   │   ├── diagnostico-validacao-piloto-2026-01-09.md
-│   │   │   ├── INDICE-ARTEFATOS-2026-01-16.md
 │   │   │   ├── Iniciarqae2e.md
 │   │   │   ├── instalacao.md
 │   │   │   ├── MATRIZ-DEPENDENCIAS.md
 │   │   │   ├── NAVIGATION_MAP.md
-│   │   │   ├── PLANO-CORRECAO-BUGS-PERSONAS-2026-01-28.md
+│   │   │   ├── PLANO-VALIDACAO-FLUXO-E2E.md
+│   │   │   ├── PLANO-VALIDACAO-HITL-FUNCIONAL.md
+│   │   │   ├── PLANO-VALIDACAO-LLM-INTEGRATION.md
 │   │   │   ├── PLANO-VALIDACAO-PERSONAS-E2E-2026-01-28.md
 │   │   │   ├── primeiros-passos.md
 │   │   │   ├── QA-COMPLEMENTAR-FUNCIONALIDADES-MVP.md
 │   │   │   ├── QA-INDICE-COBERTURA-MVP.md
 │   │   │   ├── QA-MANUAL-NAVEGADOR-SEEDMIN.md
 │   │   │   ├── QA-PILOTO-MVP.md
-│   │   │   ├── QA-PILOTO-RESULTADO-2026-01-20.md
 │   │   │   ├── RBAC_MATRIX.md
-│   │   │   ├── RELATORIO-ALINHAMENTO-DOCS-2026-01-19.md
-│   │   │   ├── relatorio-ativacao-2026-01-21.md
-│   │   │   ├── relatorio-e2e-2026-01-05.md
-│   │   │   ├── relatorio-e2e-2026-01-08.md
-│   │   │   ├── relatorio-e2e-2026-01-16.md
-│   │   │   ├── relatorio-e2e-seed-minimo-2026-01-10.md
-│   │   │   ├── RELATORIO-FORENSE-QA-2026-01-26.md
-│   │   │   ├── RELATORIO-MANUTENCAO-2026-01-16.md
-│   │   │   ├── relatorio-testes-backend-2026-01-08.md
-│   │   │   ├── RELATORIO-VALIDACAO-E2E-2026-01-28.md
+│   │   │   ├── RELATORIO-FORENSE-ALINHAMENTO-MVP-2026-01-29.md
+│   │   │   ├── RELATORIO-QA-E2E-MCP-2026-01-29.md
 │   │   │   ├── RELATORIO-VALIDACAO-PERSONAS-CONSOLIDADO-2026-01-28.md
-│   │   │   ├── testes-e2e-manual.md
-│   │   │   ├── VALIDACAO-QA-APIS-PLAYGROUND.md
-│   │   │   └── VERIFICACAO-FORENSE-QA-2026-01-21.md
+│   │   │   └── testes-e2e-manual.md
+│   │   ├── data
+│   │   │   └── datomic
 │   │   ├── fase-1
 │   │   │   ├── 01-hub-db-connection.clj
 │   │   │   ├── 02-hub-db-schema.clj
@@ -213,6 +204,7 @@ Gerado por: hook C session-start
 │   │   ├── hub.api.tenant-isolation-test.clj
 │   │   ├── hub.api.v1.usuarios.clj
 │   │   ├── hub.api.workflow.advance.clj
+│   │   ├── hub.api.workflow.decision-api.clj
 │   │   ├── hub.api.workflow.init.clj
 │   │   ├── hub.api.workflow.list.clj
 │   │   ├── hub.auth.cljs
@@ -232,6 +224,7 @@ Gerado por: hook C session-start
 │   │   ├── hub.components.metrics.dashboard.cljs
 │   │   ├── hub.components.notifications.in-app.cljs
 │   │   ├── hub.components.playground.biblioteca.cljs
+│   │   ├── hub.components.playground.create-modal.cljs
 │   │   ├── hub.components.playground.editor.cljs
 │   │   ├── hub.components.playground.pipeline.cljs
 │   │   ├── hub.components.review.claims.cljs
@@ -239,6 +232,7 @@ Gerado por: hook C session-start
 │   │   ├── hub.components.review.modal.cljs
 │   │   ├── hub.components.review.sensitive.cljs
 │   │   ├── hub.components.tenant.usuarios.cljs
+│   │   ├── hub.config.clj
 │   │   ├── hub.config.cljs
 │   │   ├── hub.core.cljs
 │   │   ├── hub.db.cljs
@@ -273,7 +267,10 @@ Gerado por: hook C session-start
 │   │   ├── hub.domain.workflow-comment.clj
 │   │   ├── hub.events.cljs
 │   │   ├── hub.integrations.vertex.clj
+│   │   ├── hub.llm.claude.clj
 │   │   ├── hub.llm.client.clj
+│   │   ├── hub.llm.executor.clj
+│   │   ├── hub.llm.gemini.clj
 │   │   ├── hub.notifications.in-app.clj
 │   │   ├── hub.notifications.service.clj
 │   │   ├── hub.notifications.sla-alert.clj
@@ -306,6 +303,8 @@ Gerado por: hook C session-start
 │   │   ├── 08-notificacoes.edn
 │   │   ├── 09-schema-auth.edn
 │   │   ├── 10-schema-decision-points.edn
+│   │   ├── 11-schema-approval-workflow.edn
+│   │   ├── 12-schema-seed-componentes.edn
 │   │   ├── exemplo-uso.clj
 │   │   ├── MODELAGEM.md
 │   │   └── README.md
@@ -357,6 +356,8 @@ Gerado por: hook C session-start
 │       │   └── sistema-s2.4-alteracoes-finais.md
 │       └── LEIAME.md
 ├── frontend
+│   ├── data
+│   │   └── datomic
 │   ├── public
 │   │   ├── css
 │   │   │   └── output.css
@@ -438,7 +439,17 @@ Gerado por: hook C session-start
 │   │   ├── chk-20260128-154606.json
 │   │   ├── chk-20260128-200041.json
 │   │   ├── chk-20260128-200926.json
-│   │   └── chk-20260128-221621.json
+│   │   ├── chk-20260128-221621.json
+│   │   ├── chk-20260129-085122.json
+│   │   ├── chk-20260129-085446.json
+│   │   ├── chk-20260129-092315.json
+│   │   ├── chk-20260129-092948.json
+│   │   ├── chk-20260129-093229.json
+│   │   ├── chk-20260129-123235.json
+│   │   ├── chk-20260129-123248.json
+│   │   ├── chk-20260129-125854.json
+│   │   ├── chk-20260130-123908.json
+│   │   └── chk-20260130-124559.json
 │   └── INDEX.md
 ├── resources
 │   ├── migrations
@@ -450,7 +461,9 @@ Gerado por: hook C session-start
 │       ├── fluxos.edn
 │       ├── kanban.edn
 │       ├── revisores.edn
+│       ├── sistemas-clinica-nova.edn
 │       ├── sistemas.edn
+│       ├── tenant-clinica-nova.edn
 │       └── tenant-piloto.edn
 ├── scripts
 │   └── validate-routes.js
@@ -522,6 +535,7 @@ Gerado por: hook C session-start
 │       │   ├── sla_alert.clj
 │       │   └── validacao_concluida.clj
 │       ├── provisioning
+│       │   ├── migration_uuids.clj
 │       │   ├── seed.clj
 │       │   └── tenant_piloto.clj
 │       ├── sla
@@ -571,7 +585,7 @@ Gerado por: hook C session-start
 ├── STATUS-MIGRATIONS-APLICADAS.md
 └── SUMARIO-EXECUTIVO-IMPLEMENTACAO.md
 
-128 directories, 420 files
+134 directories, 428 files
 
 ```
 

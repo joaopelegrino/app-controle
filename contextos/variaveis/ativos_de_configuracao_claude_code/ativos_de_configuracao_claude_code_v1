@@ -2,10 +2,10 @@
 Tipo: Contexto Variável
 Nome: ativos_de_configuracao_claude_code
 Função: Contextualizar agentes sobre a configuração atual disponível
-Frequência: Atualizado automaticamente via hook PostToolUse
+Frequência: Atualizado automaticamente via hook SessionStart
 Versão: v1
-Última Atualização: 2026-01-29T08:08:26-0300
-Gerado por: hook C post-tool-use
+Última Atualização: 2026-01-30T18:19:14-0300
+Gerado por: hook C session-start
 ---
 
 ## Estrutura de Configuração Claude Code
@@ -53,4 +53,4 @@ Gerado por: hook C post-tool-use
 
 ---
 
-*Atualizado automaticamente por: post-tool-use (C)*
+*Atualizado automaticamente por: session-start (C)*
