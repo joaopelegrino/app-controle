@@ -4,7 +4,7 @@ Nome: ativos_de_configuracao_claude_code
 Função: Contextualizar agentes sobre a configuração atual disponível
 Frequência: Atualizado automaticamente via hook SessionStart
 Versão: v1
-Última Atualização: 2026-01-30T20:40:26-0300
+Última Atualização: 2026-01-31T08:39:42-0300
 Gerado por: hook C session-start
 ---
 
