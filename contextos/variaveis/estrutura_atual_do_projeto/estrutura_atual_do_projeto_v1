@@ -4,7 +4,7 @@ Nome: estrutura_atual_do_projeto
 Função: Contextualizar agentes sobre o estado atual do projeto
 Frequência: Atualizado automaticamente via hook SessionStart
 Versão: v1
-Última Atualização: 2026-01-30T18:19:14-0300
+Última Atualização: 2026-01-30T20:40:26-0300
 Gerado por: hook C session-start
 ---
 
@@ -28,6 +28,10 @@ Gerado por: hook C session-start
 │   ├── backend
 │   │   ├── NOCODB-QUICKSTART.md
 │   │   └── PERSONAS-NAO-TECNICAS.md
+│   ├── backend-docs
+│   │   ├── database.md
+│   │   ├── nocodb.md
+│   │   └── overview.md
 │   ├── backlog
 │   │   ├── acoes-usuario
 │   │   ├── arquivo-2026-01
@@ -39,6 +43,24 @@ Gerado por: hook C session-start
 │   │   └── 01-visao-geral
 │   ├── deploy
 │   │   └── FLYIO-BILLING-ACOES-USUARIO.md
+│   ├── deploy-docs
+│   │   ├── ci-cd.md
+│   │   ├── flyio.md
+│   │   └── overview.md
+│   ├── development
+│   │   ├── configuration.md
+│   │   ├── hooks.md
+│   │   ├── tasks.md
+│   │   ├── testing.md
+│   │   └── tools.md
+│   ├── guide
+│   │   ├── faq.md
+│   │   ├── getting-started.md
+│   │   └── quick-start.md
+│   ├── reference
+│   │   ├── cli-reference.md
+│   │   ├── i18n.md
+│   │   └── rbac.md
 │   ├── screenshots
 │   │   ├── admin-dashboard-sprint10.png
 │   │   ├── hub-authenticated.png
@@ -51,8 +73,14 @@ Gerado por: hook C session-start
 │   │   ├── patterns
 │   │   ├── stack-implementation
 │   │   └── testing
+│   ├── users
+│   │   ├── admin-guide.md
+│   │   ├── executive-guide.md
+│   │   ├── instructor-guide.md
+│   │   └── student-guide.md
 │   ├── ESTRUTURA-PLATAFORMA-MVP.md
 │   ├── GUIA-TRANSCRICAO-PARA-CURSO.md
+│   ├── index.md
 │   ├── PLANEJAMENTO-SIX-LAYER-SISTEMA.md
 │   ├── QUICK-START-TRANSCRICAO.md
 │   ├── README.md
@@ -124,7 +152,10 @@ Gerado por: hook C session-start
 │       ├── chk-20260128-141858.json
 │       ├── chk-20260129-080503.json
 │       ├── chk-20260129-080845.json
-│       └── chk-20260129-081200.json
+│       ├── chk-20260129-081200.json
+│       ├── chk-20260130-183645.json
+│       ├── chk-20260130-203758.json
+│       └── chk-20260130-203855.json
 ├── public
 │   └── locales
 │       ├── en-US
@@ -244,7 +275,7 @@ Gerado por: hook C session-start
 ├── vite.config.js
 └── vitest.config.js
 
-54 directories, 178 files
+60 directories, 203 files
 
 ```
 
