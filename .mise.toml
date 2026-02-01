@@ -118,14 +118,15 @@ fi
 # 5. Menu de comandos
 echo ""
 echo "╔════════════════════════════════════════════════════════════════╗"
-echo "║  📦 app-controle - MVP Simples (Bash + NocoDB)                 ║"
+echo "║  📦 app-controle - Plataforma B2B TrainB2B                     ║"
 echo "╠════════════════════════════════════════════════════════════════╣"
 echo "║  Frontend:  mise dev              (React + Vite)               ║"
 echo "║  Backend:   mise nocodb:start     (PostgreSQL + NocoDB)        ║"
 echo "║  Full:      mise full-stack       (Frontend + Backend)         ║"
-echo "║  E2E:       mise e2e:ui            (Playwright UI)             ║"
-echo "║  Verify:    mise check             (Verificar ambiente)        ║"
-echo "║  Help:      mise help              (Lista todos comandos)      ║"
+echo "║  Docs:      mise docs:dev         (VitePress :5173)            ║"
+echo "║  E2E:       mise e2e:ui           (Playwright UI)              ║"
+echo "║  Verify:    mise check            (Verificar ambiente)         ║"
+echo "║  Help:      mise help             (Lista todos comandos)       ║"
 echo "╚════════════════════════════════════════════════════════════════╝"
 echo ""
 """
@@ -503,29 +504,41 @@ description = "Inicia Chrome com remote debugging para MCP"
 run = "./scripts/start-chrome-debug.sh"
 
 # =============================================================================
-# TAREFAS DE DOCUMENTAÇÃO
+# TAREFAS DE DOCUMENTAÇÃO (VitePress)
 # =============================================================================
+
+[tasks."docs:dev"]
+description = "Inicia servidor de documentacao (VitePress)"
+run = "bun run docs:dev"
+
+[tasks."docs:build"]
+description = "Build da documentacao (VitePress)"
+run = "bun run docs:build"
+
+[tasks."docs:preview"]
+description = "Preview do build de documentacao"
+run = "bun run docs:preview"
 
 [tasks.docs]
 description = "Mostra links de documentação importante"
 run = """
 echo "📚 Documentação do projeto:"
 echo ""
-echo "🎯 Quickstart:"
-echo "   docs/backend/NOCODB-QUICKSTART.md"
+echo "🌐 Docs UI (VitePress):"
+echo "   mise run docs:dev       # Servidor local em http://localhost:5173/docs/"
+echo "   mise run docs:build     # Build para producao"
+echo "   mise run docs:preview   # Preview do build"
 echo ""
-echo "👥 Personas (como usar NocoDB):"
-echo "   docs/backend/PERSONAS-NAO-TECNICAS.md"
+echo "📁 Arquivos fonte:"
+echo "   docs/guide/             # Guias gerais"
+echo "   docs/development/       # Para desenvolvedores"
+echo "   docs/deploy-docs/       # Deploy e CI/CD"
+echo "   docs/backend-docs/      # NocoDB e PostgreSQL"
+echo "   docs/users/             # Guias por perfil"
+echo "   docs/reference/         # Referencia tecnica"
 echo ""
-echo "🗄️  Banco de dados:"
-echo "   database/README.md"
-echo ""
-echo "🏭 Factory Droid:"
-echo "   .factory/README.md"
-echo "   .factory/AGENTS.md"
-echo ""
-echo "📋 Roadmap:"
-echo "   docs/backlog/ROADMAP.md"
+echo "📋 Outros:"
+echo "   docs/backlog/ROADMAP.md # Roadmap do projeto"
 """
 
 [tasks.help]
