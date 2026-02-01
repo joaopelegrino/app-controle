@@ -2,11 +2,12 @@
 Tipo: Contexto de Projeto
 Nome: app-controle
 Descricao: Plataforma B2B de treinamento tecnico corporativo
-Versao: v11.0.0
+Versao: v11.1.0
 Data: 2026-02-01
 Stack: React + Vite + Bun + NocoDB + PostgreSQL
 Healthcare: false
 Changelog: |
+  v11.1.0 - Command ativar-ambiente-dev + .mcp.json (Chrome DevTools MCP)
   v11.0.0 - Documentacao conceitual completa (Missao, Personas, Arquitetura, ADRs)
   v10.0.2 - Secao Deploy Fly.io, tasks mise deploy:*, conformidade acoes-usuario
   v10.0.1 - Conformidade com ambiente-centralizado, frontmatter padrao
@@ -17,7 +18,7 @@ Diretrizes: contextos/globais/SISTEMA_PROGRAMACAO/metodo-agent/ambiente-centrali
 
 # app-controle (TrainB2B) - Plataforma B2B de Treinamento Corporativo
 
-> **Version:** 11.0.0 | **Date:** 2026-02-01 | **Status:** Production + i18n + White-Label + CRUD Cursos + Deploy
+> **Version:** 11.1.0 | **Date:** 2026-02-01 | **Status:** Production + i18n + White-Label + CRUD Cursos + Deploy + MCP
 > **Project Type:** Plataforma B2B de treinamento tecnico corporativo
 > **Sprint Atual:** 14 - CRUD de Cursos COMPLETO (1 US)
 > **Sprints Completos:** 6, 7, 8, 9, 10, 11, 12, 13, 14
@@ -272,6 +273,59 @@ TOTAL MVP:    [=================---]  85%
 | mise.lock | P1 | Executar `mise install` para gerar |
 | Feature Flags | P3 | Implementar sistema de feature flags |
 | Paranoid Mode | P3 | Habilitar para producao |
+
+---
+
+## Ativacao de Ambiente
+
+> **Command:** `/skill ativar-ambiente-dev` ou ler `.claude/commands/ativar-ambiente-dev.md`
+
+### Ativacao Rapida
+
+```bash
+# 1. Verificar ambiente
+cd /home/notebook/workspace/app-controle
+mise check
+
+# 2. Iniciar full-stack (Frontend + NocoDB)
+mise full-stack
+
+# 3. Iniciar Chrome DevTools MCP (opcional, para validacao visual)
+mise chrome-debug
+```
+
+### 6 Fases de Ativacao
+
+| Fase | Descricao | Comando |
+|------|-----------|---------|
+| 1 | Verificar Ferramentas mise | `mise list` |
+| 2 | Verificar Frontend | `ls node_modules` |
+| 3 | Verificar Backend NocoDB | `mise nocodb:health` |
+| 4 | Verificar MCP Chrome | `curl http://127.0.0.1:9222/json/version` |
+| 5 | Ativar Ambiente | `mise full-stack` |
+| 6 | Gerar Relatorio | (automatico via command) |
+
+### Chrome DevTools MCP
+
+Configuracao em `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "chrome-devtools-app-controle": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest", "--browserUrl=http://127.0.0.1:9222"]
+    }
+  }
+}
+```
+
+**Comandos MCP disponiveis:**
+- `take_screenshot` - Capturar tela
+- `take_snapshot` - DOM como texto
+- `click`, `fill`, `fill_form` - Interagir com UI
+- `list_console_messages` - Ver erros JS
+- `list_network_requests` - Ver requests HTTP
 
 ---
 
@@ -569,12 +623,15 @@ Matriz de permissoes em `src/config/` permite ajustes.
 | Deploy Fly.io | `docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md` v1.1 |
 | Acoes Usuario | `docs/backlog/acoes-usuario/ACOES-PENDENTES.md` |
 | Diretrizes Ambiente | `estrutura-padrao/.../ambiente-centralizado/` |
+| **Ativar Ambiente** | `.claude/commands/ativar-ambiente-dev.md` v1 |
+| **MCP Config** | `.mcp.json` (Chrome DevTools MCP) |
 | Arquivo Original | `/home/notebook/workspace/app-controle/CLAUDE.md` |
 
 ---
 
-*app-controle v11.0.0 | 2026-02-01 | Documentacao conceitual completa*
+*app-controle v11.1.0 | 2026-02-01 | Command ativar-ambiente-dev + MCP*
 *Stack: React + Vite + Bun + NocoDB + PostgreSQL*
 *RBAC: 82% (18/22 permissoes) | i18n: pt-BR, en-US, es-ES*
 *Tasks mise: 38 (dev, deploy:*, security:*, nocodb:*)*
 *Personas: 4 (Admin, Instructor, Student, C-Level)*
+*MCP: Chrome DevTools (porta 9222) | Command: ativar-ambiente-dev v1*
