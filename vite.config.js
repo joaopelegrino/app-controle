@@ -12,6 +12,12 @@ export default defineConfig({
         target: 'http://localhost:8081',
         changeOrigin: true,
         secure: false
+      },
+      // Proxy para documentacao VitePress em desenvolvimento
+      '/docs': {
+        target: 'http://localhost:5173',
+        changeOrigin: true,
+        secure: false
       }
     }
   },

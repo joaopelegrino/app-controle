@@ -519,6 +519,33 @@ run = "bun run docs:build"
 description = "Preview do build de documentacao"
 run = "bun run docs:preview"
 
+[tasks."dev:with-docs"]
+description = "Inicia Frontend + Docs integrados (proxy /docs)"
+run = """
+#!/bin/bash
+echo "🚀 Iniciando ambiente de desenvolvimento integrado..."
+echo ""
+echo "📌 Frontend:    http://localhost:3001"
+echo "📌 Docs:        http://localhost:3001/docs/ (via proxy)"
+echo "📌 Docs direto: http://localhost:5173/docs/"
+echo ""
+
+# Iniciar VitePress em background
+echo "📚 Iniciando documentacao (VitePress)..."
+bun run docs:dev &
+DOCS_PID=$!
+
+# Aguardar VitePress iniciar
+sleep 3
+
+# Iniciar frontend
+echo "⚛️  Iniciando frontend (Vite)..."
+bun run dev
+
+# Ao finalizar, matar VitePress
+kill $DOCS_PID 2>/dev/null
+"""
+
 [tasks.docs]
 description = "Mostra links de documentação importante"
 run = """
@@ -526,6 +553,7 @@ echo "📚 Documentação do projeto:"
 echo ""
 echo "🌐 Docs UI (VitePress):"
 echo "   mise run docs:dev       # Servidor local em http://localhost:5173/docs/"
+echo "   mise run dev:with-docs  # Frontend + Docs integrados"
 echo "   mise run docs:build     # Build para producao"
 echo "   mise run docs:preview   # Preview do build"
 echo ""

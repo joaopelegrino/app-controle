@@ -2,8 +2,8 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "TrainB2B Docs",
-  description: "Documentacao da Plataforma B2B de treinamento tecnico corporativo",
+  title: "Sulical Docs",
+  description: "Central de Ajuda - Plataforma de Treinamento Corporativo Sulical",
 
   // Base URL (ajustar se deploy em subpath)
   base: '/docs/',
@@ -12,13 +12,18 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.svg',
+    siteTitle: 'Sulical',
 
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guia', link: '/guide/getting-started' },
       { text: 'Desenvolvimento', link: '/development/tools' },
       { text: 'Deploy', link: '/deploy-docs/overview' },
-      { text: 'Referencia', link: '/reference/cli-reference' }
+      { text: 'Referencia', link: '/reference/cli-reference' },
+      {
+        text: 'Acessar Plataforma',
+        link: '/'
+      }
     ],
 
     sidebar: {
@@ -96,8 +101,8 @@ export default defineConfig({
     },
 
     footer: {
-      message: 'TrainB2B - Plataforma B2B de Treinamento',
-      copyright: 'Copyright 2026'
+      message: 'Sulical - Capacitação Técnica para sua Empresa',
+      copyright: '© 2026 Sulical - Todos os direitos reservados'
     },
 
     editLink: {

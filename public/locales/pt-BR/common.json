@@ -1,8 +1,8 @@
 {
   "app": {
-    "name": "TrainB2B",
-    "tagline": "Plataforma de Treinamento Corporativo",
-    "copyright": "© 2026 - Treinamento Corporativo"
+    "name": "Sulical",
+    "tagline": "Capacitação Técnica para sua Empresa",
+    "copyright": "© 2026 Sulical - Todos os direitos reservados"
   },
   "navigation": {
     "home": "Início",
@@ -13,7 +13,9 @@
     "executive": "Painel Executivo",
     "settings": "Configurações",
     "profile": "Perfil",
-    "logout": "Sair"
+    "logout": "Sair",
+    "help": "Ajuda",
+    "docs": "Documentação"
   },
   "buttons": {
     "save": "Salvar",
@@ -103,7 +105,7 @@
       }
     },
     "footer": {
-      "description": "Este é o MVP da Plataforma B2B de treinamento técnico corporativo. Novos cursos seguindo o padrão Bash serão adicionados em breve.",
+      "description": "Plataforma Sulical de capacitação técnica corporativa. Novos cursos são adicionados regularmente.",
       "tip": "Consulte o Caminho Proposto para ver a sequência recomendada de aprendizado."
     }
   }

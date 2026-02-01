@@ -3,9 +3,9 @@
 layout: home
 
 hero:
-  name: "TrainB2B"
-  text: "Documentacao"
-  tagline: Plataforma B2B de treinamento tecnico corporativo
+  name: "Sulical"
+  text: "Central de Ajuda"
+  tagline: Capacitação Técnica para sua Empresa
   actions:
     - theme: brand
       text: Getting Started
@@ -14,8 +14,8 @@ hero:
       text: Quick Start
       link: /guide/quick-start
     - theme: alt
-      text: FAQ
-      link: /guide/faq
+      text: Acessar Plataforma
+      link: /
 
 features:
   - title: Guia do Desenvolvedor
@@ -89,11 +89,11 @@ mise docs             # Links de docs
 
 ## Versao
 
-- **Versao**: 10.0.2
+- **Versao**: 11.0.0
 - **Data**: 2026-02-01
 - **Status**: Producao
 - **Sprints Completos**: 6-14
 
 ---
 
-*Documentacao gerada com [VitePress](https://vitepress.dev), seguindo diretrizes [ambiente-centralizado](https://mise.jdx.dev)*
+*Documentacao Sulical - Gerada com [VitePress](https://vitepress.dev)*

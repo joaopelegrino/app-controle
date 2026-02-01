@@ -1,19 +1,22 @@
-# Build stage
-FROM node:20-alpine AS builder
+# Build stage - Frontend + Docs
+FROM oven/bun:1 AS builder
 
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package.json bun.lockb ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN bun install --frozen-lockfile
 
 # Copy source code
 COPY . .
 
-# Build the application
-RUN npm run build
+# Build frontend application
+RUN bun run build
+
+# Build documentation (VitePress)
+RUN bun run docs:build
 
 # Production stage
 FROM nginx:alpine
@@ -21,8 +24,11 @@ FROM nginx:alpine
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copy built application from builder stage
+# Copy built frontend from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy built documentation from builder stage
+COPY --from=builder /app/docs/.vitepress/dist /usr/share/nginx/docs
 
 # Add health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

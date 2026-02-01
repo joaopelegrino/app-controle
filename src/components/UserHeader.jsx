@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { User, LogOut, Building2, ChevronDown, Shield } from 'lucide-react';
+import { User, LogOut, Building2, ChevronDown, Shield, HelpCircle } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { usePermissions } from '../hooks/usePermissions';
 import { MobileMenu, MobileMenuButton } from './MobileMenu';
 import { LanguageSelector } from './LanguageSelector';
+import { getConfig } from '../config/platform';
 
 /**
  * Header com informações do usuário logado
@@ -54,8 +55,18 @@ export function UserHeader() {
               </div>
             </div>
 
-          {/* Seletor de Idioma + Menu do Usuário */}
+          {/* Ajuda + Seletor de Idioma + Menu do Usuário */}
           <div className="flex items-center gap-2">
+            {/* Botão de Ajuda/Documentação */}
+            <a
+              href={getConfig('platform.docsUrl', '/docs/')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+              title={t('common:navigation.help')}
+            >
+              <HelpCircle className="w-5 h-5" />
+            </a>
             <LanguageSelector variant="buttons" className="hidden sm:flex" />
             <div className="relative">
             <button

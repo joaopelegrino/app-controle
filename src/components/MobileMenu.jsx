@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Menu, X, Home, LayoutDashboard, Users, BarChart2,
-  GraduationCap, LogOut, Building2, User, ChevronRight
+  GraduationCap, LogOut, Building2, User, ChevronRight, HelpCircle, ExternalLink
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { usePermissions } from '../hooks/usePermissions';
+import { getConfig } from '../config/platform';
 
 /**
  * MobileMenu - Menu hamburger para navegação mobile
@@ -189,8 +190,24 @@ export function MobileMenu({ isOpen, onClose }) {
           </ul>
         </nav>
 
-        {/* Footer com Logout */}
-        <div className="p-4 border-t border-gray-200">
+        {/* Footer com Ajuda + Logout */}
+        <div className="p-4 border-t border-gray-200 space-y-1">
+          {/* Link para Documentação */}
+          <a
+            href={getConfig('platform.docsUrl', '/docs/')}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-between px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+            onClick={onClose}
+          >
+            <div className="flex items-center gap-3">
+              <HelpCircle className="w-5 h-5 text-gray-500" />
+              <span className="font-medium">Ajuda</span>
+            </div>
+            <ExternalLink className="w-4 h-4 text-gray-400" />
+          </a>
+
+          {/* Logout */}
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-3 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
