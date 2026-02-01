@@ -13,6 +13,10 @@ node_modules/
 /dist
 dist-ssr
 
+# VitePress (docs)
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+
 # Logs
 logs
 *.log
