@@ -2,11 +2,12 @@
 Tipo: Contexto de Projeto
 Nome: app-controle
 Descricao: Plataforma B2B de treinamento tecnico corporativo
-Versao: v10.0.2
-Data: 2026-01-29
+Versao: v11.0.0
+Data: 2026-02-01
 Stack: React + Vite + Bun + NocoDB + PostgreSQL
 Healthcare: false
 Changelog: |
+  v11.0.0 - Documentacao conceitual completa (Missao, Personas, Arquitetura, ADRs)
   v10.0.2 - Secao Deploy Fly.io, tasks mise deploy:*, conformidade acoes-usuario
   v10.0.1 - Conformidade com ambiente-centralizado, frontmatter padrao
   v10.0.0 - Sprint 14 CRUD Cursos completo
@@ -14,12 +15,228 @@ Changelog: |
 Diretrizes: contextos/globais/SISTEMA_PROGRAMACAO/metodo-agent/ambiente-centralizado/
 ---
 
-# app-controle (Plataforma B2B) - Configuracao Claude Code
+# app-controle (TrainB2B) - Plataforma B2B de Treinamento Corporativo
 
-> **Version:** 10.0.2 | **Date:** 2026-01-29 | **Status:** Production + i18n + White-Label + CRUD Cursos + Deploy
+> **Version:** 11.0.0 | **Date:** 2026-02-01 | **Status:** Production + i18n + White-Label + CRUD Cursos + Deploy
 > **Project Type:** Plataforma B2B de treinamento tecnico corporativo
 > **Sprint Atual:** 14 - CRUD de Cursos COMPLETO (1 US)
 > **Sprints Completos:** 6, 7, 8, 9, 10, 11, 12, 13, 14
+
+---
+
+## Missao e Visao
+
+### Missao
+
+Democratizar o treinamento tecnico corporativo atraves de uma plataforma B2B que permite empresas criarem e gerenciarem trilhas de capacitacao personalizadas, com suporte multi-idioma e identidade visual propria.
+
+### Visao
+
+Ser a plataforma de referencia para treinamento tecnico B2B no Brasil, oferecendo:
+- Cursos personalizaveis por empresa (white-label)
+- Multi-idioma nativo (pt-BR, en-US, es-ES)
+- Metricas de progresso e ROI para gestores
+- Custo acessivel para PMEs
+
+### Analogia
+
+**"Hotmart/Teachable para empresas"** - plataforma onde empresas criam seus proprios ambientes de treinamento com marca propria, gerenciam colaboradores e acompanham resultados.
+
+---
+
+## Proposta de Valor
+
+### Para Empresas (Clientes B2B)
+
+| Metrica | Antes | Depois | Melhoria |
+|---------|-------|--------|----------|
+| LMS | Generico | Personalizado (white-label) | Marca propria |
+| Idiomas | Apenas EN | pt-BR, en-US, es-ES | Acessibilidade |
+| Metricas | Manuais | Dashboard automatico | Visibilidade ROI |
+| Setup | Semanas | Horas | -95% tempo |
+| Custo | $$$$/mes | $/usuario | Escala |
+
+### Para Gestores (Admin/C-Level)
+
+- Dashboard executivo com metricas agregadas
+- Relatorios de progresso por equipe
+- Controle de acesso granular (RBAC)
+- Certificados automaticos
+
+### Para Colaboradores (Students)
+
+- Interface intuitiva
+- Progresso visual
+- Certificados ao completar
+- Acesso multi-dispositivo
+
+---
+
+## Arquitetura de Dominio
+
+### Hierarquia de Entidades
+
+```
+COMPANY (Empresa cliente - tenant)
+  └─ USER (Usuario)
+      ├─ role: c_level | admin | instructor | student
+      └─ ENROLLMENT (Matricula em curso)
+          └─ PROGRESS (Progresso por modulo)
+              └─ MODULE (Modulo do curso)
+                  └─ COURSE (Curso)
+```
+
+### Cardinalidade
+
+- 1 COMPANY → N USERS
+- 1 USER → N ENROLLMENTS
+- 1 COURSE → N MODULES
+- 1 ENROLLMENT → N PROGRESS (1 por modulo)
+
+### Isolamento Multi-Tenant
+
+| Camada | Implementacao |
+|--------|---------------|
+| Dados | Filtro por company_id em todas queries |
+| UI | White-label (logo, cores) por empresa |
+| Auth | Login por empresa (subdominio futuro) |
+| RBAC | Permissoes isoladas por tenant |
+
+---
+
+## Personas (4 Perfis Principais)
+
+### 1. Admin (Gestor da Empresa)
+
+- **Perfil:** RH/T&D Manager, 35-50 anos, responsavel por capacitacao
+- **Dor:** Falta visibilidade de progresso, LMS caro e complexo
+- **Job-to-be-Done:** Gerenciar colaboradores, monitorar progresso, gerar relatorios
+- **Features:** CRUD empresas, CRUD usuarios, dashboard, white-label, relatorios
+- **Jornada:** Login → Dashboard → Ver progresso equipe → Gerar relatorio → Ajustar cursos
+- **Escopo MVP:** Gerenciar usuarios e ver progresso
+
+### 2. Instructor (Professor/Criador de Conteudo)
+
+- **Perfil:** Especialista tecnico, 30-45 anos, cria conteudo de treinamento
+- **Dor:** Ferramentas de autoria complexas, sem feedback de engajamento
+- **Job-to-be-Done:** Criar cursos, organizar modulos, acompanhar conclusoes
+- **Features:** CRUD cursos, CRUD modulos, metricas de engajamento
+- **Jornada:** Login → Meus cursos → Criar/editar curso → Ver metricas → Ajustar conteudo
+- **Escopo MVP:** CRUD cursos e modulos
+
+### 3. Student (Colaborador em Treinamento)
+
+- **Perfil:** Funcionario, 25-55 anos, precisa capacitar-se
+- **Dor:** Cursos genericos, interface confusa, sem progresso visivel
+- **Job-to-be-Done:** Completar cursos no proprio ritmo, obter certificado
+- **Features:** Dashboard progresso, lista cursos, player de conteudo, certificado
+- **Jornada:** Login → Dashboard → Escolher curso → Assistir modulos → Obter certificado
+- **Escopo MVP:** Consumir cursos e ver progresso
+
+### 4. C-Level (Executivo)
+
+- **Perfil:** CEO/CTO, 40-60 anos, quer ROI do investimento em treinamento
+- **Dor:** Falta metricas de impacto, nao sabe se treinamento funciona
+- **Job-to-be-Done:** Ver ROI, comparar equipes, justificar investimento
+- **Features:** Dashboard executivo, metricas agregadas, comparativos
+- **Jornada:** Login → Dashboard executivo → Ver KPIs → Exportar relatorio
+- **Escopo MVP:** Dashboard com metricas agregadas
+
+### Matriz de Capabilities por Persona
+
+| Persona | CRUD Cursos | CRUD Usuarios | Ver Progresso | Dashboard Exec | Certificados |
+|---------|-------------|---------------|---------------|----------------|--------------|
+| **Admin** | Nao | Sim | Sim (todos) | Nao | Gerar |
+| **Instructor** | Sim | Nao | Sim (cursos) | Nao | Nao |
+| **Student** | Nao | Nao | Sim (proprio) | Nao | Receber |
+| **C-Level** | Nao | Nao | Sim (agregado) | Sim | Nao |
+
+---
+
+## Roadmap e Estado Atual
+
+### Progresso por Sprint
+
+```
+Sprint 6-13:  [====================] 100%  Base + Auth + RBAC + i18n + White-Label
+Sprint 14:    [====================] 100%  CRUD Cursos COMPLETO
+Sprint 15:    [--------------------]   0%  Proxima: Certificados Automaticos
+
+TOTAL MVP:    [=================---]  85%
+```
+
+### Funcionalidades por Status
+
+| Funcionalidade | Sprint | Status |
+|----------------|--------|--------|
+| Auth + Login | 6-7 | ✅ Completo |
+| RBAC (4 roles) | 8 | ✅ 82% (18/22) |
+| Dashboard Student | 9 | ✅ Completo |
+| Dashboard Admin | 10 | ✅ Completo |
+| i18n (3 idiomas) | 11 | ✅ Completo |
+| White-Label | 12-13 | ✅ Completo |
+| CRUD Cursos | 14 | ✅ Completo |
+| Certificados | 15 | Planejado |
+| Gamificacao | 16 | Backlog |
+| Integracao LMS | 17 | Backlog |
+
+### Proximas Prioridades
+
+1. **P0:** Certificados automaticos (Sprint 15)
+2. **P1:** Deploy producao Fly.io
+3. **P2:** Gamificacao (badges, pontos)
+4. **P3:** Integracao com LMS externos
+
+---
+
+## Stack Tecnico
+
+### Frontend
+
+| Tecnologia | Versao | Uso |
+|------------|--------|-----|
+| React | 18.x | UI Framework |
+| Vite | 5.x | Build tool + HMR |
+| Tailwind CSS | 3.x | Styling utility-first |
+| React Router | 6.x | Routing SPA |
+| i18next | 23.x | Internacionalizacao |
+| Lucide React | latest | Icones |
+
+### Backend
+
+| Tecnologia | Versao | Uso |
+|------------|--------|-----|
+| NocoDB | latest | API REST automatica + Admin UI |
+| PostgreSQL | 16 | Database relacional |
+| Docker Compose | 2.x | Orquestracao containers |
+
+### Runtime e Tooling
+
+| Tecnologia | Versao | Uso |
+|------------|--------|-----|
+| Bun | 1.3.3 | Runtime JS (35x mais rapido) |
+| Node | 24.x | Fallback compatibilidade |
+| mise | latest | Gerenciador de versoes |
+| Vitest | latest | Testes unitarios |
+| Playwright | latest | Testes E2E |
+| ESLint | 8.x | Linting |
+
+### Deploy
+
+| Tecnologia | Uso |
+|------------|-----|
+| Fly.io | Hosting (Docker nativo, suspend/resume) |
+| Docker | Build de producao |
+| GitHub Actions | CI/CD |
+
+### Custos Estimados (MVP)
+
+| Servico | Custo/mes |
+|---------|-----------|
+| Fly.io (suspended) | $0 |
+| Fly.io (ativo) | ~$5 |
+| NocoDB (self-hosted) | $0 |
+| **Total MVP** | **$0-5** |
 
 ---
 
@@ -38,14 +255,13 @@ Diretrizes: contextos/globais/SISTEMA_PROGRAMACAO/metodo-agent/ambiente-centrali
 
 | Criterio | Status | Observacao |
 |----------|--------|------------|
-| `.mise.toml` presente | ✅ SIM | 600+ linhas, 53+ tasks |
-| Hooks enter/leave | ✅ SIM | Menu interativo |
+| `.mise.toml` presente | ✅ SIM | 734 linhas, 38 tasks |
+| Hooks enter/leave | ✅ SIM | Menu interativo + verificacoes |
 | bun como runtime | ✅ SIM | Nao usa npm |
 | Security Tools | ✅ SIM | gitleaks configurado |
 | Tasks deploy:* | ✅ SIM | 7 tasks Fly.io |
 | Tasks security:* | ✅ SIM | 2 tasks gitleaks |
 | Lockfile mise | ✅ SIM | `lockfile = true` |
-| Feature Flags | NAO | Implementar |
 | CLAUDE.md em .claude/ | ✅ SIM | Este arquivo |
 | Docs deploy alinhados | ✅ SIM | Conformidade acoes-usuario |
 
@@ -53,6 +269,7 @@ Diretrizes: contextos/globais/SISTEMA_PROGRAMACAO/metodo-agent/ambiente-centrali
 
 | Acao | Prioridade | Descricao |
 |------|------------|-----------|
+| mise.lock | P1 | Executar `mise install` para gerar |
 | Feature Flags | P3 | Implementar sistema de feature flags |
 | Paranoid Mode | P3 | Habilitar para producao |
 
@@ -101,29 +318,6 @@ mise run nocodb:start
 # npm run dev (usar bun)
 # docker-compose up (usar mise task)
 ```
-
----
-
-## Feature Flags
-
-> **TODO:** Implementar feature flags conforme diretrizes
-
-```bash
-# Sugestao baseada em flusistip:
-export FEATURE_DARK_MODE=true
-export FEATURE_EXPORT_PDF=false
-export FEATURE_MULTI_TENANT=true
-```
-
----
-
-## Ambiente
-
-| Servico | URL | Comando |
-|---------|-----|---------|
-| Frontend | http://localhost:3001 | `bun run dev` |
-| NocoDB | http://localhost:8081 | `mise nocodb:start` |
-| PostgreSQL | localhost:5432 | Via Docker |
 
 ---
 
@@ -187,6 +381,7 @@ DEVCORP CONSULTING:
 ## Regras (Conformidade)
 
 ### SEMPRE
+
 - Usar `bun` (nao npm/yarn)
 - Verificar `GAPS-DEMO-B2B.md` antes de implementar
 - Rodar testes antes de commit
@@ -194,11 +389,160 @@ DEVCORP CONSULTING:
 - Usar paths absolutos em documentacao
 
 ### NUNCA
+
 - Usar npm/yarn (somente Bun)
 - Commitar sem rodar testes
 - Implementar sem verificar permissao RBAC
 - Commitar credentials ou `.env` files
 - Usar comandos destrutivos git (force push, hard reset)
+
+---
+
+## Metas e Metricas
+
+### MVP (Q1 2026)
+
+| Metrica | Alvo | Atual |
+|---------|------|-------|
+| Empresas demo | 2 | 2 ✅ |
+| Usuarios demo | 8 | 8 ✅ |
+| Cursos | 10 | WIP |
+| RBAC coverage | 100% | 82% |
+| i18n idiomas | 3 | 3 ✅ |
+| Sprints completos | 15 | 14 |
+
+### Metricas Tecnicas
+
+| Metrica | Alvo | Atual |
+|---------|------|-------|
+| Lighthouse Score | >90 | ~85 |
+| Bundle Size | <500KB | ~400KB |
+| First Paint | <1.5s | ~1.2s |
+| Test Coverage | >70% | ~60% |
+| Tasks mise | 30+ | 38 ✅ |
+
+### Metricas de Qualidade
+
+| Metrica | Alvo |
+|---------|------|
+| Lint warnings | 0 |
+| Type errors | 0 |
+| Testes passando | 100% |
+| Docs atualizados | Sim |
+
+---
+
+## Riscos e Mitigacoes
+
+| Risco | Probabilidade | Impacto | Mitigacao |
+|-------|---------------|---------|-----------|
+| NocoDB limitacoes | Media | Alto | Migrar para API propria se necessario |
+| Billing Fly.io | Baixa | Medio | Limite orcamento + suspend/resume |
+| Secrets expostos | Baixa | Critico | .gitleaks.toml + security:scan |
+| Performance bundle | Media | Medio | Code splitting + lazy loading |
+| Dependencia Bun | Baixa | Baixo | Node como fallback |
+
+---
+
+## Decisoes Arquiteturais (ADRs)
+
+### ADR-001: Bun como Runtime Principal
+
+**Data:** 2026-01-22
+**Decisao:** Usar Bun em vez de npm/node como runtime principal
+**Status:** Aceito
+
+**Contexto:**
+Projeto precisa de performance em dev e CI.
+
+**Razoes:**
+- 35x mais rapido que npm para install
+- Compativel com package.json existente
+- Recomendacao Anthropic (Dez 2025)
+
+**Trade-offs:**
+- Menos maduro que npm
+- Alguns edge cases podem falhar
+
+**Mitigacao:**
+Node.js 24 como fallback em .mise.toml
+
+---
+
+### ADR-002: NocoDB como Backend
+
+**Data:** 2026-01-22
+**Decisao:** Usar NocoDB como backend em vez de API propria
+**Status:** Aceito
+
+**Contexto:**
+MVP precisa de backend rapido com admin visual.
+
+**Razoes:**
+- API REST automatica a partir de schema
+- Admin UI para gestao de dados
+- PostgreSQL como database real
+- Setup em minutos
+
+**Trade-offs:**
+- Limitacoes em customizacao
+- Dependencia de projeto externo
+
+**Mitigacao:**
+Schema PostgreSQL permite migrar para API propria no futuro.
+
+---
+
+### ADR-003: Fly.io para Deploy
+
+**Data:** 2026-01-22
+**Decisao:** Usar Fly.io em vez de Vercel/Netlify
+**Status:** Aceito
+
+**Contexto:**
+Precisa de Docker nativo e economia de custos.
+
+**Razoes:**
+- Docker nativo (sem adaptacao)
+- Suspend/resume para economia
+- Region GRU (Sao Paulo)
+- Preco por uso
+
+**Trade-offs:**
+- Curva de aprendizado CLI
+- Menos integracao com GitHub
+
+**Mitigacao:**
+Tasks mise automatizam operacoes comuns.
+
+---
+
+### ADR-004: RBAC com 4 Roles
+
+**Data:** 2026-01-22
+**Decisao:** Implementar RBAC com 4 roles fixos
+**Status:** Aceito
+
+**Contexto:**
+Multi-tenant precisa de controle de acesso.
+
+**Roles:**
+1. `c_level` - Dashboard executivo
+2. `admin` - Gestao de usuarios
+3. `instructor` - Criacao de cursos
+4. `student` - Consumo de cursos
+
+**Razoes:**
+- Cobertura de todas personas
+- Simplicidade de implementacao
+- Extensivel no futuro
+
+**Trade-offs:**
+- Nao permite roles customizados
+- Permissoes pre-definidas
+
+**Mitigacao:**
+Matriz de permissoes em `src/config/` permite ajustes.
 
 ---
 
@@ -229,7 +573,8 @@ DEVCORP CONSULTING:
 
 ---
 
-*app-controle v10.0.2 | 2026-01-29 | Conformidade ambiente-centralizado + Deploy Fly.io*
+*app-controle v11.0.0 | 2026-02-01 | Documentacao conceitual completa*
 *Stack: React + Vite + Bun + NocoDB + PostgreSQL*
 *RBAC: 82% (18/22 permissoes) | i18n: pt-BR, en-US, es-ES*
-*Tasks: 53+ (dev, deploy:*, security:*, nocodb:*)*
+*Tasks mise: 38 (dev, deploy:*, security:*, nocodb:*)*
+*Personas: 4 (Admin, Instructor, Student, C-Level)*
