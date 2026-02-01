@@ -12,7 +12,10 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "i18next": "^25.8.0",
@@ -39,6 +42,7 @@
     "tailwindcss": "^3.4.1",
     "terser": "^5.43.1",
     "vite": "^5.1.4",
+    "vitepress": "^1.6.4",
     "vitest": "^3.2.4"
   }
 }
