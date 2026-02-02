@@ -22,7 +22,7 @@ const API_CONFIG = {
   // Em dev, usa proxy do Vite (/api -> localhost:8081)
   // Em prod, usa URL direta ou variável de ambiente
   baseUrl: import.meta.env.VITE_API_URL || '',
-  baseId: import.meta.env.VITE_API_BASE_ID || 'phzot4i2zcjwgif',
+  baseId: import.meta.env.VITE_API_BASE_ID || 'por8gk2phpp2pfk',
   timeout: platformConfig.api.timeout,
 };
 
@@ -36,29 +36,26 @@ const STORAGE_KEYS = {
 // Cache de table IDs (nome -> id)
 let tableIdsCache = null;
 
-// Table IDs conhecidos do NocoDB (base UltraThink)
+// Table IDs conhecidos do NocoDB (base TrainB2B - PostgreSQL External)
 const TABLE_IDS = {
-  users: 'm0mivs1xdccrvhz',
-  companies: 'ms1ga42h4tiyzyq',
-  courses: 'mt3gmx6ze7b2cov',
-  modules: 'm79311ib9eppvc7',
-  user_progress: 'm3dat99drhj7w23',
-  study_notes: 'mh6nb1luq09i9uy',
-  learning_paths: 'ml2inf2c1jvviga',
-  learning_path_courses: 'mmeapp0octemvu3',
-  phases: 'mdbq55cll60lxto',
-  audit_logs: 'mq3s4gdwgi3vnh9',
+  users: 'm9tvgm5rx70qh3i',
+  companies: 'mvw5muqhbzrmkuv',
+  courses: 'mfrp5ndkje59e7r',
+  modules: 'mu3cf9gd3ujxrg2',
+  user_progress: 'mr79vxvc3urqofj',
+  study_notes: 'mdqow9zj683tqiu',
+  phases: 'meloqodvz6diwmz',
+  audit_logs: 'mnbw235k9rntjky',
   // Views
-  v_company_progress: 'mprd8p851kgk834',
-  v_user_dashboard: 'm0gisnjsraqpcuh',
-  v_course_stats: 'mv2s2dqkh7zzt1a',
-  v_learning_path_details: 'mhliz3gap1rcieu',
+  v_company_progress: 'me2shk8zc27r3li',
+  v_user_dashboard: 'mduzpssgu2bckae',
+  v_course_stats: 'mkbi3w6kk7j73mb',
 };
 
 // Credenciais do admin NocoDB (via variáveis de ambiente)
 const NOCODB_ADMIN = {
   email: import.meta.env.VITE_NOCODB_ADMIN_EMAIL || 'admin@trainb2b.local',
-  password: import.meta.env.VITE_NOCODB_ADMIN_PASSWORD || 'Admin@2026!',
+  password: import.meta.env.VITE_NOCODB_ADMIN_PASSWORD || 'Admin@TrainB2B2026!',
 };
 
 // Flag de inicialização

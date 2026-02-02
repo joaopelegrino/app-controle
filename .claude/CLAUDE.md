@@ -2,11 +2,12 @@
 Tipo: Contexto de Projeto
 Nome: app-controle
 Descricao: Plataforma B2B de treinamento tecnico corporativo
-Versao: v11.1.0
-Data: 2026-02-01
+Versao: v11.2.0
+Data: 2026-02-02
 Stack: React + Vite + Bun + NocoDB + PostgreSQL
 Healthcare: false
 Changelog: |
+  v11.2.0 - Credenciais NocoDB Admin documentadas + Troubleshooting Guide + TABLE_IDs atualizados
   v11.1.0 - Command ativar-ambiente-dev + .mcp.json (Chrome DevTools MCP)
   v11.0.0 - Documentacao conceitual completa (Missao, Personas, Arquitetura, ADRs)
   v10.0.2 - Secao Deploy Fly.io, tasks mise deploy:*, conformidade acoes-usuario
@@ -18,7 +19,7 @@ Diretrizes: contextos/globais/SISTEMA_PROGRAMACAO/metodo-agent/ambiente-centrali
 
 # app-controle (TrainB2B) - Plataforma B2B de Treinamento Corporativo
 
-> **Version:** 11.1.0 | **Date:** 2026-02-01 | **Status:** Production + i18n + White-Label + CRUD Cursos + Deploy + MCP
+> **Version:** 11.2.0 | **Date:** 2026-02-02 | **Status:** Production + i18n + White-Label + CRUD Cursos + Deploy + MCP
 > **Project Type:** Plataforma B2B de treinamento tecnico corporativo
 > **Sprint Atual:** 14 - CRUD de Cursos COMPLETO (1 US)
 > **Sprints Completos:** 6, 7, 8, 9, 10, 11, 12, 13, 14
@@ -432,6 +433,39 @@ DEVCORP CONSULTING:
 
 ---
 
+## Credenciais NocoDB Admin (Backend)
+
+> ⚠️ **IMPORTANTE:** Estas são credenciais do backend NocoDB, não dos usuários da aplicação.
+
+| Campo | Valor |
+|-------|-------|
+| URL | http://localhost:8081 |
+| Email | admin@trainb2b.local |
+| Senha | Admin@TrainB2B2026! |
+
+### IDs de Referência (atualizados 2026-02-02)
+
+```javascript
+// apiService.js
+baseId: 'por8gk2phpp2pfk'
+workspace: 'ws_trainb2b'
+
+// Tabelas principais
+users: 'm9tvgm5rx70qh3i'
+companies: 'mvw5muqhbzrmkuv'
+courses: 'mfrp5ndkje59e7r'
+modules: 'mu3cf9gd3ujxrg2'
+```
+
+### Troubleshooting
+
+Se o login retornar HTTP 400 ou usuários não forem encontrados:
+1. Verificar `docs/backend-docs/NOCODB-TROUBLESHOOTING.md`
+2. Executar `mise nocodb:health`
+3. Verificar se TABLE_IDs em `apiService.js` estão corretos
+
+---
+
 ## Regras (Conformidade)
 
 ### SEMPRE
@@ -625,6 +659,9 @@ Matriz de permissoes em `src/config/` permite ajustes.
 | Diretrizes Ambiente | `estrutura-padrao/.../ambiente-centralizado/` |
 | **Ativar Ambiente** | `.claude/commands/ativar-ambiente-dev.md` v1 |
 | **MCP Config** | `.mcp.json` (Chrome DevTools MCP) |
+| **NocoDB Docs** | `docs/backend-docs/nocodb.md` |
+| **NocoDB Troubleshooting** | `docs/backend-docs/NOCODB-TROUBLESHOOTING.md` ⭐ |
+| **Dados Demo** | `docs/backend-docs/DADOS-DEMO.md` - Curso Bash + 12 usuários |
 | Arquivo Original | `/home/notebook/workspace/app-controle/CLAUDE.md` |
 
 ---

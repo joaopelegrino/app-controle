@@ -7,8 +7,10 @@
 | Campo | Valor |
 |-------|-------|
 | URL | http://localhost:8081 |
-| Email | admin@ultrathink.com |
-| Senha | UltraThink@Admin2026! |
+| Email | admin@trainb2b.local |
+| Senha | Admin@TrainB2B2026! |
+
+> **Nota:** Estas são as credenciais do admin NocoDB (backend), não dos usuários da aplicação.
 
 ---
 
@@ -44,7 +46,7 @@ Ao fazer login, voce vera o dashboard com todas as tabelas:
 ```sh
 curl -X POST http://localhost:8081/api/v1/auth/user/signin \
   -H "Content-Type: application/json" \
-  -d '{"email": "admin@ultrathink.com", "password": "UltraThink@Admin2026!"}'
+  -d '{"email": "admin@trainb2b.local", "password": "Admin@TrainB2B2026!"}'
 ```
 
 Resposta:
@@ -146,20 +148,50 @@ GET /api/v1/db/data/noco/app_controle/users?limit=10&offset=20
 
 ## Table IDs
 
-O apiService.js usa IDs de tabela para acessar a API:
+O apiService.js usa IDs de tabela para acessar a API v2:
 
 ```javascript
+// Base ID (projeto NocoDB)
+const API_CONFIG = {
+  baseId: 'por8gk2phpp2pfk',
+};
+
+// Table IDs (atualizados 2026-02-02)
 const TABLE_IDS = {
-  users: 'm0mivs1xdccrvhz',
-  companies: 'ms1ga42h4tiyzyq',
-  courses: 'mt3gmx6ze7b2cov',
-  modules: 'm79311ib9eppvc7',
+  users: 'm9tvgm5rx70qh3i',
+  companies: 'mvw5muqhbzrmkuv',
+  courses: 'mfrp5ndkje59e7r',
+  modules: 'mu3cf9gd3ujxrg2',
+  user_progress: 'mr79vxvc3urqofj',
+  study_notes: 'mdqow9zj683tqiu',
+  phases: 'meloqodvz6diwmz',
+  audit_logs: 'mnbw235k9rntjky',
+  // Views
+  v_company_progress: 'me2shk8zc27r3li',
+  v_user_dashboard: 'mduzpssgu2bckae',
+  v_course_stats: 'mkbi3w6kk7j73mb',
 };
 ```
 
-Para encontrar o ID de uma tabela:
-1. Abra a tabela no NocoDB
-2. Veja a URL: `http://localhost:8081/dashboard/#/nc/<workspace>/<table_id>`
+### Como encontrar IDs atualizados
+
+```bash
+# 1. Obter token
+TOKEN=$(curl -s -X POST http://localhost:8081/api/v1/auth/user/signin \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@trainb2b.local","password":"Admin@TrainB2B2026!"}' | jq -r '.token')
+
+# 2. Listar bases
+curl -s "http://localhost:8081/api/v2/meta/bases" -H "xc-auth: $TOKEN" | jq '.list[] | {id, title}'
+
+# 3. Listar tabelas de uma base
+BASE_ID="por8gk2phpp2pfk"
+curl -s "http://localhost:8081/api/v1/db/meta/projects/$BASE_ID/tables" \
+  -H "xc-auth: $TOKEN" | jq '.list[] | {id: .id, title: .title}'
+```
+
+> **⚠️ IMPORTANTE:** Se os IDs mudarem (após reset), atualize `src/services/apiService.js`.
+> Veja [NOCODB-TROUBLESHOOTING.md](./NOCODB-TROUBLESHOOTING.md) para mais detalhes.
 
 ---
 
@@ -209,40 +241,29 @@ docker exec -i app-controle-db psql -U nocodb_user app_controle < backup.sql
 
 ## Troubleshooting
 
-### NocoDB nao inicia
+> **📖 Guia completo:** [NOCODB-TROUBLESHOOTING.md](./NOCODB-TROUBLESHOOTING.md)
 
-```sh
-# Verificar logs
-mise nocodb:logs
+### Quick Fixes
 
-# Reiniciar
-mise nocodb:restart
-```
+| Problema | Solução Rápida |
+|----------|----------------|
+| NocoDB não inicia | `mise nocodb:restart` |
+| Erro de conexão | `docker logs app-controle-db` |
+| Token inválido | Limpar localStorage + relogin |
+| Login HTTP 400 | Ver [Troubleshooting Guide](./NOCODB-TROUBLESHOOTING.md#problema-login-http-400--usuários-não-encontrados) |
+| TABLE_IDs incorretos | Atualizar `apiService.js` |
+| Dados sumiram | `mise nocodb:reset` (⚠️ deleta tudo) |
 
-### Erro de conexao com banco
+### Verificação Rápida
 
-```sh
-# Verificar PostgreSQL
-docker exec app-controle-db pg_isready -U nocodb_user
+```bash
+# Status completo
+mise nocodb:health
 
-# Ver logs do banco
-docker logs app-controle-db
-```
-
-### Token invalido
-
-```sh
-# Limpar localStorage no browser
-localStorage.clear()
-
-# Fazer login novamente
-```
-
-### Dados sumiram
-
-```sh
-# Resetar banco (recarrega dados demo)
-mise nocodb:reset
+# Ou manualmente
+docker ps | grep app-controle
+curl -s http://localhost:8081/api/v1/health | jq .
+docker exec app-controle-db psql -U nocodb_user -d app_controle -c "SELECT COUNT(*) FROM users;"
 ```
 
 ---
