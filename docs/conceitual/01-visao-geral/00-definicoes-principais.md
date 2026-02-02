@@ -4,9 +4,9 @@
 >
 > Este é o documento de **maior prioridade** do Plataforma B2B de treinamento técnico corporativo. Em caso de conflito ou inconsistência com outros documentos, **este sempre prevalece**.
 >
-> **Versão:** 1.0.0
-> **Data:** 2025-11-14
-> **Status:** ✅ Ativo - Baseado no ÉPICO 12 (100% completo)
+> **Versão:** 1.1.0
+> **Data:** 2026-02-02
+> **Status:** ✅ Ativo - Baseado no ÉPICO 12 + Nota de Divergência Intencional
 
 ---
 
@@ -49,6 +49,20 @@ O **Plataforma B2B de treinamento técnico corporativo** é um sistema educacion
 ## Glossário de Termos do Domínio
 
 > **Nota:** Este glossário foi validado no ÉPICO 12 (US-060 e US-061) e é a fonte única da verdade para nomenclatura.
+
+> **⚠️ DIVERGÊNCIA INTENCIONAL (Atualizado 2026-02-02):**
+>
+> Por decisão arquitetural, existe divergência entre nomenclatura de UI e banco de dados:
+>
+> | Camada | Seção | Aula |
+> |--------|-------|------|
+> | **UI/UX (este documento)** | Seção | Aula |
+> | **Banco de Dados** | `phases` | `modules` |
+> | **Código/API** | `sections[]` | `modules[]` |
+>
+> Esta separação é intencional: o banco mantém nomenclatura legada por estabilidade,
+> enquanto a UI usa termos aprovados para experiência do usuário. Consulte
+> `docs/RELATORIO-FORENSE-ALINHAMENTO-2026-02-02.md` para detalhes.
 
 ### A
 

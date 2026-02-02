@@ -86,6 +86,10 @@ Para confirmar que tudo esta funcionando:
 mise check
 ```
 
+::: warning Problemas com NocoDB?
+Se o login retornar erro HTTP 400 ou usuarios nao forem encontrados, os TABLE_IDs do NocoDB podem ter mudado. Consulte o [Guia de Troubleshooting](/docs/backend-docs/NOCODB-TROUBLESHOOTING.md) para diagnostico e correcao.
+:::
+
 Saida esperada:
 
 ```
@@ -131,10 +135,10 @@ Use estas credenciais para testar diferentes perfis:
 | `mise test` | Executa testes |
 | `mise help` | Lista todos os comandos |
 
-::: info Documentacao por Perfil
-Veja os guias especificos para cada tipo de usuario:
-- [Guia do Administrador](/docs/users/admin-guide.md)
-- [Guia do Instrutor](/docs/users/instructor-guide.md)
-- [Guia do Aluno](/docs/users/student-guide.md)
-- [Guia do Executivo](/docs/users/executive-guide.md)
+::: tip Credenciais por Perfil
+Teste diferentes perfis de acesso com os usuarios de demo:
+- **Administrador** (`admin@acmetech.com`) - Gestao de usuarios e empresa
+- **Instrutor** (`prof@acmetech.com`) - CRUD de cursos e metricas
+- **Aluno** (`maria@acmetech.com`) - Dashboard de progresso
+- **Executivo** (`ceo@acmetech.com`) - Dashboard executivo
 :::
