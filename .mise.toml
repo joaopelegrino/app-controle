@@ -321,7 +321,7 @@ description = "Testes E2E com interface Playwright UI"
 run = """
 #!/bin/bash
 # Verificar se dev server está rodando
-if ! curl -s http://localhost:3000 > /dev/null 2>&1; then
+if ! curl -s http://localhost:3001 > /dev/null 2>&1; then
     echo "⚠️  Dev server não está rodando!"
     echo "💡 Execute em outro terminal: mise dev"
     exit 1
@@ -343,7 +343,7 @@ description = "Testes E2E headless (CI/CD)"
 run = """
 #!/bin/bash
 # Verificar se dev server está rodando
-if ! curl -s http://localhost:3000 > /dev/null 2>&1; then
+if ! curl -s http://localhost:3001 > /dev/null 2>&1; then
     echo "❌ Dev server não está rodando"
     exit 1
 fi
@@ -386,7 +386,7 @@ DEV_PID=$!
 
 echo ""
 echo "✅ Full-stack rodando!"
-echo "📍 Frontend: http://localhost:3000"
+echo "📍 Frontend: http://localhost:3001"
 echo "📍 NocoDB: http://localhost:8081"
 echo ""
 echo "Para parar:"
@@ -444,8 +444,8 @@ echo ""
 
 # 2. Dev server
 echo "🔥 Dev server:"
-if curl -s http://localhost:3000 > /dev/null 2>&1; then
-    echo "  ✅ Rodando (http://localhost:3000)"
+if curl -s http://localhost:3001 > /dev/null 2>&1; then
+    echo "  ✅ Rodando (http://localhost:3001)"
 else
     echo "  ❌ Não está rodando"
     echo "     💡 Execute: mise dev"
@@ -485,7 +485,7 @@ mise test
 
 # 3. E2E (se serviços estiverem rodando)
 echo "🎭 3/3: Testes E2E..."
-if curl -s http://localhost:3000 > /dev/null 2>&1 && curl -s http://localhost:8081 > /dev/null 2>&1; then
+if curl -s http://localhost:3001 > /dev/null 2>&1 && curl -s http://localhost:8081 > /dev/null 2>&1; then
     mise e2e:headless
 else
     echo "  ⏭️  Pulando (serviços não estão rodando)"

@@ -16,7 +16,7 @@ echo ""
 
 # Porta de debug (padrão 9222)
 DEBUG_PORT="${1:-9222}"
-PROJECT_URL="${2:-http://localhost:3000}"
+PROJECT_URL="${2:-http://localhost:3001}"
 
 echo -e "${GREEN}✓${NC} Porta de debug: ${YELLOW}$DEBUG_PORT${NC}"
 echo -e "${GREEN}✓${NC} URL do projeto: ${YELLOW}$PROJECT_URL${NC}"

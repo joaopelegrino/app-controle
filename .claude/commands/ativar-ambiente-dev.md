@@ -1,10 +1,13 @@
 ---
 titulo: Ativar Ambiente de Desenvolvimento app-controle
-versao: 1
-data: 2026-02-01
+versao: 2
+data: 2026-02-02
 projeto: app-controle
-referencia: CLAUDE.md v11.0.0, ROADMAP.md, GAPS-DEMO-B2B.md
+referencia: CLAUDE.md v11.1.0, ROADMAP.md, GAPS-DEMO-B2B.md
 stack: React + Vite + Bun + NocoDB + PostgreSQL
+changelog: |
+  v2 (2026-02-02) - Padronizado porta 3001, adicionado mise activate obrigatorio
+  v1 (2026-02-01) - Versao inicial
 ---
 
 # Ativar Ambiente de Desenvolvimento app-controle
