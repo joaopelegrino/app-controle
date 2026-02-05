@@ -781,6 +781,58 @@ Receita atual:  Consultoria pontual (R$ 150/hora)
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### 8.6 Decisões de Produto Tomadas (2026-02-05)
+
+As seguintes decisões foram validadas e devem guiar a implementação:
+
+#### ✅ Funcionalidades do Especialista
+
+| Decisão | Descrição | Impacto |
+|---------|-----------|---------|
+| **Dashboard próprio** | Especialista visualiza matrículas, receita e feedback em tempo real | Necessário criar UI de dashboard para role "specialist" |
+| **Mentoria 1:1** | Especialista pode oferecer sessões de mentoria como serviço adicional | Além de cursos assíncronos, suporte a agendamento |
+
+#### ✅ Funcionalidades para Empresas
+
+| Decisão | Descrição | Impacto |
+|---------|-----------|---------|
+| **Sistema de reviews** | Empresas avaliam cursos com rating 1-5 estrelas + comentário | Tabela de reviews, média de rating no catálogo |
+| **Cursos customizados** | Empresa pode solicitar curso customizado via chat na plataforma | Sistema de mensagens entre empresa e especialista |
+| **Cursos privados** | Empresa pode fazer upload de curso com visibilidade restrita | Flag de visibilidade: público, privado, empresa específica |
+
+#### ✅ Funcionalidades de Trilhas
+
+| Decisão | Descrição | Impacto |
+|---------|-----------|---------|
+| **Pré-requisitos** | Trilhas podem ter ordem configurável (curso A antes de B) | Campo de dependências entre cursos |
+
+### 8.7 Questões Pendentes (Para Definição Futura)
+
+> **Referência completa:** `docs/PLANO-CONSOLIDACAO-DOCUMENTACAO.md`
+
+#### 🔴 Modelo de Negócio (Q1-Q6) - Críticas
+
+- Q1: Revenue share fixo 70/30 ou variável por tier?
+- Q2: Especialista paga mensalidade para estar no hub?
+- Q3: Quem define o preço do curso (especialista ou plataforma)?
+- Q4: Quais credenciais são obrigatórias para cadastro?
+- Q5: Existe aprovação de curso antes de publicar?
+- Q6: Quais critérios para remover especialista?
+
+#### 🟡 Precificação SaaS (Q11-Q15) - Importantes
+
+- Q11: Preços são por usuário ou flat fee?
+- Q12: Existe trial gratuito? Por quanto tempo?
+- Q13: Desconto para pagamento anual?
+- Q14: Tamanho mínimo para Enterprise?
+- Q15: Community Edition tem limitações funcionais?
+
+#### 🟢 Funcionalidades Adicionais (Q16-Q29) - Podem Esperar
+
+- Certificados (validade, verificação externa)
+- Gamificação (badges, leaderboard, XP)
+- Integrações (SSO, Slack/Teams, HRIS, BI)
+
 ---
 
 ## 9. Riscos e Mitigações
