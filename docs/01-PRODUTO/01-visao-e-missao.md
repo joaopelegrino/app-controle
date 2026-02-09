@@ -1,4 +1,4 @@
-# UltraThink - Documento de Visão, Missão e Estado Atual
+# Sulical - Documento de Visão, Missão e Estado Atual
 
 **Data:** Fevereiro 2026
 **Versão:** 1.0.0
@@ -8,7 +8,7 @@
 
 ## Sumário Executivo
 
-O **UltraThink** é uma plataforma B2B SaaS de treinamento técnico corporativo desenvolvida para resolver problemas críticos enfrentados por empresas de tecnologia no Brasil e América Latina. A solução oferece uma alternativa white-label e personalizável às plataformas genéricas de aprendizado, com foco em ROI mensurável e engajamento real.
+O **Sulical** é uma plataforma B2B SaaS de treinamento técnico corporativo desenvolvida para resolver problemas críticos enfrentados por empresas de tecnologia no Brasil e América Latina. A solução oferece uma alternativa white-label e personalizável às plataformas genéricas de aprendizado, com foco em ROI mensurável e engajamento real.
 
 ---
 
@@ -160,7 +160,7 @@ Empresas de tecnologia no Brasil enfrentam desafios críticos:
 
 ### 3.2 Solução Proposta
 
-**UltraThink resolve através de:**
+**Sulical resolve através de:**
 
 1. **Plataforma White-Label**: Identidade visual da empresa
 2. **Conteúdo Personalizável**: 13 áreas de conhecimento + customização
@@ -171,7 +171,7 @@ Empresas de tecnologia no Brasil enfrentam desafios críticos:
 
 ### 3.3 Diferenciais Competitivos
 
-| Aspecto | UltraThink | Concorrentes (Udemy/Coursera) |
+| Aspecto | Sulical | Concorrentes (Udemy/Coursera) |
 |---------|------------|-------------------------------|
 | **Customização** | 100% personalizável | Catálogo genérico |
 | **Preço** | R$ 499-2.499/mês | R$ 10k-20k/mês |
@@ -312,9 +312,9 @@ Empresas de tecnologia no Brasil enfrentam desafios críticos:
 |----------|--------|----------|
 | **Frontend** | ✅ Produção-ready | React 18 + Vite 5 + Tailwind CSS |
 | **Backend** | ✅ Funcional | NocoDB + PostgreSQL 16 |
-| **Autenticação** | ✅ Implementado | JWT + RBAC (4 roles, 21 permissões) |
-| **Dashboards** | ✅ Completo | 4 dashboards contextuais |
-| **i18n** | ✅ Completo | 3 idiomas, ~250 strings |
+| **Autenticação** | ✅ Implementado | JWT + RBAC (5 roles, 32 permissões) |
+| **Dashboards** | ✅ Completo | 5 dashboards contextuais |
+| **i18n** | ✅ Completo | 3 idiomas, ~350+ strings |
 | **Testes** | ✅ Parcial | 14 E2E tests (100% passando) |
 | **Deploy** | ✅ Ready | Docker, Fly.io, Nginx |
 
@@ -431,7 +431,7 @@ users (
   id UUID PRIMARY KEY,
   email VARCHAR(255) UNIQUE,
   full_name VARCHAR(255),
-  role VARCHAR(50),        -- student, instructor, admin, c_level
+  role VARCHAR(50),        -- student, instructor, admin, c_level, specialist
   company_id UUID REFERENCES companies,
   is_active BOOLEAN,
   last_login_at TIMESTAMP
@@ -473,8 +473,8 @@ user_courses (
 
 #### Autenticação & Autorização
 - [x] Login com JWT via NocoDB
-- [x] 4 Roles RBAC: `student`, `instructor`, `admin`, `c_level`
-- [x] 21 Permissões granulares
+- [x] 5 Roles RBAC: `student`, `instructor`, `admin`, `c_level`, `specialist`
+- [x] 32 Permissões granulares
 - [x] Multi-tenancy com isolamento por empresa
 - [x] Persistência de sessão
 
@@ -528,7 +528,7 @@ user_courses (
 #### Internacionalização
 - [x] 3 idiomas: PT-BR, EN-US, ES-ES
 - [x] Lazy loading por namespace
-- [x] ~250 strings traduzidas
+- [x] ~350+ strings traduzidas
 - [x] Seletor de idioma com 3 variantes
 
 ### 6.7 Qualidade do Código
@@ -556,12 +556,12 @@ user_courses (
 #### Métricas de Código
 
 ```
-Total de componentes JSX:     48
+Total de componentes JSX:     53
 Total de hooks customizados:  8
 Linhas em apiService:         2,076
 Linhas totais em components:  ~10,631
-Número de permissões RBAC:    21
-Strings i18n:                 ~250
+Número de permissões RBAC:    32
+Strings i18n:                 ~350+
 Cobertura de testes E2E:      14/14 (100%)
 ```
 
@@ -576,6 +576,9 @@ Cobertura de testes E2E:      14/14 (100%)
 | Sprint 10 | Matrículas + Analytics | ✅ Completo |
 | Sprint 11 | UX Polish + Modals | ✅ Completo |
 | Sprint 12 | Internacionalização | ✅ Completo |
+| Sprint 13 | White-Label Refactor | ✅ Completo |
+| Sprint 14 | CRUD de Cursos | ✅ Completo |
+| Sprint 15 | Hub de Especialistas | ✅ Completo |
 
 ---
 
@@ -583,9 +586,9 @@ Cobertura de testes E2E:      14/14 (100%)
 
 ### 7.1 Curto Prazo (Q1 2026)
 
-- [ ] **Sprint 13**: CRUD de Cursos UI
-- [ ] **Sprint 14**: Certificados de conclusão
-- [ ] **Sprint 15**: Documentação OpenAPI/Swagger
+- [x] **Sprint 13**: White-Label Refactor
+- [x] **Sprint 14**: CRUD de Cursos
+- [x] **Sprint 15**: Hub de Especialistas
 
 ### 7.2 Médio Prazo (Q2-Q3 2026)
 
@@ -598,12 +601,11 @@ Cobertura de testes E2E:      14/14 (100%)
 ### 7.3 Longo Prazo (Q4 2026+)
 
 - [ ] PWA com suporte offline
-- [ ] **Hub de Especialistas (Marketplace B2B2C)** ⭐ ESTRATÉGICO
-  - [ ] Cadastro de especialistas externos
-  - [ ] Sistema de avaliação e certificação
-  - [ ] Revenue sharing (70/30)
-  - [ ] Montagem de trilhas combinando cursos externos
-  - [ ] Dashboard de analytics para especialistas
+- [x] **Hub de Especialistas (Marketplace B2B2C)** ✅ Implementado Sprint 15
+  - [x] Cadastro de especialistas externos
+  - [x] Sistema de avaliação e certificação
+  - [x] Revenue sharing (70/30)
+  - [x] Dashboard de analytics para especialistas
 - [ ] API pública para integrações
 - [ ] Mobile apps (React Native)
 - [ ] AI-powered recommendations
@@ -851,7 +853,7 @@ As seguintes decisões foram validadas e devem guiar a implementação:
 
 ## 10. Conclusão
 
-O **UltraThink** está em um estado saudável de desenvolvimento, com uma base de código bem estruturada e funcionalidades core implementadas. O projeto demonstra:
+O **Sulical** está em um estado saudável de desenvolvimento, com uma base de código bem estruturada e funcionalidades core implementadas. O projeto demonstra:
 
 1. **Arquitetura sólida** com separação clara de responsabilidades
 2. **Código de qualidade** com padrões consistentes
@@ -865,7 +867,7 @@ O **UltraThink** está em um estado saudável de desenvolvimento, com uma base d
 3. **Migrar para TypeScript** incrementalmente
 4. **Implementar SSO** para vendas enterprise
 5. **Completar WCAG 2.1 AA** para acessibilidade
-6. **Planejar Hub de Especialistas** - diferencial estratégico de longo prazo
+6. **Hub de Especialistas implementado (Sprint 15)** - diferencial estratégico de longo prazo
 
 ### Visão Estratégica: Hub de Especialistas
 

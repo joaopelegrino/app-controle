@@ -17,7 +17,7 @@ Como Administrador, voce tem acesso a:
 
 ## Acessando o Painel
 
-1. Acesse a plataforma em https://trainb2b-demo.fly.dev (ou http://localhost:3001 local)
+1. Acesse a plataforma em https://sulical-demo.fly.dev (ou http://localhost:3001 local)
 2. Faca login com suas credenciais de administrador
 3. Clique em **"Admin"** no menu superior ou acesse `/admin`
 
@@ -47,7 +47,7 @@ Tabela com todos os usuarios da empresa:
 |--------|-----------|
 | Nome | Nome completo do usuario |
 | Email | Email de acesso |
-| Perfil | student, instructor, admin |
+| Perfil | student, instructor, specialist, admin |
 | Status | Ativo ou Inativo |
 | Progresso | Percentual de conclusao |
 | Acoes | Editar, Desativar |
@@ -73,6 +73,7 @@ Tabela com todos os usuarios da empresa:
 | **Aluno** | Cursos e dashboard proprio | Colaboradores em treinamento |
 | **Instrutor** | + Dashboard da equipe | Lideres tecnicos, mentores |
 | **Admin** | + Gestao de usuarios/cursos | RH, T&D, gestores |
+| **Especialista** | Hub de especialistas | Criadores de conteúdo externo |
 
 ### Editar Usuario
 
@@ -207,6 +208,8 @@ Cursos arquivados:
 | Criar usuarios | ✅ | ✅ |
 | Editar usuarios | ✅ | ✅ |
 | Desativar usuarios | ✅ | ✅ |
+| Gerenciar especialistas | ❌ | ✅ |
+| Aprovar cursos Hub | ❌ | ✅ |
 | Ver cursos | ✅ | ✅ |
 | Criar cursos | ✅ | ✅ |
 | Arquivar cursos | ✅ | ✅ |
@@ -270,6 +273,6 @@ Nao. Por questoes de auditoria, usuarios sao desativados, nao deletados. Contate
 
 Precisa de ajuda?
 
-- **Email**: suporte@trainb2b.com
+- **Email**: suporte@sulical.com
 - **Chat**: Icone no canto inferior direito
-- **Documentacao**: https://docs.trainb2b.com
+- **Documentacao**: https://docs.sulical.com

@@ -121,7 +121,7 @@ mise docs             # Links de documentacao
 ## Proximos Passos
 
 1. **Explorar a interface** - Navegue pelos menus e funcionalidades
-2. **Testar diferentes perfis** - Login com admin, instrutor, aluno, c-level
+2. **Testar diferentes perfis** - Login com admin, instrutor, aluno, c-level, especialista
 3. **Ler a documentacao** - [Tasks](/docs/development/tasks.md) e [Configuration](/docs/development/configuration.md)
 
 ::: info Problemas?

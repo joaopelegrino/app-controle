@@ -2,7 +2,7 @@
 
 **Versão:** 1.0.0
 **Data:** 2026-02-05
-**Status:** 📋 Especificação (Feature Estratégica Q4 2026+)
+**Status:** ✅ Implementado (Sprint 15 - Fevereiro 2026)
 
 ---
 
@@ -10,7 +10,7 @@
 
 ### 1.1 O que é o Hub de Especialistas
 
-O **Hub de Especialistas** é um marketplace B2B2C integrado à plataforma UltraThink que permite:
+O **Hub de Especialistas** é um marketplace B2B2C integrado à plataforma Sulical que permite:
 
 - **Especialistas externos** cadastrarem e venderem cursos para empresas
 - **Empresas** montarem trilhas personalizadas combinando cursos de múltiplos especialistas
@@ -152,9 +152,9 @@ Orçamento: R$ 2.000/mês para treinamento
 | RF-005 | Especialista recebe selo "Verificado" após aprovação | Média | ⬜ Pendente |
 
 **Regras de Negócio:**
-- RN-001: LinkedIn obrigatório no cadastro
-- RN-002: Mínimo 1 comprovação (certificação ou portfólio)
-- RN-003: Aprovação em até 48h úteis
+- RN-001: LinkedIn obrigatório no cadastro ✅ (Implementado Sprint 15)
+- RN-002: Mínimo 1 comprovação (certificação ou portfólio) ✅ (Implementado Sprint 15)
+- RN-003: Aprovação em até 48h úteis ✅ (Implementado Sprint 15)
 
 ### 3.2 Módulo: Criação de Curso
 
@@ -453,18 +453,18 @@ new_permissions:
 | Q18 | Cursos privados | ✅ Upload no hub com visibilidade restrita | 2026-02-05 |
 | Q20 | Pré-requisitos | ✅ Configurável entre cursos | 2026-02-05 |
 
-### 6.2 🔴 Questões Críticas Pendentes (Q1-Q6)
+### 6.2 ✅ Questões de Negócio RESPONDIDAS (Q1-Q6) - 2026-02-09
 
-> **Bloqueiam implementação completa do Hub**
+> **Todas as questões críticas foram respondidas no Sprint 15**
 
-| # | Questão | Opções | Recomendação |
-|---|---------|--------|--------------|
-| Q1 | Revenue share | Fixo 70/30 ou variável por tier? | Começar 70/30 fixo |
-| Q2 | Especialista paga mensalidade? | Sim/Não | Não (atrair massa crítica) |
-| Q3 | Quem define preço? | Especialista/Plataforma | Especialista com faixa sugerida |
-| Q4 | Credenciais obrigatórias | LinkedIn + ? | LinkedIn + 1 comprovação |
-| Q5 | Aprovação antes de publicar? | Sim/Não | Sim (checklist + revisão 48h) |
-| Q6 | Critérios de remoção | Rating/Reclamações | Rating < 3.0 por 3 meses OU 3+ reclamações |
+| # | Questão | Decisão Final | Data |
+|---|---------|---------------|------|
+| Q1 | Revenue share | ✅ Fixo 70/30 (especialista/plataforma) | 2026-02-09 |
+| Q2 | Especialista paga mensalidade? | ✅ Não - cadastro gratuito para atrair massa crítica | 2026-02-09 |
+| Q3 | Quem define preço? | ✅ Especialista define, com faixa sugerida pela plataforma | 2026-02-09 |
+| Q4 | Credenciais obrigatórias | ✅ LinkedIn obrigatório + mínimo 1 comprovação | 2026-02-09 |
+| Q5 | Aprovação antes de publicar? | ✅ Sim - checklist automático + revisão manual em 48h | 2026-02-09 |
+| Q6 | Critérios de remoção | ✅ Rating < 3.0 por 3 meses consecutivos OU 3+ reclamações formais | 2026-02-09 |
 
 ---
 
@@ -747,8 +747,11 @@ FASE 4: MONETIZAÇÃO (4 semanas)
 
 **FIM DA ESPECIFICAÇÃO**
 
-**Próximos passos:**
-1. Validar questões Q1-Q6 (modelo de negócio)
-2. Criar protótipos de UI no Figma
-3. Definir MVP mínimo do Hub (subset de features)
-4. Planejar sprint de implementação
+**Status Sprint 15 (Fevereiro 2026):**
+1. ✅ Questões Q1-Q6 respondidas (modelo de negócio definido)
+2. ✅ Migration-003: 3 tabelas, 2 views, 3 triggers criados
+3. ✅ RBAC: 5 roles, 32 permissões (11 novas hub_*)
+4. ✅ 5 componentes Hub implementados em src/components/hub/
+5. ✅ Rotas /specialist e /hub/catalog funcionais
+6. ✅ i18n: namespace hub em 3 idiomas
+7. ✅ Testes unitários Hub passando

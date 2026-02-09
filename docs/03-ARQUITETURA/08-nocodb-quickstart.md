@@ -55,8 +55,8 @@ docker-compose -f docker-compose.nocodb.yml logs -f nocodb
 
 ```
 URL:   http://localhost:8080
-Email: admin@ultrathink.com
-Senha: UltraThink@Admin2026!
+Email: admin@trainb2b.local
+Senha: Admin@TrainB2B2026!
 ```
 
 **✅ Primeiro login:** Todas as tabelas estarão visíveis COM DADOS JÁ CARREGADOS!
@@ -267,8 +267,8 @@ Se precisar acessar o banco diretamente (para técnicos):
 docker-compose -f docker-compose.nocodb.yml --profile tools up -d pgadmin
 
 # Acessar: http://localhost:5050
-# Email: admin@ultrathink.com
-# Senha: UltraThink@Admin2026!
+# Email: admin@trainb2b.local
+# Senha: Admin@TrainB2B2026!
 ```
 
 ---
@@ -292,7 +292,7 @@ docker-compose -f docker-compose.nocodb.yml ps postgres
 ### Problema: Não consigo fazer login
 
 1. Verificar credenciais em `.env.nocodb`
-2. Senha padrão: `UltraThink@Admin2026!`
+2. Senha padrão: `Admin@TrainB2B2026!`
 3. Se esqueceu, recriar containers:
    ```bash
    docker-compose -f docker-compose.nocodb.yml down

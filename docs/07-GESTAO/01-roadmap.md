@@ -22,19 +22,19 @@
 |-----------|--------|---------|
 | Frontend React 18 + Vite 5 | ✅ Producao | 48 componentes, Tailwind CSS |
 | Backend NocoDB + PostgreSQL 16 | ✅ Funcional | API REST auto-gerada |
-| Autenticacao JWT + RBAC | ✅ 4 roles | student, instructor, admin, c_level |
-| RBAC Permissoes | ✅ 21 permissoes | 17/21 com UI (81%) |
-| Dashboards Contextuais | ✅ 4 dashboards | User, Instructor, Admin, Executive |
+| Autenticacao JWT + RBAC | ✅ 5 roles | student, instructor, specialist, admin, c_level |
+| RBAC Permissoes | ✅ 32 permissoes | 5 roles, Hub permissions incluidas |
+| Dashboards Contextuais | ✅ 5 dashboards | User, Instructor, Specialist, Admin, Executive |
 | CRUD Usuarios | ✅ Completo | Criar, editar, soft-delete, reativar |
 | CRUD Cursos | ✅ Completo | Sprint 14 - CourseFormModal |
 | Matriculas | ✅ Completo | EnrollUserModal, bulk enrollment |
 | Exportacao | ✅ Excel/JSON | ExportButton em 3 dashboards |
 | Analytics | ✅ Avancado | Modulos dificeis, ROI, progress |
-| i18n | ✅ 3 idiomas | pt-BR, en-US, es-ES (~250 strings) |
+| i18n | ✅ 3 idiomas | pt-BR, en-US, es-ES (~355 strings) |
 | White-Label | ✅ Sulical | Configuravel via platform.js |
 | Responsividade | ✅ Mobile | MobileMenu, useMediaQuery |
 | UX Polish | ✅ Completo | Toasts, skeletons, empty states, onboarding |
-| Hub de Especialistas | ❌ 0% | Especificado, nao implementado |
+| Hub de Especialistas | ✅ Sprint 15 | B2B2C marketplace, 5 componentes, revenue 70/30 |
 
 ---
 

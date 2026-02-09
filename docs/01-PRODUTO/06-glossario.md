@@ -1,4 +1,4 @@
-# Glossário Unificado - UltraThink/TrainB2B
+# Glossário Unificado - Sulical
 
 **Versão:** 1.0.0
 **Data:** 2026-02-05
@@ -192,7 +192,7 @@ Curso
 **Atributos:**
 - Email (único por empresa)
 - Nome completo
-- Role (student, instructor, admin, c_level)
+- Role (student, instructor, admin, c_level, specialist)
 - Status (ativo/inativo)
 
 ---
@@ -261,7 +261,7 @@ Curso
 ### Specialist (Especialista) 🆕
 **Definição:** Criador de conteúdo externo que vende cursos no Hub de Especialistas.
 
-**Status:** 📋 Planejado (Hub de Especialistas Q4 2026+)
+**Status:** ✅ Implementado (Sprint 15)
 
 **Permissões:** Criar cursos, ver analytics próprios, responder reviews
 
@@ -276,7 +276,7 @@ Curso
 
 **Modelo:** Business (Especialista) → Business (Plataforma) → Business (Empresa) → Consumer (Colaborador)
 
-**Status:** 📋 Planejado (Q4 2026+)
+**Status:** ✅ Implementado (Sprint 15)
 
 ---
 
@@ -401,7 +401,7 @@ Curso
 ### Open Core
 **Definição:** Modelo de negócio onde código-fonte é open source, mas há versão paga com recursos adicionais.
 
-**UltraThink:**
+**Sulical:**
 - Community Edition: Gratuito, self-hosted
 - SaaS Gerenciado: Pago, com suporte
 
@@ -460,7 +460,7 @@ Curso
 ### i18n
 **Definição:** Internacionalização. Suporte a múltiplos idiomas.
 
-**UltraThink:** PT-BR, EN-US, ES-ES
+**Sulical:** PT-BR, EN-US, ES-ES
 
 ---
 
@@ -554,5 +554,5 @@ Curso
 
 **FIM DO GLOSSÁRIO**
 
-**Última atualização:** 2026-02-05
-**Mantido por:** Equipe de Produto UltraThink
+**Última atualização:** 2026-02-09
+**Mantido por:** Equipe de Produto Sulical

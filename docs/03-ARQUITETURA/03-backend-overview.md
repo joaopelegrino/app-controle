@@ -63,13 +63,16 @@ Banco de dados relacional que armazena:
 
 | Tabela | Descricao | Registros Demo |
 |--------|-----------|----------------|
-| `companies` | Empresas clientes | 2 |
+| `companies` | Empresas clientes | 3 |
 | `users` | Usuarios do sistema | 13 |
 | `courses` | Cursos disponiveis | 2 |
 | `modules` | Modulos dos cursos | 17 |
 | `user_progress` | Progresso dos usuarios | Dinamico |
 | `enrollments` | Matriculas | Dinamico |
 | `user_notes` | Notas dos usuarios | Dinamico |
+| `specialists` | Especialistas do Hub | 1 |
+| `hub_courses` | Cursos do marketplace | 1 |
+| `course_reviews` | Reviews de cursos | 2 |
 
 ---
 
@@ -110,8 +113,8 @@ mise nocodb:stop
 | Campo | Valor |
 |-------|-------|
 | URL | http://localhost:8081 |
-| Email | admin@ultrathink.com |
-| Senha | UltraThink@Admin2026! |
+| Email | admin@trainb2b.local |
+| Senha | Admin@TrainB2B2026! |
 
 ### PostgreSQL
 
@@ -165,6 +168,9 @@ docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/mi
 
 # Matriculas
 docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-002-enrollments.sql
+
+# Hub de Especialistas
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-003-hub.sql
 ```
 
 ### Verificar Dados

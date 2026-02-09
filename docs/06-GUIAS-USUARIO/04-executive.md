@@ -16,7 +16,7 @@ Como Executivo, voce tem acesso a:
 
 ## Acessando o Dashboard
 
-1. Acesse a plataforma em https://trainb2b-demo.fly.dev
+1. Acesse a plataforma em https://sulical-demo.fly.dev
 2. Faca login com suas credenciais
 3. Clique em **"Executivo"** no menu ou acesse `/admin/executive`
 
@@ -71,7 +71,7 @@ A plataforma calcula economia baseada em:
 |------------|-------------------|----------------|
 | Udemy Business | R$ 1.500 | Baixa |
 | LinkedIn Learning | R$ 1.200 | Baixa |
-| **TrainB2B** | R$ 300 | Total |
+| **Sulical** | R$ 300 | Total |
 
 ---
 
@@ -257,4 +257,4 @@ Apenas usuarios com perfil C-Level tem acesso ao dashboard executivo. Dados sao 
 - **Relatorios Customizados**: Solicite analises especificas
 - **Consultoria**: Sessoes de otimizacao de resultados
 
-Contato: enterprise@trainb2b.com
+Contato: enterprise@sulical.com

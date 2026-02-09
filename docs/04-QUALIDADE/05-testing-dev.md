@@ -199,6 +199,7 @@ Veja `docs/tecnico/testing/MCP-CHROME-DEVTOOLS-GUIA-COMPLETO.md` para mais detal
 | instructor | /instructor, /dashboard | /admin, /admin/executive |
 | admin | /admin, /instructor, /dashboard | /admin/executive |
 | c_level | Todos | - |
+| specialist | /specialist, /hub/catalog | /admin, /instructor |
 
 ### Teste Automatizado
 
@@ -209,6 +210,7 @@ const profiles = [
   { email: 'prof@acmetech.com', role: 'instructor', allowed: ['/instructor'] },
   { email: 'admin@acmetech.com', role: 'admin', allowed: ['/admin'] },
   { email: 'ceo@acmetech.com', role: 'c_level', allowed: ['/admin/executive'] },
+  { email: 'joao.silva.specialist@sulical.com', role: 'specialist', allowed: ['/specialist'] },
 ];
 
 profiles.forEach(({ email, role, allowed }) => {
@@ -266,6 +268,7 @@ Executa: lint → unit tests → e2e (se servicos rodando).
 | DevCorp | prof@devcorp.com | instructor |
 | DevCorp | julia@devcorp.com | student |
 | DevCorp | cto@devcorp.com | c_level |
+| Hub Especialistas | joao.silva.specialist@sulical.com | specialist |
 
 **Senha padrao**: `Demo@2026`
 

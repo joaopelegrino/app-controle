@@ -69,6 +69,33 @@ postgresql://nocodb_user:<password>@localhost:5432/app_controle
                  └──────▶│ course_id   │
                          │ content     │
                          └─────────────┘
+
+┌─────────────┐
+│ specialists │
+├─────────────┤
+│ id          │
+│ user_id     │──┐
+│ linkedin_url│  │
+│ bio         │  │    ┌─────────────┐
+│ status      │  │    │ hub_courses │
+└──────┬──────┘  │    ├─────────────┤
+       │         │    │ id          │
+       │         │    │ course_id   │──── courses
+       └─────────┼───▶│ specialist_id│
+                 │    │ price       │
+                 │    │ status      │
+                 │    └──────┬──────┘
+                 │           │
+                 │           ▼
+                 │    ┌──────────────┐
+                 │    │course_reviews│
+                 │    ├──────────────┤
+                 │    │ id           │
+                 └───▶│ user_id      │
+                      │ hub_course_id│
+                      │ rating       │
+                      │ comment      │
+                      └──────────────┘
 ```
 
 ---
@@ -98,7 +125,7 @@ Usuarios do sistema.
 | name | VARCHAR(255) | Nome completo |
 | email | VARCHAR(255) | Email unico |
 | password_hash | VARCHAR(255) | Senha hasheada |
-| role | VARCHAR(50) | student, instructor, admin, c_level |
+| role | VARCHAR(50) | student, instructor, admin, c_level, specialist |
 | company_id | INT | FK companies |
 | status | VARCHAR(50) | active, inactive |
 | created_at | TIMESTAMP | Data criacao |
@@ -171,6 +198,57 @@ Notas dos usuarios.
 | content | TEXT | Conteudo das notas |
 | updated_at | TIMESTAMP | Ultima atualizacao |
 
+### specialists
+
+Perfis de especialistas do Hub.
+
+| Coluna | Tipo | Descricao |
+|--------|------|-----------|
+| id | SERIAL | PK |
+| user_id | INT | FK users |
+| linkedin_url | TEXT | LinkedIn obrigatorio |
+| bio | TEXT | Biografia |
+| specialties | TEXT[] | Areas de especialidade |
+| credentials | JSONB | Certificacoes e portfolio |
+| verified_at | TIMESTAMP | Data verificacao (null = pendente) |
+| status | VARCHAR(50) | pending, active, suspended, removed |
+| rating_avg | DECIMAL(2,1) | Media de avaliacoes |
+| total_courses | INT | Total de cursos publicados |
+| total_revenue | DECIMAL(12,2) | Receita acumulada |
+| created_at | TIMESTAMP | Data criacao |
+
+### hub_courses
+
+Cursos publicados no marketplace.
+
+| Coluna | Tipo | Descricao |
+|--------|------|-----------|
+| id | SERIAL | PK |
+| course_id | INT | FK courses |
+| specialist_id | INT | FK specialists |
+| price_monthly | DECIMAL(10,2) | Preco mensal |
+| visibility | VARCHAR(50) | public, private, company_specific |
+| status | VARCHAR(50) | draft, review, published, archived |
+| rating_avg | DECIMAL(2,1) | Media de avaliacoes |
+| total_enrollments | INT | Total de matriculas |
+| approved_at | TIMESTAMP | Data aprovacao |
+| created_at | TIMESTAMP | Data criacao |
+
+### course_reviews
+
+Avaliacoes de cursos do Hub.
+
+| Coluna | Tipo | Descricao |
+|--------|------|-----------|
+| id | SERIAL | PK |
+| hub_course_id | INT | FK hub_courses |
+| company_id | INT | FK companies |
+| user_id | INT | FK users |
+| rating | INT | 1-5 estrelas |
+| comment | TEXT | Comentario obrigatorio |
+| specialist_reply | TEXT | Resposta do especialista |
+| created_at | TIMESTAMP | Data criacao |
+
 ---
 
 ## Migrations
@@ -181,6 +259,7 @@ Notas dos usuarios.
 database/
 ├── migration-001-rbac.sql      # Schema principal
 ├── migration-002-enrollments.sql # Matriculas
+├── migration-003-hub.sql      # Hub de Especialistas (Sprint 15)
 └── seed-demo-completo.sql      # Dados de demo
 ```
 
@@ -192,6 +271,9 @@ docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/mi
 
 # Migration 2 - Enrollments
 docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-002-enrollments.sql
+
+# Migration 3 - Hub de Especialistas
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-003-hub.sql
 ```
 
 ### Verificar Aplicacao
@@ -249,6 +331,26 @@ JOIN courses c ON c.id = e.course_id
 JOIN modules m ON m.course_id = c.id
 LEFT JOIN user_progress up ON up.user_id = u.id AND up.module_id = m.id
 GROUP BY u.id, c.id;
+```
+
+### Especialistas Ativos
+
+```sql
+SELECT s.id, u.name, s.rating_avg, s.total_courses
+FROM specialists s
+JOIN users u ON u.id = s.user_id
+WHERE s.status = 'active';
+```
+
+### Cursos do Hub
+
+```sql
+SELECT hc.id, c.name, u.name AS specialist, hc.price_monthly, hc.rating_avg
+FROM hub_courses hc
+JOIN courses c ON c.id = hc.course_id
+JOIN specialists s ON s.id = hc.specialist_id
+JOIN users u ON u.id = s.user_id
+WHERE hc.status = 'published';
 ```
 
 ---

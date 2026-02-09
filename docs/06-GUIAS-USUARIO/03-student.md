@@ -17,7 +17,7 @@ Como Aluno, voce tem acesso a:
 
 ### Login
 
-1. Acesse a plataforma em https://trainb2b-demo.fly.dev
+1. Acesse a plataforma em https://sulical-demo.fly.dev
 2. Digite seu email corporativo
 3. Digite sua senha
 4. Clique em **"Entrar"**
@@ -39,6 +39,10 @@ No primeiro acesso, voce vera um tour guiado:
 ---
 
 ## Hub de Cursos
+
+### Hub de Especialistas
+
+A plataforma tambem oferece cursos do **Hub de Especialistas** - um marketplace onde especialistas externos oferecem cursos especializados para empresas. Se sua empresa assinou cursos do Hub, eles aparecerao junto com os cursos internos no seu Hub de Cursos.
 
 ### Acessando Cursos
 
@@ -258,5 +262,5 @@ Precisa de ajuda?
 
 - **Instrutor**: Converse com quem acompanha voce
 - **RH/T&D**: Para questoes de matricula
-- **Suporte Tecnico**: suporte@trainb2b.com
+- **Suporte Tecnico**: suporte@sulical.com
 - **Chat**: Icone no canto inferior direito

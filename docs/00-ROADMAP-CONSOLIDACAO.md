@@ -2,14 +2,14 @@
 
 > **IMPORTANTE**: Este documento é autocontido e deve ser lido no início de qualquer sessão de trabalho para retomar o contexto da consolidação da documentação.
 
-**Última atualização:** 2026-02-05
+**Última atualização:** 2026-02-09
 **Status geral:** ✅ Consolidação Concluída
 
 ---
 
 ## 1. CONTEXTO DO PROJETO
 
-### 1.1 O que é o UltraThink/TrainB2B
+### 1.1 O que é o Sulical
 
 **Plataforma B2B SaaS de treinamento técnico corporativo** com dois pilares:
 
@@ -83,10 +83,10 @@ docs/
 | Q18 | Cursos privados | ✅ Upload no hub com visibilidade restrita | 2026-02-05 |
 | Q20 | Pré-requisitos | ✅ Sim, configurável entre cursos | 2026-02-05 |
 
-### 3.2 Questões Pendentes (23)
+### 3.2 Questões Pendentes (17)
 
 **Críticas (bloqueia spec completa):**
-- Q1-Q6: Modelo de negócio e cadastro do Hub
+- ~~Q1-Q6: Modelo de negócio e cadastro do Hub~~ ✅ Respondidas (Sprint 15)
 - Q11-Q15: Precificação SaaS
 
 **Médias (pode definir depois):**
@@ -196,32 +196,26 @@ cat docs/00-ROADMAP-CONSOLIDACAO.md
 
 ## 7. DECISÕES DE PRODUTO PENDENTES
 
-### 7.1 Hub de Especialistas - Modelo de Negócio (Q1-Q6)
+### 7.1 Hub de Especialistas - Modelo de Negócio (Q1-Q6) ✅ RESPONDIDAS
 
 ```
 Q1. Revenue share: Fixo 70/30 ou variável por tier?
-    → Impacta: Atratividade para especialistas, margem da plataforma
-    → Recomendação: Começar com 70/30 fixo, evoluir para tiers depois
+    → ✅ DECIDIDO (2026-02-09): Fixo 70/30, evoluir para tiers depois
 
 Q2. Especialista paga mensalidade?
-    → Impacta: Barreira de entrada, receita recorrente
-    → Recomendação: Não cobrar inicialmente (atrair massa crítica)
+    → ✅ DECIDIDO (2026-02-09): Não cobrar inicialmente (atrair massa crítica)
 
 Q3. Quem define preço do curso?
-    → Impacta: Controle de qualidade, competitividade
-    → Recomendação: Especialista define, plataforma sugere faixa
+    → ✅ DECIDIDO (2026-02-09): Especialista define, plataforma sugere faixa
 
 Q4. Credenciais obrigatórias?
-    → Impacta: Qualidade percebida, barreira de entrada
-    → Recomendação: LinkedIn + 1 comprovação (cert ou portfolio)
+    → ✅ DECIDIDO (2026-02-09): LinkedIn + 1 comprovação (cert ou portfolio)
 
 Q5. Aprovação antes de publicar?
-    → Impacta: Tempo de go-to-market, qualidade
-    → Recomendação: Checklist automatizado + revisão manual em 48h
+    → ✅ DECIDIDO (2026-02-09): Checklist automatizado + revisão manual em 48h
 
 Q6. Critérios de remoção?
-    → Impacta: Qualidade do catálogo, confiança
-    → Recomendação: Rating < 3.0 por 3 meses OU 3+ reclamações graves
+    → ✅ DECIDIDO (2026-02-09): Rating < 3.0 por 3 meses OU 3+ reclamações graves
 ```
 
 ### 7.2 Precificação SaaS (Q11-Q15)
@@ -246,7 +240,7 @@ Q15. Limites do Community?
 | Arquivos de documentação | 67 | ~35 | 45 ativos + 24 arquivados ✅ |
 | Duplicação de conteúdo | Alta | Zero | Baixa ✅ |
 | Questões documentadas | 0 | 29 | 29 ✅ |
-| Decisões tomadas | 0 | 29 | 6 |
+| Decisões tomadas | 0 | 29 | 12 |
 | Tempo para encontrar info | >5min | <2min | <2min ✅ |
 
 ---

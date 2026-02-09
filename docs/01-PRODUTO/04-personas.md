@@ -1,4 +1,4 @@
-# Personas do UltraThink
+# Personas do Sulical
 
 > **Versão:** 2.0.0 (Consolidada)
 > **Data:** 2026-02-05
@@ -26,7 +26,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           ECOSSISTEMA ULTRATHINK                            │
+│                           ECOSSISTEMA SULICAL                            │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │  LADO DA EMPRESA (B2B)                    LADO DO MARKETPLACE (B2B2C)      │
@@ -475,6 +475,6 @@ Meta:           Receita recorrente passiva
 
 ---
 
-**Última atualização:** 2026-02-05
+**Última atualização:** 2026-02-09
 **Mantido por:** Claude Code
 **Status:** ✅ Documento consolidado

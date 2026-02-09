@@ -9,8 +9,8 @@
 
 | Entidade | Quantidade |
 |----------|------------|
-| Empresas | 2 |
-| Usuários | 12 |
+| Empresas | 3 |
+| Usuários | 13 |
 | Cursos | 1 |
 | Fases | 4 |
 | Módulos | 16 |
@@ -24,6 +24,7 @@
 |----|------|------|-------|
 | 550e8400-...440001 | Acme Tech Solutions | acme-tech | starter |
 | 550e8400-...440002 | DevCorp Consulting | devcorp | professional |
+| 550e8400-...440003 | Hub de Especialistas | hub-especialistas | enterprise |
 
 ---
 
@@ -51,7 +52,19 @@
 | bruno@devcorp.com | Bruno Costa | student | /dashboard |
 | camila@devcorp.com | Camila Rocha | student | /dashboard |
 
+### Hub de Especialistas (1 usuário)
+
+| Email | Nome | Role | Rota |
+|-------|------|------|------|
+| joao.silva.specialist@sulical.com | João Silva | specialist | /specialist |
+
 **Senha padrão:** `Demo@2026`
+
+### Empresa Hub de Especialistas
+
+| ID | Nome | Slug | Plano |
+|----|------|------|-------|
+| 550e8400-...440003 | Hub de Especialistas | hub-especialistas | enterprise |
 
 ---
 
@@ -100,6 +113,26 @@
     └── 4.4 Projeto Final: Script de Automação
 ```
 
+## Curso Hub: Bash Shell Scripting (Especialista)
+
+### Metadados
+
+| Campo | Valor |
+|-------|-------|
+| ID | `hub-bash` |
+| Nome | Bash Shell Scripting |
+| Especialista | João Silva |
+| Preço | R$ 89,90/mês |
+| Status | published |
+| Rating | 5.0 (2 reviews) |
+
+### Reviews Demo
+
+| Empresa | Rating | Comentário |
+|---------|--------|------------|
+| Acme Tech | ★★★★★ | Excelente curso, muito prático! |
+| DevCorp | ★★★★★ | Conteúdo de alta qualidade |
+
 ### Fases (Seções)
 
 | ID | Nome | Semanas | Cor |
@@ -134,13 +167,13 @@ Progresso pré-carregado para demonstrar o dashboard:
 database/
 ├── init.sql                  # Schema das tabelas
 ├── seed.sql                  # Dados básicos (7 usuários, roles antigos)
-└── seed-demo-completo.sql    # Dados RBAC completos (12 usuários, 4 roles)
+└── seed-demo-completo.sql    # Dados RBAC completos (13 usuários, 5 roles)
 ```
 
 ### Qual usar?
 
 - **seed.sql:** Dados mínimos (legado)
-- **seed-demo-completo.sql:** ⭐ Recomendado - inclui 4 roles RBAC
+- **seed-demo-completo.sql:** ⭐ Recomendado - inclui 5 roles RBAC
 
 ### Recarregar Dados
 
@@ -198,7 +231,8 @@ companies (2)
     └─── users (12) ─────┬─── c_level (2)
                          ├─── admin (2)
                          ├─── instructor (2)
-                         └─── student (6)
+                         ├─── student (6)
+                         └─── specialist (1)
                               └─── user_progress (41)
                                    └─── modules (16)
                                         └─── phases (4)
@@ -210,7 +244,7 @@ companies (2)
 ## Notas
 
 1. **Senha única:** Todos os usuários demo usam `Demo@2026`
-2. **RBAC:** 4 roles implementados (c_level, admin, instructor, student)
+2. **RBAC:** 5 roles implementados (c_level, admin, instructor, specialist, student)
 3. **Multi-tenant:** Dados isolados por company_id
 4. **Progresso:** Apenas students têm progresso registrado
 5. **Curso único:** MVP tem apenas o curso Bash

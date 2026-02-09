@@ -1,8 +1,8 @@
-# UltraThink/TrainB2B - Documentação
+# Sulical - Documentação
 
 **Plataforma B2B SaaS de Treinamento Técnico Corporativo**
 
-**Última atualização:** 2026-02-05
+**Última atualização:** 2026-02-09
 **Versão da Documentação:** 2.0.0 (Consolidada)
 
 ---
@@ -25,7 +25,7 @@
 
 ## Visão Geral do Produto
 
-**UltraThink** é uma plataforma B2B SaaS de treinamento técnico corporativo com dois pilares:
+**Sulical** é uma plataforma B2B SaaS de treinamento técnico corporativo com dois pilares:
 
 1. **LMS Corporativo**: Empresas criam/consomem cursos para treinar colaboradores
 2. **Hub de Especialistas**: Marketplace onde especialistas externos vendem cursos para empresas
@@ -36,10 +36,10 @@
 |---------|--------|
 | **Frontend** | ✅ Produção-ready (React 18 + Vite 5) |
 | **Backend** | ✅ Funcional (NocoDB + PostgreSQL 16) |
-| **Autenticação** | ✅ JWT + RBAC (4 roles, 21 permissões) |
-| **Dashboards** | ✅ 4 dashboards por role |
+| **Autenticação** | ✅ JWT + RBAC (5 roles, 32 permissões) |
+| **Dashboards** | ✅ 5 dashboards por role |
 | **i18n** | ✅ 3 idiomas (PT-BR, EN-US, ES-ES) |
-| **Hub Especialistas** | 📋 Planejado (Q4 2026+) |
+| **Hub Especialistas** | ✅ Implementado (Sprint 15) |
 
 ---
 
@@ -187,5 +187,5 @@ bun run dev
 
 ---
 
-**Mantido por:** Equipe UltraThink
-**Última consolidação:** 2026-02-05
+**Mantido por:** Equipe Sulical
+**Última consolidação:** 2026-02-09

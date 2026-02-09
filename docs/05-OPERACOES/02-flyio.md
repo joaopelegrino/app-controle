@@ -40,8 +40,8 @@ primary_region = "gru"
   dockerfile = "Dockerfile"
 
 [env]
-  VITE_PLATFORM_NAME = "TrainB2B Demo"
-  VITE_PLATFORM_SHORT_NAME = "TrainB2B"
+  VITE_PLATFORM_NAME = "Sulical Demo"
+  VITE_PLATFORM_SHORT_NAME = "Sulical"
 
 [http_service]
   internal_port = 80

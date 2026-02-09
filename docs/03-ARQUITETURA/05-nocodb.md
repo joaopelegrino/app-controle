@@ -27,6 +27,9 @@ Ao fazer login, voce vera o dashboard com todas as tabelas:
 - **user_progress** - Progresso
 - **enrollments** - Matriculas
 - **user_notes** - Notas
+- **specialists** - Especialistas do Hub
+- **hub_courses** - Cursos do marketplace
+- **course_reviews** - Avaliacoes de cursos
 
 ### Navegacao
 
@@ -170,6 +173,13 @@ const TABLE_IDS = {
   v_company_progress: 'me2shk8zc27r3li',
   v_user_dashboard: 'mduzpssgu2bckae',
   v_course_stats: 'mkbi3w6kk7j73mb',
+  // Hub de Especialistas (Sprint 15 - IDs pendentes sync)
+  specialists: 'pending_nocodb_sync_specialists',
+  hub_courses: 'pending_nocodb_sync_hub_courses',
+  course_reviews: 'pending_nocodb_sync_course_reviews',
+  // Hub Views
+  v_specialist_dashboard: 'pending_nocodb_sync_v_specialist_dashboard',
+  v_hub_catalog: 'pending_nocodb_sync_v_hub_catalog',
 };
 ```
 
@@ -286,6 +296,35 @@ await apiService.deleteUser(userId);
 const courses = await apiService.getCourses();
 const course = await apiService.createCourse(courseData);
 ```
+
+---
+
+## Acesso Hub de Especialistas
+
+### Endpoints Publicos (sem autenticacao)
+
+Catálogo de cursos do Hub é acessível publicamente:
+
+```sh
+# Listar cursos publicados
+GET /api/v1/db/data/noco/app_controle/hub_courses?where=(status,eq,published)
+```
+
+### Endpoints Autenticados (specialist)
+
+Dashboard e gestao de cursos requerem autenticacao:
+
+```sh
+# Meus cursos (specialist autenticado)
+GET /api/v1/db/data/noco/app_controle/hub_courses?where=(specialist_id,eq,<id>)
+
+# Minhas reviews
+GET /api/v1/db/data/noco/app_controle/course_reviews?where=(hub_course_id,eq,<course_id>)
+```
+
+> **⚠️ IMPORTANTE:** Os Table IDs do Hub usam placeholders `pending_nocodb_sync_*`.
+> Após rodar `database/migration-003-hub.sql`, execute o script de sync para obter os IDs reais.
+> Veja a seção "Como encontrar IDs atualizados" acima.
 
 ---
 

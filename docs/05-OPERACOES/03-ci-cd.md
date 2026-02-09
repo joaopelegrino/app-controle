@@ -108,9 +108,9 @@ Configurados em: Settings > Variables > Actions
 
 | Variable | Descricao | Exemplo |
 |----------|-----------|---------|
-| `VITE_PLATFORM_NAME` | Nome da plataforma | TrainB2B Demo |
-| `VITE_PLATFORM_SHORT_NAME` | Nome curto | TrainB2B |
-| `VITE_STORAGE_PREFIX` | Prefixo localStorage | trainb2b |
+| `VITE_PLATFORM_NAME` | Nome da plataforma | Sulical Demo |
+| `VITE_PLATFORM_SHORT_NAME` | Nome curto | Sulical |
+| `VITE_STORAGE_PREFIX` | Prefixo localStorage | sulical |
 
 ---
 
@@ -144,9 +144,9 @@ gh secret list
 ### Via GitHub CLI
 
 ```sh
-gh variable set VITE_PLATFORM_NAME --body "TrainB2B Demo"
-gh variable set VITE_PLATFORM_SHORT_NAME --body "TrainB2B"
-gh variable set VITE_STORAGE_PREFIX --body "trainb2b"
+gh variable set VITE_PLATFORM_NAME --body "Sulical Demo"
+gh variable set VITE_PLATFORM_SHORT_NAME --body "Sulical"
+gh variable set VITE_STORAGE_PREFIX --body "sulical"
 
 # Verificar
 gh variable list

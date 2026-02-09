@@ -51,7 +51,7 @@ docker-compose -f docker-compose.nocodb.yml up -d
 # 3. Aguardar inicialização (~30s)
 sleep 30
 
-# 4. Carregar seed completo (RBAC com 4 perfis)
+# 4. Carregar seed completo (RBAC com 5 perfis)
 docker exec -i app-controle-db psql -U nocodb_user -d app_controle \
   < database/seed-demo-completo.sql
 
@@ -301,6 +301,11 @@ echo -e "\n=== Verificação concluída ==="
 | v_company_progress | me2shk8zc27r3li |
 | v_user_dashboard | mduzpssgu2bckae |
 | v_course_stats | mkbi3w6kk7j73mb |
+| specialists | pending_nocodb_sync_specialists |
+| hub_courses | pending_nocodb_sync_hub_courses |
+| course_reviews | pending_nocodb_sync_course_reviews |
+| v_specialist_dashboard | pending_nocodb_sync_v_specialist |
+| v_hub_catalog | pending_nocodb_sync_v_hub_catalog |
 
 ### Comandos mise Úteis
 
@@ -340,7 +345,7 @@ docker cp app-controle-nocodb:/usr/app/data ./nocodb-data-backup
 
 - [nocodb.md](./nocodb.md) - Guia geral do NocoDB
 - [database.md](./database.md) - Schema do PostgreSQL
-- [DADOS-DEMO.md](./DADOS-DEMO.md) - Dados de demonstração (curso Bash, 12 usuários)
+- [DADOS-DEMO.md](./DADOS-DEMO.md) - Dados de demonstração (curso Bash, 13 usuários, Hub specialist)
 
 ---
 

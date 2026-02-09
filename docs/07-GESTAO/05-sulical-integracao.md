@@ -2,8 +2,8 @@
 
 **Versao:** 1.0.0
 **Data:** 2026-02-01
-**Sprint Anterior:** 14 - CRUD de Cursos COMPLETO
-**Status:** Pronto para Sprint 15
+**Sprint Anterior:** 15 - Hub de Especialistas COMPLETO
+**Status:** Pronto para Sprint 16
 
 ---
 
@@ -18,6 +18,7 @@
 | Integracao Docs → App | Link "Acessar Plataforma" na navbar VitePress | ✅ |
 | Traducoes i18n | `navigation.help` e `navigation.docs` em 3 idiomas | ✅ |
 | Build Validado | Frontend e VitePress compilam sem erros | ✅ |
+| Hub de Especialistas | Sprint 15: 5 componentes, RBAC 5 roles, migration-003 | ✅ |
 
 ### Arquivos Modificados
 
@@ -82,7 +83,7 @@ src/components/LoginView.jsx        # Usar logo
 
 ---
 
-### P1 - ALTO (Sprint 15 - Certificados)
+### P1 - ALTO (Sprint 16 - Certificados)
 
 #### US-132: Geracao de Certificados PDF
 
@@ -271,7 +272,7 @@ e2e/integration-app-docs.spec.ts    # CRIAR
 
 ## Cronograma Sugerido
 
-### Sprint 15 (Semana 1-2)
+### Sprint 16 (Semana 1-2)
 
 | US | Descricao | Pontos | Responsavel |
 |----|-----------|--------|-------------|
@@ -281,7 +282,7 @@ e2e/integration-app-docs.spec.ts    # CRIAR
 | US-133 | Pagina Verificacao Certificado | 5 | Dev |
 | **Total** | | **21** | |
 
-### Sprint 16 (Semana 3-4)
+### Sprint 17 (Semana 3-4)
 
 | US | Descricao | Pontos | Responsavel |
 |----|-----------|--------|-------------|
@@ -307,15 +308,15 @@ e2e/integration-app-docs.spec.ts    # CRIAR
 ### Cobertura RBAC
 
 ```
-Atual:  18/22 permissoes (82%)
-Meta:   22/22 permissoes (100%)
+Atual:  28/32 permissoes (88%)
+Meta:   32/32 permissoes (100%)
 Gap:    4 permissoes sem UI
 ```
 
 ### Funcionalidades MVP
 
 ```
-Completo:   14 sprints
+Completo:   15 sprints
 Pendente:   2 sprints (Certificados + Polish)
 Progresso:  87%
 ```
@@ -395,5 +396,5 @@ grep -r "TrainB2B" src/ public/ docs/
 
 ---
 
-*Backlog Sulical v1.0.0 | 2026-02-01*
-*Proxima Revisao: Inicio do Sprint 15*
+*Backlog Sulical v2.0.0 | 2026-02-09*
+*Proxima Revisao: Inicio do Sprint 16*

@@ -117,6 +117,7 @@ Use estas credenciais para testar diferentes perfis:
 | prof@acmetech.com | Demo@2026 | Instrutor | `/instructor` |
 | maria@acmetech.com | Demo@2026 | Aluno | `/dashboard` |
 | ceo@acmetech.com | Demo@2026 | C-Level | `/admin/executive` |
+| joao.silva.specialist@sulical.com | Demo@2026 | Especialista | `/specialist` |
 
 ## Proximos Passos
 
@@ -141,4 +142,5 @@ Teste diferentes perfis de acesso com os usuarios de demo:
 - **Instrutor** (`prof@acmetech.com`) - CRUD de cursos e metricas
 - **Aluno** (`maria@acmetech.com`) - Dashboard de progresso
 - **Executivo** (`ceo@acmetech.com`) - Dashboard executivo
+- **Especialista** (`joao.silva.specialist@sulical.com`) - Dashboard do especialista
 :::

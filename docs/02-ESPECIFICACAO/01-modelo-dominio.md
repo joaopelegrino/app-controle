@@ -3,8 +3,8 @@
 > **Hierarquia e Relacionamentos do Sistema**
 >
 > **Versão:** 1.0.0
-> **Data:** 2025-11-14
-> **Status:** ✅ Ativo - Baseado na Release 1.0
+> **Data:** 2026-02-09
+> **Status:** ✅ Ativo - Atualizado Sprint 15 (Hub de Especialistas)
 
 ---
 
@@ -495,6 +495,82 @@ interface BreadcrumbProps {
 **Localização no Código:**
 - Componente: `src/components/Breadcrumb.jsx`
 - Uso: Integrado em `*LearningSystem.jsx` e `*NotesView.jsx`
+
+---
+
+### Entidade 10: Especialista (Hub)
+
+**Descrição:** Perfil de especialista externo no Hub de Especialistas. Vinculado a um `user` com role `specialist`.
+
+**Atributos:**
+```typescript
+interface Specialist {
+  id: string;
+  user_id: string;
+  linkedin_url: string;
+  bio: string;
+  specialties: string[];
+  credentials: object;
+  verified_at: Date | null;
+  status: 'pending' | 'active' | 'suspended' | 'removed';
+  rating_avg: number;
+  total_courses: number;
+  total_revenue: number;
+}
+```
+
+**Localização no Código:**
+- Componente: `src/components/hub/SpecialistDashboard.jsx`
+- API: `src/services/apiService.js` (hub.specialists)
+
+---
+
+### Entidade 11: Curso do Hub
+
+**Descrição:** Curso publicado por um especialista no marketplace, com preço, visibilidade e reviews.
+
+**Atributos:**
+```typescript
+interface HubCourse {
+  id: string;
+  course_id: string;
+  specialist_id: string;
+  price_monthly: number;
+  visibility: 'public' | 'private' | 'company_specific';
+  status: 'draft' | 'review' | 'published' | 'archived';
+  rating_avg: number;
+  total_enrollments: number;
+}
+```
+
+**Localização no Código:**
+- Componente: `src/components/hub/HubCatalog.jsx`
+- API: `src/services/apiService.js` (hub.courses)
+
+---
+
+### Entidade 12: Review de Curso
+
+**Descrição:** Avaliação de um curso do Hub por uma empresa, com rating 1-5 e comentário.
+
+**Atributos:**
+```typescript
+interface CourseReview {
+  id: string;
+  hub_course_id: string;
+  company_id: string;
+  user_id: string;
+  rating: number;
+  comment: string;
+  specialist_reply: string | null;
+}
+```
+
+**Localização no Código:**
+- Componente: `src/components/hub/CourseReviews.jsx`
+- API: `src/services/apiService.js` (hub.reviews)
+
+> **Referência completa:** [04-hub-especialistas.md](./04-hub-especialistas.md) para especificação detalhada do Hub de Especialistas.
 
 ---
 
@@ -1178,11 +1254,12 @@ export default BashLearningSystem;
 | Versão | Data | Mudanças | Autor |
 |--------|------|----------|-------|
 | 1.0.0 | 2025-11-14 | Criação inicial com 9 entidades, fluxos de dados e 7 regras de negócio | Claude Code |
+| 2.0.0 | 2026-02-09 | Adicionadas entidades Hub (Especialista, Curso Hub, Review). Sprint 15 | Claude Code |
 
 ---
 
 **📍 Você está em:** `docs/conceitual/01-visao-geral/04-modelo-dominio.md`
-**📅 Última atualização:** 2025-11-14
+**📅 Última atualização:** 2026-02-09
 **👤 Mantido por:** João Pelegrino + Claude Code
-**📦 Status:** ✅ Ativo - Baseado na Release 1.0 (227 módulos implementados)
+**📦 Status:** ✅ Ativo - Atualizado Sprint 15 (Hub de Especialistas)
 **🎯 Uso:** Referência para desenvolvimento, onboarding de devs e design de features

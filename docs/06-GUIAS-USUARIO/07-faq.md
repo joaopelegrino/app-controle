@@ -86,8 +86,8 @@ Isso deleta TODOS os dados. Use apenas em desenvolvimento.
 
 ### Qual a senha do NocoDB?
 
-- **Email**: admin@ultrathink.com
-- **Senha**: UltraThink@Admin2026!
+- **Email**: admin@trainb2b.local
+- **Senha**: Admin@TrainB2B2026!
 
 ### Os dados de demo sumiram
 
@@ -270,6 +270,13 @@ Clique no seletor de idioma no canto superior direito da tela de login ou no hea
 2. Copiar arquivos JSON de `pt-BR/`
 3. Traduzir strings
 4. Adicionar codigo em `src/i18n/config.js`
+
+### Credenciais do Especialista (Hub)
+
+Para testar o perfil de especialista:
+- **Email**: joao.silva.specialist@sulical.com
+- **Senha**: Demo@2026
+- **Acesso**: `/specialist`
 
 ---
 

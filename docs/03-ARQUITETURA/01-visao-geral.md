@@ -509,7 +509,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ## Componentes Principais
 
-### Mapa de Componentes (18 total)
+### Mapa de Componentes (23 total)
 
 ```
 src/components/
@@ -538,6 +538,13 @@ src/components/
 ├── FlashcardModal.jsx              # Flash cards 3D
 ├── CodeBlock.jsx                   # Bloco de código formatado
 └── ErrorBoundary.jsx               # Tratamento de erros React
+│
+├── hub/                                # Hub de Especialistas (Sprint 15)
+│   ├── SpecialistDashboard.jsx        # Dashboard do especialista
+│   ├── HubCatalog.jsx                 # Catálogo de cursos
+│   ├── CourseReviews.jsx              # Reviews de cursos
+│   ├── SpecialistProfile.jsx          # Perfil do especialista
+│   └── RevenueChart.jsx              # Gráfico de receita
 ```
 
 ### Componente Arquetípico: BashLearningSystem.jsx
@@ -954,7 +961,7 @@ function sanitizeMarkdown(content) {
 ---
 
 **📍 Você está em:** `docs/tecnico/architecture/01-visao-geral-arquitetura.md`
-**📅 Última atualização:** 2025-11-14
+**📅 Última atualização:** 2026-02-09
 **👤 Mantido por:** João Pelegrino + Claude Code
 **📦 Status:** ✅ Ativo - Release 1.0
 **🎯 Uso:** Referência para decisões técnicas, onboarding de desenvolvedores e planejamento de refatorações

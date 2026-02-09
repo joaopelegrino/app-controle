@@ -4,10 +4,10 @@ O app-controle implementa um sistema de controle de acesso baseado em roles (RBA
 
 ## Visao Geral
 
-O sistema define **4 perfis** com permissoes crescentes:
+O sistema define **5 perfis** com permissoes crescentes:
 
 ```
-student < instructor < admin < c_level
+student < instructor < specialist < admin < c_level
 ```
 
 ---
@@ -65,52 +65,81 @@ Acesso completo com visao estrategica.
 - Metricas de ROI
 - Comparativos entre equipes
 
+### Specialist (Especialista)
+
+Especialista externo do Hub de Especialistas.
+
+**Uso:** Freelancers, consultores, criadores de conteudo
+
+**Permissoes:**
+- Criar/editar/deletar cursos proprios
+- Dashboard de analytics proprio
+- Ver receita e metricas
+- Responder reviews
+- Gerenciar perfil e credenciais
+
 ---
 
 ## Matriz de Permissoes
 
 ### Cursos
 
-| Permissao | Student | Instructor | Admin | C-Level |
-|-----------|---------|------------|-------|---------|
-| courses.view | ✅ | ✅ | ✅ | ✅ |
-| courses.progress | ✅ | ✅ | ✅ | ✅ |
-| courses.notes | ✅ | ✅ | ✅ | ✅ |
-| courses.assign | ❌ | ❌ | ✅ | ✅ |
-| courses.create | ❌ | ❌ | ✅ | ✅ |
-| courses.edit | ❌ | ✅ | ✅ | ✅ |
-| courses.delete | ❌ | ❌ | ✅ | ✅ |
+| Permissao | Student | Instructor | Specialist | Admin | C-Level |
+|-----------|---------|------------|------------|-------|---------|
+| courses.view | ✅ | ✅ | ✅ | ✅ | ✅ |
+| courses.progress | ✅ | ✅ | ✅ | ✅ | ✅ |
+| courses.notes | ✅ | ✅ | ✅ | ✅ | ✅ |
+| courses.assign | ❌ | ❌ | ❌ | ✅ | ✅ |
+| courses.create | ❌ | ❌ | ❌ | ✅ | ✅ |
+| courses.edit | ❌ | ✅ | ❌ | ✅ | ✅ |
+| courses.delete | ❌ | ❌ | ❌ | ✅ | ✅ |
 
 ### Dashboard
 
-| Permissao | Student | Instructor | Admin | C-Level |
-|-----------|---------|------------|-------|---------|
-| dashboard.own | ✅ | ✅ | ✅ | ✅ |
-| dashboard.team | ❌ | ✅ | ✅ | ✅ |
-| dashboard.company | ❌ | ❌ | ✅ | ✅ |
+| Permissao | Student | Instructor | Specialist | Admin | C-Level |
+|-----------|---------|------------|------------|-------|---------|
+| dashboard.own | ✅ | ✅ | ✅ | ✅ | ✅ |
+| dashboard.team | ❌ | ✅ | ❌ | ✅ | ✅ |
+| dashboard.company | ❌ | ❌ | ❌ | ✅ | ✅ |
 
 ### Usuarios
 
-| Permissao | Student | Instructor | Admin | C-Level |
-|-----------|---------|------------|-------|---------|
-| users.view | ❌ | ❌ | ✅ | ✅ |
-| users.create | ❌ | ❌ | ✅ | ✅ |
-| users.edit | ❌ | ❌ | ✅ | ✅ |
-| users.delete | ❌ | ❌ | ✅ | ✅ |
+| Permissao | Student | Instructor | Specialist | Admin | C-Level |
+|-----------|---------|------------|------------|-------|---------|
+| users.view | ❌ | ❌ | ❌ | ✅ | ✅ |
+| users.create | ❌ | ❌ | ❌ | ✅ | ✅ |
+| users.edit | ❌ | ❌ | ❌ | ✅ | ✅ |
+| users.delete | ❌ | ❌ | ❌ | ✅ | ✅ |
 
 ### Analytics
 
-| Permissao | Student | Instructor | Admin | C-Level |
-|-----------|---------|------------|-------|---------|
-| analytics.basic | ❌ | ✅ | ✅ | ✅ |
-| analytics.export | ❌ | ❌ | ✅ | ✅ |
-| analytics.advanced | ❌ | ❌ | ✅ | ✅ |
+| Permissao | Student | Instructor | Specialist | Admin | C-Level |
+|-----------|---------|------------|------------|-------|---------|
+| analytics.basic | ❌ | ✅ | ❌ | ✅ | ✅ |
+| analytics.export | ❌ | ❌ | ❌ | ✅ | ✅ |
+| analytics.advanced | ❌ | ❌ | ❌ | ✅ | ✅ |
 
 ### Admin
 
-| Permissao | Student | Instructor | Admin | C-Level |
-|-----------|---------|------------|-------|---------|
-| admin.access | ❌ | ❌ | ✅ | ✅ |
+| Permissao | Student | Instructor | Specialist | Admin | C-Level |
+|-----------|---------|------------|------------|-------|---------|
+| admin.access | ❌ | ❌ | ❌ | ✅ | ✅ |
+
+### Hub de Especialistas
+
+| Permissao | Student | Instructor | Specialist | Admin | C-Level |
+|-----------|---------|------------|------------|-------|---------|
+| hub_courses.create | ❌ | ❌ | ✅ | ❌ | ❌ |
+| hub_courses.edit_own | ❌ | ❌ | ✅ | ❌ | ❌ |
+| hub_courses.delete_own | ❌ | ❌ | ✅ | ❌ | ❌ |
+| hub_courses.view_own | ❌ | ❌ | ✅ | ❌ | ❌ |
+| hub_analytics.view_own | ❌ | ❌ | ✅ | ❌ | ❌ |
+| hub_revenue.view_own | ❌ | ❌ | ✅ | ❌ | ❌ |
+| hub_catalog.view | ✅ | ✅ | ✅ | ✅ | ✅ |
+| hub_catalog.purchase | ❌ | ❌ | ❌ | ✅ | ✅ |
+| specialists.approve | ❌ | ❌ | ❌ | ✅ | ✅ |
+| specialists.suspend | ❌ | ❌ | ❌ | ✅ | ✅ |
+| hub_courses.approve | ❌ | ❌ | ❌ | ✅ | ✅ |
 
 ---
 
@@ -154,7 +183,7 @@ function MyComponent() {
 ```javascript
 const {
   // Informacoes do role
-  role,           // 'student' | 'instructor' | 'admin' | 'c_level'
+  role,           // 'student' | 'instructor' | 'specialist' | 'admin' | 'c_level'
   roleLabel,      // 'Aluno' | 'Instrutor' | 'Administrador' | 'Executivo'
   roleColor,      // Cor Tailwind para badges
 
@@ -215,6 +244,16 @@ import { PrivateRoute } from '../components/PrivateRoute';
     </PrivateRoute>
   }
 />
+
+// Rota protegida para especialista
+<Route
+  path="/specialist"
+  element={
+    <PrivateRoute requiredRole="specialist">
+      <SpecialistDashboard />
+    </PrivateRoute>
+  }
+/>
 ```
 
 ---
@@ -228,6 +267,8 @@ import { PrivateRoute } from '../components/PrivateRoute';
 | `/dashboard` | UserDashboard | Todos autenticados |
 | `/curso/:id` | CourseView | Todos autenticados |
 | `/instructor` | InstructorDashboard | instructor, admin, c_level |
+| `/specialist` | SpecialistDashboard | specialist |
+| `/hub/catalog` | HubCatalog | Todos autenticados |
 | `/admin` | AdminDashboard | admin, c_level |
 | `/admin/executive` | ExecutiveDashboard | c_level |
 
@@ -241,6 +282,7 @@ import { PrivateRoute } from '../components/PrivateRoute';
 CREATE TYPE user_role AS ENUM (
   'student',
   'instructor',
+  'specialist',
   'admin',
   'c_level'
 );
