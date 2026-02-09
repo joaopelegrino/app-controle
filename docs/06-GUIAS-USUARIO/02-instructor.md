@@ -16,7 +16,7 @@ Como Instrutor, voce tem acesso a:
 
 ## Acessando o Painel
 
-1. Acesse a plataforma em https://sulical-demo.fly.dev
+1. Acesse a plataforma em https://plataformab2b-demo.fly.dev
 2. Faca login com suas credenciais
 3. Clique em **"Instrutor"** no menu ou acesse `/instructor`
 
@@ -230,5 +230,5 @@ Nao diretamente, mas e uma boa pratica ser transparente sobre o acompanhamento.
 Precisa de ajuda?
 
 - **Administrador**: Solicite acesso ou funcionalidades adicionais
-- **Suporte Tecnico**: suporte@sulical.com
-- **Documentacao**: https://docs.sulical.com
+- **Suporte Tecnico**: suporte@plataformab2b.com
+- **Documentacao**: https://docs.plataformab2b.com

@@ -1,4 +1,4 @@
-# Personas do Sulical
+# Personas da Plataforma B2B
 
 > **Versão:** 2.0.0 (Consolidada)
 > **Data:** 2026-02-05
@@ -26,7 +26,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           ECOSSISTEMA SULICAL                            │
+│                           ECOSSISTEMA PLATAFORMA B2B                            │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │  LADO DA EMPRESA (B2B)                    LADO DO MARKETPLACE (B2B2C)      │

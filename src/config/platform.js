@@ -12,17 +12,17 @@
 const DEFAULT_CONFIG = {
   // Identidade da plataforma
   platform: {
-    name: import.meta.env.VITE_PLATFORM_NAME || 'Sulical - Treinamento Corporativo',
-    shortName: import.meta.env.VITE_PLATFORM_SHORT_NAME || 'Sulical',
+    name: import.meta.env.VITE_PLATFORM_NAME || 'Plataforma B2B - Treinamento Corporativo',
+    shortName: import.meta.env.VITE_PLATFORM_SHORT_NAME || 'Plataforma B2B',
     tagline: import.meta.env.VITE_PLATFORM_TAGLINE || 'Capacitação Técnica para sua Empresa',
-    copyright: import.meta.env.VITE_PLATFORM_COPYRIGHT || '© 2026 Sulical - Todos os direitos reservados',
+    copyright: import.meta.env.VITE_PLATFORM_COPYRIGHT || '© 2026 Plataforma B2B - Todos os direitos reservados',
     version: import.meta.env.VITE_PLATFORM_VERSION || '1.0.0',
     docsUrl: import.meta.env.VITE_DOCS_URL || '/docs/',
   },
 
   // Prefixos para storage (localStorage/sessionStorage)
   storage: {
-    prefix: import.meta.env.VITE_STORAGE_PREFIX || 'sulical',
+    prefix: import.meta.env.VITE_STORAGE_PREFIX || 'plataformab2b',
     keys: {
       auth: 'auth',
       user: 'user',

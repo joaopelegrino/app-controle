@@ -17,7 +17,7 @@ Como Aluno, voce tem acesso a:
 
 ### Login
 
-1. Acesse a plataforma em https://sulical-demo.fly.dev
+1. Acesse a plataforma em https://plataformab2b-demo.fly.dev
 2. Digite seu email corporativo
 3. Digite sua senha
 4. Clique em **"Entrar"**
@@ -262,5 +262,5 @@ Precisa de ajuda?
 
 - **Instrutor**: Converse com quem acompanha voce
 - **RH/T&D**: Para questoes de matricula
-- **Suporte Tecnico**: suporte@sulical.com
+- **Suporte Tecnico**: suporte@plataformab2b.com
 - **Chat**: Icone no canto inferior direito

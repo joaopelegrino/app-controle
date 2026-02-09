@@ -9,7 +9,7 @@
 
 ## Visão Geral
 
-Este documento especifica todos os cenários de teste E2E para validar as funcionalidades da plataforma Sulical B2B, cobrindo todas as histórias de usuário (personas) através da interface web usando MCP Chrome DevTools.
+Este documento especifica todos os cenários de teste E2E para validar as funcionalidades da Plataforma B2B, cobrindo todas as histórias de usuário (personas) através da interface web usando MCP Chrome DevTools.
 
 ### Personas vs Roles
 
@@ -19,7 +19,7 @@ Este documento especifica todos os cenários de teste E2E para validar as funcio
 | **Gestor de RH / Admin** | `admin` | /admin | admin@acmetech.com |
 | **Líder Técnico / Instrutor** | `instructor` | /instructor | prof@acmetech.com |
 | **Desenvolvedor / Aprendiz** | `student` | /dashboard | maria@acmetech.com |
-| **Especialista Hub** | `specialist` | /specialist | joao.silva.specialist@sulical.com |
+| **Especialista Hub** | `specialist` | /specialist | joao.silva.specialist@plataformab2b.com |
 
 **Senha padrão:** `Demo@2026`
 
@@ -714,7 +714,7 @@ mcp__chrome-devtools__resize_page({ width: 375, height: 667 })
 
 ### TC-SPEC-001: Login Specialist e Redirect
 
-**Credencial:** joao.silva.specialist@sulical.com (specialist)
+**Credencial:** joao.silva.specialist@plataformab2b.com (specialist)
 **Prioridade:** Crítica
 
 ```javascript
@@ -722,7 +722,7 @@ mcp__chrome-devtools__resize_page({ width: 375, height: 667 })
 mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/login" })
 
 // 2. Preencher credenciais
-mcp__chrome-devtools__fill({ uid: "<email_uid>", value: "joao.silva.specialist@sulical.com" })
+mcp__chrome-devtools__fill({ uid: "<email_uid>", value: "joao.silva.specialist@plataformab2b.com" })
 mcp__chrome-devtools__fill({ uid: "<senha_uid>", value: "Demo@2026" })
 
 // 3. Submeter
@@ -739,7 +739,7 @@ mcp__chrome-devtools__wait_for({ text: "Painel do Especialista" })
 
 ### TC-SPEC-002: Specialist Dashboard Stats
 
-**Credencial:** joao.silva.specialist@sulical.com
+**Credencial:** joao.silva.specialist@plataformab2b.com
 **Prioridade:** Alta
 
 ```javascript

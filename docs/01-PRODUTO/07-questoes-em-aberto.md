@@ -1,4 +1,4 @@
-# Questões em Aberto - Sulical
+# Questões em Aberto - Plataforma B2B
 
 **Versão:** 2.0.0
 **Data:** 2026-02-09

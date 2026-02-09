@@ -9,7 +9,7 @@
 
 ## 1. CONTEXTO DO PROJETO
 
-### 1.1 O que é o Sulical
+### 1.1 O que é a Plataforma B2B
 
 **Plataforma B2B SaaS de treinamento técnico corporativo** com dois pilares:
 

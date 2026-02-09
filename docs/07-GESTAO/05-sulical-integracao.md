@@ -1,4 +1,4 @@
-# Backlog - Sulical Integracoes e Proximos Passos
+# Backlog - Plataforma B2B Integracoes e Proximos Passos
 
 **Versao:** 1.0.0
 **Data:** 2026-02-01
@@ -13,7 +13,7 @@
 
 | Item | Descricao | Status |
 |------|-----------|--------|
-| Rebranding Sulical | Nome da plataforma atualizado em config, i18n e docs | ✅ |
+| Rebranding Plataforma B2B | Nome da plataforma atualizado em config, i18n e docs | ✅ |
 | Integracao App → Docs | Botao ajuda no header e menu mobile | ✅ |
 | Integracao Docs → App | Link "Acessar Plataforma" na navbar VitePress | ✅ |
 | Traducoes i18n | `navigation.help` e `navigation.docs` em 3 idiomas | ✅ |
@@ -23,11 +23,11 @@
 ### Arquivos Modificados
 
 ```
-src/config/platform.js              # Nome Sulical + docsUrl
+src/config/platform.js              # Nome Plataforma B2B + docsUrl
 src/components/UserHeader.jsx       # Botao HelpCircle
 src/components/MobileMenu.jsx       # Link Ajuda no footer
-docs/.vitepress/config.ts           # Titulo Sulical + link app
-docs/index.md                       # Hero Sulical
+docs/.vitepress/config.ts           # Titulo Plataforma B2B + link app
+docs/index.md                       # Hero Plataforma B2B
 public/locales/pt-BR/common.json    # Traducoes
 public/locales/en-US/common.json    # Traducoes
 public/locales/es-ES/common.json    # Traducoes
@@ -60,9 +60,9 @@ vite.config.js                      # Proxy em dev (opcional)
 
 ---
 
-#### US-131: Logo Sulical
+#### US-131: Logo Plataforma B2B
 
-**Descricao:** Criar e aplicar logo Sulical na aplicacao e documentacao.
+**Descricao:** Criar e aplicar logo da Plataforma B2B na aplicacao e documentacao.
 
 **Criterios de Aceite:**
 - [ ] Logo SVG criado (`public/logo.svg`)
@@ -152,9 +152,9 @@ public/locales/*/dashboard.json           # Traducoes
 
 ### P2 - MEDIO (Melhorias de Qualidade)
 
-#### US-135: Atualizar Guias de Usuario para Sulical
+#### US-135: Atualizar Guias de Usuario para Plataforma B2B
 
-**Descricao:** Substituir todas referencias "TrainB2B" por "Sulical" nos guias de usuario.
+**Descricao:** Substituir todas referencias "TrainB2B" por "Plataforma B2B" nos guias de usuario.
 
 **Criterios de Aceite:**
 - [ ] `docs/users/admin-guide.md` atualizado
@@ -165,7 +165,7 @@ public/locales/*/dashboard.json           # Traducoes
 
 **Arquivos:**
 ```
-docs/users/*.md                     # Substituir TrainB2B → Sulical
+docs/users/*.md                     # Substituir TrainB2B → Plataforma B2B
 docs/guide/*.md                     # Verificar referencias
 ```
 
@@ -173,12 +173,12 @@ docs/guide/*.md                     # Verificar referencias
 
 ---
 
-#### US-136: Atualizar README e CLAUDE.md para Sulical
+#### US-136: Atualizar README e CLAUDE.md para Plataforma B2B
 
 **Descricao:** Atualizar documentacao principal do repositorio.
 
 **Criterios de Aceite:**
-- [ ] README.md atualizado com nome Sulical
+- [ ] README.md atualizado com nome Plataforma B2B
 - [ ] CLAUDE.md atualizado
 - [ ] .claude/CLAUDE.md atualizado
 - [ ] Badges e links atualizados
@@ -277,7 +277,7 @@ e2e/integration-app-docs.spec.ts    # CRIAR
 | US | Descricao | Pontos | Responsavel |
 |----|-----------|--------|-------------|
 | US-130 | Servir Docs no Mesmo Dominio | 5 | Dev |
-| US-131 | Logo Sulical | 3 | Design/Dev |
+| US-131 | Logo Plataforma B2B | 3 | Design/Dev |
 | US-132 | Geracao de Certificados PDF | 8 | Dev |
 | US-133 | Pagina Verificacao Certificado | 5 | Dev |
 | **Total** | | **21** | |
@@ -360,7 +360,7 @@ location /docs/ {
 |-------|---------------|---------|-----------|
 | html2pdf.js nao funciona em todos browsers | Media | Medio | Fallback para screenshot |
 | VitePress conflita com Vite em dev | Baixa | Baixo | Portas separadas em dev |
-| Logo Sulical nao fornecido | Alta | Baixo | Usar placeholder texto |
+| Logo Plataforma B2B nao fornecido | Alta | Baixo | Usar placeholder texto |
 | Certificado falsificado | Baixa | Alto | Hash SHA256 + verificacao |
 
 ---
@@ -396,5 +396,5 @@ grep -r "TrainB2B" src/ public/ docs/
 
 ---
 
-*Backlog Sulical v2.0.0 | 2026-02-09*
+*Backlog Plataforma B2B v2.0.0 | 2026-02-09*
 *Proxima Revisao: Inicio do Sprint 16*

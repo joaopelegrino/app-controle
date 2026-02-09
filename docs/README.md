@@ -1,4 +1,4 @@
-# Sulical - Documentação
+# Plataforma B2B - Documentação
 
 **Plataforma B2B SaaS de Treinamento Técnico Corporativo**
 
@@ -25,7 +25,7 @@
 
 ## Visão Geral do Produto
 
-**Sulical** é uma plataforma B2B SaaS de treinamento técnico corporativo com dois pilares:
+**Plataforma B2B** é uma plataforma SaaS de treinamento técnico corporativo com dois pilares:
 
 1. **LMS Corporativo**: Empresas criam/consomem cursos para treinar colaboradores
 2. **Hub de Especialistas**: Marketplace onde especialistas externos vendem cursos para empresas
@@ -187,5 +187,5 @@ bun run dev
 
 ---
 
-**Mantido por:** Equipe Sulical
+**Mantido por:** Equipe Plataforma B2B
 **Última consolidação:** 2026-02-09

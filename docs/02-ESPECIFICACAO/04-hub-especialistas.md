@@ -10,7 +10,7 @@
 
 ### 1.1 O que é o Hub de Especialistas
 
-O **Hub de Especialistas** é um marketplace B2B2C integrado à plataforma Sulical que permite:
+O **Hub de Especialistas** é um marketplace B2B2C integrado à Plataforma B2B que permite:
 
 - **Especialistas externos** cadastrarem e venderem cursos para empresas
 - **Empresas** montarem trilhas personalizadas combinando cursos de múltiplos especialistas

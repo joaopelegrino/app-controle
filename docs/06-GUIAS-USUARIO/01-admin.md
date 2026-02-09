@@ -17,7 +17,7 @@ Como Administrador, voce tem acesso a:
 
 ## Acessando o Painel
 
-1. Acesse a plataforma em https://sulical-demo.fly.dev (ou http://localhost:3001 local)
+1. Acesse a plataforma em https://plataformab2b-demo.fly.dev (ou http://localhost:3001 local)
 2. Faca login com suas credenciais de administrador
 3. Clique em **"Admin"** no menu superior ou acesse `/admin`
 
@@ -273,6 +273,6 @@ Nao. Por questoes de auditoria, usuarios sao desativados, nao deletados. Contate
 
 Precisa de ajuda?
 
-- **Email**: suporte@sulical.com
+- **Email**: suporte@plataformab2b.com
 - **Chat**: Icone no canto inferior direito
-- **Documentacao**: https://docs.sulical.com
+- **Documentacao**: https://docs.plataformab2b.com

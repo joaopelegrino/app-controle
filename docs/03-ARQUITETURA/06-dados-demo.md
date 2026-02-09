@@ -56,7 +56,7 @@
 
 | Email | Nome | Role | Rota |
 |-------|------|------|------|
-| joao.silva.specialist@sulical.com | João Silva | specialist | /specialist |
+| joao.silva.specialist@plataformab2b.com | João Silva | specialist | /specialist |
 
 **Senha padrão:** `Demo@2026`
 

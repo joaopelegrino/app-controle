@@ -1,8 +1,8 @@
 {
   "app": {
-    "name": "Sulical",
+    "name": "Plataforma B2B",
     "tagline": "Capacitação Técnica para sua Empresa",
-    "copyright": "© 2026 Sulical - Todos os direitos reservados"
+    "copyright": "© 2026 Plataforma B2B - Todos os direitos reservados"
   },
   "buttons": {
     "save": "Salvar",
@@ -92,7 +92,7 @@
       }
     },
     "footer": {
-      "description": "Plataforma Sulical de capacitação técnica corporativa. Novos cursos são adicionados regularmente.",
+      "description": "Plataforma B2B de capacitação técnica corporativa. Novos cursos são adicionados regularmente.",
       "tip": "Consulte o Caminho Proposto para ver a sequência recomendada de aprendizado."
     },
     "specialists": {

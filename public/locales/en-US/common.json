@@ -1,8 +1,8 @@
 {
   "app": {
-    "name": "Sulical",
+    "name": "Plataforma B2B",
     "tagline": "Technical Training for Your Company",
-    "copyright": "© 2026 Sulical - All rights reserved"
+    "copyright": "© 2026 Plataforma B2B - All rights reserved"
   },
   "navigation": {
     "home": "Home",
@@ -107,7 +107,7 @@
       }
     },
     "footer": {
-      "description": "Sulical corporate technical training platform. New courses are added regularly.",
+      "description": "B2B corporate technical training platform. New courses are added regularly.",
       "tip": "Check the Learning Path to see the recommended learning sequence."
     },
     "specialists": {

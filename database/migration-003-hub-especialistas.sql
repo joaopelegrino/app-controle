@@ -264,7 +264,7 @@ INSERT INTO users (id, company_id, email, password_hash, full_name, role, active
 VALUES (
   '650e8400-e29b-41d4-a716-446655440099',
   '550e8400-e29b-41d4-a716-446655440099',
-  'joao.silva.specialist@sulical.com',
+  'joao.silva.specialist@plataformab2b.com',
   '$2b$10$placeholder_hash',
   'Joao Silva',
   'specialist',

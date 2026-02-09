@@ -215,7 +215,7 @@ Claude DEVE gerar este relatorio ao final da ativacao:
 ║    Student:    julia@devcorp.com      -> /dashboard                           ║
 ╠───────────────────────────────────────────────────────────────────────────────╣
 ║ HUB DE ESPECIALISTAS (Empresa 3):                                              ║
-║    Specialist: joao.silva.specialist@sulical.com -> /specialist               ║
+║    Specialist: joao.silva.specialist@plataformab2b.com -> /specialist               ║
 ╠═══════════════════════════════════════════════════════════════════════════════╣
 ║ URLS DE ACESSO                                                                 ║
 ╠───────────────────────────────────────────────────────────────────────────────╣
@@ -230,9 +230,9 @@ Claude DEVE gerar este relatorio ao final da ativacao:
 ║ 2. Login como admin@acmetech.com / Demo@2026                                  ║
 ║ 3. Validar dashboard admin                                                     ║
 ║ 4. Testar CRUD de cursos (Sprint 14)                                          ║
-║ 5. Testar white-label Sulical (Sprint 13)                                     ║
+║ 5. Testar white-label Plataforma B2B (Sprint 13)                                     ║
 ║ 6. Verificar i18n (pt-BR, en-US, es-ES)                                       ║
-║ 7. Login specialist: joao.silva.specialist@sulical.com                        ║
+║ 7. Login specialist: joao.silva.specialist@plataformab2b.com                        ║
 ║ 8. Validar /specialist, /hub/catalog (Sprint 15)                              ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 ```

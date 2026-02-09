@@ -1,4 +1,4 @@
-# Sulical - Documento de Visão, Missão e Estado Atual
+# Plataforma B2B - Documento de Visão, Missão e Estado Atual
 
 **Data:** Fevereiro 2026
 **Versão:** 1.0.0
@@ -8,7 +8,7 @@
 
 ## Sumário Executivo
 
-O **Sulical** é uma plataforma B2B SaaS de treinamento técnico corporativo desenvolvida para resolver problemas críticos enfrentados por empresas de tecnologia no Brasil e América Latina. A solução oferece uma alternativa white-label e personalizável às plataformas genéricas de aprendizado, com foco em ROI mensurável e engajamento real.
+A **Plataforma B2B** é uma plataforma SaaS de treinamento técnico corporativo desenvolvida para resolver problemas críticos enfrentados por empresas de tecnologia no Brasil e América Latina. A solução oferece uma alternativa white-label e personalizável às plataformas genéricas de aprendizado, com foco em ROI mensurável e engajamento real.
 
 ---
 
@@ -160,7 +160,7 @@ Empresas de tecnologia no Brasil enfrentam desafios críticos:
 
 ### 3.2 Solução Proposta
 
-**Sulical resolve através de:**
+**A Plataforma B2B resolve através de:**
 
 1. **Plataforma White-Label**: Identidade visual da empresa
 2. **Conteúdo Personalizável**: 13 áreas de conhecimento + customização
@@ -171,8 +171,8 @@ Empresas de tecnologia no Brasil enfrentam desafios críticos:
 
 ### 3.3 Diferenciais Competitivos
 
-| Aspecto | Sulical | Concorrentes (Udemy/Coursera) |
-|---------|------------|-------------------------------|
+| Aspecto | Plataforma B2B | Concorrentes (Udemy/Coursera) |
+|---------|----------------|-------------------------------|
 | **Customização** | 100% personalizável | Catálogo genérico |
 | **Preço** | R$ 499-2.499/mês | R$ 10k-20k/mês |
 | **Self-hosting** | Gratuito (Open Core) | Não disponível |
@@ -853,7 +853,7 @@ As seguintes decisões foram validadas e devem guiar a implementação:
 
 ## 10. Conclusão
 
-O **Sulical** está em um estado saudável de desenvolvimento, com uma base de código bem estruturada e funcionalidades core implementadas. O projeto demonstra:
+A **Plataforma B2B** está em um estado saudável de desenvolvimento, com uma base de código bem estruturada e funcionalidades core implementadas. O projeto demonstra:
 
 1. **Arquitetura sólida** com separação clara de responsabilidades
 2. **Código de qualidade** com padrões consistentes

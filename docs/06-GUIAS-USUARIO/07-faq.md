@@ -274,7 +274,7 @@ Clique no seletor de idioma no canto superior direito da tela de login ou no hea
 ### Credenciais do Especialista (Hub)
 
 Para testar o perfil de especialista:
-- **Email**: joao.silva.specialist@sulical.com
+- **Email**: joao.silva.specialist@plataformab2b.com
 - **Senha**: Demo@2026
 - **Acesso**: `/specialist`
 

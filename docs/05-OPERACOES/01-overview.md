@@ -7,7 +7,7 @@ O app-controle pode ser deployado em diferentes ambientes. Esta documentacao cob
 | Ambiente | Uso | URL |
 |----------|-----|-----|
 | Local | Desenvolvimento | http://localhost:3001 |
-| Fly.io | Demo/Producao | https://sulical-demo.fly.dev |
+| Fly.io | Demo/Producao | https://plataformab2b-demo.fly.dev |
 
 ---
 

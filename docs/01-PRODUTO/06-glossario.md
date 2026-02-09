@@ -1,4 +1,4 @@
-# Glossário Unificado - Sulical
+# Glossário Unificado - Plataforma B2B
 
 **Versão:** 1.0.0
 **Data:** 2026-02-05
@@ -401,7 +401,7 @@ Curso
 ### Open Core
 **Definição:** Modelo de negócio onde código-fonte é open source, mas há versão paga com recursos adicionais.
 
-**Sulical:**
+**Plataforma B2B:**
 - Community Edition: Gratuito, self-hosted
 - SaaS Gerenciado: Pago, com suporte
 
@@ -460,7 +460,7 @@ Curso
 ### i18n
 **Definição:** Internacionalização. Suporte a múltiplos idiomas.
 
-**Sulical:** PT-BR, EN-US, ES-ES
+**Plataforma B2B:** PT-BR, EN-US, ES-ES
 
 ---
 
@@ -555,4 +555,4 @@ Curso
 **FIM DO GLOSSÁRIO**
 
 **Última atualização:** 2026-02-09
-**Mantido por:** Equipe de Produto Sulical
+**Mantido por:** Equipe de Produto Plataforma B2B

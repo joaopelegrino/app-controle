@@ -1,4 +1,4 @@
-# ROADMAP CONSOLIDADO - Plataforma Sulical
+# ROADMAP CONSOLIDADO - Plataforma B2B
 
 **Versao:** 10.0.0
 **Data:** 2026-02-09
@@ -10,7 +10,7 @@
 
 ## 1. Visao Geral do Projeto
 
-**Sulical** (ex-UltraThink/TrainB2B) - Plataforma B2B SaaS de treinamento tecnico corporativo.
+**Plataforma B2B** - Plataforma SaaS de treinamento tecnico corporativo.
 
 ### Pilares
 1. **LMS Corporativo** (implementado) - Empresas criam/consomem cursos internos
@@ -31,7 +31,7 @@
 | Exportacao | ✅ Excel/JSON | ExportButton em 3 dashboards |
 | Analytics | ✅ Avancado | Modulos dificeis, ROI, progress |
 | i18n | ✅ 3 idiomas | pt-BR, en-US, es-ES (~355 strings) |
-| White-Label | ✅ Sulical | Configuravel via platform.js |
+| White-Label | ✅ Plataforma B2B | Configuravel via platform.js |
 | Responsividade | ✅ Mobile | MobileMenu, useMediaQuery |
 | UX Polish | ✅ Completo | Toasts, skeletons, empty states, onboarding |
 | Hub de Especialistas | ✅ Sprint 15 | B2B2C marketplace, 5 componentes, revenue 70/30 |
@@ -49,8 +49,8 @@
 | 10 | Analytics + Toast + Loading + Onboarding | 4/4 | ✅ |
 | 11 | UX Polish (Empty States, Confirm, Mobile, Auth JWT) | 4/4 | ✅ |
 | 12 | Internacionalizacao i18n | 6/6 | ✅ |
-| 13 | White-Label (Sulical) | 6/6 | ✅ |
-| 14 | CRUD de Cursos + Integracao Docs Sulical | 6/6 | ✅ |
+| 13 | White-Label (Plataforma B2B) | 6/6 | ✅ |
+| 14 | CRUD de Cursos + Integracao Docs Plataforma B2B | 6/6 | ✅ |
 | **Total** | | **55/55** | **100%** |
 
 ---
@@ -251,7 +251,7 @@ Fase 4: Tests & Docs (depende de todas as fases)
 
 ```yaml
 Nome: Joao Silva
-Email: joao.silva.specialist@sulical.com
+Email: joao.silva.specialist@plataformab2b.com
 Senha: Demo@2026
 Role: specialist
 Empresa: Hub de Especialistas
@@ -295,7 +295,7 @@ Revenue Share: 70%
 | Admin       | admin@acmetech.com              | /admin        |
 | Instructor  | prof@acmetech.com               | /instructor   |
 | Student     | maria@acmetech.com              | /dashboard    |
-| Specialist  | joao.silva.specialist@sulical.com | /specialist  |
+| Specialist  | joao.silva.specialist@plataformab2b.com | /specialist  |
 +-------------+---------------------------------+---------------+
 
 Empresas:
@@ -381,7 +381,7 @@ docker exec -i app-controle-db psql -U nocodb_user -d app_controle -c "SELECT * 
 ### Apos Fases 2-3:
 ```bash
 bun run dev
-# Login: joao.silva.specialist@sulical.com / Demo@2026
+# Login: joao.silva.specialist@plataformab2b.com / Demo@2026
 # Verificar: /specialist (dashboard), /hub/catalog, / (secao marketplace)
 ```
 

@@ -210,7 +210,7 @@ const profiles = [
   { email: 'prof@acmetech.com', role: 'instructor', allowed: ['/instructor'] },
   { email: 'admin@acmetech.com', role: 'admin', allowed: ['/admin'] },
   { email: 'ceo@acmetech.com', role: 'c_level', allowed: ['/admin/executive'] },
-  { email: 'joao.silva.specialist@sulical.com', role: 'specialist', allowed: ['/specialist'] },
+  { email: 'joao.silva.specialist@plataformab2b.com', role: 'specialist', allowed: ['/specialist'] },
 ];
 
 profiles.forEach(({ email, role, allowed }) => {
@@ -268,7 +268,7 @@ Executa: lint → unit tests → e2e (se servicos rodando).
 | DevCorp | prof@devcorp.com | instructor |
 | DevCorp | julia@devcorp.com | student |
 | DevCorp | cto@devcorp.com | c_level |
-| Hub Especialistas | joao.silva.specialist@sulical.com | specialist |
+| Hub Especialistas | joao.silva.specialist@plataformab2b.com | specialist |
 
 **Senha padrao**: `Demo@2026`
 
