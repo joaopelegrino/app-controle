@@ -26,6 +26,10 @@ import ExecutiveDashboard from './ExecutiveDashboard';
 import InstructorDashboard from './InstructorDashboard';
 import UserDashboard from './UserDashboard';
 import NotFoundPage from '../pages/NotFoundPage';
+import SpecialistDashboard from './hub/SpecialistDashboard';
+import SpecialistProfile from './hub/SpecialistProfile';
+import CourseCatalog from './hub/CourseCatalog';
+import CourseReviews from './hub/CourseReviews';
 import { useModuleProgress } from '../hooks/useModuleProgress';
 import { useAuth } from '../hooks/useAuth';
 import { usePermissions } from '../hooks/usePermissions';
@@ -471,6 +475,46 @@ const SistemaEducacionalCompleto = () => {
           element={
             <PrivateRoute>
               <UserDashboard />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Hub de Especialistas - Catalogo (todos autenticados) US-152 */}
+        <Route
+          path="/hub/catalog"
+          element={
+            <PrivateRoute>
+              <CourseCatalog />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Hub de Especialistas - Reviews de Curso (todos autenticados) US-152 */}
+        <Route
+          path="/hub/course/:hubCourseId/reviews"
+          element={
+            <PrivateRoute>
+              <CourseReviews />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Specialist Dashboard (specialist, admin, c_level) US-152 */}
+        <Route
+          path="/specialist"
+          element={
+            <PrivateRoute roles={['specialist', 'admin', 'c_level']}>
+              <SpecialistDashboard />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Specialist Profile (todos autenticados) US-152 */}
+        <Route
+          path="/specialist/:specialistId"
+          element={
+            <PrivateRoute>
+              <SpecialistProfile />
             </PrivateRoute>
           }
         />

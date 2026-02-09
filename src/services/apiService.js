@@ -50,6 +50,12 @@ const TABLE_IDS = {
   v_company_progress: 'me2shk8zc27r3li',
   v_user_dashboard: 'mduzpssgu2bckae',
   v_course_stats: 'mkbi3w6kk7j73mb',
+  // Hub de Especialistas (US-154)
+  specialists: 'pending_nocodb_sync_specialists',
+  hub_courses: 'pending_nocodb_sync_hub_courses',
+  course_reviews: 'pending_nocodb_sync_course_reviews',
+  v_specialist_dashboard: 'pending_nocodb_sync_v_specialist_dashboard',
+  v_hub_catalog: 'pending_nocodb_sync_v_hub_catalog',
 };
 
 // Credenciais do admin NocoDB (via variáveis de ambiente)
@@ -1951,6 +1957,188 @@ export async function getModuleStats(companyId = null) {
 }
 
 // ============================================
+// API HUB DE ESPECIALISTAS (US-154)
+// ============================================
+
+/**
+ * Busca perfil de especialista por ID
+ * @param {string} specialistId
+ * @returns {Promise<object|null>}
+ */
+export async function getSpecialist(specialistId) {
+  try {
+    const response = await findMany('specialists', {
+      where: `(id,eq,${specialistId})`,
+      limit: 1,
+    });
+    return response.list?.[0] || null;
+  } catch (error) {
+    console.error('[apiService] Erro ao buscar especialista:', error);
+    throw error;
+  }
+}
+
+/**
+ * Busca perfil de especialista por user_id
+ * @param {string} userId
+ * @returns {Promise<object|null>}
+ */
+export async function getSpecialistByUserId(userId) {
+  try {
+    const response = await findMany('v_specialist_dashboard', {
+      where: `(user_id,eq,${userId})`,
+      limit: 1,
+    });
+    return response.list?.[0] || null;
+  } catch (error) {
+    console.error('[apiService] Erro ao buscar especialista por userId:', error);
+    throw error;
+  }
+}
+
+/**
+ * Busca dashboard do especialista (view agregada)
+ * @param {string} specialistId
+ * @returns {Promise<object|null>}
+ */
+export async function getSpecialistDashboard(specialistId) {
+  try {
+    const response = await findMany('v_specialist_dashboard', {
+      where: `(specialist_id,eq,${specialistId})`,
+      limit: 1,
+    });
+    return response.list?.[0] || null;
+  } catch (error) {
+    console.error('[apiService] Erro ao buscar dashboard especialista:', error);
+    throw error;
+  }
+}
+
+/**
+ * Atualiza perfil do especialista
+ * @param {string} specialistId
+ * @param {object} data
+ * @returns {Promise<object>}
+ */
+export async function updateSpecialist(specialistId, data) {
+  try {
+    return await update('specialists', specialistId, {
+      ...data,
+      updated_at: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('[apiService] Erro ao atualizar especialista:', error);
+    throw error;
+  }
+}
+
+/**
+ * Busca catalogo do Hub (cursos publicos publicados)
+ * @param {object} filters - { search, minRating, maxPrice }
+ * @returns {Promise<array>}
+ */
+export async function getHubCatalog(filters = {}) {
+  try {
+    const response = await findMany('v_hub_catalog', {
+      sort: '-course_rating',
+    });
+    return response.list || [];
+  } catch (error) {
+    console.error('[apiService] Erro ao buscar catalogo Hub:', error);
+    throw error;
+  }
+}
+
+/**
+ * Busca um curso do Hub por ID
+ * @param {string} hubCourseId
+ * @returns {Promise<object|null>}
+ */
+export async function getHubCourse(hubCourseId) {
+  try {
+    const response = await findMany('hub_courses', {
+      where: `(id,eq,${hubCourseId})`,
+      limit: 1,
+    });
+    return response.list?.[0] || null;
+  } catch (error) {
+    console.error('[apiService] Erro ao buscar curso Hub:', error);
+    throw error;
+  }
+}
+
+/**
+ * Busca cursos de um especialista
+ * @param {string} specialistId
+ * @returns {Promise<array>}
+ */
+export async function getHubCoursesBySpecialist(specialistId) {
+  try {
+    const response = await findMany('hub_courses', {
+      where: `(specialist_id,eq,${specialistId})`,
+      sort: '-created_at',
+    });
+    return response.list || [];
+  } catch (error) {
+    console.error('[apiService] Erro ao buscar cursos do especialista:', error);
+    throw error;
+  }
+}
+
+/**
+ * Busca reviews de um curso do Hub
+ * @param {string} hubCourseId
+ * @returns {Promise<array>}
+ */
+export async function getCourseReviews(hubCourseId) {
+  try {
+    const response = await findMany('course_reviews', {
+      where: `(hub_course_id,eq,${hubCourseId})`,
+      sort: '-created_at',
+    });
+    return response.list || [];
+  } catch (error) {
+    console.error('[apiService] Erro ao buscar reviews:', error);
+    throw error;
+  }
+}
+
+/**
+ * Cria review de um curso do Hub
+ * @param {object} reviewData - { hub_course_id, company_id, user_id, rating, comment }
+ * @returns {Promise<object>}
+ */
+export async function createCourseReview(reviewData) {
+  try {
+    return await create('course_reviews', {
+      ...reviewData,
+      created_at: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('[apiService] Erro ao criar review:', error);
+    throw error;
+  }
+}
+
+/**
+ * Resposta do especialista a uma review
+ * @param {string} reviewId
+ * @param {string} reply
+ * @returns {Promise<object>}
+ */
+export async function replyCourseReview(reviewId, reply) {
+  try {
+    return await update('course_reviews', reviewId, {
+      specialist_reply: reply,
+      replied_at: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('[apiService] Erro ao responder review:', error);
+    throw error;
+  }
+}
+
+// ============================================
 // VERIFICAÇÃO DE CONECTIVIDADE
 // ============================================
 
@@ -2066,6 +2254,18 @@ export const apiService = {
   getCourseStats,
   getCompanyProgress,
   getModuleStats,
+
+  // Hub de Especialistas (US-154)
+  getSpecialist,
+  getSpecialistByUserId,
+  getSpecialistDashboard,
+  updateSpecialist,
+  getHubCatalog,
+  getHubCourse,
+  getHubCoursesBySpecialist,
+  getCourseReviews,
+  createCourseReview,
+  replyCourseReview,
 
   // Utils
   checkApiHealth,

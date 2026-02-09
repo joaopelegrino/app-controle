@@ -99,4 +99,15 @@ export function CLevelOnly({ children, fallback = null }) {
   );
 }
 
+/**
+ * Componente para mostrar conteúdo apenas para especialistas
+ */
+export function SpecialistOnly({ children, fallback = null }) {
+  return (
+    <RoleBasedAccess roles={['specialist']} fallback={fallback} showFallback={!!fallback}>
+      {children}
+    </RoleBasedAccess>
+  );
+}
+
 export default RoleBasedAccess;

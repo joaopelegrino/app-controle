@@ -148,6 +148,22 @@
       "archiveFailed": "Erro ao arquivar curso"
     }
   },
+  "specialist": {
+    "title": "Painel do Especialista",
+    "subtitle": "Hub de Especialistas",
+    "error": "Erro ao carregar dados do painel",
+    "stats": {
+      "revenue": "Receita Total",
+      "enrollments": "Total de Matrículas",
+      "avgRating": "Avaliação Média",
+      "publishedCourses": "Cursos Publicados"
+    },
+    "myCourses": "Meus Cursos",
+    "recentReviews": "Avaliações Recentes",
+    "revenueShare": "Revenue Share",
+    "noReviews": "Nenhuma avaliação",
+    "noReviewsDescription": "As avaliações dos seus cursos aparecerão aqui."
+  },
   "executive": {
     "title": "Dashboard Executivo",
     "stats": {

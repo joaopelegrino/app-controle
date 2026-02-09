@@ -33,6 +33,8 @@ const DEFAULT_CONFIG = {
       onboarding: 'onboarding',
       progress: (courseId) => `progress_${courseId}`,
       notes: (courseId) => `notes_${courseId}`,
+      specialist: 'specialist',
+      hubCatalog: 'hub_catalog',
     }
   },
 
@@ -40,6 +42,23 @@ const DEFAULT_CONFIG = {
   api: {
     baseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081',
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT) || 30000,
+  },
+
+  // Hub de Especialistas
+  hub: {
+    enabled: import.meta.env.VITE_HUB_ENABLED !== 'false',
+    revenueSharePercent: parseInt(import.meta.env.VITE_HUB_REVENUE_SHARE) || 70,
+    specialistMonthlyFee: 0,
+    pricingModel: 'specialist_defined',
+    priceSuggestedMin: 50,
+    priceSuggestedMax: 200,
+    requiredCredentials: ['linkedin', 'one_of:certification,portfolio,experience'],
+    approvalProcess: 'checklist_auto_plus_manual_48h',
+    removalCriteria: {
+      minRating: 3.0,
+      ratingMonths: 3,
+      maxGraveComplaints: 3,
+    },
   },
 
   // Configurações de UI

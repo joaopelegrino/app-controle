@@ -4,19 +4,6 @@
     "tagline": "Capacitação Técnica para sua Empresa",
     "copyright": "© 2026 Sulical - Todos os direitos reservados"
   },
-  "navigation": {
-    "home": "Início",
-    "dashboard": "Meu Painel",
-    "courses": "Cursos",
-    "admin": "Administração",
-    "instructor": "Painel Instrutor",
-    "executive": "Painel Executivo",
-    "settings": "Configurações",
-    "profile": "Perfil",
-    "logout": "Sair",
-    "help": "Ajuda",
-    "docs": "Documentação"
-  },
   "buttons": {
     "save": "Salvar",
     "cancel": "Cancelar",
@@ -107,6 +94,41 @@
     "footer": {
       "description": "Plataforma Sulical de capacitação técnica corporativa. Novos cursos são adicionados regularmente.",
       "tip": "Consulte o Caminho Proposto para ver a sequência recomendada de aprendizado."
+    },
+    "specialists": {
+      "sectionTitle": "Hub de Especialistas",
+      "sectionDescription": "Cursos de especialistas externos para sua equipe",
+      "catalogCTA": "Explore cursos criados por profissionais certificados do mercado. Capacite sua equipe com conteúdo especializado.",
+      "viewCatalog": "Explorar Catálogo",
+      "specialist": "Especialista",
+      "course": "curso",
+      "viewProfile": "Ver Perfil",
+      "viewCourse": "Ver Curso",
+      "verified": "Verificado",
+      "perMonth": "/mês",
+      "students": "alunos",
+      "reviews": "avaliações",
+      "rating": "Avaliação",
+      "writeReview": "Avaliar",
+      "replyReview": "Responder",
+      "specialties": "Especialidades",
+      "credentials": "Credenciais",
+      "since": "Desde"
     }
+  },
+  "navigation": {
+    "home": "Início",
+    "dashboard": "Meu Painel",
+    "courses": "Cursos",
+    "admin": "Administração",
+    "instructor": "Painel Instrutor",
+    "executive": "Painel Executivo",
+    "settings": "Configurações",
+    "profile": "Perfil",
+    "logout": "Sair",
+    "help": "Ajuda",
+    "docs": "Documentação",
+    "hubCatalog": "Catálogo",
+    "specialist": "Painel Especialista"
   }
 }

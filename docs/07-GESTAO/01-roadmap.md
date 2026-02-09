@@ -1,476 +1,457 @@
-# Roadmap - Plataforma TrainB2B (White-Label)
+# ROADMAP CONSOLIDADO - Plataforma Sulical
 
-**Versão:** 9.0.0
-**Data:** 2026-01-26
-**Branch:** `feature/white-label-refactor`
-**Status:** Sprint 13 COMPLETO (6/6 USs) + White-Label COMPLETO
-
----
-
-## Visão Geral
-
-Plataforma B2B de treinamento técnico corporativo com:
-- ✅ Autenticação multi-tenant (4 roles)
-- ✅ Sistema RBAC (21 permissões, 81% implementado)
-- ✅ Dashboards por role (Admin, Executive, Instructor, User)
-- ✅ CRUD completo de usuários
-- ✅ Visualização de notas de alunos
-- ✅ Matrículas em cursos
-- ✅ Exportação Excel/JSON
-- ✅ Analytics avançados (módulos difíceis)
-- ✅ Toast notifications
-- ✅ Loading states com skeletons
-- ✅ Onboarding wizard
-- ✅ Empty states reutilizáveis
-- ✅ Modal de confirmação
-- ✅ Responsividade mobile
-- ✅ Autenticação NocoDB JWT
-- ✅ Internacionalização i18n (pt-BR, en-US, es-ES)
-- ✅ Arquitetura White-Label (Sprint 13)
+**Versao:** 10.0.0
+**Data:** 2026-02-09
+**Branch:** `dev`
+**Status:** Sprint 14 COMPLETO + Hub de Especialistas PLANEJADO
+**Documento:** Autocontido - Roadmap + Checklist de Implementacao
 
 ---
 
-## Sprints Completos
+## 1. Visao Geral do Projeto
 
-### Sprint 6: Base B2B ✅ (19/19 USs)
+**Sulical** (ex-UltraThink/TrainB2B) - Plataforma B2B SaaS de treinamento tecnico corporativo.
 
-```
-FASE 1: Autenticação
-├── US-060: Schema PostgreSQL RBAC ✅
-├── US-061: Seed dados demo ✅
-├── US-062: AuthContext.jsx ✅
-└── US-063: LoginView.jsx ✅
+### Pilares
+1. **LMS Corporativo** (implementado) - Empresas criam/consomem cursos internos
+2. **Hub de Especialistas** (este roadmap) - Marketplace B2B2C com especialistas externos
 
-FASE 2: RBAC
-├── US-064: usePermissions.js (21 permissões) ✅
-├── US-065: PrivateRoute.jsx ✅
-├── US-066: RoleBasedAccess.jsx ✅
-└── US-067: UserHeader.jsx ✅
+### Estado Atual (2026-02-09)
 
-FASE 3: API Integration
-├── US-068: apiService.js ✅
-├── US-069: Progresso via API ✅
-├── US-070: Notas via API ✅
-└── US-071: TenantContext.jsx ✅
-
-FASE 4: Dashboards
-├── US-072: UserDashboard.jsx ✅
-├── US-073: AdminDashboard.jsx ✅
-├── US-074: ExecutiveDashboard.jsx ✅
-└── US-075: Analytics views ✅
-
-FASE 5: Polish
-├── US-076: Conectar dashboards às views ✅
-├── US-077: NotFoundPage.jsx ✅
-└── US-078: Redirect por role ✅
-```
+| Componente | Status | Detalhe |
+|-----------|--------|---------|
+| Frontend React 18 + Vite 5 | ✅ Producao | 48 componentes, Tailwind CSS |
+| Backend NocoDB + PostgreSQL 16 | ✅ Funcional | API REST auto-gerada |
+| Autenticacao JWT + RBAC | ✅ 4 roles | student, instructor, admin, c_level |
+| RBAC Permissoes | ✅ 21 permissoes | 17/21 com UI (81%) |
+| Dashboards Contextuais | ✅ 4 dashboards | User, Instructor, Admin, Executive |
+| CRUD Usuarios | ✅ Completo | Criar, editar, soft-delete, reativar |
+| CRUD Cursos | ✅ Completo | Sprint 14 - CourseFormModal |
+| Matriculas | ✅ Completo | EnrollUserModal, bulk enrollment |
+| Exportacao | ✅ Excel/JSON | ExportButton em 3 dashboards |
+| Analytics | ✅ Avancado | Modulos dificeis, ROI, progress |
+| i18n | ✅ 3 idiomas | pt-BR, en-US, es-ES (~250 strings) |
+| White-Label | ✅ Sulical | Configuravel via platform.js |
+| Responsividade | ✅ Mobile | MobileMenu, useMediaQuery |
+| UX Polish | ✅ Completo | Toasts, skeletons, empty states, onboarding |
+| Hub de Especialistas | ❌ 0% | Especificado, nao implementado |
 
 ---
 
-### Sprint 7: CRUD Usuários ✅ (3/3 USs)
+## 2. Historico de Sprints (6-14 Completos)
 
-```
-US-091: API CRUD usuários ✅
-├── apiService.createUser(userData)
-├── apiService.updateUser(userId, data)
-├── apiService.deleteUser(userId) [soft delete]
-└── apiService.reactivateUser(userId)
-
-US-092: Modal criar usuário ✅
-└── src/components/UserFormModal.jsx
-
-US-093: Modal editar/excluir ✅
-└── AdminDashboard.jsx integrado com modal
-```
-
----
-
-### Sprint 8: Dashboard Instrutor ✅ (3/3 USs)
-
-```
-US-094: InstructorDashboard.jsx ✅
-├── Estatísticas do time
-├── Tabela de alunos
-├── Progresso individual
-└── Card "Alunos que precisam de atenção"
-
-US-095: StudentNotesModal.jsx ✅
-├── Seletor de curso
-├── Visualização de notas
-└── Metadados (data, tamanho)
-
-US-096: Rota /instructor ✅
-└── SistemaEducacionalCompleto.jsx atualizado
-```
+| Sprint | Tema | USs | Status |
+|--------|------|-----|--------|
+| 6 | Base B2B (Auth, RBAC, API, Dashboards) | 19/19 | ✅ |
+| 7 | CRUD Usuarios | 3/3 | ✅ |
+| 8 | Dashboard Instrutor | 3/3 | ✅ |
+| 9 | Matriculas e Exportacao | 4/4 | ✅ |
+| 10 | Analytics + Toast + Loading + Onboarding | 4/4 | ✅ |
+| 11 | UX Polish (Empty States, Confirm, Mobile, Auth JWT) | 4/4 | ✅ |
+| 12 | Internacionalizacao i18n | 6/6 | ✅ |
+| 13 | White-Label (Sulical) | 6/6 | ✅ |
+| 14 | CRUD de Cursos + Integracao Docs Sulical | 6/6 | ✅ |
+| **Total** | | **55/55** | **100%** |
 
 ---
 
-### Sprint 9: Matrículas e Exportação ✅ (4/4 USs)
+## 3. Decisoes de Produto - Hub de Especialistas (Q1-Q6)
 
-```
-US-097: Schema matrículas ✅
-└── database/migration-002-enrollments.sql
-    ├── Tabela user_courses
-    ├── View v_user_enrollments
-    ├── Funções enroll_user(), unenroll_user()
-    └── Dados de demo
+> Questoes criticas que bloqueavam implementacao do Hub. Resolvidas adotando recomendacoes da documentacao.
 
-US-098: API matrículas ✅
-└── src/services/apiService.js
-    ├── enrollUser(enrollmentData)
-    ├── unenrollUser(userId, courseId)
-    ├── getUserEnrollments(userId)
-    ├── getCourseEnrollments(courseId, companyId)
-    └── updateEnrollment(id, data)
-
-US-099: UI atribuir curso ✅
-└── src/components/EnrollUserModal.jsx
-    ├── Seleção múltipla de usuários
-    ├── Busca/filtro
-    ├── Data limite opcional
-    └── Integrado no AdminDashboard
-
-US-100: Exportação relatórios ✅
-├── src/utils/exportUtils.js
-│   ├── exportToExcel()
-│   ├── exportToJSON()
-│   └── Formatadores de relatório
-└── src/components/ExportButton.jsx
-    ├── Dropdown Excel/JSON
-    ├── ExportAllButton
-    └── Integrado nos 3 dashboards
-```
+| # | Questao | Decisao | Justificativa |
+|---|---------|---------|---------------|
+| **Q1** | Revenue share fixo ou variavel? | **Fixo 70/30** | Simplicidade operacional. Especialista recebe 70%, plataforma 30%. Evoluir para tiers depois de atingir 100+ especialistas |
+| **Q2** | Especialista paga mensalidade? | **Nao** | Atrair massa critica inicial. Sem barreira de entrada. Revenue share como unico modelo |
+| **Q3** | Quem define preco do curso? | **Especialista com faixa sugerida** | Especialista define livremente, plataforma sugere R$ 50-200/mes. Faixa visivel no formulario |
+| **Q4** | Credenciais obrigatorias? | **LinkedIn + 1 comprovacao** | LinkedIn obrigatorio. Minimo 1 de: certificacao tecnica, portfolio GitHub, ou anos de experiencia documentados |
+| **Q5** | Aprovacao antes de publicar? | **Checklist auto + revisao manual 48h** | Checklist automatizado (min 4 modulos, descricao 200+ chars, thumbnail). Revisao humana em 48h uteis |
+| **Q6** | Criterios de remocao? | **Rating < 3.0 por 3 meses OU 3+ reclamacoes graves** | Aviso ao especialista apos 1o mes < 3.0. Suspensao automatica apos 3 meses consecutivos |
 
 ---
 
-### Sprint 10: Analytics + Polish ✅ (4/4 USs)
+## 4. Sprint 15: Hub de Especialistas - Foundation
 
-```
-US-101: Analytics Módulos Difíceis ✅
-└── src/components/ModuleDifficultyCard.jsx
-    ├── apiService.getModuleStats(companyId)
-    ├── Classificação: hard/medium/easy
-    ├── Integrado AdminDashboard
-    └── Integrado ExecutiveDashboard
+### 4.1 Fase 1: Database + RBAC + Config
 
-US-102: Toast Notifications ✅
-├── src/contexts/ToastContext.jsx
-│   └── success(), error(), warning(), info()
-└── src/components/ToastContainer.jsx
-    ├── Animações de entrada/saída
-    ├── Barra de progresso
-    └── Auto-dismiss 5s
+#### US-142: Migration Hub de Especialistas
+- [x] **CRIAR** `database/migration-003-hub-especialistas.sql`
+  - [x] Atualizar CHECK constraint `users.role` para incluir `'specialist'`
+  - [x] Adicionar coluna `source VARCHAR(50) DEFAULT 'internal'` em `courses`
+  - [x] Adicionar coluna `specialist_id UUID` em `courses`
+  - [x] Criar tabela `specialists`
+  - [x] Criar tabela `hub_courses`
+  - [x] Criar tabela `course_reviews`
+  - [x] Criar view `v_specialist_dashboard`
+  - [x] Criar view `v_hub_catalog`
+  - [x] Criar indices para performance
 
-US-103: Loading States Globais ✅
-├── src/contexts/LoadingContext.jsx
-│   └── startLoading(), stopLoading(), withLoading()
-└── src/components/LoadingComponents.jsx
-    ├── Spinner, SkeletonCard, SkeletonTable
-    ├── SkeletonList, SkeletonCourseCard
-    ├── LoadingOverlay, LoadingButton
-    └── Integrado em todos dashboards
+#### US-143: Seed Especialista Ficticio "Joao Silva"
+- [x] Seed na mesma migration:
+  - [x] Empresa "Hub de Especialistas" (id: 550e...99)
+  - [x] Usuario "Joao Silva" role=specialist
+  - [x] Perfil specialist com credenciais
+  - [x] hub_courses: vincular curso bash existente
+  - [x] course_reviews: 2 reviews de exemplo
 
-US-104: Onboarding Wizard ✅
-├── src/contexts/OnboardingContext.jsx
-│   └── Detecção primeiro acesso, persistência
-└── src/components/OnboardingWizard.jsx
-    ├── Step 1: Welcome (saudação personalizada)
-    ├── Step 2: Objetivo (Backend/DevOps/FullStack/Data)
-    ├── Step 3: Tour (opcional)
-    └── Step 4: Complete (recomendações)
-```
+#### US-144: Estender RBAC para 5 Roles
+- [x] **MODIFICAR** `src/hooks/usePermissions.js`
+  - [x] Adicionar 'specialist' em permissoes existentes
+  - [x] Adicionar 11 novas permissoes hub_*
+  - [x] ROLE_LABELS e ROLE_COLORS
+  - [x] Retorno: isSpecialist, canManageHubCourses, canViewCatalog
 
-**Arquivos criados no Sprint 10:**
-- `src/contexts/ToastContext.jsx`
-- `src/contexts/LoadingContext.jsx`
-- `src/contexts/OnboardingContext.jsx`
-- `src/components/ToastContainer.jsx`
-- `src/components/LoadingComponents.jsx`
-- `src/components/ModuleDifficultyCard.jsx`
-- `src/components/OnboardingWizard.jsx`
+#### US-145: Configuracao Hub na Plataforma
+- [x] **MODIFICAR** `src/config/platform.js`
+  - [x] Adicionar secao `hub` com configuracoes
+
+#### US-146: Componente SpecialistOnly
+- [x] **MODIFICAR** `src/components/RoleBasedAccess.jsx`
+  - [x] Adicionar export `SpecialistOnly`
 
 ---
 
-## Métricas de Progresso
+### 4.2 Fase 2: Componentes UI do Especialista
+
+#### US-147: SpecialistDashboard
+- [ ] **CRIAR** `src/components/hub/SpecialistDashboard.jsx`
+
+#### US-148: SpecialistProfile
+- [ ] **CRIAR** `src/components/hub/SpecialistProfile.jsx`
+
+#### US-149: CourseCatalog (Marketplace)
+- [ ] **CRIAR** `src/components/hub/CourseCatalog.jsx`
+
+#### US-150: CourseReviews
+- [ ] **CRIAR** `src/components/hub/CourseReviews.jsx`
+
+#### US-151: CourseCard (Reutilizavel)
+- [ ] **CRIAR** `src/components/hub/CourseCard.jsx`
+
+---
+
+### 4.3 Fase 3: Integracao (Rotas, API, i18n, Header)
+
+#### US-152: Rotas do Hub
+- [ ] **MODIFICAR** `src/components/SistemaEducacionalCompleto.jsx`
+
+#### US-153: Secao Marketplace no HubView
+- [ ] **MODIFICAR** `src/components/HubView.jsx`
+
+#### US-154: API Service - Funcoes Hub
+- [ ] **MODIFICAR** `src/services/apiService.js`
+
+#### US-155: Navegacao do Especialista no Header
+- [ ] **MODIFICAR** `src/components/UserHeader.jsx`
+
+#### US-156-158: Traducoes i18n Hub (3 idiomas)
+- [ ] **MODIFICAR** `public/locales/pt-BR/*.json`
+- [ ] **MODIFICAR** `public/locales/en-US/*.json`
+- [ ] **MODIFICAR** `public/locales/es-ES/*.json`
+
+---
+
+### 4.4 Fase 4: Testes e Documentacao
+
+#### US-159: Atualizar Testes Unitarios Existentes
+- [ ] **MODIFICAR** testes auth, HubView, users
+
+#### US-160: Novos Testes Unitarios
+- [ ] **CRIAR** testes SpecialistDashboard, CourseCatalog
+
+#### US-161: Atualizar Specs E2E
+- [ ] **MODIFICAR** `docs/04-QUALIDADE/01-qa-e2e-specs.md`
+
+#### US-162: Atualizar Roadmap
+- [x] **SUBSTITUIR** `docs/07-GESTAO/01-roadmap.md` (este documento)
+
+#### US-163: Atualizar Questoes em Aberto
+- [ ] **MODIFICAR** `docs/01-PRODUTO/07-questoes-em-aberto.md`
+
+---
+
+## 5. Grafo de Dependencias
 
 ```
-Total de User Stories: 43
-Completas: 43 (100%)
-Em Progresso: 0
-
-RBAC:
-- Permissões definidas: 21
-- Permissões com UI: 17 (81%)
-
-i18n:
-- Idiomas: 3 (pt-BR, en-US, es-ES)
-- Namespaces: 4 (common, auth, errors, dashboard)
-- Strings totais: ~250
-
-Sprints:
-- Sprint 6:  ✅ 19/19 (100%)
-- Sprint 7:  ✅ 3/3 (100%)
-- Sprint 8:  ✅ 3/3 (100%)
-- Sprint 9:  ✅ 4/4 (100%)
-- Sprint 10: ✅ 4/4 (100%)
-- Sprint 11: ✅ 4/4 (100%)
-- Sprint 12: ✅ 6/6 (100%)
-
-Status: PRONTO PARA DEMO B2B ✅ + Auth NocoDB JWT + i18n COMPLETO
+Fase 1: Foundation (sem dependencias externas)
+  |
+  +-- US-142: Migration SQL (sem deps)
+  +-- US-143: Seed Joao Silva (depende de US-142)
+  +-- US-144: usePermissions.js (sem deps)
+  +-- US-145: platform.js (sem deps)
+  +-- US-146: RoleBasedAccess.jsx (depende de US-144)
+  |
+Fase 2: UI Components (depende de Fase 1)
+  |
+  +-- US-151: CourseCard.jsx (sem deps internas)
+  +-- US-147: SpecialistDashboard.jsx (depende de US-144 + US-154)
+  +-- US-148: SpecialistProfile.jsx (depende de US-154)
+  +-- US-149: CourseCatalog.jsx (depende de US-151 + US-154)
+  +-- US-150: CourseReviews.jsx (depende de US-154)
+  |
+Fase 3: Integration (depende de Fase 1 + Fase 2)
+  |
+  +-- US-154: apiService.js (depende de US-142 para table IDs)
+  +-- US-152: Rotas (depende de todos componentes)
+  +-- US-153: HubView.jsx (depende de US-156)
+  +-- US-155: UserHeader.jsx (depende de US-144)
+  +-- US-156/157/158: i18n (sem deps, paralelizavel)
+  |
+Fase 4: Tests & Docs (depende de todas as fases)
+  |
+  +-- US-159: Testes existentes (depende de US-144 + US-153)
+  +-- US-160: Novos testes (depende de US-147 + US-149)
+  +-- US-161: Specs E2E (documentacao, sem deps de codigo)
+  +-- US-162: Roadmap (documentacao)
+  +-- US-163: Questoes (documentacao)
 ```
 
 ---
 
-## Sprint 11: UX Polish ✅ COMPLETO (4/4 USs)
+## 6. Arquivos - Resumo Completo
 
-```
-US-105: Empty States ✅
-└── src/components/EmptyState.jsx
-    ├── Componente reutilizável
-    ├── 8 tipos: users, students, courses, notes, search, files, inbox, error
-    ├── Modo compact para cards
-    ├── EmptyStateInline para tabelas
-    └── Integrado: AdminDashboard, InstructorDashboard, StudentNotesModal
+### CRIAR (8 arquivos)
 
-US-106: Modal de Confirmação ✅
-└── src/components/ConfirmModal.jsx
-    ├── 3 tipos: danger (vermelho), warning (amarelo), info (azul)
-    ├── Loading state com spinner
-    ├── Hook useConfirmModal() para uso programático
-    └── Integrado: UserFormModal (exclusão de usuário)
+| # | Arquivo | US | Fase |
+|---|---------|-----|------|
+| 1 | `database/migration-003-hub-especialistas.sql` | US-142/143 | 1 |
+| 2 | `src/components/hub/SpecialistDashboard.jsx` | US-147 | 2 |
+| 3 | `src/components/hub/SpecialistProfile.jsx` | US-148 | 2 |
+| 4 | `src/components/hub/CourseCatalog.jsx` | US-149 | 2 |
+| 5 | `src/components/hub/CourseReviews.jsx` | US-150 | 2 |
+| 6 | `src/components/hub/CourseCard.jsx` | US-151 | 2 |
+| 7 | `src/tests/components/SpecialistDashboard.test.jsx` | US-160 | 4 |
+| 8 | `src/tests/components/CourseCatalog.test.jsx` | US-160 | 4 |
 
-US-107: Responsividade Mobile ✅
-├── Menu hamburger < 768px (MobileMenu + MobileMenuButton)
-├── useMediaQuery hook com breakpoints Tailwind
-├── Headers responsivos (stack vertical em mobile)
-├── Botões com ícones apenas em mobile
-└── Scroll horizontal para ações
+### MODIFICAR (21 arquivos)
 
-US-108: Autenticação NocoDB JWT ✅
-├── apiService.loginUser() - Login via tabela users
-├── apiService.validateToken() - Validação de token
-├── apiService.getSavedUser() - Recuperar sessão
-├── AuthContext refatorado para API real
-└── Testes unitários (20 testes)
-```
-
-**Arquivos criados no Sprint 11:**
-- `src/components/EmptyState.jsx`
-- `src/components/ConfirmModal.jsx`
-- `src/components/MobileMenu.jsx`
-- `src/hooks/useMediaQuery.js`
-- `src/services/__tests__/apiService.auth.test.js`
-
-**Arquivos modificados no Sprint 11:**
-- `src/services/apiService.js` - loginUser(), validateToken(), getSavedUser()
-- `src/contexts/AuthContext.jsx` - Refatorado para usar API real
+| # | Arquivo | Mudanca | US | Fase |
+|---|---------|---------|-----|------|
+| 1 | `src/hooks/usePermissions.js` | +specialist role, +11 perms | US-144 | 1 |
+| 2 | `src/config/platform.js` | +secao hub config | US-145 | 1 |
+| 3 | `src/components/RoleBasedAccess.jsx` | +SpecialistOnly | US-146 | 1 |
+| 4 | `src/components/SistemaEducacionalCompleto.jsx` | +4 rotas hub | US-152 | 3 |
+| 5 | `src/components/HubView.jsx` | +secao marketplace | US-153 | 3 |
+| 6 | `src/services/apiService.js` | +10 funcoes, +table IDs | US-154 | 3 |
+| 7 | `src/components/UserHeader.jsx` | +nav specialist/catalog | US-155 | 3 |
+| 8-10 | `public/locales/pt-BR/*.json` | +hub.specialists | US-156 | 3 |
+| 11-13 | `public/locales/en-US/*.json` | +hub.specialists (EN) | US-157 | 3 |
+| 14-16 | `public/locales/es-ES/*.json` | +hub.specialists (ES) | US-158 | 3 |
+| 17 | `src/services/__tests__/apiService.auth.test.js` | 4->5 roles | US-159 | 4 |
+| 18 | `src/tests/components/HubView.test.jsx` | +MemoryRouter +tests | US-159 | 4 |
+| 19 | `src/services/__tests__/apiService.users.test.js` | +specialist test | US-159 | 4 |
+| 20 | `docs/04-QUALIDADE/01-qa-e2e-specs.md` | +5 TCs, fix nome | US-161 | 4 |
+| 21 | `docs/01-PRODUTO/07-questoes-em-aberto.md` | Q1-Q6 respondidas | US-163 | 4 |
 
 ---
 
-## Sprint 12: Internacionalização (i18n) ✅ COMPLETO (6/6 USs)
+## 7. Dados do Especialista Ficticio
 
+### Perfil: Joao Silva
+
+```yaml
+Nome: Joao Silva
+Email: joao.silva.specialist@sulical.com
+Senha: Demo@2026
+Role: specialist
+Empresa: Hub de Especialistas
+
+LinkedIn: linkedin.com/in/joaosilva-devops
+Bio: >
+  Engenheiro DevOps Senior com 15 anos de experiencia em
+  infraestrutura, automacao e shell scripting. Especialista
+  em ambientes Unix/Linux e praticas DevOps modernas.
+  Ja treinou mais de 500 profissionais em empresas como
+  Globo, Nubank e iFood.
+
+Especialidades: [bash, devops, linux, docker, kubernetes]
+
+Certificacoes:
+  - AWS Solutions Architect
+  - CKA - Certified Kubernetes Administrator
+  - Linux Foundation LFCS
+
+Portfolio: github.com/joaosilva-devops
+
+Status: active (verificado ha 30 dias)
+Rating: 4.8
+Cursos: 1 (Bash Shell Scripting)
+Alunos: 156
+Receita: R$ 4.200,00
+Revenue Share: 70%
 ```
-US-109: Infraestrutura i18next ✅
-└── src/i18n/config.js
-    ├── i18next + react-i18next
-    ├── Detecção de idioma (localStorage/browser)
-    ├── Fallback para pt-BR
-    └── Configuração de namespaces
-
-US-110: Traduções base (common/auth/errors) ✅
-└── public/locales/{pt-BR,en-US,es-ES}/
-    ├── common.json (~85 strings)
-    ├── auth.json (~45 strings)
-    └── errors.json (~20 strings)
-
-US-111: LanguageSelector.jsx ✅
-└── src/components/LanguageSelector.jsx
-    ├── Variante dropdown (select)
-    ├── Variante buttons (bandeiras)
-    └── Variante minimal (código)
-
-US-112: LoginView.jsx migrado ✅
-└── src/components/LoginView.jsx
-    ├── useTranslation('auth')
-    └── Todos os textos traduzidos
-
-US-113: HubView.jsx + UserHeader.jsx migrado ✅
-├── src/components/HubView.jsx
-│   ├── useTranslation('common')
-│   └── Seção hub em common.json
-└── src/components/UserHeader.jsx
-    ├── LanguageSelector integrado
-    └── Menu traduzido
-
-US-114: Dashboards migrados ✅
-├── src/components/UserDashboard.jsx
-├── src/components/AdminDashboard.jsx
-├── src/components/InstructorDashboard.jsx
-└── src/components/ExecutiveDashboard.jsx
-    └── public/locales/{pt-BR,en-US,es-ES}/dashboard.json (~100 strings)
-```
-
-**Arquivos criados no Sprint 12:**
-- `src/i18n/config.js`
-- `src/i18n/index.js`
-- `src/components/LanguageSelector.jsx`
-- `public/locales/pt-BR/common.json`
-- `public/locales/pt-BR/auth.json`
-- `public/locales/pt-BR/errors.json`
-- `public/locales/pt-BR/dashboard.json`
-- `public/locales/en-US/*.json` (4 arquivos)
-- `public/locales/es-ES/*.json` (4 arquivos)
-
-**Arquivos modificados no Sprint 12:**
-- `src/components/LoginView.jsx` - useTranslation('auth')
-- `src/components/HubView.jsx` - useTranslation('common')
-- `src/components/UserHeader.jsx` - LanguageSelector + traduções
-- `src/components/UserDashboard.jsx` - useTranslation('dashboard')
-- `src/components/AdminDashboard.jsx` - useTranslation('dashboard')
-- `src/components/InstructorDashboard.jsx` - useTranslation('dashboard')
-- `src/components/ExecutiveDashboard.jsx` - useTranslation('dashboard')
 
 ---
 
-## Sprint 13: White-Label ✅ COMPLETO (6/6 USs)
+## 8. Credenciais de Demo Atualizadas
 
 ```
-US-119: Criar src/config/platform.js (configuração centralizada) ✅
-US-120: Migrar storage keys (6 arquivos) para config central ✅
-US-121: Atualizar traduções i18n para nome configurável ✅
-US-122: Remover hardcoded do docker-compose ✅
-US-123: Script de migração de localStorage ✅
-US-124: Atualizar documentação principal ✅
++--------------------------------------------------------------+
+| CREDENCIAIS - Senha padrao: Demo@2026                        |
++--------------------------------------------------------------+
+| Role        | Email                           | Dashboard     |
++-------------+---------------------------------+---------------+
+| C-Level     | ceo@acmetech.com                | /admin/exec   |
+| Admin       | admin@acmetech.com              | /admin        |
+| Instructor  | prof@acmetech.com               | /instructor   |
+| Student     | maria@acmetech.com              | /dashboard    |
+| Specialist  | joao.silva.specialist@sulical.com | /specialist  |
++-------------+---------------------------------+---------------+
+
+Empresas:
+  - ACME Tech Solutions (id: 550e...0001)
+  - DevCorp Consulting (id: 550e...0002)
+  - Hub de Especialistas (id: 550e...0099)
 ```
-
-**Arquivos criados:**
-- `src/config/platform.js` - Configuração centralizada
-- `src/config/index.js` - Re-exports
-- `src/utils/storageMigration.js` - Migração ultrathink_* -> trainb2b_*
-- `.env.platform.example` - Documentação das variáveis
-
-**Validação E2E:** ✅ 8/8 testes passando (Login, Hub, Dashboards, i18n)
 
 ---
 
-## Sugestões Sprint 14 (Futuro)
+## 9. Matriz RBAC Atualizada (5 Roles, 32 Permissoes)
 
-| US | Descrição | Complexidade | Prioridade |
-|----|-----------|--------------|------------|
-| US-125 | CRUD de cursos (courses.create/edit) | H | Alta |
-| US-126 | Certificados de conclusão | M | Média |
-| US-127 | Tour guiado real (highlight UI) | M | Baixa |
-| US-128 | Notificações push/email | H | Baixa |
+| Permissao | student | instructor | admin | c_level | specialist |
+|-----------|---------|------------|-------|---------|------------|
+| courses.view | ✅ | ✅ | ✅ | ✅ | ✅ |
+| courses.progress | ✅ | ✅ | ✅ | ✅ | ✅ |
+| courses.notes | ✅ | ✅ | ✅ | ✅ | ✅ |
+| courses.edit | - | ✅ | ✅ | - | - |
+| courses.create | - | - | ✅ | - | - |
+| courses.delete | - | - | ✅ | - | - |
+| paths.view | ✅ | ✅ | ✅ | ✅ | - |
+| paths.edit | - | - | ✅ | - | - |
+| dashboard.own | ✅ | ✅ | ✅ | ✅ | ✅ |
+| dashboard.team | - | ✅ | ✅ | ✅ | - |
+| dashboard.company | - | - | ✅ | ✅ | - |
+| analytics.basic | - | ✅ | ✅ | ✅ | - |
+| analytics.advanced | - | - | ✅ | ✅ | - |
+| analytics.export | - | - | ✅ | ✅ | - |
+| users.view | - | - | ✅ | ✅ | - |
+| users.create | - | - | ✅ | - | - |
+| users.edit | - | - | ✅ | - | - |
+| users.delete | - | - | ✅ | - | - |
+| company.view | - | - | ✅ | ✅ | - |
+| company.edit | - | - | - | ✅ | - |
+| audit.view | - | - | ✅ | ✅ | - |
+| **hub_courses.create** | - | - | - | - | ✅ |
+| **hub_courses.edit_own** | - | - | - | - | ✅ |
+| **hub_courses.delete_own** | - | - | - | - | ✅ |
+| **hub_courses.view_own** | - | - | - | - | ✅ |
+| **hub_courses.approve** | - | - | ✅ | ✅ | - |
+| **hub_analytics.view_own** | - | - | - | - | ✅ |
+| **hub_revenue.view_own** | - | - | - | - | ✅ |
+| **hub_catalog.view** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **reviews.create** | ✅ | ✅ | ✅ | - | - |
+| **reviews.reply_own** | - | - | - | - | ✅ |
+| **specialists.approve** | - | - | ✅ | ✅ | - |
 
 ---
 
-## Ambiente de Desenvolvimento
+## 10. Rotas Atualizadas
 
-### Modo 1: Frontend Apenas (Dados Mock)
+```
++--------------------+---+---+---+---+---+-----+
+| Rota               | S | I | A | C | E | Pub |
++--------------------+---+---+---+---+---+-----+
+| /login             | - | - | - | - | - | ✅  |
+| /                  | ✅| ✅| ✅| ✅| ✅|  -  |
+| /curso/:id         | ✅| ✅| ✅| ✅| ✅|  -  |
+| /dashboard         | ✅| ✅| ✅| ✅| ✅|  -  |
+| /hub/catalog       | ✅| ✅| ✅| ✅| ✅|  -  |
+| /specialist/:id    | ✅| ✅| ✅| ✅| ✅|  -  |
+| /hub/course/:id/rev| ✅| ✅| ✅| ✅| ✅|  -  |
+| /instructor        | - | ✅| ✅| ✅| - |  -  |
+| /specialist        | - | - | ✅| ✅| ✅|  -  |
+| /admin             | - | - | ✅| ✅| - |  -  |
+| /admin/executive   | - | - | - | ✅| - |  -  |
++--------------------+---+---+---+---+---+-----+
+S=Student I=Instructor A=Admin C=C-Level E=Especialista
+```
 
+---
+
+## 11. Verificacao e Testes
+
+### Apos Fase 1:
 ```bash
-bun run dev    # http://localhost:3001
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-003-hub-especialistas.sql
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle -c "SELECT * FROM specialists;"
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle -c "SELECT * FROM hub_courses;"
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle -c "SELECT * FROM course_reviews;"
 ```
 
-Funcionalidades disponíveis:
-- Login com credenciais demo
-- Navegação entre dashboards
-- Onboarding wizard
-- UI completa (sem dados do backend)
-
-### Modo 2: Full Stack (Docker Required)
-
-**Pré-requisitos:**
-- Docker Desktop instalado no Windows
-- WSL2 Integration habilitada em Docker Desktop Settings
-
+### Apos Fases 2-3:
 ```bash
-# 1. Iniciar containers (PostgreSQL + NocoDB)
-docker compose -f docker-compose.nocodb.yml up -d
-
-# 2. Aguardar containers healthy
-docker compose -f docker-compose.nocodb.yml ps
-
-# 3. Executar migrations
-docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-001-rbac.sql
-docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-002-enrollments.sql
-
-# 4. Iniciar frontend
 bun run dev
+# Login: joao.silva.specialist@sulical.com / Demo@2026
+# Verificar: /specialist (dashboard), /hub/catalog, / (secao marketplace)
 ```
 
-### Verificar Status
-
+### Apos Fase 4:
 ```bash
-# Containers ativos
-docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
-
-# Testar endpoints
-curl http://localhost:3001     # Frontend
-curl http://localhost:8080     # NocoDB
+bun run test
+bun run test -- --reporter=verbose
 ```
 
 ---
 
-## Credenciais de Teste
+## 12. Roadmap Futuro (Pos-Sprint 15)
+
+### Sprint 16: Certificados (P1)
+- US-132: Geracao certificados PDF
+- US-133: Pagina verificacao certificado
+- US-134: Listagem certificados do aluno
+
+### Sprint 17: Hub Fase 2 - Marketplace Completo
+- Sistema de mensagens entre empresa e especialista
+- Montagem de trilhas com cursos de N especialistas
+- Filtros avancados no catalogo (busca full-text)
+
+### Sprint 18: Hub Fase 3 - Engajamento
+- Mentoria 1:1 (calendario, agendamento, preco por sessao)
+- Cursos customizados sob demanda
+- Notificacoes push/email
+
+### Sprint 19: Hub Fase 4 - Monetizacao
+- Revenue tracking e payouts
+- Relatorios financeiros para especialistas
+- Integracao gateway pagamento (Stripe)
+
+### Backlog Tecnico
+- [ ] Migracao TypeScript incremental
+- [ ] SSO corporativo (SAML/OAuth) - critico para Enterprise
+- [ ] WCAG 2.1 AA (100%)
+- [ ] Dark mode
+- [ ] PWA com suporte offline
+- [ ] Cobertura testes unitarios 5% -> 80%
+
+---
+
+## 13. Metricas de Progresso
 
 ```
-Senha padrão: Demo@2026
-
-Roles e rotas:
-- c_level    → /admin/executive
-- admin      → /admin
-- instructor → /instructor
-- student    → /dashboard
-
-Empresas demo:
-- ACME Tech Solutions (id: 1)
-- DevCorp Consulting (id: 2)
+Total User Stories: 55 completas + 22 novas (Sprint 15) = 77
+RBAC: 32 permissoes (21 existentes + 11 novas)
+Roles: 5 (student, instructor, admin, c_level, specialist)
+Componentes: 48 existentes + 5 novos = 53
+Tabelas DB: 14 existentes + 3 novas = 17
+Idiomas: 3 (pt-BR, en-US, es-ES)
+Testes unitarios: 52 existentes + ~30 novos
+Testes E2E specs: 37 existentes + 5 novos = 42
 ```
 
 ---
 
-## Comando de Retomada
+## 14. Compatibilidade Retroativa
 
-```bash
-# Opção 1: Continuar com backend (Docker já configurado)
-docker compose -f docker-compose.nocodb.yml up -d && bun run dev
-
-# Opção 2: Desenvolvimento frontend apenas
-bun run dev
-
-# Opção 3: Iniciar Sprint 13
-Verificar gaps em docs/backlog/GAPS-DEMO-B2B.md
-```
-
-**Estado atual (2026-01-26):**
-- Sprint 11: COMPLETO (4/4 USs)
-- Sprint 12: COMPLETO (6/6 USs) - i18n
-  - ✅ US-109: Infraestrutura i18next
-  - ✅ US-110: Traduções common/auth/errors (3 idiomas)
-  - ✅ US-111: LanguageSelector.jsx (3 variantes)
-  - ✅ US-112: LoginView migrado para i18n
-  - ✅ US-113: HubView + UserHeader migrado para i18n
-  - ✅ US-114: 4 Dashboards migrados para i18n
-- Testes E2E: CONCLUIDOS (4/4 perfis validados)
-- Frontend: http://localhost:3001
-- Backend: http://localhost:8081 (NocoDB + PostgreSQL)
-- Usuarios: 13 no banco (12 demo + 1 teste)
-- i18n: 3 idiomas, 4 namespaces, ~250 strings
-
-**Observações:**
-- company_id no NocoDB é coluna sistema (ForeignKey) - precisa SQL direto
-- Docker Desktop deve estar ativo para testes E2E com backend
-- Senha demo para todos usuários: Demo@2026
-- Troca de idioma instantânea via LanguageSelector no header
-
-**Documentacao sessao:**
-- `docs/backlog/BACKLOG-2026-01-23-TESTES-E2E-BACKEND.md`
-- `docs/backlog/BACKLOG-2026-01-23-TESTES-PERFIS-SPRINT11.md`
+- Roles existentes (student/instructor/admin/c_level) NAO sao afetados
+- Rotas existentes NAO mudam
+- Curso Bash continua funcionando normalmente para alunos atuais
+- Coluna `source` default 'internal' nao afeta cursos existentes
+- Testes existentes precisam ajustes minimos (4->5 roles, MemoryRouter)
+- NocoDB auto-expoe CRUD para novas tabelas
 
 ---
 
-**Última atualização:** 2026-01-26
-**Versão:** 9.0.0 (Sprint 13 - White-Label COMPLETO)
-**Status:** Backend + Frontend + Auth NocoDB JWT + i18n + White-Label
-**Próxima revisão:** Merge para desenvolvimento ou iniciar Sprint 14
+**Ultima atualizacao:** 2026-02-09
+**Versao:** 10.0.0
+**Status:** Sprint 15 EM IMPLEMENTACAO - Hub de Especialistas Foundation
+**Proxima revisao:** Apos implementacao das 4 fases

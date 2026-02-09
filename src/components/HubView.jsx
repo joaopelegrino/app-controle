@@ -1,6 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Target, BookOpen, Clock, CheckCircle } from 'lucide-react';
+import { ArrowRight, Target, BookOpen, Clock, CheckCircle, Sparkles } from 'lucide-react';
 import { caminhosPropostos } from '../data/caminhoExemploData';
 import UserHeader from './UserHeader';
 
@@ -17,6 +18,7 @@ import UserHeader from './UserHeader';
  * @param {Function} openLearningPath - Função para abrir caminho proposto
  */
 export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath }) => {
+  const navigate = useNavigate();
   const { t } = useTranslation('common');
 
   // Filtrar apenas áreas ativas (não learning paths)
@@ -188,6 +190,39 @@ export const HubView = ({ studyAreas, calculateStats, openArea, openLearningPath
             </div>
           </div>
         )}
+
+        {/* Seção Hub de Especialistas (US-153) */}
+        <div className="mb-12">
+          <div
+            onClick={() => navigate('/hub/catalog')}
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-lg p-8 cursor-pointer hover:shadow-xl transition-all transform hover:-translate-y-1 text-white relative overflow-hidden max-w-2xl mx-auto"
+          >
+            <div className="absolute top-4 right-4 opacity-20">
+              <Sparkles className="w-16 h-16" />
+            </div>
+            <div className="flex items-center mb-4">
+              <span className="text-4xl mr-4">🎓</span>
+              <div>
+                <h2 className="text-2xl font-bold">{t('hub.specialists.sectionTitle', 'Hub de Especialistas')}</h2>
+                <p className="text-indigo-200 text-sm">{t('hub.specialists.sectionDescription', 'Cursos de especialistas externos para sua equipe')}</p>
+              </div>
+            </div>
+            <p className="text-indigo-100 mb-4">
+              {t('hub.specialists.catalogCTA', 'Explore cursos criados por profissionais certificados do mercado. Capacite sua equipe com conteudo especializado.')}
+            </p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4 text-sm text-indigo-200">
+                <span>1 {t('hub.specialists.specialist', 'especialista')}</span>
+                <span>1 {t('hub.specialists.course', 'curso')}</span>
+                <span>⭐ 4.8</span>
+              </div>
+              <div className="flex items-center gap-2 text-white font-medium">
+                {t('hub.specialists.viewCatalog', 'Explorar Catalogo')}
+                <ArrowRight className="w-5 h-5" />
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Seção Áreas de Estudo */}
         <div className="mb-8">

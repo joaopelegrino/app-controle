@@ -148,6 +148,22 @@
       "archiveFailed": "Error archiving course"
     }
   },
+  "specialist": {
+    "title": "Specialist Panel",
+    "subtitle": "Specialists Hub",
+    "error": "Error loading panel data",
+    "stats": {
+      "revenue": "Total Revenue",
+      "enrollments": "Total Enrollments",
+      "avgRating": "Average Rating",
+      "publishedCourses": "Published Courses"
+    },
+    "myCourses": "My Courses",
+    "recentReviews": "Recent Reviews",
+    "revenueShare": "Revenue Share",
+    "noReviews": "No reviews",
+    "noReviewsDescription": "Reviews for your courses will appear here."
+  },
   "executive": {
     "title": "Executive Dashboard",
     "stats": {

@@ -3,13 +3,13 @@ import { useAuth } from './useAuth';
 
 /**
  * Matriz RBAC - Define permissões por role
- * Roles: student, instructor, admin, c_level
+ * Roles: student, instructor, admin, c_level, specialist
  */
 const PERMISSIONS = {
   // Acesso a cursos
-  'courses.view': ['student', 'instructor', 'admin', 'c_level'],
-  'courses.progress': ['student', 'instructor', 'admin', 'c_level'],
-  'courses.notes': ['student', 'instructor', 'admin', 'c_level'],
+  'courses.view': ['student', 'instructor', 'admin', 'c_level', 'specialist'],
+  'courses.progress': ['student', 'instructor', 'admin', 'c_level', 'specialist'],
+  'courses.notes': ['student', 'instructor', 'admin', 'c_level', 'specialist'],
   'courses.edit': ['instructor', 'admin'],
   'courses.create': ['admin'],
   'courses.delete': ['admin'],
@@ -19,7 +19,7 @@ const PERMISSIONS = {
   'paths.edit': ['admin'],
 
   // Dashboard de progresso
-  'dashboard.own': ['student', 'instructor', 'admin', 'c_level'],
+  'dashboard.own': ['student', 'instructor', 'admin', 'c_level', 'specialist'],
   'dashboard.team': ['instructor', 'admin', 'c_level'],
   'dashboard.company': ['admin', 'c_level'],
 
@@ -43,7 +43,28 @@ const PERMISSIONS = {
 
   // Admin do sistema
   'admin.access': ['admin', 'c_level'],
-  'admin.full': ['c_level']
+  'admin.full': ['c_level'],
+
+  // Hub de Especialistas - Cursos
+  'hub_courses.create': ['specialist'],
+  'hub_courses.edit_own': ['specialist'],
+  'hub_courses.delete_own': ['specialist'],
+  'hub_courses.view_own': ['specialist'],
+  'hub_courses.approve': ['admin', 'c_level'],
+
+  // Hub de Especialistas - Analytics e Revenue
+  'hub_analytics.view_own': ['specialist'],
+  'hub_revenue.view_own': ['specialist'],
+
+  // Hub de Especialistas - Catálogo
+  'hub_catalog.view': ['student', 'instructor', 'admin', 'c_level', 'specialist'],
+
+  // Reviews
+  'reviews.create': ['student', 'instructor', 'admin'],
+  'reviews.reply_own': ['specialist'],
+
+  // Gestão de especialistas
+  'specialists.approve': ['admin', 'c_level'],
 };
 
 /**
@@ -53,7 +74,8 @@ const ROLE_LABELS = {
   student: 'Aluno',
   instructor: 'Instrutor',
   admin: 'Administrador',
-  c_level: 'C-Level'
+  c_level: 'C-Level',
+  specialist: 'Especialista'
 };
 
 /**
@@ -63,7 +85,8 @@ const ROLE_COLORS = {
   student: 'bg-blue-100 text-blue-800',
   instructor: 'bg-green-100 text-green-800',
   admin: 'bg-purple-100 text-purple-800',
-  c_level: 'bg-amber-100 text-amber-800'
+  c_level: 'bg-amber-100 text-amber-800',
+  specialist: 'bg-indigo-100 text-indigo-800'
 };
 
 /**
@@ -80,11 +103,15 @@ const ROLE_COLORS = {
  *   isInstructor: boolean,
  *   isAdmin: boolean,
  *   isCLevel: boolean,
+ *   isSpecialist: boolean,
  *   canManageUsers: boolean,
  *   canViewAnalytics: boolean,
  *   canEditCourses: boolean,
  *   canCreateCourses: boolean,
- *   canDeleteCourses: boolean
+ *   canDeleteCourses: boolean,
+ *   canManageHubCourses: boolean,
+ *   canViewCatalog: boolean,
+ *   canApproveSpecialists: boolean
  * }}
  */
 export function usePermissions() {
@@ -120,6 +147,7 @@ export function usePermissions() {
     const isInstructor = role === 'instructor';
     const isAdmin = role === 'admin';
     const isCLevel = role === 'c_level';
+    const isSpecialist = role === 'specialist';
 
     // Permissões comuns pré-calculadas
     const canManageUsers = hasPermission('users.view');
@@ -127,6 +155,11 @@ export function usePermissions() {
     const canEditCourses = hasPermission('courses.edit');
     const canCreateCourses = hasPermission('courses.create');
     const canDeleteCourses = hasPermission('courses.delete');
+
+    // Permissões Hub de Especialistas
+    const canManageHubCourses = hasPermission('hub_courses.create');
+    const canViewCatalog = hasPermission('hub_catalog.view');
+    const canApproveSpecialists = hasPermission('specialists.approve');
 
     return {
       hasPermission,
@@ -139,11 +172,15 @@ export function usePermissions() {
       isInstructor,
       isAdmin,
       isCLevel,
+      isSpecialist,
       canManageUsers,
       canViewAnalytics,
       canEditCourses,
       canCreateCourses,
-      canDeleteCourses
+      canDeleteCourses,
+      canManageHubCourses,
+      canViewCatalog,
+      canApproveSpecialists
     };
   }, [role]);
 

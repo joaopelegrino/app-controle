@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { User, LogOut, Building2, ChevronDown, Shield, HelpCircle } from 'lucide-react';
+import { User, LogOut, Building2, ChevronDown, Shield, HelpCircle, Sparkles, BookOpen } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { usePermissions } from '../hooks/usePermissions';
 import { MobileMenu, MobileMenuButton } from './MobileMenu';
@@ -15,7 +15,7 @@ export function UserHeader() {
   const navigate = useNavigate();
   const { t } = useTranslation(['common', 'auth']);
   const { user, company, logout } = useAuth();
-  const { roleLabel, roleColor, canViewAnalytics } = usePermissions();
+  const { roleLabel, roleColor, canViewAnalytics, isSpecialist } = usePermissions();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -98,6 +98,32 @@ export function UserHeader() {
                     <p className="text-sm font-medium text-gray-900">{user.fullName}</p>
                     <p className="text-xs text-gray-500">{user.email}</p>
                   </div>
+
+                  {/* Catalogo Hub - todos os roles (US-155) */}
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false);
+                      navigate('/hub/catalog');
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                  >
+                    <BookOpen className="w-4 h-4" />
+                    {t('common:navigation.hubCatalog', 'Catálogo')}
+                  </button>
+
+                  {/* Painel Especialista (US-155) */}
+                  {isSpecialist && (
+                    <button
+                      onClick={() => {
+                        setMenuOpen(false);
+                        navigate('/specialist');
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                    >
+                      <Sparkles className="w-4 h-4" />
+                      {t('common:navigation.specialist', 'Painel Especialista')}
+                    </button>
+                  )}
 
                   {canViewAnalytics && (
                     <button

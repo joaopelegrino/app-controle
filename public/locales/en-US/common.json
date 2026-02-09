@@ -15,7 +15,9 @@
     "profile": "Profile",
     "logout": "Logout",
     "help": "Help",
-    "docs": "Documentation"
+    "docs": "Documentation",
+    "hubCatalog": "Catalog",
+    "specialist": "Specialist Panel"
   },
   "buttons": {
     "save": "Save",
@@ -107,6 +109,26 @@
     "footer": {
       "description": "Sulical corporate technical training platform. New courses are added regularly.",
       "tip": "Check the Learning Path to see the recommended learning sequence."
+    },
+    "specialists": {
+      "sectionTitle": "Specialists Hub",
+      "sectionDescription": "Courses from external specialists for your team",
+      "catalogCTA": "Explore courses created by certified market professionals. Train your team with specialized content.",
+      "viewCatalog": "Explore Catalog",
+      "specialist": "Specialist",
+      "course": "course",
+      "viewProfile": "View Profile",
+      "viewCourse": "View Course",
+      "verified": "Verified",
+      "perMonth": "/mo",
+      "students": "students",
+      "reviews": "reviews",
+      "rating": "Rating",
+      "writeReview": "Write Review",
+      "replyReview": "Reply",
+      "specialties": "Specialties",
+      "credentials": "Credentials",
+      "since": "Since"
     }
   }
 }

@@ -1,18 +1,19 @@
 ---
 titulo: Ativar Ambiente de Desenvolvimento app-controle
-versao: 2
-data: 2026-02-02
+versao: 3
+data: 2026-02-09
 projeto: app-controle
-referencia: CLAUDE.md v11.1.0, ROADMAP.md, GAPS-DEMO-B2B.md
+referencia: CLAUDE.md v11.1.0, ROADMAP.md v10.0.0, GAPS-DEMO-B2B.md
 stack: React + Vite + Bun + NocoDB + PostgreSQL
 changelog: |
+  v3 (2026-02-09) - Sprint 15 Hub de Especialistas: +specialist role, +empresa Hub, credenciais NocoDB corrigidas
   v2 (2026-02-02) - Padronizado porta 3001, adicionado mise activate obrigatorio
   v1 (2026-02-01) - Versao inicial
 ---
 
 # Ativar Ambiente de Desenvolvimento app-controle
 
-Comando autocontido para verificar e ativar o ambiente de desenvolvimento completo do projeto app-controle (TrainB2B - Plataforma B2B de Treinamento Corporativo).
+Comando autocontido para verificar e ativar o ambiente de desenvolvimento completo do projeto app-controle (Sulical - Plataforma B2B de Treinamento Corporativo).
 
 ---
 
@@ -212,13 +213,16 @@ Claude DEVE gerar este relatorio ao final da ativacao:
 ║    Admin:      admin@devcorp.com      -> /admin                               ║
 ║    Instructor: prof@devcorp.com       -> /instructor                          ║
 ║    Student:    julia@devcorp.com      -> /dashboard                           ║
+╠───────────────────────────────────────────────────────────────────────────────╣
+║ HUB DE ESPECIALISTAS (Empresa 3):                                              ║
+║    Specialist: joao.silva.specialist@sulical.com -> /specialist               ║
 ╠═══════════════════════════════════════════════════════════════════════════════╣
 ║ URLS DE ACESSO                                                                 ║
 ╠───────────────────────────────────────────────────────────────────────────────╣
 ║ Frontend:     http://localhost:3001                                            ║
 ║ NocoDB Admin: http://localhost:8081                                            ║
-║   Email:      admin@ultrathink.com                                             ║
-║   Senha:      UltraThink@Admin2026!                                            ║
+║   Email:      admin@trainb2b.local                                             ║
+║   Senha:      Admin@TrainB2B2026!                                              ║
 ╠═══════════════════════════════════════════════════════════════════════════════╣
 ║ PROXIMOS PASSOS                                                                ║
 ╠───────────────────────────────────────────────────────────────────────────────╣
@@ -226,8 +230,10 @@ Claude DEVE gerar este relatorio ao final da ativacao:
 ║ 2. Login como admin@acmetech.com / Demo@2026                                  ║
 ║ 3. Validar dashboard admin                                                     ║
 ║ 4. Testar CRUD de cursos (Sprint 14)                                          ║
-║ 5. Testar white-label (Sprint 13)                                             ║
+║ 5. Testar white-label Sulical (Sprint 13)                                     ║
 ║ 6. Verificar i18n (pt-BR, en-US, es-ES)                                       ║
+║ 7. Login specialist: joao.silva.specialist@sulical.com                        ║
+║ 8. Validar /specialist, /hub/catalog (Sprint 15)                              ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -330,7 +336,7 @@ Claude DEVE gerar este relatorio ao final da ativacao:
 | 7 | Frontend ativo | `curl http://localhost:3001` |
 | 8 | Chrome DevTools | `curl http://127.0.0.1:9222/json/version` |
 | 9 | Login funciona | Login com Demo@2026 |
-| 10 | RBAC correto | Admin ve /admin, Student ve /dashboard |
+| 10 | RBAC correto | Admin ve /admin, Student ve /dashboard, Specialist ve /specialist |
 
 **Criterio Aprovacao:**
 - **APROVADO:** Todos 10 itens = OK
@@ -350,8 +356,8 @@ Claude DEVE gerar este relatorio ao final da ativacao:
 | NocoDB porta | 8081 |
 | PostgreSQL porta | 5432 |
 | Chrome debug | 9222 |
-| Usuarios demo | 8 (4 por empresa) |
-| Empresas demo | 2 |
+| Usuarios demo | 9 (4 ACME + 4 DevCorp + 1 Specialist) |
+| Empresas demo | 3 (ACME, DevCorp, Hub de Especialistas) |
 
 ---
 
@@ -368,7 +374,7 @@ Claude DEVE gerar este relatorio ao final da ativacao:
 
 ---
 
-*Criado: 2026-02-01 | Versao: 1*
-*Projeto: app-controle (TrainB2B)*
+*Criado: 2026-02-01 | Atualizado: 2026-02-09 | Versao: 3*
+*Projeto: app-controle (Sulical)*
 *Stack: React + Vite + Bun + NocoDB + PostgreSQL*
 *Conformidade: ambiente-centralizado v1.7*

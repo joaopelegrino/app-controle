@@ -15,7 +15,9 @@
     "profile": "Perfil",
     "logout": "Salir",
     "help": "Ayuda",
-    "docs": "Documentación"
+    "docs": "Documentación",
+    "hubCatalog": "Catálogo",
+    "specialist": "Panel Especialista"
   },
   "buttons": {
     "save": "Guardar",
@@ -107,6 +109,26 @@
     "footer": {
       "description": "Plataforma Sulical de capacitación técnica corporativa. Nuevos cursos se agregan regularmente.",
       "tip": "Consulte el Camino Propuesto para ver la secuencia de aprendizaje recomendada."
+    },
+    "specialists": {
+      "sectionTitle": "Hub de Especialistas",
+      "sectionDescription": "Cursos de especialistas externos para su equipo",
+      "catalogCTA": "Explore cursos creados por profesionales certificados del mercado. Capacite a su equipo con contenido especializado.",
+      "viewCatalog": "Explorar Catálogo",
+      "specialist": "Especialista",
+      "course": "curso",
+      "viewProfile": "Ver Perfil",
+      "viewCourse": "Ver Curso",
+      "verified": "Verificado",
+      "perMonth": "/mes",
+      "students": "alumnos",
+      "reviews": "evaluaciones",
+      "rating": "Evaluación",
+      "writeReview": "Evaluar",
+      "replyReview": "Responder",
+      "specialties": "Especialidades",
+      "credentials": "Credenciales",
+      "since": "Desde"
     }
   }
 }

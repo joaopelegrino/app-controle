@@ -1,8 +1,8 @@
-# Questões em Aberto - UltraThink/TrainB2B
+# Questões em Aberto - Sulical
 
-**Versão:** 1.0.0
-**Data:** 2026-02-05
-**Status:** 🟡 29 questões identificadas, 6 respondidas, 23 pendentes
+**Versão:** 2.0.0
+**Data:** 2026-02-09
+**Status:** 🟡 29 questões identificadas, 12 respondidas, 17 pendentes
 
 > **Propósito:** Este documento lista todas as decisões de produto que precisam ser tomadas para evolução da plataforma. Deve ser consultado antes de implementar novas features.
 
@@ -12,11 +12,11 @@
 
 | Categoria | Total | ✅ Respondidas | ⬜ Pendentes |
 |-----------|-------|----------------|--------------|
-| Hub de Especialistas | 10 | 6 | 4 |
+| Hub de Especialistas | 10 | 10 | 0 |
 | Modelo de Negócio | 5 | 0 | 5 |
-| Funcionalidades | 8 | 0 | 8 |
+| Funcionalidades | 8 | 2 | 6 |
 | Integrações | 6 | 0 | 6 |
-| **TOTAL** | **29** | **6** | **23** |
+| **TOTAL** | **29** | **12** | **17** |
 
 ---
 
@@ -28,75 +28,49 @@
 
 #### Q1: Revenue share fixo ou variável?
 
-**Status:** ⬜ Pendente
+**Status:** ✅ RESPONDIDA (2026-02-09)
 
-**Opções:**
-- [ ] Fixo 70/30 para todos os especialistas
-- [ ] Variável por tier (60/40 bronze, 70/30 prata, 80/20 ouro)
-- [ ] Outro: ________________
+**Decisão:** Fixo 70/30 para todos os especialistas
 
-**Recomendação:** Começar com 70/30 fixo, simplifica operação inicial
+**Justificativa:** Simplicidade operacional para MVP. Especialista recebe 70%, plataforma 30%. Evoluir para tiers depois de atingir 100+ especialistas.
 
-**Impacto da decisão:**
-- Revenue projection
-- Atratividade para especialistas
-- Complexidade de implementação
+**Implementação:** `platform.js` → `hub.revenueSharePercent: 70`, tabela `specialists.revenue_share_percent DEFAULT 70`
 
 ---
 
 #### Q2: Especialista paga mensalidade?
 
-**Status:** ⬜ Pendente
+**Status:** ✅ RESPONDIDA (2026-02-09)
 
-**Opções:**
-- [ ] Não, apenas revenue share
-- [ ] Sim, R$ 99/mês para destaque no catálogo
-- [ ] Freemium (gratuito básico, pago para features extras)
+**Decisão:** Não, apenas revenue share
 
-**Recomendação:** Não cobrar inicialmente (atrair massa crítica)
+**Justificativa:** Atrair massa crítica inicial. Sem barreira de entrada. Revenue share como único modelo de monetização.
 
-**Impacto da decisão:**
-- Barreira de entrada
-- Receita recorrente da plataforma
-- Quantidade de especialistas no catálogo
+**Implementação:** `platform.js` → `hub.specialistMonthlyFee: 0`
 
 ---
 
 #### Q3: Quem define o preço do curso?
 
-**Status:** ⬜ Pendente
+**Status:** ✅ RESPONDIDA (2026-02-09)
 
-**Opções:**
-- [ ] Especialista define livremente
-- [ ] Plataforma sugere faixa (R$ 50-200/mês)
-- [ ] Plataforma define baseado em métricas (duração, rating)
+**Decisão:** Especialista define livremente, com faixa sugerida R$ 50-200/mês
 
-**Recomendação:** Especialista define com faixa sugerida pela plataforma
+**Justificativa:** Especialista tem liberdade de definir preço, plataforma sugere faixa visível no formulário para orientar.
 
-**Impacto da decisão:**
-- Competitividade do catálogo
-- Percepção de valor
-- Margem do especialista
+**Implementação:** `hub_courses.price_monthly` definido pelo especialista, `hub_courses.price_suggested_min/max` como referência
 
 ---
 
 #### Q4: Credenciais obrigatórias para cadastro?
 
-**Status:** ⬜ Pendente
+**Status:** ✅ RESPONDIDA (2026-02-09)
 
-**Opções:**
-- [ ] LinkedIn verificado obrigatório
-- [ ] Certificações técnicas obrigatórias
-- [ ] Anos de experiência comprovados
-- [ ] Portfolio/GitHub obrigatório
-- [ ] Combinação: ________________
+**Decisão:** LinkedIn obrigatório + mínimo 1 comprovação (certificação técnica, portfólio GitHub, ou anos de experiência documentados)
 
-**Recomendação:** LinkedIn + 1 comprovação (certificação OU portfólio)
+**Justificativa:** LinkedIn garante identidade profissional. Uma comprovação adicional garante qualidade mínima sem criar barreira excessiva.
 
-**Impacto da decisão:**
-- Qualidade percebida do catálogo
-- Barreira de entrada para especialistas
-- Processo de verificação
+**Implementação:** `specialists.linkedin_url NOT NULL`, `specialists.credentials JSONB` com validação de pelo menos 1 entrada
 
 ---
 
@@ -104,39 +78,25 @@
 
 #### Q5: Aprovação de curso antes de publicar?
 
-**Status:** ⬜ Pendente
+**Status:** ✅ RESPONDIDA (2026-02-09)
 
-**Opções:**
-- [ ] Não, especialista publica direto
-- [ ] Sim, revisão manual pela plataforma
-- [ ] Sim, checklist automatizado + revisão manual
-- [ ] Híbrido: automático para verificados, manual para novos
+**Decisão:** Checklist automatizado + revisão manual em 48h úteis
 
-**Recomendação:** Checklist automatizado + revisão manual em 48h úteis
+**Justificativa:** Checklist automatizado (mínimo 4 módulos, descrição 200+ caracteres, thumbnail) filtra submissões básicas. Revisão humana em 48h garante qualidade.
 
-**Impacto da decisão:**
-- Tempo de go-to-market do especialista
-- Qualidade do catálogo
-- Carga operacional da plataforma
+**Implementação:** `platform.js` → `hub.approvalProcess: { type: 'checklist_plus_review', reviewTimeHours: 48 }`, `hub_courses.status` workflow: draft → pending_review → published
 
 ---
 
 #### Q6: Critérios de remoção de especialista?
 
-**Status:** ⬜ Pendente
+**Status:** ✅ RESPONDIDA (2026-02-09)
 
-**Opções:**
-- [ ] Rating abaixo de X estrelas por Y meses
-- [ ] Número de reclamações graves
-- [ ] Inatividade por X meses
-- [ ] Combinação: ________________
+**Decisão:** Rating < 3.0 por 3 meses consecutivos OU 3+ reclamações graves
 
-**Recomendação:** Rating < 3.0 por 3 meses OU 3+ reclamações graves
+**Justificativa:** Aviso ao especialista após 1º mês com rating < 3.0. Suspensão automática após 3 meses consecutivos. Reclamações graves (conteúdo plagiado, ofensivo, etc.) levam a suspensão imediata após 3 ocorrências.
 
-**Impacto da decisão:**
-- Qualidade do catálogo
-- Confiança das empresas
-- Justiça com especialistas
+**Implementação:** `platform.js` → `hub.removalCriteria: { minRating: 3.0, consecutiveMonths: 3, maxGraveComplaints: 3 }`
 
 ---
 
@@ -489,23 +449,23 @@
 
 ### 5.1 Questões Críticas (Bloqueiam features)
 
-| # | Questão | Bloqueia |
-|---|---------|----------|
-| Q1 | Revenue share | Hub de Especialistas |
-| Q2 | Mensalidade especialista | Hub de Especialistas |
-| Q3 | Quem define preço | Hub de Especialistas |
-| Q4 | Credenciais obrigatórias | Hub de Especialistas |
-| Q24 | SSO providers | Vendas Enterprise |
+| # | Questão | Bloqueia | Status |
+|---|---------|----------|--------|
+| ~~Q1~~ | ~~Revenue share~~ | ~~Hub de Especialistas~~ | ✅ Resolvida |
+| ~~Q2~~ | ~~Mensalidade especialista~~ | ~~Hub de Especialistas~~ | ✅ Resolvida |
+| ~~Q3~~ | ~~Quem define preço~~ | ~~Hub de Especialistas~~ | ✅ Resolvida |
+| ~~Q4~~ | ~~Credenciais obrigatórias~~ | ~~Hub de Especialistas~~ | ✅ Resolvida |
+| Q24 | SSO providers | Vendas Enterprise | ⬜ Pendente |
 
 ### 5.2 Questões Importantes (Afetam experiência)
 
-| # | Questão | Afeta |
-|---|---------|-------|
-| Q5 | Aprovação de curso | Qualidade do catálogo |
-| Q6 | Critérios remoção | Governança do Hub |
-| Q11 | Modelo de preços | Posicionamento |
-| Q16 | Validade certificado | Valor percebido |
-| Q26 | Slack/Teams | Engajamento |
+| # | Questão | Afeta | Status |
+|---|---------|-------|--------|
+| ~~Q5~~ | ~~Aprovação de curso~~ | ~~Qualidade do catálogo~~ | ✅ Resolvida |
+| ~~Q6~~ | ~~Critérios remoção~~ | ~~Governança do Hub~~ | ✅ Resolvida |
+| Q11 | Modelo de preços | Posicionamento | ⬜ Pendente |
+| Q16 | Validade certificado | Valor percebido | ⬜ Pendente |
+| Q26 | Slack/Teams | Engajamento | ⬜ Pendente |
 
 ### 5.3 Questões que Podem Esperar
 
@@ -562,6 +522,12 @@
 | 2026-02-05 | Q10 | Mentoria 1:1 como serviço adicional | Stakeholder |
 | 2026-02-05 | Q18 | Upload com visibilidade restrita | Stakeholder |
 | 2026-02-05 | Q20 | Pré-requisitos configuráveis | Stakeholder |
+| 2026-02-09 | Q1 | Revenue share fixo 70/30 | Product Owner |
+| 2026-02-09 | Q2 | Sem mensalidade para especialista | Product Owner |
+| 2026-02-09 | Q3 | Especialista define preço com faixa sugerida | Product Owner |
+| 2026-02-09 | Q4 | LinkedIn + 1 comprovação | Product Owner |
+| 2026-02-09 | Q5 | Checklist auto + revisão manual 48h | Product Owner |
+| 2026-02-09 | Q6 | Rating < 3.0/3 meses ou 3+ reclamações | Product Owner |
 
 ---
 
@@ -575,5 +541,5 @@
 
 **FIM DO DOCUMENTO**
 
-**Última atualização:** 2026-02-05
+**Última atualização:** 2026-02-09
 **Próxima revisão:** Quando novas questões surgirem ou decisões forem tomadas

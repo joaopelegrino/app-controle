@@ -1,15 +1,15 @@
 # QA E2E - Especificações de Teste via MCP
 
-**Versão:** 1.0.0
-**Data:** 2026-01-26
-**Branch:** `demo-nocodb-simple`
+**Versão:** 2.0.0
+**Data:** 2026-02-09
+**Branch:** `dev`
 **Ferramenta:** MCP Chrome DevTools
 
 ---
 
 ## Visão Geral
 
-Este documento especifica todos os cenários de teste E2E para validar as funcionalidades da plataforma UltraThink B2B, cobrindo todas as histórias de usuário (personas) através da interface web usando MCP Chrome DevTools.
+Este documento especifica todos os cenários de teste E2E para validar as funcionalidades da plataforma Sulical B2B, cobrindo todas as histórias de usuário (personas) através da interface web usando MCP Chrome DevTools.
 
 ### Personas vs Roles
 
@@ -19,6 +19,7 @@ Este documento especifica todos os cenários de teste E2E para validar as funcio
 | **Gestor de RH / Admin** | `admin` | /admin | admin@acmetech.com |
 | **Líder Técnico / Instrutor** | `instructor` | /instructor | prof@acmetech.com |
 | **Desenvolvedor / Aprendiz** | `student` | /dashboard | maria@acmetech.com |
+| **Especialista Hub** | `specialist` | /specialist | joao.silva.specialist@sulical.com |
 
 **Senha padrão:** `Demo@2026`
 
@@ -27,26 +28,30 @@ Este documento especifica todos os cenários de teste E2E para validar as funcio
 ## Matriz de Navegação por Role
 
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        MATRIZ DE ACESSO - ROTAS                          │
-├────────────────┬─────────┬────────────┬─────────┬─────────────┬─────────┤
-│ Rota           │ student │ instructor │ admin   │ c_level     │ Público │
-├────────────────┼─────────┼────────────┼─────────┼─────────────┼─────────┤
-│ /login         │    -    │     -      │    -    │      -      │   ✅    │
-│ /              │   ✅    │    ✅      │   ✅    │     ✅      │    -    │
-│ /curso/:id     │   ✅    │    ✅      │   ✅    │     ✅      │    -    │
-│ /dashboard     │   ✅    │    ✅      │   ✅    │     ✅      │    -    │
-│ /instructor    │    -    │    ✅      │   ✅    │     ✅      │    -    │
-│ /admin         │    -    │     -      │   ✅    │     ✅      │    -    │
-│ /admin/executive│   -    │     -      │    -    │     ✅      │    -    │
-└────────────────┴─────────┴────────────┴─────────┴─────────────┴─────────┘
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│                              MATRIZ DE ACESSO - ROTAS                                  │
+├────────────────────────┬─────────┬────────────┬─────────┬─────────┬────────────┬──────┤
+│ Rota                   │ student │ instructor │ admin   │ c_level │ specialist │ Pub  │
+├────────────────────────┼─────────┼────────────┼─────────┼─────────┼────────────┼──────┤
+│ /login                 │    -    │     -      │    -    │    -    │     -      │  ✅  │
+│ /                      │   ✅    │    ✅      │   ✅    │   ✅    │    ✅      │   -  │
+│ /curso/:id             │   ✅    │    ✅      │   ✅    │   ✅    │    ✅      │   -  │
+│ /dashboard             │   ✅    │    ✅      │   ✅    │   ✅    │    ✅      │   -  │
+│ /hub/catalog           │   ✅    │    ✅      │   ✅    │   ✅    │    ✅      │   -  │
+│ /specialist/:id        │   ✅    │    ✅      │   ✅    │   ✅    │    ✅      │   -  │
+│ /hub/course/:id/reviews│   ✅    │    ✅      │   ✅    │   ✅    │    ✅      │   -  │
+│ /instructor            │    -    │    ✅      │   ✅    │   ✅    │     -      │   -  │
+│ /specialist            │    -    │     -      │   ✅    │   ✅    │    ✅      │   -  │
+│ /admin                 │    -    │     -      │   ✅    │   ✅    │     -      │   -  │
+│ /admin/executive       │    -    │     -      │    -    │   ✅    │     -      │   -  │
+└────────────────────────┴─────────┴────────────┴─────────┴─────────┴────────────┴──────┘
 ```
 
 ---
 
 ## Matriz RBAC - Permissões por Funcionalidade
 
-### Permissões Implementadas (17/21)
+### Permissões Implementadas (28/32)
 
 | Permissão | student | instructor | admin | c_level | UI Componente |
 |-----------|---------|------------|-------|---------|---------------|
@@ -648,14 +653,17 @@ mcp__chrome-devtools__take_snapshot()
 6. EXECUTIVE
    └── TC-EXEC-001 → TC-EXEC-002
 
-7. MOBILE
+7. SPECIALIST (Hub de Especialistas)
+   └── TC-SPEC-001 → TC-SPEC-002 → TC-SPEC-003 → TC-SPEC-004 → TC-SPEC-005
+
+8. MOBILE
    └── TC-MOBILE-001 → TC-MOBILE-002
 
-8. UX POLISH
+9. UX POLISH
    └── TC-UX-001 → TC-UX-002 → TC-UX-003 → TC-UX-004
 
-9. MULTI-TENANT
-   └── TC-TENANT-001 → TC-TENANT-002
+10. MULTI-TENANT
+    └── TC-TENANT-001 → TC-TENANT-002
 ```
 
 ### Template de Resultado
@@ -702,7 +710,131 @@ mcp__chrome-devtools__resize_page({ width: 375, height: 667 })
 
 ---
 
-**Última atualização:** 2026-01-26
+## SEÇÃO 11: Testes do Hub de Especialistas (specialist)
+
+### TC-SPEC-001: Login Specialist e Redirect
+
+**Credencial:** joao.silva.specialist@sulical.com (specialist)
+**Prioridade:** Crítica
+
+```javascript
+// 1. Navegar para login
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/login" })
+
+// 2. Preencher credenciais
+mcp__chrome-devtools__fill({ uid: "<email_uid>", value: "joao.silva.specialist@sulical.com" })
+mcp__chrome-devtools__fill({ uid: "<senha_uid>", value: "Demo@2026" })
+
+// 3. Submeter
+mcp__chrome-devtools__click({ uid: "<btn_entrar_uid>" })
+
+// 4. Verificar redirect para /specialist
+mcp__chrome-devtools__wait_for({ text: "Painel do Especialista" })
+```
+
+**Critérios de Aceite:**
+- [ ] Login como specialist funciona
+- [ ] Redirect para /specialist
+- [ ] Header mostra nome "Joao Silva"
+
+### TC-SPEC-002: Specialist Dashboard Stats
+
+**Credencial:** joao.silva.specialist@sulical.com
+**Prioridade:** Alta
+
+```javascript
+// 1. Navegar para dashboard especialista
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/specialist" })
+
+// 2. Verificar stats cards
+mcp__chrome-devtools__take_snapshot()
+// - Receita: R$ 4.200,00
+// - Matriculas: 156
+// - Rating: 4.8
+// - Cursos: 1
+```
+
+**Critérios de Aceite:**
+- [ ] 4 cards de stats renderizam
+- [ ] Valores corretos: R$ 4.200, 156 matrículas, 4.8 rating, 1 curso
+- [ ] Tabela "Meus Cursos" com Bash
+- [ ] Seção "Avaliações Recentes" com 2 reviews
+
+### TC-SPEC-003: Hub Catalog View
+
+**Credencial:** qualquer role autenticado
+**Prioridade:** Alta
+
+```javascript
+// 1. Navegar para catálogo
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/hub/catalog" })
+
+// 2. Verificar curso do Bash com Joao Silva
+mcp__chrome-devtools__take_snapshot()
+// - Barra de busca
+// - Botão Filtros
+// - Card do curso Bash
+// - Nome do especialista "Joao Silva"
+// - Preço R$ 89,90/mês
+```
+
+**Critérios de Aceite:**
+- [ ] Página carrega sem erros
+- [ ] Barra de busca presente
+- [ ] Curso Bash aparece no grid
+- [ ] Preço e rating exibidos
+- [ ] Click no card navega para reviews
+
+### TC-SPEC-004: Course Reviews
+
+**Credencial:** qualquer role autenticado
+**Prioridade:** Média
+
+```javascript
+// 1. Navegar para reviews do curso
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/hub/course/<hub_course_id>/reviews" })
+
+// 2. Verificar reviews
+mcp__chrome-devtools__take_snapshot()
+// - Nota média
+// - Reviews individuais com estrelas
+// - Comentários
+```
+
+**Critérios de Aceite:**
+- [ ] Rating médio exibido (4.8)
+- [ ] Reviews individuais com estrelas
+- [ ] Comentários e datas visíveis
+
+### TC-SPEC-005: Specialist Profile
+
+**Credencial:** qualquer role autenticado
+**Prioridade:** Média
+
+```javascript
+// 1. Navegar para perfil do especialista
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/specialist/<specialist_id>" })
+
+// 2. Verificar perfil
+mcp__chrome-devtools__take_snapshot()
+// - Nome "Joao Silva"
+// - Bio
+// - Especialidades (bash, devops, linux, docker, kubernetes)
+// - Credenciais (AWS, CKA, LFCS)
+// - Badge "Verificado"
+// - Grid de cursos
+```
+
+**Critérios de Aceite:**
+- [ ] Perfil carrega com dados corretos
+- [ ] Tags de especialidades exibidas
+- [ ] Credenciais listadas
+- [ ] Badge verificado visível
+- [ ] Curso Bash aparece no grid
+
+---
+
+**Última atualização:** 2026-02-09
 **Autor:** Claude Code
-**Versão:** 1.0.0
-**Cobertura:** 37 User Stories (Sprints 6-11)
+**Versão:** 2.0.0
+**Cobertura:** 42 Test Cases (Sprints 6-15)
