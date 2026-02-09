@@ -205,14 +205,14 @@ source .env.nocodb
 
 # Iniciar containers
 echo "🐳 Iniciando PostgreSQL + NocoDB..."
-docker-compose -f docker-compose.nocodb.yml up -d
+docker compose -f docker-compose.nocodb.yml up -d
 
 echo "⏳ Aguardando serviços iniciarem (~30s)..."
 sleep 10
 
 # Verificar status
 echo "📊 Status dos containers:"
-docker-compose -f docker-compose.nocodb.yml ps
+docker compose -f docker-compose.nocodb.yml ps
 
 echo ""
 echo "✅ Setup completo!"
@@ -225,27 +225,27 @@ echo "🔐 Senha: UltraThink@Admin2026!"
 description = "Inicia containers NocoDB (PostgreSQL + NocoDB)"
 run = """
 source .env.nocodb 2>/dev/null || true
-docker-compose -f docker-compose.nocodb.yml up -d
+docker compose -f docker-compose.nocodb.yml up -d
 echo "✅ NocoDB iniciado: http://localhost:8081"
 """
 
 [tasks."nocodb:stop"]
 description = "Para containers NocoDB"
 run = """
-docker-compose -f docker-compose.nocodb.yml down
+docker compose -f docker-compose.nocodb.yml down
 echo "✅ NocoDB parado"
 """
 
 [tasks."nocodb:restart"]
 description = "Reinicia containers NocoDB"
 run = """
-docker-compose -f docker-compose.nocodb.yml restart
+docker compose -f docker-compose.nocodb.yml restart
 echo "✅ NocoDB reiniciado"
 """
 
 [tasks."nocodb:logs"]
 description = "Mostra logs do NocoDB em tempo real"
-run = "docker-compose -f docker-compose.nocodb.yml logs -f nocodb"
+run = "docker compose -f docker-compose.nocodb.yml logs -f nocodb"
 
 [tasks."nocodb:health"]
 description = "Verifica se NocoDB está rodando"
@@ -254,7 +254,7 @@ run = """
 echo "🔍 Verificando NocoDB..."
 
 # Verificar containers
-if docker-compose -f docker-compose.nocodb.yml ps | grep -q "Up"; then
+if docker compose -f docker-compose.nocodb.yml ps | grep -q "Up"; then
     echo "✅ Containers rodando"
     
     # Verificar PostgreSQL
@@ -294,8 +294,8 @@ read -p "⚠️  Isso vai DELETAR todos os dados. Continuar? (y/N) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "🗑️  Resetando banco..."
-    docker-compose -f docker-compose.nocodb.yml down -v
-    docker-compose -f docker-compose.nocodb.yml up -d
+    docker compose -f docker-compose.nocodb.yml down -v
+    docker compose -f docker-compose.nocodb.yml up -d
     echo "✅ Banco resetado (dados seed recarregados)"
 else
     echo "❌ Cancelado"

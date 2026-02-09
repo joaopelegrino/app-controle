@@ -74,7 +74,7 @@ services:
     depends_on:
       - postgres
     profiles:
-      - tools  # Iniciar apenas com: docker-compose --profile tools up
+      - tools  # Iniciar apenas com: docker compose --profile tools up
     restart: unless-stopped
 
 volumes:
