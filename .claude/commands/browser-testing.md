@@ -16,13 +16,13 @@ Comandos para testes E2E e automação QA usando servidores MCP de browser.
 - `mcp__chrome-devtools__list_network_requests` - Analisar tráfego de rede
 - `mcp__chrome-devtools__take_screenshot` - Tirar screenshot
 
-## Quick Start: Testando localhost:3000
+## Quick Start: Testando localhost:3001
 
 ### Teste Básico de Navegação
 
 ```javascript
 // Navegar para app
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
 
 // Tirar snapshot para verificar se página carregou
 mcp__chrome-devtools__take_snapshot()
@@ -35,7 +35,7 @@ mcp__chrome-devtools__take_screenshot({ format: "png" })
 
 ```javascript
 // 1. Navegar para app
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
 
 // 2. Tirar snapshot
 mcp__chrome-devtools__take_snapshot()
@@ -53,7 +53,7 @@ mcp__chrome-devtools__list_network_requests()
 
 ```javascript
 // Navegar para home
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
 
 // Verificar se hub carregou
 const snapshot1 = mcp__chrome-devtools__take_snapshot()
@@ -79,21 +79,21 @@ mcp__chrome-devtools__take_screenshot({ format: "png" })
 
 ```javascript
 // Navegar para curso
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000/curso/bash" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/courses" })
 
 // Completar módulo 1 (clicar botão completar)
 mcp__chrome-devtools__click({ uid: "[uid botão completar]" })
 
 // Verificar localStorage via evaluate_script
 mcp__chrome-devtools__evaluate_script({
-  function: "() => localStorage.getItem('ultrathink_progress_bash')"
+  function: "() => localStorage.getItem('plataformab2b_user')"
 })
 
 // Navegar para fora
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
 
 // Retornar ao curso
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000/curso/bash" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/courses" })
 
 // Verificar se progresso persistiu
 const snapshot = mcp__chrome-devtools__take_snapshot()
@@ -104,7 +104,7 @@ const snapshot = mcp__chrome-devtools__take_snapshot()
 
 ```javascript
 // Navegar para notas do curso
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000/curso/bash/caderno" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/courses/caderno" })
 
 // Preencher campo de notas
 mcp__chrome-devtools__fill({
@@ -118,8 +118,8 @@ mcp__chrome-devtools__evaluate_script({
 })
 
 // Navegar para fora e voltar
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000" })
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000/curso/bash/caderno" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/courses/caderno" })
 
 // Verificar se notas persistiram
 const snapshot = mcp__chrome-devtools__take_snapshot()
@@ -129,14 +129,14 @@ const snapshot = mcp__chrome-devtools__take_snapshot()
 
 ```javascript
 // Completar progresso em múltiplos cursos
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000/curso/bash" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/courses" })
 mcp__chrome-devtools__click({ uid: "[uid botão completar]" })
 
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000/curso/rust" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/curso/rust" })
 mcp__chrome-devtools__click({ uid: "[uid botão completar]" })
 
 // Navegar para dashboard
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000/dashboard" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/dashboard" })
 
 // Verificar se cards de progresso aparecem
 const snapshot = mcp__chrome-devtools__take_snapshot()
@@ -152,7 +152,7 @@ mcp__chrome-devtools__take_screenshot({ format: "png" })
 
 ```javascript
 // Navegar para página
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
 
 // Iniciar trace de performance
 mcp__chrome-devtools__performance_start_trace({ reload: true, autoStop: true })
@@ -170,7 +170,7 @@ mcp__chrome-devtools__performance_analyze_insight({
 
 ```javascript
 // Navegar para página
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
 
 // Pegar árvore de acessibilidade (via snapshot verbose)
 const snapshot = mcp__chrome-devtools__take_snapshot({ verbose: true })
@@ -187,13 +187,18 @@ const snapshot = mcp__chrome-devtools__take_snapshot({ verbose: true })
 Rodar antes de cada release:
 
 ### Fluxos Críticos de Usuário
-- [ ] Hub carrega e exibe todos cursos ativos
-- [ ] Navegação de curso funciona (todos 5 cursos)
-- [ ] Progresso salva no localStorage
-- [ ] Progresso carrega do localStorage
-- [ ] Notas salvam e persistem
-- [ ] Dashboard mostra progresso correto
-- [ ] Admin dashboard carrega (se autenticado)
+- [ ] Login funciona para 5 roles (admin, instructor, student, c_level, specialist)
+- [ ] Dashboard Student carrega com progresso
+- [ ] Dashboard Admin carrega com metricas
+- [ ] Dashboard Instructor carrega
+- [ ] Dashboard C-Level carrega
+- [ ] Dashboard Especialista carrega com metricas e cursos
+- [ ] Catalogo Hub carrega com cursos e filtros
+- [ ] Perfil Especialista carrega com dados completos
+- [ ] Reviews de curso carregam com distribuicao
+- [ ] RBAC: Instructor NAO ve "Administracao" no dropdown
+- [ ] RBAC: Specialist ve "Painel Especialista" no dropdown
+- [ ] Quick-login buttons (5 botoes) funcionam
 
 ### Testes de Viewport
 - [ ] Mobile (375x667)
@@ -218,19 +223,19 @@ Verificação básica de saúde:
 
 ```javascript
 // 1. Carregar home
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
 const home = mcp__chrome-devtools__take_snapshot()
 
 // 2. Carregar cada curso
 const courses = ['bash', 'c', 'rust', 'vscode', 'claude-code']
 for (const course of courses) {
-  mcp__chrome-devtools__navigate_page({ url: `http://localhost:3000/curso/${course}` })
+  mcp__chrome-devtools__navigate_page({ url: `http://localhost:3001/curso/${course}` })
   mcp__chrome-devtools__take_snapshot()
   // Verificar sem erros
 }
 
 // 3. Carregar dashboards
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3000/dashboard" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/dashboard" })
 const dashboard = mcp__chrome-devtools__take_snapshot()
 
 // 4. Verificar console
@@ -255,6 +260,59 @@ mcp__chrome-devtools__wait_for({ text: "Cursos Disponíveis" })
 
 // Então tirar snapshot
 const snapshot = mcp__chrome-devtools__take_snapshot()
+```
+
+## Cenários Hub de Especialistas (Sprint 15)
+
+### Cenário 5: Login e Dashboard Especialista
+
+```javascript
+// Navegar para login
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
+
+// Preencher credenciais do especialista
+mcp__chrome-devtools__fill({ uid: "[uid email]", value: "joao.silva.specialist@plataformab2b.com" })
+mcp__chrome-devtools__fill({ uid: "[uid password]", value: "Demo@2026" })
+mcp__chrome-devtools__click({ uid: "[uid botao login]" })
+
+// Verificar redirect para /specialist
+mcp__chrome-devtools__take_snapshot()
+// Deve mostrar: Dashboard Especialista, metricas, cursos
+```
+
+### Cenário 6: Catálogo de Cursos Hub
+
+```javascript
+// Navegar para catalogo (qualquer usuario logado)
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/hub/catalog" })
+mcp__chrome-devtools__take_snapshot()
+// Verificar: cards de cursos, filtros (busca, rating, preco)
+
+// Testar filtro de busca
+mcp__chrome-devtools__fill({ uid: "[uid search]", value: "Bash" })
+// Verificar resultados filtrados
+```
+
+### Cenário 7: Perfil do Especialista
+
+```javascript
+// Navegar para perfil do especialista
+mcp__chrome-devtools__navigate_page({
+  url: "http://localhost:3001/hub/specialist/750e8400-e29b-41d4-a716-446655440001"
+})
+mcp__chrome-devtools__take_snapshot()
+// Verificar: nome, bio, especialidades, cursos publicados
+```
+
+### Cenário 8: Reviews de Curso
+
+```javascript
+// Navegar para reviews
+mcp__chrome-devtools__navigate_page({
+  url: "http://localhost:3001/hub/course/850e8400-e29b-41d4-a716-446655440001/reviews"
+})
+mcp__chrome-devtools__take_snapshot()
+// Verificar: resumo rating, distribuicao estrelas, lista reviews
 ```
 
 ## Boas Práticas

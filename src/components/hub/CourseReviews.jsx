@@ -37,7 +37,7 @@ export function CourseReviews() {
       setReviews(reviewsData || []);
     } catch (err) {
       console.error('[CourseReviews] Erro:', err);
-      setError('Erro ao carregar avaliacoes');
+      setError(t('hub.specialists.errors.loadReviews', 'Erro ao carregar avaliações'));
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +99,7 @@ export function CourseReviews() {
               onClick={() => navigate(-1)}
               className="mt-4 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600"
             >
-              Voltar
+              {t('hub.specialists.actions.back', 'Voltar')}
             </button>
           </div>
         </div>
@@ -124,7 +124,7 @@ export function CourseReviews() {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {t('hub.specialists.reviews')}
+              {t('hub.specialists.reviewsLabel')}
             </h1>
             {course && (
               <p className="text-sm text-gray-500">
@@ -146,7 +146,7 @@ export function CourseReviews() {
                 {renderStars(avgRating, 'w-6 h-6')}
               </div>
               <p className="text-sm text-gray-500 mt-1">
-                {reviews.length} {t('hub.specialists.reviews')}
+                {reviews.length} {t('hub.specialists.reviewsLabel')}
               </p>
             </div>
 
@@ -177,8 +177,8 @@ export function CourseReviews() {
         {reviews.length === 0 ? (
           <div className="text-center py-12 text-gray-400">
             <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
-            <p className="text-lg font-medium">Nenhuma avaliacao ainda</p>
-            <p className="text-sm mt-1">Seja o primeiro a avaliar este curso!</p>
+            <p className="text-lg font-medium">{t('hub.specialists.reviews.noReviews', 'Nenhuma avaliação ainda')}</p>
+            <p className="text-sm mt-1">{t('hub.specialists.reviews.firstReview', 'Seja o primeiro a avaliar este curso!')}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -191,7 +191,7 @@ export function CourseReviews() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-800">
-                        Empresa
+                        {t('hub.specialists.reviews.companyLabel', 'Empresa')}
                       </p>
                       <div className="flex items-center gap-1 mt-0.5">
                         {renderStars(review.rating, 'w-4 h-4')}
@@ -209,7 +209,7 @@ export function CourseReviews() {
                 {review.specialist_reply && (
                   <div className="mt-3 pl-4 border-l-2 border-indigo-200 bg-indigo-50 rounded-r-lg p-3">
                     <p className="text-xs text-indigo-600 font-medium mb-1">
-                      Resposta do especialista
+                      {t('hub.specialists.reviews.specialistReply', 'Resposta do especialista')}
                     </p>
                     <p className="text-sm text-gray-700">{review.specialist_reply}</p>
                     {review.replied_at && (

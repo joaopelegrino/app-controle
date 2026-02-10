@@ -1,6 +1,6 @@
 # Configuração Claude Code - app-controle
 
-Este diretório contém a configuração do Claude Code para o projeto app-controle (UltraThink).
+Este diretório contém a configuração do Claude Code para o projeto app-controle (Plataforma B2B TrainB2B).
 
 ## Estrutura
 
@@ -21,7 +21,7 @@ Este diretório contém a configuração do Claude Code para o projeto app-contr
 │   ├── full-coverage.md      # Relatório de cobertura
 │   ├── pr-ready.md           # Checklist pré-PR
 │   └── browser-testing.md    # Testes E2E com MCP
-├── skills/                   # Skills (vazio - para expansão futura)
+├── skills/                   # Skills customizados (transcrever-video-para-curso, etc.)
 └── docs-meta/               # Meta-documentação
     └── claude-md-modules/   # Módulos do CLAUDE.md
 ```
@@ -117,5 +117,6 @@ Ambos podem coexistir e servem ferramentas diferentes.
 ---
 
 **Migrado de:** `.factory/` (Factory Droid)
-**Data:** 2026-01-22
-**Versão:** 1.0.0
+**Data:** 2026-01-22 | **Atualizado:** 2026-02-10
+**Versão:** 2.0.0 (Sprint 15 - Hub de Especialistas)
+**Roles:** 5 (c_level, admin, instructor, student, specialist)

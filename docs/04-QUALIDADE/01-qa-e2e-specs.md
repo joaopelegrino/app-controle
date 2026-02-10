@@ -1,7 +1,7 @@
 # QA E2E - Especificações de Teste via MCP
 
-**Versão:** 2.0.0
-**Data:** 2026-02-09
+**Versão:** 2.1.0
+**Data:** 2026-02-10
 **Branch:** `dev`
 **Ferramenta:** MCP Chrome DevTools
 
@@ -728,14 +728,19 @@ mcp__chrome-devtools__fill({ uid: "<senha_uid>", value: "Demo@2026" })
 // 3. Submeter
 mcp__chrome-devtools__click({ uid: "<btn_entrar_uid>" })
 
-// 4. Verificar redirect para /specialist
-mcp__chrome-devtools__wait_for({ text: "Painel do Especialista" })
+// 4. Verificar redirect para / (Hub) - specialist não redireciona automaticamente para /specialist
+mcp__chrome-devtools__wait_for({ text: "Hub de Aprendizado" })
+
+// 5. Verificar dropdown tem "Painel Especialista"
+mcp__chrome-devtools__click({ uid: "<user_menu_uid>" })
+mcp__chrome-devtools__wait_for({ text: "Painel Especialista" })
 ```
 
 **Critérios de Aceite:**
 - [ ] Login como specialist funciona
-- [ ] Redirect para /specialist
-- [ ] Header mostra nome "Joao Silva"
+- [ ] Redirect para / (Hub de Aprendizado)
+- [ ] Header mostra nome "Joao Silva" e role "Especialista"
+- [ ] Dropdown inclui "Painel Especialista" e "Catálogo"
 
 ### TC-SPEC-002: Specialist Dashboard Stats
 
@@ -792,7 +797,7 @@ mcp__chrome-devtools__take_snapshot()
 
 ```javascript
 // 1. Navegar para reviews do curso
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/hub/course/<hub_course_id>/reviews" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/hub/course/850e8400-e29b-41d4-a716-446655440001/reviews" })
 
 // 2. Verificar reviews
 mcp__chrome-devtools__take_snapshot()
@@ -813,7 +818,7 @@ mcp__chrome-devtools__take_snapshot()
 
 ```javascript
 // 1. Navegar para perfil do especialista
-mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/specialist/<specialist_id>" })
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/specialist/750e8400-e29b-41d4-a716-446655440001" })
 
 // 2. Verificar perfil
 mcp__chrome-devtools__take_snapshot()
@@ -834,7 +839,152 @@ mcp__chrome-devtools__take_snapshot()
 
 ---
 
-**Última atualização:** 2026-02-09
+## SEÇÃO 12: Testes RBAC (Enforcement)
+
+### TC-RBAC-001: Instructor sem Acesso Admin no Dropdown
+
+**Credencial:** prof@acmetech.com (instructor)
+**Prioridade:** Alta
+
+```javascript
+// 1. Login como instrutor
+// 2. Abrir dropdown do usuario
+mcp__chrome-devtools__click({ uid: "<user_menu_uid>" })
+
+// 3. Verificar que NÃO existe "Administração" no dropdown
+mcp__chrome-devtools__take_snapshot()
+// Deve ter apenas: "Catálogo" e "Sair"
+```
+
+**Critérios de Aceite:**
+- [ ] Instructor NÃO vê "Administração" no dropdown
+- [ ] Instructor vê "Catálogo" no dropdown
+- [ ] Specialist NÃO vê "Administração" no dropdown
+- [ ] Specialist vê "Painel Especialista" no dropdown
+
+---
+
+## SEÇÃO 13: Testes i18n
+
+### TC-I18N-001: Switching pt-BR -> en-US
+
+**Prioridade:** Alta
+
+```javascript
+// 1. No Hub, clicar no botão 🇺🇸
+mcp__chrome-devtools__click({ uid: "<en_us_btn_uid>" })
+
+// 2. Verificar tradução
+mcp__chrome-devtools__wait_for({ text: "Learning Hub" })
+// - "Study Areas" (não "Áreas de Estudo")
+// - "Specialists Hub" (não "Hub de Especialistas")
+// - "Explore Catalog" (não "Explorar Catálogo")
+```
+
+### TC-I18N-002: Switching pt-BR -> es-ES
+
+```javascript
+// 1. Clicar no botão 🇪🇸
+mcp__chrome-devtools__click({ uid: "<es_es_btn_uid>" })
+
+// 2. Verificar tradução
+mcp__chrome-devtools__wait_for({ text: "Hub de Aprendizaje" })
+// - "Áreas de Estudio" (não "Áreas de Estudo")
+// - "Hub de Especialistas"
+// - "Explorar Catálogo"
+```
+
+### TC-I18N-003: Hub Catalog i18n (Error States)
+
+```javascript
+// Verificar que error states no Catalog, Reviews, SpecialistDashboard, SpecialistProfile
+// usam chaves i18n (não strings hardcoded em português)
+// Em en-US:
+// - "Error loading catalog" (não "Erro ao carregar catálogo")
+// - "Try again" (não "Tentar novamente")
+// - "Clear filters" (não "Limpar filtros")
+```
+
+---
+
+## SEÇÃO 14: Testes de Catálogo (Filtros e Busca)
+
+### TC-CAT-001: Catálogo Carrega com Dados Reais
+
+```javascript
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/hub/catalog" })
+mcp__chrome-devtools__wait_for({ text: "Hub de Especialistas" })
+mcp__chrome-devtools__take_snapshot()
+// Verificar: 1 curso, Bash Shell Scripting, R$ 89.90, Joao Silva, 4.8 (2 avaliações)
+```
+
+### TC-CAT-002: Filtro de Preço
+
+```javascript
+// 1. Abrir filtros
+mcp__chrome-devtools__click({ uid: "<filtros_btn_uid>" })
+
+// 2. Selecionar "Até R$ 50"
+mcp__chrome-devtools__fill({ uid: "<preco_select_uid>", value: "Até R$ 50" })
+
+// 3. Verificar EmptyState (curso custa R$ 89.90)
+mcp__chrome-devtools__wait_for({ text: "Nenhum curso encontrado" })
+```
+
+### TC-CAT-003: Busca por Texto
+
+```javascript
+// 1. Digitar "bash" na barra de busca
+mcp__chrome-devtools__fill({ uid: "<search_uid>", value: "bash" })
+
+// 2. Verificar que Bash Shell Scripting aparece
+mcp__chrome-devtools__wait_for({ text: "Bash Shell Scripting" })
+```
+
+---
+
+## Dados de Referência (pós migration-003)
+
+### IDs Reais NocoDB
+
+| Tabela | Table ID | UUID Seed |
+|--------|----------|-----------|
+| specialists | maafexd09rbow6a | 750e8400-e29b-41d4-a716-446655440001 |
+| hub_courses | miv7wu0lpxd3c3x | 850e8400-e29b-41d4-a716-446655440001 |
+| course_reviews | mcj2pusop7whl2g | - |
+| v_specialist_dashboard | mxh9z6xqwwyrj4b | - |
+| v_hub_catalog | mr6fqkyceugenxv | - |
+
+### Dados Seed do Especialista
+
+| Campo | Valor |
+|-------|-------|
+| Nome | Joao Silva |
+| Email | joao.silva.specialist@plataformab2b.com |
+| Curso | Bash Shell Scripting |
+| Preço | R$ 89,90/mês |
+| Rating | 4.8 (2 reviews) |
+| Alunos | 156 |
+| Receita | R$ 4.200,00 |
+| Especialidades | bash, devops, linux, docker, kubernetes |
+| Credenciais | AWS SA (2020), CKA (2021), LFCS (2019) |
+
+### Bugs Conhecidos e Corrigidos (Sprint 15)
+
+| Bug | Descrição | Correção |
+|-----|-----------|----------|
+| BUG-001 | Instructor via "Administração" no dropdown | `hasPermission('admin.access')` em UserHeader |
+| BUG-002 | Email specialist `@sulical.com` vs `@plataformab2b.com` | Padronizado via migration-003 |
+| BUG-003 | Quick-login sem botão Specialist | Adicionado 5o botão em LoginView |
+| BUG-004 | SkeletonTableRow `<div>` dentro de `<tbody>` | `animate-pulse` direto no `<tr>` |
+| BUG-005 | Strings hardcoded nos error states Hub | Chaves i18n em 4 componentes |
+| BUG-006 | `specialistData.id` undefined (view usa `specialist_id`) | Corrigido em SpecialistDashboard |
+| BUG-007 | i18n key collision `hub.specialists.reviews` | Renomeado para `reviewsLabel` |
+| BUG-008 | `getSpecialist` consultava tabela sem `specialist_name` | Usa `v_specialist_dashboard` view |
+
+---
+
+**Última atualização:** 2026-02-10
 **Autor:** Claude Code
-**Versão:** 2.0.0
-**Cobertura:** 42 Test Cases (Sprints 6-15)
+**Versão:** 2.1.0
+**Cobertura:** 62 Test Cases (Sprints 6-15)

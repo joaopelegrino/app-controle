@@ -31,7 +31,7 @@ export function SpecialistProfile() {
     try {
       const specialistData = await apiService.getSpecialist(specialistId);
       if (!specialistData) {
-        setError('Especialista nao encontrado');
+        setError(t('hub.specialists.errors.specialistNotFound', 'Especialista não encontrado'));
         return;
       }
       setSpecialist(specialistData);
@@ -40,7 +40,7 @@ export function SpecialistProfile() {
       setCourses((coursesData || []).filter(c => c.status === 'published'));
     } catch (err) {
       console.error('[SpecialistProfile] Erro:', err);
-      setError('Erro ao carregar perfil');
+      setError(t('hub.specialists.errors.loadProfile', 'Erro ao carregar perfil'));
     } finally {
       setIsLoading(false);
     }
@@ -80,12 +80,12 @@ export function SpecialistProfile() {
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <p className="text-gray-800 font-medium">{error || 'Especialista nao encontrado'}</p>
+          <p className="text-gray-800 font-medium">{error || t('hub.specialists.errors.specialistNotFound', 'Especialista não encontrado')}</p>
           <button
             onClick={() => navigate(-1)}
             className="mt-4 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600"
           >
-            Voltar
+            {t('hub.specialists.actions.back', 'Voltar')}
           </button>
         </div>
       </div>
@@ -120,7 +120,7 @@ export function SpecialistProfile() {
             className="mb-4 flex items-center text-white/80 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
-            Voltar
+            {t('hub.specialists.actions.back', 'Voltar')}
           </button>
 
           <div className="flex items-start gap-6">
@@ -232,7 +232,7 @@ export function SpecialistProfile() {
           {courses.length === 0 ? (
             <div className="text-center py-8 text-gray-400">
               <BookOpen className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">Nenhum curso publicado</p>
+              <p className="text-sm">{t('hub.specialists.profile.noCourses', 'Nenhum curso publicado')}</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-4">

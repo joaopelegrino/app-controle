@@ -182,6 +182,13 @@ export function LoginView() {
             >
               {t('auth:roles.student')}
             </button>
+            <button
+              type="button"
+              onClick={() => { setEmail('joao.silva.specialist@plataformab2b.com'); setPassword('Demo@2026'); }}
+              className="px-3 py-2 bg-indigo-700 hover:bg-indigo-600 rounded text-gray-300 transition-colors col-span-2"
+            >
+              {t('auth:roles.specialist')}
+            </button>
           </div>
         </div>
 

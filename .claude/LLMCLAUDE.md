@@ -2,11 +2,12 @@
 Tipo: Contexto de Projeto
 Nome: app-controle
 Descricao: Plataforma B2B de treinamento tecnico corporativo
-Versao: v11.2.0
-Data: 2026-02-02
+Versao: v12.0.0
+Data: 2026-02-10
 Stack: React + Vite + Bun + NocoDB + PostgreSQL
 Healthcare: false
 Changelog: |
+  v12.0.0 - Sprint 15 Hub de Especialistas completo (5 roles, 32 permissions, 5 componentes Hub, QA E2E 62/62 PASS)
   v11.2.0 - Credenciais NocoDB Admin documentadas + Troubleshooting Guide + TABLE_IDs atualizados
   v11.1.0 - Command ativar-ambiente-dev + .mcp.json (Chrome DevTools MCP)
   v11.0.0 - Documentacao conceitual completa (Missao, Personas, Arquitetura, ADRs)
@@ -19,10 +20,10 @@ Diretrizes: contextos/globais/SISTEMA_PROGRAMACAO/metodo-agent/ambiente-centrali
 
 # app-controle (TrainB2B) - Plataforma B2B de Treinamento Corporativo
 
-> **Version:** 11.2.0 | **Date:** 2026-02-02 | **Status:** Production + i18n + White-Label + CRUD Cursos + Deploy + MCP
+> **Version:** 12.0.0 | **Date:** 2026-02-10 | **Status:** Production + i18n + White-Label + CRUD Cursos + Hub Especialistas + Deploy + MCP
 > **Project Type:** Plataforma B2B de treinamento tecnico corporativo
-> **Sprint Atual:** 14 - CRUD de Cursos COMPLETO (1 US)
-> **Sprints Completos:** 6, 7, 8, 9, 10, 11, 12, 13, 14
+> **Sprint Atual:** 15 - Hub de Especialistas COMPLETO (8 US)
+> **Sprints Completos:** 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 
 ---
 
@@ -81,11 +82,14 @@ Ser a plataforma de referencia para treinamento tecnico B2B no Brasil, oferecend
 ```
 COMPANY (Empresa cliente - tenant)
   └─ USER (Usuario)
-      ├─ role: c_level | admin | instructor | student
-      └─ ENROLLMENT (Matricula em curso)
-          └─ PROGRESS (Progresso por modulo)
-              └─ MODULE (Modulo do curso)
-                  └─ COURSE (Curso)
+      ├─ role: c_level | admin | instructor | student | specialist
+      ├─ ENROLLMENT (Matricula em curso)
+      │   └─ PROGRESS (Progresso por modulo)
+      │       └─ MODULE (Modulo do curso)
+      │           └─ COURSE (Curso)
+      └─ SPECIALIST (Hub de Especialistas - marketplace)
+          └─ HUB_COURSE (Curso do especialista)
+              └─ COURSE_REVIEW (Avaliacao do curso)
 ```
 
 ### Cardinalidade
@@ -106,7 +110,7 @@ COMPANY (Empresa cliente - tenant)
 
 ---
 
-## Personas (4 Perfis Principais)
+## Personas (5 Perfis Principais)
 
 ### 1. Admin (Gestor da Empresa)
 
@@ -144,14 +148,24 @@ COMPANY (Empresa cliente - tenant)
 - **Jornada:** Login → Dashboard executivo → Ver KPIs → Exportar relatorio
 - **Escopo MVP:** Dashboard com metricas agregadas
 
+### 5. Specialist (Especialista do Hub)
+
+- **Perfil:** Especialista tecnico externo, 30-50 anos, cria cursos no marketplace
+- **Dor:** Dificuldade de encontrar plataforma para publicar cursos B2B
+- **Job-to-be-Done:** Publicar cursos, gerenciar alunos, responder avaliacoes, acompanhar metricas
+- **Features:** Dashboard especialista, gestao de cursos Hub, responder reviews, metricas de receita
+- **Jornada:** Login → Dashboard → Ver metricas → Gerenciar cursos → Responder reviews
+- **Escopo MVP:** Dashboard com metricas + gestao de cursos publicados
+
 ### Matriz de Capabilities por Persona
 
-| Persona | CRUD Cursos | CRUD Usuarios | Ver Progresso | Dashboard Exec | Certificados |
-|---------|-------------|---------------|---------------|----------------|--------------|
-| **Admin** | Nao | Sim | Sim (todos) | Nao | Gerar |
-| **Instructor** | Sim | Nao | Sim (cursos) | Nao | Nao |
-| **Student** | Nao | Nao | Sim (proprio) | Nao | Receber |
-| **C-Level** | Nao | Nao | Sim (agregado) | Sim | Nao |
+| Persona | CRUD Cursos | CRUD Usuarios | Ver Progresso | Dashboard Exec | Hub Cursos | Certificados |
+|---------|-------------|---------------|---------------|----------------|------------|--------------|
+| **Admin** | Nao | Sim | Sim (todos) | Nao | Nao | Gerar |
+| **Instructor** | Sim | Nao | Sim (cursos) | Nao | Nao | Nao |
+| **Student** | Nao | Nao | Sim (proprio) | Nao | Catalogo | Receber |
+| **C-Level** | Nao | Nao | Sim (agregado) | Sim | Nao | Nao |
+| **Specialist** | Nao | Nao | Sim (hub) | Nao | Sim (CRUD) | Nao |
 
 ---
 
@@ -162,9 +176,10 @@ COMPANY (Empresa cliente - tenant)
 ```
 Sprint 6-13:  [====================] 100%  Base + Auth + RBAC + i18n + White-Label
 Sprint 14:    [====================] 100%  CRUD Cursos COMPLETO
-Sprint 15:    [--------------------]   0%  Proxima: Certificados Automaticos
+Sprint 15:    [====================] 100%  Hub de Especialistas COMPLETO
+Sprint 16:    [--------------------]   0%  Proxima: Certificados Automaticos
 
-TOTAL MVP:    [=================---]  85%
+TOTAL MVP:    [===================-]  95%
 ```
 
 ### Funcionalidades por Status
@@ -172,19 +187,44 @@ TOTAL MVP:    [=================---]  85%
 | Funcionalidade | Sprint | Status |
 |----------------|--------|--------|
 | Auth + Login | 6-7 | ✅ Completo |
-| RBAC (4 roles) | 8 | ✅ 82% (18/22) |
+| RBAC (5 roles) | 8, 15 | ✅ 100% (32 permissions) |
 | Dashboard Student | 9 | ✅ Completo |
 | Dashboard Admin | 10 | ✅ Completo |
-| i18n (3 idiomas) | 11 | ✅ Completo |
+| i18n (3 idiomas) | 11, 15 | ✅ Completo |
 | White-Label | 12-13 | ✅ Completo |
 | CRUD Cursos | 14 | ✅ Completo |
-| Certificados | 15 | Planejado |
-| Gamificacao | 16 | Backlog |
-| Integracao LMS | 17 | Backlog |
+| Hub de Especialistas | 15 | ✅ Completo (8 US) |
+| Certificados | 16 | Planejado |
+| Gamificacao | 17 | Backlog |
+| Integracao LMS | 18 | Backlog |
+
+### Sprint 15 - Hub de Especialistas (8 User Stories)
+
+| US | Descricao | Status |
+|----|-----------|--------|
+| US-147 | Roadmap v10.0.0 | ✅ |
+| US-148 | DB migration-003 + seed | ✅ |
+| US-149 | RBAC 5 roles, 32 permissions | ✅ |
+| US-150 | CourseReviews component | ✅ |
+| US-151 | CourseCard + CourseCatalog | ✅ |
+| US-152 | SpecialistDashboard | ✅ |
+| US-153 | SpecialistProfile | ✅ |
+| US-154 | Integration (routes, API, i18n) | ✅ |
+
+### QA E2E Sprint 15
+
+| Metrica | Valor |
+|---------|-------|
+| Total TCs | 62 |
+| PASS | 60 |
+| PARTIAL | 2 |
+| FAIL | 0 |
+| SKIP | 0 |
+| Bugs encontrados | 8 (todos corrigidos) |
 
 ### Proximas Prioridades
 
-1. **P0:** Certificados automaticos (Sprint 15)
+1. **P0:** Certificados automaticos (Sprint 16)
 2. **P1:** Deploy producao Fly.io
 3. **P2:** Gamificacao (badges, pontos)
 4. **P3:** Integracao com LMS externos
@@ -429,6 +469,9 @@ DEVCORP CONSULTING:
   admin@devcorp.com      (admin)     -> /admin
   prof@devcorp.com       (instructor)-> /instructor
   julia@devcorp.com      (student)   -> /dashboard
+
+HUB DE ESPECIALISTAS:
+  joao.silva.specialist@plataformab2b.com (specialist) -> /specialist
 ```
 
 ---
@@ -443,7 +486,7 @@ DEVCORP CONSULTING:
 | Email | admin@trainb2b.local |
 | Senha | Admin@TrainB2B2026! |
 
-### IDs de Referência (atualizados 2026-02-02)
+### IDs de Referência (atualizados 2026-02-10)
 
 ```javascript
 // apiService.js
@@ -455,6 +498,13 @@ users: 'm9tvgm5rx70qh3i'
 companies: 'mvw5muqhbzrmkuv'
 courses: 'mfrp5ndkje59e7r'
 modules: 'mu3cf9gd3ujxrg2'
+
+// Hub de Especialistas (Sprint 15)
+specialists: 'mbn9lnlx37mfphz'
+hub_courses: 'mllolxpxcihz57r'
+course_reviews: 'mscbqt1jldsnswx'
+v_specialist_dashboard: 'myo14y9v1ogx76a'
+v_hub_catalog: 'mj1emzixf2bqwlh'
 ```
 
 ### Troubleshooting
@@ -492,12 +542,13 @@ Se o login retornar HTTP 400 ou usuários não forem encontrados:
 
 | Metrica | Alvo | Atual |
 |---------|------|-------|
-| Empresas demo | 2 | 2 ✅ |
-| Usuarios demo | 8 | 8 ✅ |
+| Empresas demo | 3 | 3 ✅ |
+| Usuarios demo | 9 | 9 ✅ |
 | Cursos | 10 | WIP |
-| RBAC coverage | 100% | 82% |
+| RBAC coverage | 100% | 100% ✅ (32 perms) |
 | i18n idiomas | 3 | 3 ✅ |
-| Sprints completos | 15 | 14 |
+| Sprints completos | 16 | 15 |
+| QA E2E TCs | 62 | 60 PASS + 2 PARTIAL |
 
 ### Metricas Tecnicas
 
@@ -605,25 +656,26 @@ Tasks mise automatizam operacoes comuns.
 
 ---
 
-### ADR-004: RBAC com 4 Roles
+### ADR-004: RBAC com 5 Roles
 
-**Data:** 2026-01-22
-**Decisao:** Implementar RBAC com 4 roles fixos
-**Status:** Aceito
+**Data:** 2026-01-22 (atualizado 2026-02-10 - Sprint 15)
+**Decisao:** Implementar RBAC com 5 roles fixos + 32 permissoes granulares
+**Status:** Aceito (expandido)
 
 **Contexto:**
-Multi-tenant precisa de controle de acesso.
+Multi-tenant precisa de controle de acesso. Sprint 15 adicionou role `specialist` para Hub.
 
 **Roles:**
 1. `c_level` - Dashboard executivo
 2. `admin` - Gestao de usuarios
 3. `instructor` - Criacao de cursos
 4. `student` - Consumo de cursos
+5. `specialist` - Hub de Especialistas (marketplace de cursos)
 
-**Razoes:**
-- Cobertura de todas personas
-- Simplicidade de implementacao
-- Extensivel no futuro
+**Implementacao:**
+- 32 permissoes em `src/config/permissions.js`
+- Hook `usePermissions()` em `src/hooks/usePermissions.js`
+- Componente `<RoleBasedAccess>` em `src/components/RoleBasedAccess.jsx`
 
 **Trade-offs:**
 - Nao permite roles customizados
@@ -653,7 +705,7 @@ Matriz de permissoes em `src/config/` permite ajustes.
 | Documento | Path |
 |-----------|------|
 | Gaps | `docs/backlog/GAPS-DEMO-B2B.md` v5.0.0 |
-| Roadmap | `docs/backlog/ROADMAP.md` v6.0.0 |
+| Roadmap | `docs/backlog/ROADMAP.md` v10.0.0 |
 | Deploy Fly.io | `docs/deploy/FLYIO-BILLING-ACOES-USUARIO.md` v1.1 |
 | Acoes Usuario | `docs/backlog/acoes-usuario/ACOES-PENDENTES.md` |
 | Diretrizes Ambiente | `estrutura-padrao/.../ambiente-centralizado/` |
@@ -666,9 +718,9 @@ Matriz de permissoes em `src/config/` permite ajustes.
 
 ---
 
-*app-controle v11.1.0 | 2026-02-01 | Command ativar-ambiente-dev + MCP*
+*app-controle v12.0.0 | 2026-02-10 | Sprint 15 Hub de Especialistas completo*
 *Stack: React + Vite + Bun + NocoDB + PostgreSQL*
-*RBAC: 82% (18/22 permissoes) | i18n: pt-BR, en-US, es-ES*
+*RBAC: 100% (32 permissoes, 5 roles) | i18n: pt-BR, en-US, es-ES*
 *Tasks mise: 38 (dev, deploy:*, security:*, nocodb:*)*
-*Personas: 4 (Admin, Instructor, Student, C-Level)*
-*MCP: Chrome DevTools (porta 9222) | Command: ativar-ambiente-dev v1*
+*Personas: 5 (Admin, Instructor, Student, C-Level, Specialist)*
+*MCP: Chrome DevTools (porta 9222) | QA E2E: 62 TCs (60 PASS + 2 PARTIAL)*

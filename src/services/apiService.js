@@ -51,11 +51,11 @@ const TABLE_IDS = {
   v_user_dashboard: 'mduzpssgu2bckae',
   v_course_stats: 'mkbi3w6kk7j73mb',
   // Hub de Especialistas (US-154)
-  specialists: 'pending_nocodb_sync_specialists',
-  hub_courses: 'pending_nocodb_sync_hub_courses',
-  course_reviews: 'pending_nocodb_sync_course_reviews',
-  v_specialist_dashboard: 'pending_nocodb_sync_v_specialist_dashboard',
-  v_hub_catalog: 'pending_nocodb_sync_v_hub_catalog',
+  specialists: 'maafexd09rbow6a',
+  hub_courses: 'miv7wu0lpxd3c3x',
+  course_reviews: 'mcj2pusop7whl2g',
+  v_specialist_dashboard: 'mxh9z6xqwwyrj4b',
+  v_hub_catalog: 'mr6fqkyceugenxv',
 };
 
 // Credenciais do admin NocoDB (via variáveis de ambiente)
@@ -1967,8 +1967,8 @@ export async function getModuleStats(companyId = null) {
  */
 export async function getSpecialist(specialistId) {
   try {
-    const response = await findMany('specialists', {
-      where: `(id,eq,${specialistId})`,
+    const response = await findMany('v_specialist_dashboard', {
+      where: `(specialist_id,eq,${specialistId})`,
       limit: 1,
     });
     return response.list?.[0] || null;

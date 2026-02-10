@@ -41,7 +41,7 @@ export function CourseCatalog() {
       setFilteredCourses(catalogData || []);
     } catch (err) {
       console.error('[CourseCatalog] Erro:', err);
-      setError('Erro ao carregar catalogo');
+      setError(t('hub.specialists.errors.loadCatalog', 'Erro ao carregar catálogo'));
     } finally {
       setIsLoading(false);
     }
@@ -112,7 +112,7 @@ export function CourseCatalog() {
               onClick={loadCatalog}
               className="mt-4 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600"
             >
-              Tentar novamente
+              {t('hub.specialists.actions.tryAgain', 'Tentar novamente')}
             </button>
           </div>
         </div>
@@ -161,7 +161,7 @@ export function CourseCatalog() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Buscar por curso, especialista..."
+                placeholder={t('hub.specialists.catalog.searchPlaceholder', 'Buscar por curso, especialista...')}
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
@@ -172,7 +172,7 @@ export function CourseCatalog() {
               }`}
             >
               <SlidersHorizontal className="w-4 h-4" />
-              Filtros
+              {t('hub.specialists.catalog.filters', 'Filtros')}
             </button>
           </div>
 
@@ -183,35 +183,35 @@ export function CourseCatalog() {
                 {/* Rating minimo */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {t('hub.specialists.rating')} minimo
+                    {t('hub.specialists.rating')} {t('hub.specialists.catalog.minRating', 'mínimo')}
                   </label>
                   <select
                     value={minRating}
                     onChange={(e) => setMinRating(Number(e.target.value))}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                   >
-                    <option value={0}>Todos</option>
-                    <option value={3}>3+ estrelas</option>
-                    <option value={4}>4+ estrelas</option>
-                    <option value={4.5}>4.5+ estrelas</option>
+                    <option value={0}>{t('hub.specialists.catalog.allRatings', 'Todos')}</option>
+                    <option value={3}>{t('hub.specialists.catalog.stars3', '3+ estrelas')}</option>
+                    <option value={4}>{t('hub.specialists.catalog.stars4', '4+ estrelas')}</option>
+                    <option value={4.5}>{t('hub.specialists.catalog.stars45', '4.5+ estrelas')}</option>
                   </select>
                 </div>
 
                 {/* Preco maximo */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Preco maximo
+                    {t('hub.specialists.catalog.maxPrice', 'Preço máximo')}
                   </label>
                   <select
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(Number(e.target.value))}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                   >
-                    <option value={0}>Sem limite</option>
-                    <option value={50}>Ate R$ 50</option>
-                    <option value={100}>Ate R$ 100</option>
-                    <option value={150}>Ate R$ 150</option>
-                    <option value={200}>Ate R$ 200</option>
+                    <option value={0}>{t('hub.specialists.catalog.noLimit', 'Sem limite')}</option>
+                    <option value={50}>{t('hub.specialists.catalog.upTo50', 'Até R$ 50')}</option>
+                    <option value={100}>{t('hub.specialists.catalog.upTo100', 'Até R$ 100')}</option>
+                    <option value={150}>{t('hub.specialists.catalog.upTo150', 'Até R$ 150')}</option>
+                    <option value={200}>{t('hub.specialists.catalog.upTo200', 'Até R$ 200')}</option>
                   </select>
                 </div>
 
@@ -221,7 +221,7 @@ export function CourseCatalog() {
                     onClick={clearFilters}
                     className="text-sm text-indigo-600 hover:text-indigo-800"
                   >
-                    Limpar filtros
+                    {t('hub.specialists.actions.clearFilters', 'Limpar filtros')}
                   </button>
                 </div>
               </div>
@@ -233,9 +233,9 @@ export function CourseCatalog() {
         {filteredCourses.length === 0 ? (
           <EmptyState
             type="search"
-            title="Nenhum curso encontrado"
-            description="Tente ajustar os filtros ou termos de busca."
-            actionLabel="Limpar filtros"
+            title={t('hub.specialists.catalog.noCoursesFound', 'Nenhum curso encontrado')}
+            description={t('hub.specialists.catalog.adjustFilters', 'Tente ajustar os filtros ou termos de busca.')}
+            actionLabel={t('hub.specialists.actions.clearFilters', 'Limpar filtros')}
             onAction={clearFilters}
           />
         ) : (

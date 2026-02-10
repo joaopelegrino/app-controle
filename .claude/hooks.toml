@@ -32,7 +32,7 @@ startup_checks = [
 # Mensagem de boas-vindas
 welcome_message = """
 ╔════════════════════════════════════════════════════════════════╗
-║  🎓 app-controle (UltraThink)                                  ║
+║  🎓 app-controle (TrainB2B)                                    ║
 ║     Plataforma B2B de Treinamento Técnico Corporativo          ║
 ╠════════════════════════════════════════════════════════════════╣
 ║  Quick Commands:                                                ║

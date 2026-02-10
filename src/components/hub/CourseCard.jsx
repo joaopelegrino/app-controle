@@ -70,7 +70,7 @@ export function CourseCard({ course, onClick }) {
             {Number(course_rating || 0).toFixed(1)}
           </span>
           <span className="text-sm text-gray-400">
-            ({total_reviews || 0} {t('hub.specialists.reviews')})
+            ({total_reviews || 0} {t('hub.specialists.reviewsLabel')})
           </span>
         </div>
 

@@ -15,7 +15,7 @@ export function UserHeader() {
   const navigate = useNavigate();
   const { t } = useTranslation(['common', 'auth']);
   const { user, company, logout } = useAuth();
-  const { roleLabel, roleColor, canViewAnalytics, isSpecialist } = usePermissions();
+  const { roleLabel, roleColor, isSpecialist, hasPermission } = usePermissions();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -125,7 +125,7 @@ export function UserHeader() {
                     </button>
                   )}
 
-                  {canViewAnalytics && (
+                  {hasPermission('admin.access') && (
                     <button
                       onClick={() => {
                         setMenuOpen(false);

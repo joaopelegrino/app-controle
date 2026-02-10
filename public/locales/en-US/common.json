@@ -122,13 +122,60 @@
       "verified": "Verified",
       "perMonth": "/mo",
       "students": "students",
-      "reviews": "reviews",
+      "reviewsLabel": "reviews",
       "rating": "Rating",
       "writeReview": "Write Review",
       "replyReview": "Reply",
       "specialties": "Specialties",
       "credentials": "Credentials",
-      "since": "Since"
+      "since": "Since",
+      "errors": {
+        "loadCatalog": "Error loading catalog",
+        "loadReviews": "Error loading reviews",
+        "loadDashboard": "Error loading dashboard data",
+        "loadProfile": "Error loading profile",
+        "specialistNotFound": "Specialist not found"
+      },
+      "actions": {
+        "tryAgain": "Try again",
+        "back": "Back",
+        "clearFilters": "Clear filters"
+      },
+      "catalog": {
+        "searchPlaceholder": "Search by course, specialist...",
+        "filters": "Filters",
+        "minRating": "minimum",
+        "allRatings": "All",
+        "stars3": "3+ stars",
+        "stars4": "4+ stars",
+        "stars45": "4.5+ stars",
+        "maxPrice": "Maximum price",
+        "noLimit": "No limit",
+        "upTo50": "Up to $50",
+        "upTo100": "Up to $100",
+        "upTo150": "Up to $150",
+        "upTo200": "Up to $200",
+        "noCoursesFound": "No courses found",
+        "adjustFilters": "Try adjusting the filters or search terms.",
+        "courseCount": "course",
+        "courseCountPlural": "courses"
+      },
+      "reviews": {
+        "noReviews": "No reviews yet",
+        "firstReview": "Be the first to review this course!",
+        "companyLabel": "Company",
+        "specialistReply": "Specialist reply"
+      },
+      "dashboard": {
+        "courseHeader": "Course",
+        "studentsHeader": "Students",
+        "ratingHeader": "Rating",
+        "statusHeader": "Status",
+        "yourReply": "Your reply:"
+      },
+      "profile": {
+        "noCourses": "No published courses"
+      }
     }
   }
 }

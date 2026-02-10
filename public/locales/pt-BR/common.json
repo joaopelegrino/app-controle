@@ -107,13 +107,60 @@
       "verified": "Verificado",
       "perMonth": "/mês",
       "students": "alunos",
-      "reviews": "avaliações",
+      "reviewsLabel": "avaliações",
       "rating": "Avaliação",
       "writeReview": "Avaliar",
       "replyReview": "Responder",
       "specialties": "Especialidades",
       "credentials": "Credenciais",
-      "since": "Desde"
+      "since": "Desde",
+      "errors": {
+        "loadCatalog": "Erro ao carregar catálogo",
+        "loadReviews": "Erro ao carregar avaliações",
+        "loadDashboard": "Erro ao carregar dados do painel",
+        "loadProfile": "Erro ao carregar perfil",
+        "specialistNotFound": "Especialista não encontrado"
+      },
+      "actions": {
+        "tryAgain": "Tentar novamente",
+        "back": "Voltar",
+        "clearFilters": "Limpar filtros"
+      },
+      "catalog": {
+        "searchPlaceholder": "Buscar por curso, especialista...",
+        "filters": "Filtros",
+        "minRating": "mínimo",
+        "allRatings": "Todos",
+        "stars3": "3+ estrelas",
+        "stars4": "4+ estrelas",
+        "stars45": "4.5+ estrelas",
+        "maxPrice": "Preço máximo",
+        "noLimit": "Sem limite",
+        "upTo50": "Até R$ 50",
+        "upTo100": "Até R$ 100",
+        "upTo150": "Até R$ 150",
+        "upTo200": "Até R$ 200",
+        "noCoursesFound": "Nenhum curso encontrado",
+        "adjustFilters": "Tente ajustar os filtros ou termos de busca.",
+        "courseCount": "curso",
+        "courseCountPlural": "cursos"
+      },
+      "reviews": {
+        "noReviews": "Nenhuma avaliação ainda",
+        "firstReview": "Seja o primeiro a avaliar este curso!",
+        "companyLabel": "Empresa",
+        "specialistReply": "Resposta do especialista"
+      },
+      "dashboard": {
+        "courseHeader": "Curso",
+        "studentsHeader": "Alunos",
+        "ratingHeader": "Rating",
+        "statusHeader": "Status",
+        "yourReply": "Sua resposta:"
+      },
+      "profile": {
+        "noCourses": "Nenhum curso publicado"
+      }
     }
   },
   "navigation": {

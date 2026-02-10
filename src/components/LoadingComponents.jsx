@@ -98,15 +98,13 @@ export function SkeletonCard({ className = '' }) {
  */
 export function SkeletonTableRow({ columns = 5, className = '' }) {
   return (
-    <SkeletonPulse className={className}>
-      <tr>
-        {Array.from({ length: columns }).map((_, i) => (
-          <td key={i} className="px-6 py-4">
-            <div className="h-4 bg-gray-200 rounded w-full" />
-          </td>
-        ))}
-      </tr>
-    </SkeletonPulse>
+    <tr className={`animate-pulse ${className}`}>
+      {Array.from({ length: columns }).map((_, i) => (
+        <td key={i} className="px-6 py-4">
+          <div className="h-4 bg-gray-200 rounded w-full" />
+        </td>
+      ))}
+    </tr>
   );
 }
 

@@ -47,7 +47,7 @@ export function SpecialistDashboard() {
       setSpecialist(specialistData);
 
       // Buscar cursos do especialista
-      const coursesData = await apiService.getHubCoursesBySpecialist(specialistData.id);
+      const coursesData = await apiService.getHubCoursesBySpecialist(specialistData.specialist_id);
       setCourses(coursesData || []);
 
       // Buscar reviews dos cursos
@@ -245,16 +245,16 @@ export function SpecialistDashboard() {
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                          Curso
+                          {t('common:hub.specialists.dashboard.courseHeader', 'Curso')}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                          Alunos
+                          {t('common:hub.specialists.dashboard.studentsHeader', 'Alunos')}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                          Rating
+                          {t('common:hub.specialists.dashboard.ratingHeader', 'Rating')}
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                          Status
+                          {t('common:hub.specialists.dashboard.statusHeader', 'Status')}
                         </th>
                       </tr>
                     </thead>
@@ -319,7 +319,7 @@ export function SpecialistDashboard() {
                       <p className="text-sm text-gray-700 mb-1">{review.comment}</p>
                       {review.specialist_reply && (
                         <div className="mt-2 pl-3 border-l-2 border-indigo-200">
-                          <p className="text-xs text-indigo-600 font-medium">Sua resposta:</p>
+                          <p className="text-xs text-indigo-600 font-medium">{t('common:hub.specialists.dashboard.yourReply', 'Sua resposta:')}</p>
                           <p className="text-sm text-gray-600">{review.specialist_reply}</p>
                         </div>
                       )}

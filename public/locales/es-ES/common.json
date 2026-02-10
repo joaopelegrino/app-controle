@@ -122,13 +122,60 @@
       "verified": "Verificado",
       "perMonth": "/mes",
       "students": "alumnos",
-      "reviews": "evaluaciones",
+      "reviewsLabel": "evaluaciones",
       "rating": "Evaluación",
       "writeReview": "Evaluar",
       "replyReview": "Responder",
       "specialties": "Especialidades",
       "credentials": "Credenciales",
-      "since": "Desde"
+      "since": "Desde",
+      "errors": {
+        "loadCatalog": "Error al cargar catálogo",
+        "loadReviews": "Error al cargar evaluaciones",
+        "loadDashboard": "Error al cargar datos del panel",
+        "loadProfile": "Error al cargar perfil",
+        "specialistNotFound": "Especialista no encontrado"
+      },
+      "actions": {
+        "tryAgain": "Intentar de nuevo",
+        "back": "Volver",
+        "clearFilters": "Limpiar filtros"
+      },
+      "catalog": {
+        "searchPlaceholder": "Buscar por curso, especialista...",
+        "filters": "Filtros",
+        "minRating": "mínimo",
+        "allRatings": "Todos",
+        "stars3": "3+ estrellas",
+        "stars4": "4+ estrellas",
+        "stars45": "4.5+ estrellas",
+        "maxPrice": "Precio máximo",
+        "noLimit": "Sin límite",
+        "upTo50": "Hasta $50",
+        "upTo100": "Hasta $100",
+        "upTo150": "Hasta $150",
+        "upTo200": "Hasta $200",
+        "noCoursesFound": "Ningún curso encontrado",
+        "adjustFilters": "Intente ajustar los filtros o términos de búsqueda.",
+        "courseCount": "curso",
+        "courseCountPlural": "cursos"
+      },
+      "reviews": {
+        "noReviews": "Ninguna evaluación aún",
+        "firstReview": "¡Sé el primero en evaluar este curso!",
+        "companyLabel": "Empresa",
+        "specialistReply": "Respuesta del especialista"
+      },
+      "dashboard": {
+        "courseHeader": "Curso",
+        "studentsHeader": "Alumnos",
+        "ratingHeader": "Rating",
+        "statusHeader": "Status",
+        "yourReply": "Su respuesta:"
+      },
+      "profile": {
+        "noCourses": "Ningún curso publicado"
+      }
     }
   }
 }
