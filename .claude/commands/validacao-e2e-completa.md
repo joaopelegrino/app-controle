@@ -1,7 +1,7 @@
 # Validação E2E Completa - App-Controle
 
 **Comando:** `/validacao-e2e-completa`
-**Versão:** 1.2.0
+**Versão:** 1.3.0
 **Stack:** React 18 + Vite + NocoDB + PostgreSQL
 **MCP:** Chrome DevTools
 **Modo:** 🔍 **READ-ONLY / DIAGNÓSTICO APENAS**
