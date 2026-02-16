@@ -1,9 +1,59 @@
 # Validação E2E Completa - App-Controle
 
 **Comando:** `/validacao-e2e-completa`
-**Versão:** 1.0.0
+**Versão:** 1.2.0
 **Stack:** React 18 + Vite + NocoDB + PostgreSQL
 **MCP:** Chrome DevTools
+**Modo:** 🔍 **READ-ONLY / DIAGNÓSTICO APENAS**
+
+---
+
+## ⚠️ PRINCÍPIOS DE VALIDAÇÃO NÃO-INVASIVA
+
+### 🛡️ Regras Fundamentais
+
+**Esta validação é 100% READ-ONLY e NÃO DESTRUTIVA:**
+
+✅ **PERMITIDO:**
+- Navegação em páginas existentes
+- Leitura de dados via snapshots/screenshots
+- Coleta de logs do console
+- Análise de requests/responses de network
+- Performance tracing (read-only)
+- Login com usuários demo
+- Anotações e relatórios de bugs
+
+❌ **PROIBIDO:**
+- Criar/editar/deletar dados reais
+- Modificar arquivos de código
+- Executar comandos destrutivos (rm, DROP, DELETE)
+- Alterar configurações de produção/staging
+- Fazer commits durante validação
+- Modificar banco de dados
+- Criar usuários permanentes
+
+### 🎯 Objetivo da Validação
+
+**DIAGNÓSTICO E COLETA DE EVIDÊNCIAS:**
+- Identificar bugs visuais e funcionais
+- Coletar logs de erros do console
+- Validar performance (métricas)
+- Verificar RBAC e multi-tenant (read-only)
+- Documentar comportamento observado
+- Gerar relatório detalhado para correções futuras
+
+### 🧪 Ambiente de Validação
+
+**USAR APENAS:**
+- ✅ Ambiente local (localhost:3001)
+- ✅ Dados demo seed existentes
+- ✅ Usuários demo pré-criados (`.claude/QUICK_START.md`)
+- ✅ Banco de dados de desenvolvimento (docker-compose)
+
+**NUNCA USAR:**
+- ❌ Ambiente de produção
+- ❌ Dados de clientes reais
+- ❌ Banco de dados de staging/produção
 
 ---
 
@@ -11,9 +61,11 @@
 
 Validação End-to-End **completa** em 3 camadas usando MCP Chrome DevTools:
 
-1. **L1 - Foundation** (Auth + RBAC + Multi-Tenant)
-2. **L2 - Features** (CRUD + Hub Especialistas)
-3. **L3 - Quality** (i18n + White-Label + Performance)
+1. **L1 - Foundation** (Auth + RBAC + Multi-Tenant) - READ-ONLY
+2. **L2 - Features** (CRUD + Hub Especialistas) - OBSERVAÇÃO
+3. **L3 - Quality** (i18n + White-Label + Performance) - DIAGNÓSTICO
+
+**Modo de Execução:** Observação, anotação e diagnóstico apenas.
 
 ---
 
@@ -31,7 +83,507 @@ mise chrome-debug
 
 # 4. Verificar MCP
 curl http://127.0.0.1:9222/json/version
+
+# 5. Criar diretório de evidências
+mkdir -p .factory/relatorios/qa-e2e-$(date +%Y-%m-%d)/{screenshots,snapshots,logs,traces,evidencias}
 ```
+
+---
+
+## 📸 Guia de Coleta de Evidências MCP
+
+**🎯 Objetivo:** Documentar COMO coletar cada tipo de evidência usando comandos MCP Chrome DevTools.
+
+### 1️⃣ Screenshots (Evidência Visual)
+
+**Quando usar:** Validar UI, branding, layout, bugs visuais
+
+#### Comando Básico
+```javascript
+// Screenshot da página inteira (viewport atual)
+mcp__chrome-devtools__take_screenshot()
+```
+
+#### Com Parâmetros (Recomendado)
+```javascript
+// Salvar screenshot em arquivo (PNG)
+mcp__chrome-devtools__take_screenshot({
+  filePath: "./screenshots/L1-001-login-student.png",
+  format: "png"
+})
+
+// Screenshot de elemento específico
+mcp__chrome-devtools__take_screenshot({
+  uid: "dashboard-card-1",
+  filePath: "./screenshots/L2-006-specialist-dashboard-card.png",
+  format: "png"
+})
+
+// Screenshot full page (scroll completo)
+mcp__chrome-devtools__take_screenshot({
+  fullPage: true,
+  filePath: "./screenshots/L3-001-i18n-full-page.png",
+  format: "png"
+})
+
+// Screenshot JPEG com qualidade (menor tamanho)
+mcp__chrome-devtools__take_screenshot({
+  filePath: "./screenshots/performance-dashboard.jpg",
+  format: "jpeg",
+  quality: 80  // 0-100
+})
+```
+
+**Naming Convention:**
+- `L[layer]-[TC]-[descrição].png`
+- Exemplo: `L1-005-admin-panel-rbac.png`
+- Bugs: `bug-[ID]-[descrição]-[before|after].png`
+
+---
+
+### 2️⃣ Snapshots DOM (Evidência Estrutural)
+
+**Quando usar:** Validar estrutura DOM, acessibilidade, elementos presentes
+
+#### Comando Básico
+```javascript
+// Snapshot básico (a11y tree)
+const snapshot = mcp__chrome-devtools__take_snapshot()
+```
+
+#### Com Parâmetros (Recomendado)
+```javascript
+// Snapshot verbose (máximo de detalhes)
+mcp__chrome-devtools__take_snapshot({
+  verbose: true,
+  filePath: "./snapshots/L1-001-dashboard-student-verbose.txt"
+})
+
+// Snapshot básico salvo em arquivo
+mcp__chrome-devtools__take_snapshot({
+  filePath: "./snapshots/L2-007-hub-catalog.txt"
+})
+```
+
+**O que o snapshot captura:**
+- Árvore de acessibilidade (a11y tree)
+- UIDs de elementos (para clicar/preencher)
+- Textos visíveis
+- Roles ARIA
+- Estados (selected, checked, etc.)
+
+**Uso prático:**
+```javascript
+// 1. Capturar snapshot
+const snapshot = mcp__chrome-devtools__take_snapshot()
+
+// 2. Procurar UID de elemento no snapshot
+// Exemplo: uid="button-123"
+
+// 3. Usar UID para interagir
+mcp__chrome-devtools__click({ uid: "button-123" })
+```
+
+**Naming Convention:**
+- `L[layer]-[TC]-[descrição].txt`
+- Exemplo: `L2-007-hub-catalog-before-filter.txt`
+
+---
+
+### 3️⃣ Console Logs (Evidência de Erros JS)
+
+**Quando usar:** Validar 0 erros, detectar warnings, debugar comportamento
+
+#### Listar Mensagens Console
+```javascript
+// Listar TODOS os tipos de mensagens
+mcp__chrome-devtools__list_console_messages()
+
+// Listar APENAS erros (recomendado)
+mcp__chrome-devtools__list_console_messages({
+  types: ["error"]
+})
+
+// Listar erros + warnings
+mcp__chrome-devtools__list_console_messages({
+  types: ["error", "warn"]
+})
+
+// Limitar quantidade (paginação)
+mcp__chrome-devtools__list_console_messages({
+  types: ["error"],
+  pageSize: 10,
+  pageIdx: 0  // primeira página
+})
+
+// Incluir mensagens de navegações anteriores (últimas 3)
+mcp__chrome-devtools__list_console_messages({
+  types: ["error"],
+  includePreservedMessages: true
+})
+```
+
+**Tipos disponíveis:**
+- `"error"` - Erros críticos
+- `"warn"` - Avisos
+- `"log"` - Logs normais
+- `"info"` - Informações
+- `"debug"` - Debug messages
+- `"table"` - console.table()
+- `"trace"` - Stack traces
+
+#### Obter Detalhes de Mensagem
+```javascript
+// 1. Listar mensagens
+const messages = mcp__chrome-devtools__list_console_messages({ types: ["error"] })
+
+// 2. Pegar ID de mensagem específica (msgid)
+// msgid: 123
+
+// 3. Obter detalhes completos
+mcp__chrome-devtools__get_console_message({ msgid: 123 })
+```
+
+**Workflow completo:**
+```javascript
+// 1. Navegar para página
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/dashboard" })
+
+// 2. Aguardar carregamento
+mcp__chrome-devtools__wait_for({ text: "Bem-vindo" })
+
+// 3. Coletar erros console
+const errors = mcp__chrome-devtools__list_console_messages({ types: ["error"] })
+
+// 4. Se houver erros, salvar detalhes
+if (errors.length > 0) {
+  // Salvar em arquivo JSON
+  // (não há comando direto, mas anotar manualmente)
+  console.log("ERROS ENCONTRADOS:", errors)
+
+  // Obter detalhes de cada erro
+  errors.forEach(error => {
+    const details = mcp__chrome-devtools__get_console_message({ msgid: error.msgid })
+    // Anotar: error.text, error.url, error.lineNumber
+  })
+}
+```
+
+**Naming Convention:**
+- `console-errors-L[layer].json`
+- Exemplo: `console-errors-L1-foundation.json`
+- Bugs: `bug-[ID]-console-log.txt`
+
+---
+
+### 4️⃣ Network Requests (Evidência de API)
+
+**Quando usar:** Validar requests, verificar filtros multi-tenant, debugar API
+
+#### Listar Requests
+```javascript
+// Listar TODAS as requests
+mcp__chrome-devtools__list_network_requests()
+
+// Listar apenas fetch/XHR (recomendado para APIs)
+mcp__chrome-devtools__list_network_requests({
+  resourceTypes: ["fetch", "xhr"]
+})
+
+// Filtrar múltiplos tipos
+mcp__chrome-devtools__list_network_requests({
+  resourceTypes: ["fetch", "xhr", "script", "stylesheet"]
+})
+
+// Paginação
+mcp__chrome-devtools__list_network_requests({
+  resourceTypes: ["fetch"],
+  pageSize: 10,
+  pageIdx: 0
+})
+
+// Incluir requests de navegações anteriores
+mcp__chrome-devtools__list_network_requests({
+  includePreservedRequests: true
+})
+```
+
+**Tipos de Resource:**
+- `"fetch"` - Fetch API
+- `"xhr"` - XMLHttpRequest
+- `"document"` - HTML pages
+- `"script"` - JavaScript files
+- `"stylesheet"` - CSS files
+- `"image"` - Imagens
+- `"font"` - Fontes
+- `"websocket"` - WebSockets
+
+#### Obter Detalhes de Request
+```javascript
+// 1. Listar requests
+const requests = mcp__chrome-devtools__list_network_requests({
+  resourceTypes: ["fetch"]
+})
+
+// 2. Pegar ID de request específica (reqid)
+// reqid: 456
+
+// 3. Obter detalhes completos (headers, body, response)
+mcp__chrome-devtools__get_network_request({ reqid: 456 })
+
+// 4. Salvar request/response em arquivos
+mcp__chrome-devtools__get_network_request({
+  reqid: 456,
+  requestFilePath: "./traces/request-456.json",
+  responseFilePath: "./traces/response-456.json"
+})
+```
+
+**Workflow de Validação Multi-Tenant:**
+```javascript
+// 1. Login como maria@acmetech.com (company-1)
+// ... (login flow)
+
+// 2. Navegar para dashboard
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001/dashboard" })
+
+// 3. Aguardar carregamento
+mcp__chrome-devtools__wait_for({ text: "Meus Cursos" })
+
+// 4. Listar requests fetch
+const requests = mcp__chrome-devtools__list_network_requests({
+  resourceTypes: ["fetch"]
+})
+
+// 5. Procurar request para v_enrollments_courses
+const enrollmentReq = requests.find(r => r.url.includes("v_enrollments_courses"))
+
+// 6. Obter detalhes
+const details = mcp__chrome-devtools__get_network_request({ reqid: enrollmentReq.reqid })
+
+// 7. VALIDAR: URL deve conter WHERE (company_id,eq,company-1)
+// Anotar: ✅ Filtro multi-tenant presente OU ❌ VAZAMENTO DE DADOS
+```
+
+**Naming Convention:**
+- `network-requests-L[layer].json` (lista completa)
+- `request-[ID]-[endpoint].json` (request específica)
+- `response-[ID]-[endpoint].json` (response específica)
+
+---
+
+### 5️⃣ Performance Traces (Evidência de Performance)
+
+**Quando usar:** Medir Core Web Vitals, identificar bottlenecks
+
+#### Start Trace
+```javascript
+// Iniciar trace com reload automático
+mcp__chrome-devtools__performance_start_trace({
+  reload: true,
+  autoStop: true  // para automaticamente após carregamento
+})
+
+// Iniciar trace sem reload (para SPAs)
+mcp__chrome-devtools__performance_start_trace({
+  reload: false,
+  autoStop: false  // parar manualmente com stop_trace
+})
+
+// Salvar trace em arquivo
+mcp__chrome-devtools__performance_start_trace({
+  reload: true,
+  autoStop: true,
+  filePath: "./traces/performance-dashboard.json"
+})
+```
+
+#### Stop Trace
+```javascript
+// Parar trace e obter resultados
+mcp__chrome-devtools__performance_stop_trace()
+
+// Parar e salvar em arquivo
+mcp__chrome-devtools__performance_stop_trace({
+  filePath: "./traces/performance-dashboard.json.gz"  // comprimido
+})
+```
+
+#### Analisar Insights
+```javascript
+// 1. Rodar trace
+// ... (start_trace)
+
+// 2. Obter insights de performance
+mcp__chrome-devtools__performance_analyze_insight({
+  insightSetId: "0",  // usar ID do trace
+  insightName: "LCPBreakdown"  // nome do insight
+})
+
+// Insights disponíveis:
+// - "LCPBreakdown" (Largest Contentful Paint)
+// - "DocumentLatency" (tempo de carregamento)
+// - "CLSBreakdown" (Cumulative Layout Shift)
+// - "InteractionToNextPaint"
+```
+
+**Workflow completo:**
+```javascript
+// 1. Navegar para página
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
+
+// 2. Iniciar trace com reload
+mcp__chrome-devtools__performance_start_trace({
+  reload: true,
+  autoStop: true,
+  filePath: "./traces/trace-dashboard-$(date +%s).json"
+})
+
+// 3. Aguardar trace completar (autoStop: true)
+
+// 4. Analisar métricas
+// - First Paint (FP)
+// - Largest Contentful Paint (LCP)
+// - Total Blocking Time (TBT)
+
+// 5. VALIDAR targets:
+// - FP < 1.5s ✅
+// - LCP < 2.5s ✅
+// - TBT < 300ms ✅
+```
+
+**Naming Convention:**
+- `trace-[page]-[timestamp].json`
+- Exemplo: `trace-dashboard-1707238800.json`
+
+---
+
+### 6️⃣ Workflow Completo de Coleta (Exemplo)
+
+**Cenário:** Validar TC-L1-001 (Login Student) com coleta completa de evidências
+
+```javascript
+// 1. Navegar para login
+mcp__chrome-devtools__navigate_page({ url: "http://localhost:3001" })
+
+// 2. Screenshot inicial
+mcp__chrome-devtools__take_screenshot({
+  filePath: "./screenshots/L1-001-login-page.png"
+})
+
+// 3. Snapshot da página login
+mcp__chrome-devtools__take_snapshot({
+  filePath: "./snapshots/L1-001-login-page.txt"
+})
+
+// 4. Preencher credenciais
+mcp__chrome-devtools__fill({ uid: "email", value: "maria@acmetech.com" })
+mcp__chrome-devtools__fill({ uid: "password", value: "Demo@2026" })
+
+// 5. Screenshot antes de submeter
+mcp__chrome-devtools__take_screenshot({
+  filePath: "./screenshots/L1-001-login-filled.png"
+})
+
+// 6. Submeter login
+mcp__chrome-devtools__click({ uid: "login-button" })
+
+// 7. Aguardar redirect
+mcp__chrome-devtools__wait_for({ text: "Bem-vindo" })
+
+// 8. Screenshot após login
+mcp__chrome-devtools__take_screenshot({
+  filePath: "./screenshots/L1-001-dashboard-student.png"
+})
+
+// 9. Snapshot do dashboard
+mcp__chrome-devtools__take_snapshot({
+  filePath: "./snapshots/L1-001-dashboard-student.txt"
+})
+
+// 10. Coletar erros console
+const errors = mcp__chrome-devtools__list_console_messages({
+  types: ["error", "warn"]
+})
+
+// 11. Coletar network requests
+const requests = mcp__chrome-devtools__list_network_requests({
+  resourceTypes: ["fetch", "xhr"]
+})
+
+// 12. ANOTAR RESULTADOS:
+// - ✅ Login bem-sucedido
+// - ✅ Redirect para /dashboard
+// - ✅ 0 erros no console
+// - ✅ 5 requests fetch (auth, user, courses, enrollments, progress)
+// - ✅ Todas requests com status 200
+// - 📸 3 screenshots salvos
+// - 📄 2 snapshots salvos
+```
+
+---
+
+### 7️⃣ Checklist de Coleta (Para Cada TC)
+
+**Antes de iniciar teste:**
+- [ ] Diretório de evidências criado
+- [ ] Chrome em debug mode (9222)
+- [ ] Backend + Frontend rodando
+
+**Durante o teste:**
+- [ ] Screenshot ANTES de ação crítica
+- [ ] Screenshot DEPOIS de ação crítica
+- [ ] Snapshot de páginas importantes
+- [ ] Coletar console messages ao final
+- [ ] Coletar network requests se relevante
+
+**Ao encontrar bug:**
+- [ ] Screenshot do bug (visual)
+- [ ] Snapshot do DOM (estrutural)
+- [ ] Console log completo (get_console_message)
+- [ ] Network request com erro (get_network_request)
+- [ ] Anotar: TC, timestamp, severidade, steps to reproduce
+
+**Naming de arquivos:**
+```
+.factory/relatorios/qa-e2e-2026-02-16/
+├── screenshots/
+│   ├── L1-001-login-page.png
+│   ├── L1-001-dashboard-student.png
+│   ├── bug-001-dashboard-error.png
+│   └── ...
+├── snapshots/
+│   ├── L1-001-login-page.txt
+│   ├── L1-001-dashboard-student.txt
+│   └── ...
+├── logs/
+│   ├── console-errors-L1.json
+│   ├── bug-001-console-details.txt
+│   └── ...
+├── traces/
+│   ├── network-requests-L1.json
+│   ├── trace-dashboard-1707238800.json
+│   └── ...
+└── evidencias/
+    ├── bug-001-evidencias.md (consolidado)
+    └── ...
+```
+
+---
+
+### 8️⃣ Comandos Quick Reference
+
+| Tipo | Comando | Parâmetros Principais |
+|------|---------|----------------------|
+| **Screenshot** | `take_screenshot()` | `filePath`, `format`, `fullPage`, `uid` |
+| **Snapshot** | `take_snapshot()` | `filePath`, `verbose` |
+| **Console** | `list_console_messages()` | `types`, `pageSize` |
+| **Console Detail** | `get_console_message()` | `msgid` |
+| **Network** | `list_network_requests()` | `resourceTypes`, `pageSize` |
+| **Network Detail** | `get_network_request()` | `reqid`, `requestFilePath`, `responseFilePath` |
+| **Perf Start** | `performance_start_trace()` | `reload`, `autoStop`, `filePath` |
+| **Perf Stop** | `performance_stop_trace()` | `filePath` |
+| **Perf Insight** | `performance_analyze_insight()` | `insightSetId`, `insightName` |
 
 ---
 
@@ -273,91 +825,158 @@ Claude, execute L3 (Quality) da validação E2E
 
 ## 🚀 L2 - FEATURES (15 Cenários)
 
+**⚠️ ATENÇÃO:** Cenários CRUD são apenas para **OBSERVAÇÃO DE FUNCIONALIDADE**. NÃO executar em produção. Usar ambiente de desenvolvimento local com dados seed.
+
 ### Categoria: CRUD - Courses (5 cenários)
 
-#### TC-L2-001: Create Course
-```
-1. Login como prof@acmetech.com
-2. navigate_page(url="http://localhost:3001/instructor")
-3. click(uid="create-course-button")
-4. fill_form([
-     {uid: "course-title", value: "Teste E2E Course"},
-     {uid: "course-description", value: "Descrição teste"},
-     {uid: "course-category", value: "tecnologia"}
-   ])
-5. click(uid="submit-course")
-6. wait_for(text="Curso criado com sucesso")
-7. take_snapshot() → validar curso na lista
-8. list_network_requests(resourceTypes=["fetch"])
-9. get_network_request() → validar POST /api/v2/tables/courses/records
-10. Verificar body: company_id = company-1
-```
+#### TC-L2-001: Create Course (OBSERVAÇÃO APENAS)
 
-**Resultado esperado:**
-- ✅ Curso criado com company_id correto
-- ✅ Aparece na lista de cursos
+**🔴 IMPORTANTE:** Este teste cria dados temporários. Executar APENAS em ambiente local de desenvolvimento.
+
+**Modo Validação:**
+1. **Opção A - OBSERVAÇÃO (Recomendado):**
+   - Apenas verificar se UI de criação está acessível
+   - Validar campos do formulário visíveis
+   - NÃO submeter formulário
+   - Anotar: "UI de criação funcional, campos presentes"
+
+2. **Opção B - SANDBOX (Ambiente de Teste):**
+   ```
+   1. Login como prof@acmetech.com
+   2. navigate_page(url="http://localhost:3001/instructor")
+   3. click(uid="create-course-button")
+   4. take_snapshot() → validar formulário de criação
+   5. fill_form([
+        {uid: "course-title", value: "[QA-TEST] Curso Temporário E2E"},
+        {uid: "course-description", value: "DELETAR - Teste automático"},
+        {uid: "course-category", value: "tecnologia"}
+      ])
+   6. take_screenshot() → evidência antes de submeter
+   7. click(uid="submit-course")
+   8. wait_for(text="Curso criado com sucesso")
+   9. take_snapshot() → validar curso na lista
+   10. list_network_requests(resourceTypes=["fetch"])
+   11. get_network_request() → validar POST request
+   12. ANOTAR ID do curso criado para cleanup manual posterior
+   ```
+
+**Resultado esperado (DIAGNÓSTICO):**
+- ✅ UI de criação acessível
+- ✅ Formulário com todos campos
+- ✅ Request POST com company_id correto
 - ✅ Toast de sucesso exibido
+- 📝 **Anotar:** ID do curso criado, timestamp, evidências (screenshots)
 
-#### TC-L2-002: Edit Course
+**Cleanup Manual:** Deletar curso `[QA-TEST]` após validação
+
+#### TC-L2-002: Edit Course (OBSERVAÇÃO APENAS)
+
+**🔴 IMPORTANTE:** NÃO editar cursos demo existentes. Apenas validar UI e funcionalidade.
+
+**Modo Validação (OBSERVAÇÃO):**
 ```
 1. Login como prof@acmetech.com
 2. navigate_page(url="http://localhost:3001/instructor")
-3. click(uid="edit-course-button-1")
-4. fill(uid="course-title", value="Título Editado E2E")
-5. click(uid="save-course")
-6. wait_for(text="Curso atualizado")
-7. take_snapshot() → validar título atualizado
-8. get_network_request() → validar PATCH request
+3. take_snapshot() → listar cursos existentes
+4. click(uid="edit-course-button-1")
+5. take_snapshot() → validar formulário de edição carregado
+6. Verificar campos pré-preenchidos
+7. take_screenshot() → evidência do formulário
+8. NÃO modificar campos
+9. NÃO clicar em "Salvar"
+10. click(uid="cancel-button") → cancelar edição
 ```
 
-**Resultado esperado:**
-- ✅ Curso editado com sucesso
-- ✅ Mudanças refletidas na UI
+**Resultado esperado (DIAGNÓSTICO):**
+- ✅ UI de edição acessível
+- ✅ Formulário pré-preenchido com dados existentes
+- ✅ Botões "Salvar" e "Cancelar" visíveis
+- 📝 **Anotar:** UI funcional, campos carregados corretamente
 
-#### TC-L2-003: Delete Course
+**Alternativa (se curso [QA-TEST] foi criado em TC-L2-001):**
+- Editar APENAS o curso temporário [QA-TEST]
+- Adicionar sufixo " - EDITADO"
+- Anotar mudança para cleanup
+
+#### TC-L2-003: Delete Course (OBSERVAÇÃO APENAS)
+
+**🔴 CRÍTICO:** NÃO deletar cursos demo existentes. Apenas validar UI e modal de confirmação.
+
+**Modo Validação (OBSERVAÇÃO):**
 ```
 1. Login como prof@acmetech.com
 2. navigate_page(url="http://localhost:3001/instructor")
-3. click(uid="delete-course-button-1")
-4. handle_dialog(action="accept")
-5. wait_for(text="Curso deletado")
-6. take_snapshot() → validar curso removido da lista
-7. get_network_request() → validar DELETE request
+3. take_snapshot() → listar cursos existentes
+4. click(uid="delete-course-button-1")
+5. take_screenshot() → modal de confirmação
+6. Verificar texto: "Tem certeza que deseja deletar?"
+7. click(uid="cancel-dialog") → CANCELAR (NÃO confirmar)
+8. take_snapshot() → validar curso ainda na lista
 ```
 
-**Resultado esperado:**
-- ✅ Curso deletado
-- ✅ Removido da lista
+**Resultado esperado (DIAGNÓSTICO):**
+- ✅ Botão de delete visível
+- ✅ Modal de confirmação aparece
+- ✅ Botões "Confirmar" e "Cancelar" presentes
+- ✅ Cancelar mantém curso na lista
+- 📝 **Anotar:** Fluxo de confirmação funcional
 
-#### TC-L2-004: Enroll in Course
+**Alternativa (se curso [QA-TEST] foi criado):**
+- Deletar APENAS o curso temporário [QA-TEST]
+- Confirmar deleção
+- Validar DELETE request
+- Anotar: Cleanup concluído
+
+#### TC-L2-004: Enroll in Course (OBSERVAÇÃO APENAS)
+
+**🟡 ATENÇÃO:** Validar apenas UI e fluxo. Evitar criar enrollments desnecessários.
+
+**Modo Validação (OBSERVAÇÃO):**
 ```
 1. Login como maria@acmetech.com
-2. navigate_page(url="http://localhost:3001/courses")
-3. click(uid="enroll-course-button-1")
-4. wait_for(text="Matrícula realizada")
-5. navigate_page(url="http://localhost:3001/dashboard")
-6. take_snapshot() → validar curso aparece em "Meus Cursos"
-7. get_network_request() → validar POST /api/v2/tables/enrollments/records
+2. navigate_page(url="http://localhost:3001/dashboard")
+3. take_snapshot() → anotar cursos já matriculados
+4. navigate_page(url="http://localhost:3001/courses")
+5. take_snapshot() → ver cursos disponíveis
+6. Verificar botão "Matricular-se" em curso NÃO matriculado
+7. take_screenshot() → evidência da UI
+8. NÃO clicar em "Matricular-se" (observação apenas)
 ```
 
-**Resultado esperado:**
-- ✅ Matrícula criada
-- ✅ Curso aparece no dashboard
+**Resultado esperado (DIAGNÓSTICO):**
+- ✅ Lista de cursos disponíveis carregada
+- ✅ Botão "Matricular-se" visível em cursos não matriculados
+- ✅ Cursos já matriculados mostram "Continuar"
+- 📝 **Anotar:** UI de enrollment funcional
 
-#### TC-L2-005: Complete Module
+**Nota:** Maria já possui enrollments demo. NÃO criar novos.
+
+#### TC-L2-005: Complete Module (OBSERVAÇÃO APENAS)
+
+**🟡 ATENÇÃO:** Validar apenas UI. NÃO modificar progresso real de usuários demo.
+
+**Modo Validação (OBSERVAÇÃO):**
 ```
 1. Login como maria@acmetech.com
-2. navigate_page(url="http://localhost:3001/courses/course-1/modules/module-1")
-3. click(uid="mark-complete-button")
-4. wait_for(text="Módulo concluído")
-5. take_snapshot() → validar progresso atualizado
-6. navigate_page(url="http://localhost:3001/dashboard")
-7. Verificar: barra de progresso > 0%
+2. navigate_page(url="http://localhost:3001/dashboard")
+3. take_snapshot() → verificar progresso atual
+4. Anotar: Progresso existente de cursos demo
+5. navigate_page(url="http://localhost:3001/courses/[curso-matriculado]")
+6. take_snapshot() → ver módulos disponíveis
+7. Verificar elementos:
+   - Lista de módulos
+   - Status (completo/incompleto)
+   - Botão "Marcar como completo" OU checkmark
+8. take_screenshot() → evidência
+9. NÃO clicar em "Marcar como completo"
 ```
 
-**Resultado esperado:**
-- ✅ Módulo marcado como completo
-- ✅ Progresso refletido no dashboard
+**Resultado esperado (DIAGNÓSTICO):**
+- ✅ Progresso atual visível no dashboard
+- ✅ Lista de módulos carregada
+- ✅ Status de cada módulo exibido
+- ✅ UI de conclusão presente
+- 📝 **Anotar:** Progresso preservado, UI funcional
 
 ---
 
@@ -449,71 +1068,112 @@ Claude, execute L3 (Quality) da validação E2E
 
 ### Categoria: User Management (5 cenários)
 
-#### TC-L2-011: Create User (Admin)
+**🔴 CRÍTICO:** User Management testa funcionalidades de administração. NÃO criar/editar/deletar usuários demo reais. Apenas OBSERVAÇÃO.
+
+#### TC-L2-011: Create User (OBSERVAÇÃO APENAS)
+
+**🔴 IMPORTANTE:** NÃO criar usuários reais. Apenas validar UI.
+
+**Modo Validação (OBSERVAÇÃO):**
 ```
 1. Login como admin@acmetech.com
 2. navigate_page(url="http://localhost:3001/admin")
-3. click(uid="add-user-button")
-4. fill_form([
-     {uid: "user-name", value: "Teste E2E User"},
-     {uid: "user-email", value: "teste@acmetech.com"},
-     {uid: "user-role", value: "student"}
-   ])
-5. click(uid="submit-user")
-6. wait_for(text="Usuário criado")
-7. take_snapshot() → validar usuário na lista
-8. Verificar: company_id = company-1 no body
+3. take_snapshot() → listar usuários existentes (6 esperados)
+4. click(uid="add-user-button")
+5. take_snapshot() → validar formulário de criação
+6. Verificar campos disponíveis:
+   - Nome
+   - Email
+   - Role (dropdown com 5 opções)
+   - Company (pré-preenchido, readonly)
+7. take_screenshot() → evidência do formulário
+8. NÃO preencher campos
+9. NÃO submeter formulário
+10. click(uid="cancel-button") → cancelar
 ```
 
-**Resultado esperado:**
-- ✅ Usuário criado com company_id correto
-- ✅ Aparece na lista
+**Resultado esperado (DIAGNÓSTICO):**
+- ✅ Painel admin acessível
+- ✅ Lista de 6 usuários demo visível
+- ✅ Botão "Adicionar Usuário" funcional
+- ✅ Formulário com todos campos necessários
+- ✅ company_id pré-preenchido e readonly
+- 📝 **Anotar:** UI de criação funcional, validações presentes
 
-#### TC-L2-012: Edit User
-```
-1. Login como admin@acmetech.com
-2. navigate_page(url="http://localhost:3001/admin")
-3. click(uid="edit-user-button-1")
-4. fill(uid="user-name", value="Nome Editado E2E")
-5. click(uid="save-user")
-6. wait_for(text="Usuário atualizado")
-7. take_snapshot() → validar nome atualizado
-```
+#### TC-L2-012: Edit User (OBSERVAÇÃO APENAS)
 
-**Resultado esperado:**
-- ✅ Usuário editado
-- ✅ Mudanças refletidas
+**🔴 IMPORTANTE:** NÃO modificar usuários demo. Apenas validar UI.
 
-#### TC-L2-013: Delete User
+**Modo Validação (OBSERVAÇÃO):**
 ```
 1. Login como admin@acmetech.com
 2. navigate_page(url="http://localhost:3001/admin")
-3. click(uid="delete-user-button-1")
-4. handle_dialog(action="accept")
-5. wait_for(text="Usuário deletado")
-6. take_snapshot() → validar usuário removido
+3. take_snapshot() → listar usuários
+4. click(uid="edit-user-button-1")
+5. take_snapshot() → formulário de edição carregado
+6. Verificar campos pré-preenchidos
+7. take_screenshot() → evidência
+8. NÃO modificar campos
+9. click(uid="cancel-button") → cancelar edição
 ```
 
-**Resultado esperado:**
-- ✅ Usuário deletado
-- ✅ Removido da lista
+**Resultado esperado (DIAGNÓSTICO):**
+- ✅ UI de edição acessível
+- ✅ Dados pré-carregados corretamente
+- ✅ Campos editáveis
+- 📝 **Anotar:** Edição preservada, UI funcional
 
-#### TC-L2-014: User Role Change
+#### TC-L2-013: Delete User (OBSERVAÇÃO APENAS)
+
+**🔴 CRÍTICO:** NÃO deletar usuários demo. Apenas validar modal de confirmação.
+
+**Modo Validação (OBSERVAÇÃO):**
 ```
 1. Login como admin@acmetech.com
 2. navigate_page(url="http://localhost:3001/admin")
-3. click(uid="edit-user-button-1")
-4. fill(uid="user-role", value="instructor")
-5. click(uid="save-user")
-6. wait_for(text="Usuário atualizado")
-7. Logout
-8. Login com usuário modificado
-9. take_snapshot() → validar dashboard instructor
+3. take_snapshot() → listar usuários
+4. click(uid="delete-user-button-1")
+5. take_screenshot() → modal de confirmação
+6. Verificar texto de alerta
+7. Verificar botões "Confirmar" e "Cancelar"
+8. click(uid="cancel-dialog") → CANCELAR (NÃO confirmar)
+9. take_snapshot() → usuário ainda na lista
 ```
 
-**Resultado esperado:**
-- ✅ Role atualizado
-- ✅ Usuário vê dashboard correspondente
+**Resultado esperado (DIAGNÓSTICO):**
+- ✅ Modal de confirmação aparece
+- ✅ Mensagem de alerta clara
+- ✅ Cancelar preserva usuário
+- 📝 **Anotar:** Fluxo de confirmação funcional, dados preservados
+
+#### TC-L2-014: User Role Change (OBSERVAÇÃO APENAS)
+
+**🔴 IMPORTANTE:** NÃO modificar roles de usuários demo. Apenas validar UI.
+
+**Modo Validação (OBSERVAÇÃO):**
+```
+1. Login como admin@acmetech.com
+2. navigate_page(url="http://localhost:3001/admin")
+3. take_snapshot() → listar usuários e roles atuais
+4. Anotar: maria@acmetech.com = student
+5. click(uid="edit-user-maria")
+6. take_snapshot() → formulário de edição
+7. Verificar dropdown de roles:
+   - student (atual)
+   - instructor
+   - admin
+   - c_level
+   - specialist
+8. take_screenshot() → evidência
+9. NÃO alterar role
+10. click(uid="cancel-button")
+```
+
+**Resultado esperado (DIAGNÓSTICO):**
+- ✅ Dropdown de roles funcional
+- ✅ 5 roles disponíveis
+- ✅ Role atual selecionado
+- 📝 **Anotar:** Alteração de role possível, UI funcional, dados preservados
 
 #### TC-L2-015: Bulk User Import (Future)
 ```
@@ -783,28 +1443,59 @@ Claude, execute L3 (Quality) da validação E2E
 
 ---
 
-## 📊 Relatório Final
+## 📊 Relatório de Diagnóstico
 
-### Template de Output
+**🎯 Foco:** Coleta de evidências, anotações de bugs e recomendações de correção.
+
+### Template de Relatório
 
 ```markdown
-# QA E2E Completo - App-Controle
+# Relatório de Diagnóstico E2E - App-Controle
 **Data:** YYYY-MM-DD
 **Executor:** Claude Opus 4.6
 **MCP:** chrome-devtools-mcp@latest
+**Modo:** 🔍 READ-ONLY / DIAGNÓSTICO
 
 ---
 
-## Ambiente
+## ⚙️ Ambiente de Validação
 
-- **Frontend:** http://localhost:3001
+- **Frontend:** http://localhost:3001 (local)
 - **Backend:** http://localhost:8081 (NocoDB)
 - **Database:** PostgreSQL 16 (Docker)
 - **Chrome:** v121.x (Debug Mode)
+- **Usuários Demo:** 9 usuários seed
+- **Modificações:** ❌ NENHUMA (read-only)
 
 ---
 
-## Resultados
+## 📋 Evidências Coletadas
+
+### Screenshots Salvos
+- `./screenshots/L1-001-login-student.png`
+- `./screenshots/L1-005-admin-panel.png`
+- `./screenshots/L2-006-specialist-dashboard.png`
+- `./screenshots/L3-001-i18n-pt-br.png`
+- `./screenshots/L3-001-i18n-en-us.png`
+- ... (total: XX screenshots)
+
+### Snapshots DOM
+- `./snapshots/L1-001-dashboard-student.txt`
+- `./snapshots/L2-007-hub-catalog.txt`
+- ... (total: XX snapshots)
+
+### Logs Console
+- `./logs/console-errors-L1.json`
+- `./logs/console-errors-L2.json`
+- `./logs/console-errors-L3.json`
+
+### Network Traces
+- `./traces/network-requests-L1.json`
+- `./traces/performance-dashboard.json`
+
+---
+
+## 🧪 Resultados por Layer (DIAGNÓSTICO)
 
 ### L1 - FOUNDATION
 
@@ -911,44 +1602,211 @@ Claude, execute L3 (Quality) da validação E2E
 
 ---
 
-## Bugs Encontrados
+## 🐛 Bugs e Observações
 
-### 🐛 BUG-XXX: [Título do Bug]
+### Template de Bug Report
 
-- **Severidade:** LOW/MEDIUM/HIGH/CRITICAL
-- **Layer:** L1/L2/L3
+Para cada bug encontrado, documentar:
+
+```markdown
+### 🐛 BUG-XXX: [Título Descritivo do Bug]
+
+**Classificação:**
+- **Severidade:** CRITICAL / HIGH / MEDIUM / LOW
+- **Tipo:** Funcional / Visual / Performance / Segurança
+- **Layer:** L1 / L2 / L3
 - **TC:** TC-LX-XXX
-- **Steps to Reproduce:**
-  1. ...
-  2. ...
-- **Expected:** ...
-- **Actual:** ...
-- **Screenshot:** `./screenshots/bug-xxx.png`
+- **Componente:** [Nome do componente/página]
+
+**Ambiente:**
+- Browser: Chrome 121.x
+- Viewport: Desktop 1920x1080
+- Usuário: maria@acmetech.com (student)
+
+**Evidências Coletadas:**
+- 📸 Screenshot: `./screenshots/bug-xxx-before.png`
+- 📄 Snapshot: `./snapshots/bug-xxx-dom.txt`
+- 📋 Console Log: `./logs/bug-xxx-console.json`
+- 🌐 Network: `./traces/bug-xxx-network.json`
+
+**Steps to Reproduce:**
+1. Login como maria@acmetech.com
+2. Navegar para /dashboard
+3. Clicar em "Meus Cursos"
+4. Observar erro no console
+
+**Comportamento Esperado:**
+- Dashboard carrega sem erros
+- Lista de cursos exibida corretamente
+
+**Comportamento Atual:**
+- Console error: "Cannot read property 'name' of undefined"
+- Lista vazia mesmo com cursos matriculados
+
+**Análise Inicial:**
+- Possível race condition no carregamento de dados
+- Componente renderiza antes de API response
+
+**Recomendação de Correção:**
+1. Adicionar loading state ao componente
+2. Validar dados antes de renderizar
+3. Adicionar error boundary
+4. Testar com network throttling (Slow 3G)
+
+**Prioridade Sugerida:** HIGH
+**Estimativa de Esforço:** 2-4 horas
+**Risco:** Impacta experiência de todos estudantes
+```
 
 ---
 
-## Conclusão
+## 📊 Análise Consolidada
 
-✅ **Sistema APROVADO para produção**
+### Resumo de Bugs por Severidade
 
-**Justificativa:**
-- 97.5% taxa de sucesso (39/40)
-- 0 bugs críticos/high
-- Performance dentro dos targets
-- Segurança validada (XSS, SQLi, CSRF)
-- Multi-tenant 100% isolado
-- RBAC 100% funcional
+| Severidade | Quantidade | Componentes Afetados |
+|------------|------------|---------------------|
+| CRITICAL | 0 | - |
+| HIGH | 2 | Dashboard, Hub Catalog |
+| MEDIUM | 5 | i18n, Performance |
+| LOW | 3 | UI cosmético |
+| **TOTAL** | **10** | - |
 
-**Próximos Passos:**
-1. Deploy para staging
-2. Re-run QA E2E em staging
-3. Smoke tests em produção
+### Bugs por Categoria
+
+| Categoria | Bugs | % Total |
+|-----------|------|---------|
+| Funcional | 4 | 40% |
+| Visual | 3 | 30% |
+| Performance | 2 | 20% |
+| i18n | 1 | 10% |
 
 ---
 
-**Executado por:** Claude Opus 4.6
-**MCP Server:** chrome-devtools-mcp@latest
-**Relatório salvo em:** `.factory/relatorios/qa-e2e-YYYY-MM-DD/`
+## ✅ Observações Positivas
+
+**Pontos Fortes Identificados:**
+- ✅ RBAC funcionando corretamente (0 vazamentos)
+- ✅ Multi-tenant 100% isolado (testado em 2 companies)
+- ✅ Performance dentro dos targets (FP < 1.5s, LCP < 2.5s)
+- ✅ 0 erros críticos de segurança
+- ✅ i18n 95% funcional (3 idiomas)
+- ✅ Hub de Especialistas carregando corretamente
+
+---
+
+## 🎯 Recomendações de Correção
+
+### Prioridade P0 (Bloqueador)
+**Nenhum bug bloqueador identificado** ✅
+
+### Prioridade P1 (Alta - 2 bugs)
+1. **BUG-001:** Dashboard student - Race condition no carregamento
+   - **Impacto:** Todos estudantes
+   - **Esforço:** 2-4h
+   - **Recomendação:** Adicionar loading state + error boundary
+
+2. **BUG-002:** Hub Catalog - Filtro de busca não funciona
+   - **Impacto:** Descoberta de cursos prejudicada
+   - **Esforço:** 1-2h
+   - **Recomendação:** Corrigir query de busca
+
+### Prioridade P2 (Média - 5 bugs)
+- BUG-003: Texto não traduzido em es-ES (Settings page)
+- BUG-004: Performance - Bundle size 520kb (target: <500kb)
+- BUG-005: Contrast ratio insuficiente em botão secundário
+- ... (detalhes em seção Bugs)
+
+### Prioridade P3 (Baixa - 3 bugs)
+- BUG-008: Tooltip truncado em mobile
+- BUG-009: Favicon não carrega
+- BUG-010: Logo levemente desalinhado
+
+---
+
+## 📈 Conclusão do Diagnóstico
+
+### Status Geral: ✅ APROVADO COM RESSALVAS
+
+**Resumo:**
+- ✅ Sistema funcional e seguro
+- ✅ Arquitetura (RBAC, Multi-tenant) correta
+- ✅ Performance dentro dos targets
+- ⚠️ 2 bugs HIGH precisam correção antes de produção
+- ⚠️ 5 bugs MEDIUM podem ser corrigidos pós-lançamento
+- ✅ 3 bugs LOW são cosméticos
+
+**Decisão Recomendada:**
+- ✅ **APROVAR para deploy em STAGING**
+- ⚠️ **CORRIGIR 2 bugs HIGH** antes de produção
+- 📋 Agendar correção de bugs MEDIUM para Sprint 17
+
+### Próximas Ações
+
+**Antes de Produção:**
+1. Corrigir BUG-001 (Dashboard race condition)
+2. Corrigir BUG-002 (Hub search filter)
+3. Re-run TC-L2-001 e TC-L2-007 (validar correções)
+4. Deploy para staging
+5. Re-run smoke test em staging
+
+**Pós-Produção (Sprint 17):**
+1. Corrigir 5 bugs MEDIUM
+2. Melhorar bundle size (520kb → <500kb)
+3. Completar tradução es-ES
+4. Melhorar acessibilidade (contrast ratio)
+
+---
+
+## 📁 Artefatos Gerados
+
+### Estrutura de Arquivos
+
+```
+.factory/relatorios/qa-e2e-YYYY-MM-DD/
+├── RELATORIO-DIAGNOSTICO.md (este arquivo)
+├── screenshots/
+│   ├── L1-001-login-student.png
+│   ├── L1-005-admin-panel.png
+│   ├── bug-001-dashboard-error.png
+│   └── ... (total: 45 screenshots)
+├── snapshots/
+│   ├── L1-001-dashboard-student.txt
+│   └── ... (total: 40 snapshots)
+├── logs/
+│   ├── console-errors-L1.json
+│   ├── console-errors-L2.json
+│   └── console-errors-L3.json
+├── traces/
+│   ├── network-requests-L1.json
+│   ├── performance-dashboard.json
+│   └── performance-hub.json
+└── evidencias/
+    ├── bug-001-console-log.txt
+    ├── bug-002-network-trace.json
+    └── ... (todas evidências de bugs)
+```
+
+### Estatísticas
+
+- **Total de screenshots:** 45
+- **Total de snapshots:** 40
+- **Total de console logs:** 3 arquivos (L1, L2, L3)
+- **Total de network traces:** 5 arquivos
+- **Bugs documentados:** 10
+- **Evidências de bugs:** 10 conjuntos completos
+
+---
+
+**🔍 Diagnóstico Executado por:** Claude Opus 4.6
+**🛠️ MCP Server:** chrome-devtools-mcp@latest
+**📅 Data:** YYYY-MM-DD
+**⏱️ Duração:** XX minutos
+**📁 Relatório salvo em:** `.factory/relatorios/qa-e2e-YYYY-MM-DD/RELATORIO-DIAGNOSTICO.md`
+
+---
+
+**✅ VALIDAÇÃO READ-ONLY COMPLETA - NENHUMA MODIFICAÇÃO REALIZADA NA BASE DE CÓDIGO**
 ```
 
 ---
@@ -1237,13 +2095,47 @@ mcp__chrome-devtools__click({ uid: "uid-correto-do-snapshot" })
 
 ---
 
-**Versão:** 1.1.0
+**Versão:** 1.3.0
 **Stack:** React 18 + Vite + NocoDB + PostgreSQL
 **Última atualização:** 2026-02-16
 
 ---
 
 ## 📝 Changelog
+
+### v1.3.0 (2026-02-16) - 📸 GUIA DE COLETA MCP
+**Adicionado:**
+- ✅ **Guia completo de Coleta de Evidências MCP** (Seção dedicada)
+- ✅ **8 subsections detalhadas:**
+  1. Screenshots (take_screenshot) - todos parâmetros
+  2. Snapshots DOM (take_snapshot) - verbose mode
+  3. Console Logs (list_console_messages, get_console_message)
+  4. Network Requests (list_network_requests, get_network_request)
+  5. Performance Traces (performance_start_trace, performance_stop_trace)
+  6. Workflow completo de coleta (exemplo TC-L1-001)
+  7. Checklist de coleta (antes/durante/após)
+  8. Quick Reference Table (todos comandos MCP)
+- ✅ **Naming conventions** para arquivos de evidências
+- ✅ **Exemplos práticos** de cada comando
+- ✅ **Parâmetros completos** documentados
+- ✅ **Workflow de validação multi-tenant** com network requests
+
+**Impacto:** Agora há documentação completa de COMO coletar evidências MCP.
+
+### v1.2.0 (2026-02-16) - 🔍 READ-ONLY ENFORCEMENT
+**CRÍTICO - Mudança de Paradigma:**
+- 🔴 **Modo READ-ONLY obrigatório** - Nenhuma modificação na base de código
+- 🔴 **Princípios de Validação Não-Invasiva** adicionados
+- 🔴 **Todos testes CRUD** ajustados para observação ou sandbox
+- ✅ Testes L2 (CRUD) agora com modo "OBSERVAÇÃO APENAS"
+- ✅ Template de relatório focado em **DIAGNÓSTICO**
+- ✅ Seção de "Evidências Coletadas" (screenshots, logs, traces)
+- ✅ Template detalhado de Bug Report
+- ✅ Recomendações de correção por prioridade (P0, P1, P2, P3)
+- ✅ Estrutura de artefatos (screenshots, snapshots, logs, traces)
+- ✅ Avisos em TODOS os testes que modificam dados
+
+**Objetivo:** Garantir que validação seja 100% diagnóstica sem alterações na base.
 
 ### v1.1.0 (2026-02-16)
 **Adicionado do `browser-testing.md`:**
