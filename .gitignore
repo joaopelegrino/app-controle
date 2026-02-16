@@ -63,3 +63,8 @@ debug-screenshots/
 *.bak
 *.backup
 .cache/
+
+# Claude Code
+.claude/logs/
+.claude/_usuario/
+.claude/meta-estrutura.md

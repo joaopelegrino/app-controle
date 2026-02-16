@@ -7,8 +7,10 @@ Este diretório contém a configuração do Claude Code para o projeto app-contr
 ```
 .claude/
 ├── README.md                 # Este arquivo
-├── settings.local.json       # Configurações locais
-├── hooks.toml                # Hooks de automação
+├── settings.json             # Configurações globais (versionadas)
+├── settings.local.json       # Configurações do projeto (versionadas)
+├── hooks.toml                # Hooks de automação ✨ NOVO
+├── CHANGELOG-METACONFIGURACAO.md  # Histórico de mudanças
 ├── agents/                   # Agents especializados
 │   ├── code-reviewer.md      # Revisão de código
 │   ├── security-auditor.md   # Auditoria de segurança
@@ -117,6 +119,20 @@ Ambos podem coexistir e servem ferramentas diferentes.
 ---
 
 **Migrado de:** `.factory/` (Factory Droid)
-**Data:** 2026-01-22 | **Atualizado:** 2026-02-10
-**Versão:** 2.0.0 (Sprint 15 - Hub de Especialistas)
+**Data:** 2026-01-22 | **Atualizado:** 2026-02-16
+**Versão:** 2.1.0 (Metaconfiguração atualizada para Claude Code v1.x)
 **Roles:** 5 (c_level, admin, instructor, student, specialist)
+
+---
+
+## ⚡ Mudanças Recentes (v2.1.0 - 2026-02-16)
+
+### Correções Críticas Aplicadas
+- ✅ CLAUDE.md movido para raiz do projeto (padrão atualizado)
+- ✅ Campo `model` corrigido (objeto → string)
+- ✅ hooks.toml criado com 3 hooks ativos
+- ✅ Separação settings.json (global) vs settings.local.json (projeto)
+- ✅ defaultSubagentModel adicionado (Haiku para economia)
+- ✅ .gitignore atualizado (logs, _usuario)
+
+📄 **Ver detalhes:** `.claude/CHANGELOG-METACONFIGURACAO.md`

@@ -1,0 +1,28 @@
+# Logs
+logs/data/
+logs/*.log
+*.log
+
+# Secrets (NUNCA commitar!)
+secrets/
+!secrets/README.md
+*.env
+*.key
+*.pem
+*.secret
+credentials.json
+
+# Temporary files
+tmp/
+*.tmp
+*.swp
+*~
+.DS_Store
+
+# Local settings (não compartilhar)
+settings.local.json
+_usuario/
+
+# Data caches
+data/
+*.cache

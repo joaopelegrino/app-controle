@@ -1,82 +1,65 @@
-# Hooks de automação para Claude Code
-# Configuração de hooks para execução automática em eventos específicos
+# Claude Code Hooks Configuration
+# Version: 1.0.0
+# Project: app-controle (TrainB2B)
+# Updated: 2026-02-16
 
-[hooks]
+# =============================================================================
+# Session Hooks
+# =============================================================================
 
-# Hook pre-tool: Executa antes de operações críticas
-[hooks.pre_tool]
-# Proteção contra rm -rf em diretórios importantes
-protected_paths = [
-  "src/",
-  "docs/",
-  ".claude/",
-  ".factory/",
-  "package.json",
-  "bun.lock"
-]
+[session-start]
+command = "mise check"
+description = "Verificar ambiente mise ao iniciar sessão Claude Code"
+enabled = true
 
-# Hook post-tool: Executa após certas operações
-[hooks.post_tool]
-# Auto-format após edições
-auto_format = true
-format_command = "bun run lint -- --fix"
+# =============================================================================
+# Git Hooks
+# =============================================================================
 
-# Hook de sessão
-[hooks.session]
-# Arquivos para verificar no início da sessão
-startup_checks = [
-  "docs/backlog/ROADMAP.md",
-  ".mise.toml"
-]
+[pre-commit]
+command = "bun run test && bun run lint"
+description = "Rodar testes e lint antes de commits"
+enabled = true
+timeout = 120000  # 2 minutos
 
-# Mensagem de boas-vindas
-welcome_message = """
-╔════════════════════════════════════════════════════════════════╗
-║  🎓 app-controle (TrainB2B)                                    ║
-║     Plataforma B2B de Treinamento Técnico Corporativo          ║
-╠════════════════════════════════════════════════════════════════╣
-║  Quick Commands:                                                ║
-║    bun run dev              Start development server           ║
-║    bun run test             Run tests                          ║
-║    mise run security        Security scan                      ║
-║                                                                 ║
-║  Slash Commands:                                                ║
-║    /quick-audit             Quick health check                 ║
-║    /full-coverage           Coverage report                    ║
-║    /pr-ready                Pre-PR checklist                   ║
-╚════════════════════════════════════════════════════════════════╝
-"""
+[post-commit]
+command = "echo 'Commit realizado com sucesso!'"
+description = "Confirmação de commit"
+enabled = false
 
-# Validações de commit
-[hooks.before_commit]
-# Comandos para executar antes de commit
-checks = [
-  "bun run lint",
-  "bun run test"
-]
+# =============================================================================
+# Tool Use Hooks
+# =============================================================================
 
-# Verificar por secrets
-check_secrets = true
-secret_patterns = [
-  "password",
-  "secret",
-  "api_key",
-  "token",
-  "private_key"
-]
+[post-tool-use]
+command = "echo ''"
+description = "Log de uso de ferramentas (desabilitado)"
+enabled = false
 
-# Padrões de arquivos sensíveis
-[hooks.sensitive_files]
-warn_on_edit = [
-  ".env",
-  ".env.*",
-  "credentials.*",
-  "*.pem",
-  "*.key"
-]
+# =============================================================================
+# Environment Hooks
+# =============================================================================
 
-# Notificações
-[hooks.notifications]
-# Notificar quando tasks longas completam
-on_long_task_complete = true
-long_task_threshold_seconds = 60
+[pre-task]
+command = "mise current"
+description = "Verificar runtime atual antes de tarefas"
+enabled = false
+
+# =============================================================================
+# Security Hooks
+# =============================================================================
+
+[pre-deploy]
+command = "mise run security:scan-staged"
+description = "Scan de segurança antes de deploy"
+enabled = true
+timeout = 60000  # 1 minuto
+
+# =============================================================================
+# Notes
+# =============================================================================
+# - enabled=true: Hook ativo
+# - enabled=false: Hook desabilitado (pode habilitar quando necessário)
+# - timeout: Tempo máximo de execução em ms (padrão: 30000)
+# - Para adicionar novos hooks, seguir formato acima
+# - Comandos podem usar mise tasks (mise run <task>)
