@@ -1,0 +1,516 @@
+/**
+ * FluSisTip Onboarding - Flash Cards com Rastreabilidade
+ *
+ * Gerado por: Diagnostico Forense TrainB2B v1.0
+ * Data: 2026-02-17
+ * Total: 50 flash cards em 8 categorias
+ *
+ * CONTEXTO LLM (zero-context resume):
+ * Flash cards extraidos do diagnostico forense do projeto FluSisTip.
+ * Cada card referencia o arquivo/namespace fonte para rastreabilidade.
+ * Categorias: setup, arquitetura, dominio, workflow, llm, frontend, gotcha, processo
+ */
+
+export const flashCardsFlusistipOnboarding = [
+  // ============================================================================
+  // CATEGORIA: SETUP (8 cards)
+  // ============================================================================
+  {
+    id: 1,
+    pergunta: 'Qual comando inicia o backend FluSisTip?',
+    resposta: 'mise run dev — porta 3000, usa Ring+Jetty. Para full-stack: mise run dev:all (backend 3000 + frontend 8080)',
+    categoria: 'setup',
+    dificuldade: 'facil',
+    fonte: '.mise.toml',
+    cursoId: 'flusistip-fundamentos',
+  },
+  {
+    id: 2,
+    pergunta: 'Por que usamos Bun em vez de npm no FluSisTip?',
+    resposta: '35x mais rapido para install, padrao do projeto. Node.js 24 e fallback via mise. NUNCA usar npm/yarn.',
+    categoria: 'setup',
+    dificuldade: 'facil',
+    fonte: 'CLAUDE.md ADR',
+    cursoId: 'flusistip-fundamentos',
+  },
+  {
+    id: 3,
+    pergunta: 'Como conectar ao REPL do FluSisTip?',
+    resposta: 'mise run repl (interativo) ou mise run repl:headless (background). Usar nREPL com CIDER, NAO terminal REPL.',
+    categoria: 'setup',
+    dificuldade: 'facil',
+    fonte: '.mise.toml tasks.repl',
+    cursoId: 'flusistip-fundamentos',
+  },
+  {
+    id: 4,
+    pergunta: 'Quantos arquivos fonte tem o FluSisTip?',
+    resposta: '119 arquivos: 86 backend (.clj) + 30 frontend (.cljs) + 11 testes. Total 47.390 LOC.',
+    categoria: 'setup',
+    dificuldade: 'facil',
+    fonte: 'Diagnostico Forense - Fase 1',
+    cursoId: 'flusistip-fundamentos',
+  },
+  {
+    id: 5,
+    pergunta: 'O que e Datomic Local e por que foi escolhido?',
+    resposta: 'Database imutavel (event sourcing nativo). Cada transacao e um fato no tempo — ideal para audit trail em healthcare. Versao 1.0.277.',
+    categoria: 'setup',
+    dificuldade: 'medio',
+    fonte: 'CLAUDE.md ADR / deps.edn',
+    cursoId: 'flusistip-fundamentos',
+  },
+  {
+    id: 6,
+    pergunta: 'Onde fica o diretorio de dados do Datomic Local?',
+    resposta: 'Diretorio data/ na raiz do projeto. Criar com: mise run db:create. Reset com: mise run db:reset (APAGA tudo!).',
+    categoria: 'setup',
+    dificuldade: 'facil',
+    fonte: '.mise.toml tasks.db',
+    cursoId: 'flusistip-fundamentos',
+  },
+  {
+    id: 7,
+    pergunta: 'Quais sao os 4 niveis de validacao (L1-L4)?',
+    resposta: 'L1=lint(clj-kondo), L2=load(require sem erro), L3=test(Kaocha), L4=browser(Playwright). NAO pular niveis — cada um depende do anterior.',
+    categoria: 'setup',
+    dificuldade: 'medio',
+    fonte: 'CLAUDE.md L231-287',
+    cursoId: 'flusistip-fundamentos',
+  },
+  {
+    id: 8,
+    pergunta: 'Qual o workflow de desenvolvimento recomendado?',
+    resposta: '6 passos: Design → Plan → Validate(REPL) → Implement → Test → Commit. Usar Plan Mode para features complexas.',
+    categoria: 'setup',
+    dificuldade: 'medio',
+    fonte: 'CLAUDE.md L130-162',
+    cursoId: 'flusistip-fundamentos',
+  },
+
+  // ============================================================================
+  // CATEGORIA: ARQUITETURA (8 cards)
+  // ============================================================================
+  {
+    id: 9,
+    pergunta: 'Quantas camadas tem a arquitetura FluSisTip?',
+    resposta: '7 camadas: Frontend → API Gateway → Domain → Workflow Engine → LLM Integration → Database → Infra.',
+    categoria: 'arquitetura',
+    dificuldade: 'medio',
+    fonte: 'RELATORIO-FORENSE.md Secao 2',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 10,
+    pergunta: 'Quais padroes arquiteturais o FluSisTip usa?',
+    resposta: 'DDD, Event Sourcing (Datomic), CQRS parcial, Multi-Tenant, State Machine (7 estados), RBAC (8 personas), Feature Flags, HITL.',
+    categoria: 'arquitetura',
+    dificuldade: 'medio',
+    fonte: 'RELATORIO-FORENSE.md Secao 2',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 11,
+    pergunta: 'Quantos endpoints REST tem a API?',
+    resposta: '98 endpoints validados. GET: 23 (queries), POST: 20 (commands), PUT: 4, DELETE: 6. Sem PATCH — usar PUT.',
+    categoria: 'arquitetura',
+    dificuldade: 'medio',
+    fonte: 'hub.api.routes (501 LOC)',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 12,
+    pergunta: 'Como funciona o middleware stack do Ring?',
+    resposta: 'CORS → Logging → JSON → Error → Tenant(optional) → Auth(JWT) → RBAC → Handler. Ordem IMPORTA — Auth antes de RBAC.',
+    categoria: 'arquitetura',
+    dificuldade: 'dificil',
+    fonte: 'hub.server + hub.api.routes',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 13,
+    pergunta: 'O que sao os 12 schemas EDN do Datomic?',
+    resposta: 'Core, Componentes, Versionamento, Auditoria, HITL(698 LOC!), Execucao, Kanban, Notificacoes, Auth, Decision Points, Approval Workflow, Seed.',
+    categoria: 'arquitetura',
+    dificuldade: 'dificil',
+    fonte: 'fluxo-de-sistemas/datomic-schema/',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 14,
+    pergunta: 'Qual o padrao de error handling do backend?',
+    resposta: 'Tuplas {:sucesso true/false :erros [...]} — NAO usa exceptions. Cada funcao retorna resultado estruturado.',
+    categoria: 'arquitetura',
+    dificuldade: 'medio',
+    fonte: 'hub.workflow.orchestrator',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 15,
+    pergunta: 'O que sao Feature Flags e quais existem?',
+    resposta: '4 flags: :parallel-execution(GAP-001), :decision-point-lgpd(GAP-002), :drag-drop-kanban(GAP-003), :real-llm-execution. Todas false por default.',
+    categoria: 'arquitetura',
+    dificuldade: 'medio',
+    fonte: 'hub.config (178 LOC)',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 16,
+    pergunta: 'Qual arquivo e o maior hotspot do projeto?',
+    resposta: 'frontend/src/hub/events.cljs — 1.348 LOC + 21 commits. Candidato a decomposicao em multiplos event namespaces.',
+    categoria: 'arquitetura',
+    dificuldade: 'medio',
+    fonte: 'Git log analysis',
+    cursoId: 'flusistip-frontend',
+  },
+
+  // ============================================================================
+  // CATEGORIA: DOMINIO (8 cards)
+  // ============================================================================
+  {
+    id: 17,
+    pergunta: 'Qual a hierarquia de entidades do FluSisTip?',
+    resposta: 'Tenant → Aplicacao → Funcao → Fluxo → Sistema → Componente (TextoBase/Contexto/ConfigLLM). Sistema e a unidade atomica de execucao.',
+    categoria: 'dominio',
+    dificuldade: 'medio',
+    fonte: 'hub.domain.*',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 18,
+    pergunta: 'O que e um Sistema no FluSisTip?',
+    resposta: 'Unidade atomica de execucao. Combina: 1 TextoBase + N Contextos + 0..1 ConfigLLM. Tem tipo (A/B/C/D) que define custo e provider.',
+    categoria: 'dominio',
+    dificuldade: 'medio',
+    fonte: 'hub.domain.sistema (548 LOC)',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 19,
+    pergunta: 'O que e um Fluxo no FluSisTip?',
+    resposta: 'Pipeline ORDENADO de Sistemas. Ordem definida por :fluxo-sistema/ordem (1-based). Execucao sequencial por default, paralela com feature flag.',
+    categoria: 'dominio',
+    dificuldade: 'medio',
+    fonte: 'hub.domain.fluxo (481 LOC)',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 20,
+    pergunta: 'Quais sao os 3 tipos de Componente?',
+    resposta: 'texto-base (template/prompt), contexto (dados externos), config-llm (parametros do modelo). Cada um tem versionamento SHA-256.',
+    categoria: 'dominio',
+    dificuldade: 'facil',
+    fonte: 'hub.domain.componente (427 LOC)',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 21,
+    pergunta: 'O que e HITL e por que e obrigatorio?',
+    resposta: 'Human-in-the-Loop: checkpoints onde humano DEVE aprovar/rejeitar decisao da IA. OBRIGATORIO em healthcare por regulacao CFM/CRP.',
+    categoria: 'dominio',
+    dificuldade: 'medio',
+    fonte: 'hub.agent.hitl (593 LOC)',
+    cursoId: 'flusistip-workflow',
+  },
+  {
+    id: 22,
+    pergunta: 'Quantos estados tem o workflow?',
+    resposta: '7+1: draft, technical-review, legal-review, revision, approved, published, archived + external-validation (condicional).',
+    categoria: 'dominio',
+    dificuldade: 'medio',
+    fonte: 'hub.workflow.transitions (291 LOC)',
+    cursoId: 'flusistip-workflow',
+  },
+  {
+    id: 23,
+    pergunta: 'Como funciona aprovacao unanime?',
+    resposta: '3 votos necessarios, TODOS devem aprovar. 1 rejeicao = workflow volta para :revision. Apenas :legal-review→:approved requer unanimidade.',
+    categoria: 'dominio',
+    dificuldade: 'dificil',
+    fonte: 'hub.workflow.unanimous',
+    cursoId: 'flusistip-workflow',
+  },
+  {
+    id: 24,
+    pergunta: 'O que sao os 4 tipos de sistema (A/B/C/D)?',
+    resposta: 'A=Pure LLM(70%), B=LLM+DB(20%), C=LLM+Web(8%), D=All(2%). Otimizacao de custo 41%. Tipo define provider e preco.',
+    categoria: 'dominio',
+    dificuldade: 'medio',
+    fonte: 'hub.domain.sistema :tipo',
+    cursoId: 'flusistip-llm',
+  },
+
+  // ============================================================================
+  // CATEGORIA: WORKFLOW (6 cards)
+  // ============================================================================
+  {
+    id: 25,
+    pergunta: 'Qual estado e final no workflow?',
+    resposta: ':archived — sem transicoes de saida. Uma vez arquivado, nao pode voltar.',
+    categoria: 'workflow',
+    dificuldade: 'facil',
+    fonte: 'hub.workflow.transitions',
+    cursoId: 'flusistip-workflow',
+  },
+  {
+    id: 26,
+    pergunta: 'O que e um Decision Point?',
+    resposta: 'Branching condicional baseado em score. Ex: LGPD score >= 70 redireciona para :external-validation. Feature flag :decision-point-lgpd.',
+    categoria: 'workflow',
+    dificuldade: 'dificil',
+    fonte: 'hub.workflow.decision + orchestrator',
+    cursoId: 'flusistip-workflow',
+  },
+  {
+    id: 27,
+    pergunta: 'Como funciona o SLA no Kanban?',
+    resposta: '4 niveis: healthy(>50%) → warning(25-50%) → critical(10-25%) → breached(<0%). critical-pulsing e visual (<10%). Remaining hours pode ser NEGATIVO.',
+    categoria: 'workflow',
+    dificuldade: 'medio',
+    fonte: 'hub.sla.monitor + frontend subs.cljs',
+    cursoId: 'flusistip-workflow',
+  },
+  {
+    id: 28,
+    pergunta: 'Como funciona validacao externa?',
+    resposta: 'Gerar link com JWT token → Validador externo (P6) acessa portal → Submete parecer → Callback API → Workflow avanca.',
+    categoria: 'workflow',
+    dificuldade: 'dificil',
+    fonte: 'hub.api.external.*',
+    cursoId: 'flusistip-workflow',
+  },
+  {
+    id: 29,
+    pergunta: 'Pode fazer rollback de :approved para :draft?',
+    resposta: 'NAO diretamente. Usar :revision como intermediario. Nao existe transicao :approved→:draft na state machine.',
+    categoria: 'workflow',
+    dificuldade: 'medio',
+    fonte: 'hub.workflow.transitions',
+    cursoId: 'flusistip-workflow',
+  },
+  {
+    id: 30,
+    pergunta: 'Quem pode mover cards no Kanban?',
+    resposta: 'P3 (Reviewer) + admin roles. Mover card = avancar estado do workflow. Feature flag :drag-drop-kanban para UI drag.',
+    categoria: 'workflow',
+    dificuldade: 'facil',
+    fonte: 'hub.api.kanban.move',
+    cursoId: 'flusistip-workflow',
+  },
+
+  // ============================================================================
+  // CATEGORIA: LLM (6 cards)
+  // ============================================================================
+  {
+    id: 31,
+    pergunta: 'Qual o fallback chain de LLM providers?',
+    resposta: 'Gemini Flash → Gemini Pro → Claude Haiku → Mock. Automatico em caso de falha. Mock SEMPRE disponivel.',
+    categoria: 'llm',
+    dificuldade: 'medio',
+    fonte: 'hub.llm.executor',
+    cursoId: 'flusistip-llm',
+  },
+  {
+    id: 32,
+    pergunta: 'Como funciona auth do Gemini via Vertex AI?',
+    resposta: 'ADC (Application Default Credentials) via gcloud auth. Token cacheado, invalidado em 401. Retry exponencial em 429/500/503.',
+    categoria: 'llm',
+    dificuldade: 'dificil',
+    fonte: 'hub.llm.gemini (287 LOC)',
+    cursoId: 'flusistip-llm',
+  },
+  {
+    id: 33,
+    pergunta: 'O que sao placeholders {{var}}?',
+    resposta: 'Variaveis em TextoBase substituidas por valores de Contextos. Ex: {{paciente}} → "Joao Silva". TODOS devem resolver antes de executar.',
+    categoria: 'llm',
+    dificuldade: 'facil',
+    fonte: 'hub.domain.sistema',
+    cursoId: 'flusistip-llm',
+  },
+  {
+    id: 34,
+    pergunta: 'Por que Claude GCP esta bloqueado?',
+    resposta: 'Habilitacao no Model Garden do GCP pendente. Workaround: usar Gemini como fallback (ja testado e funcional).',
+    categoria: 'llm',
+    dificuldade: 'medio',
+    fonte: 'STATUS-EXECUTIVO-MVP.md',
+    cursoId: 'flusistip-llm',
+  },
+  {
+    id: 35,
+    pergunta: 'Quais safety settings o Gemini usa?',
+    resposta: 'Threshold HIGH para: DANGEROUS_CONTENT, HARASSMENT, HATE_SPEECH, SEXUALLY_EXPLICIT. Necessario para conteudo healthcare.',
+    categoria: 'llm',
+    dificuldade: 'medio',
+    fonte: 'hub.llm.gemini safety-settings',
+    cursoId: 'flusistip-llm',
+  },
+  {
+    id: 36,
+    pergunta: 'Como ativar execucao LLM real?',
+    resposta: 'export FEATURE_REAL_LLM_EXECUTION=true && reiniciar backend. Ou: mise run qa:llm-on para ver instrucoes.',
+    categoria: 'llm',
+    dificuldade: 'facil',
+    fonte: '.mise.toml tasks.qa',
+    cursoId: 'flusistip-llm',
+  },
+
+  // ============================================================================
+  // CATEGORIA: FRONTEND (6 cards)
+  // ============================================================================
+  {
+    id: 37,
+    pergunta: 'O que e Re-frame e como funciona?',
+    resposta: 'Redux-like para ClojureScript. Ciclo: View dispatches Event → Handler updates DB → Subscription derives data → View re-renders.',
+    categoria: 'frontend',
+    dificuldade: 'medio',
+    fonte: 'hub.events + hub.subs + hub.views',
+    cursoId: 'flusistip-frontend',
+  },
+  {
+    id: 38,
+    pergunta: 'Quantos eventos e subscriptions tem o frontend?',
+    resposta: '~120 events em events.cljs (1.348 LOC) + ~70 subscriptions em subs.cljs (499 LOC). Tudo em 2 arquivos.',
+    categoria: 'frontend',
+    dificuldade: 'facil',
+    fonte: 'hub.events + hub.subs',
+    cursoId: 'flusistip-frontend',
+  },
+  {
+    id: 39,
+    pergunta: 'Qual o maior componente UI e quantas LOC tem?',
+    resposta: 'Playground (4 arquivos, 1.197 LOC): biblioteca.cljs, create_modal.cljs, editor.cljs, pipeline.cljs.',
+    categoria: 'frontend',
+    dificuldade: 'facil',
+    fonte: 'frontend/src/hub/components/playground/',
+    cursoId: 'flusistip-frontend',
+  },
+  {
+    id: 40,
+    pergunta: 'Como funciona autenticacao no frontend?',
+    resposta: 'Login → POST /api/auth/login → Store JWT em localStorage + app-db → Restore session on page load via :auth/restore-session.',
+    categoria: 'frontend',
+    dificuldade: 'medio',
+    fonte: 'hub.auth + hub.events (auth section)',
+    cursoId: 'flusistip-frontend',
+  },
+  {
+    id: 41,
+    pergunta: 'O que e auth-initializing? e por que existe?',
+    resposta: 'Flag que previne race condition (BUG-NEW-001). Componentes esperam auth completar antes de fazer fetches. True ate :auth/session-restored.',
+    categoria: 'frontend',
+    dificuldade: 'dificil',
+    fonte: 'hub.subs :auth/initializing?',
+    cursoId: 'flusistip-frontend',
+  },
+  {
+    id: 42,
+    pergunta: 'Como usar :navigate vs :set-route?',
+    resposta: 'SEMPRE usar :navigate — atualiza URL + dispatches fetch. :set-route so atualiza app-db (nao muda URL do browser).',
+    categoria: 'frontend',
+    dificuldade: 'medio',
+    fonte: 'hub.events (navigation section)',
+    cursoId: 'flusistip-frontend',
+  },
+
+  // ============================================================================
+  // CATEGORIA: GOTCHA (8 cards)
+  // ============================================================================
+  {
+    id: 43,
+    pergunta: 'O que acontece se esquecer tenant-id em uma query?',
+    resposta: 'DATA LEAKAGE — dados de um tenant vazam para outro. CRITICO em healthcare. Middleware valida mas queries TAMBEM devem filtrar.',
+    categoria: 'gotcha',
+    dificuldade: 'dificil',
+    fonte: 'hub.api.middleware.tenant',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 44,
+    pergunta: 'Por que query-many nao funciona para multi-column?',
+    resposta: 'Bug Datomic Client API: descarta todas colunas exceto a primeira. Usar d/q direto. ADR-364, 17 ocorrencias corrigidas em 6 arquivos.',
+    categoria: 'gotcha',
+    dificuldade: 'dificil',
+    fonte: 'ADR-364 / roadmap/05-bugs-gaps.md',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 45,
+    pergunta: 'Por que seeds devem ser 100% idempotentes?',
+    resposta: 'Seeds rodam em cada startup. Se nao idempotentes, duplicam dados. NAO usar scalar find (.) — usar ffirst/first. ADR-364.',
+    categoria: 'gotcha',
+    dificuldade: 'dificil',
+    fonte: 'ADR-364 / Fase 9.7 (10 bugs)',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 46,
+    pergunta: 'O que acontece se nao usar :reload no REPL?',
+    resposta: 'REPL stale: codigo antigo continua em memoria. Bugs fantasma que "nao deveriam existir". SEMPRE: (require \'[ns :reload]) apos alterar arquivo.',
+    categoria: 'gotcha',
+    dificuldade: 'medio',
+    fonte: 'CLAUDE.md REPL workflow',
+    cursoId: 'flusistip-fundamentos',
+  },
+  {
+    id: 47,
+    pergunta: 'Por que JWT keywords viram strings?',
+    resposta: 'JWT serializa Clojure keywords como strings. Middleware deserializa de volta com keyword conversion. Esquecer = RBAC falha silenciosamente.',
+    categoria: 'gotcha',
+    dificuldade: 'dificil',
+    fonte: 'hub.api.middleware.auth',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 48,
+    pergunta: 'ALERTA: Os testes tem assertions?',
+    resposta: '93 deftest com ZERO (is ...) assertions encontradas. Testes podem ser no-ops (sempre passam). Investigar mecanismo de assertion usado.',
+    categoria: 'gotcha',
+    dificuldade: 'dificil',
+    fonte: 'Diagnostico Forense - Fase 1 (test analysis)',
+    cursoId: 'flusistip-fundamentos',
+  },
+  {
+    id: 49,
+    pergunta: 'O que e soft delete no FluSisTip?',
+    resposta: 'NAO faz hard DELETE. Flag :ativo? false em vez de deletar. Queries filtram por :ativo? true. Dados permanecem para audit.',
+    categoria: 'gotcha',
+    dificuldade: 'medio',
+    fonte: 'hub.domain.* (padrao geral)',
+    cursoId: 'flusistip-dominio',
+  },
+  {
+    id: 50,
+    pergunta: 'Auth secret esta seguro?',
+    resposta: 'NAO para producao. TODO em hub.api.auth.clj:31: "Mover secret para variavel de ambiente". Hardcoded no codigo atual.',
+    categoria: 'gotcha',
+    dificuldade: 'dificil',
+    fonte: 'hub.api.auth:31',
+    cursoId: 'flusistip-dominio',
+  },
+];
+
+// ============================================================================
+// CATEGORIAS E METRICAS
+// ============================================================================
+
+export const flashCardCategorias = [
+  { id: 'setup', nome: 'Setup e Ambiente', cor: 'bg-green-500', total: 8 },
+  { id: 'arquitetura', nome: 'Arquitetura', cor: 'bg-blue-500', total: 8 },
+  { id: 'dominio', nome: 'Dominio Healthcare', cor: 'bg-purple-500', total: 8 },
+  { id: 'workflow', nome: 'Workflow e HITL', cor: 'bg-indigo-500', total: 6 },
+  { id: 'llm', nome: 'Integracao LLM', cor: 'bg-cyan-500', total: 6 },
+  { id: 'frontend', nome: 'Frontend Re-frame', cor: 'bg-teal-500', total: 6 },
+  { id: 'gotcha', nome: 'Gotchas e Armadilhas', cor: 'bg-orange-500', total: 8 },
+];
+
+export const flashCardMetricas = {
+  total: 50,
+  categorias: 7,
+  facil: 10,
+  medio: 24,
+  dificil: 16,
+  comFonte: 50,
+  fontesUnicas: 32,
+};
