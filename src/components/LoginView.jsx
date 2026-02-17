@@ -148,46 +148,25 @@ export function LoginView() {
           </div>
         </div>
 
-        {/* Credenciais de Demo */}
+        {/* Credenciais FluSisTip */}
         <div className="mt-6 p-4 bg-gray-800/50 rounded-xl border border-gray-700">
           <p className="text-gray-400 text-xs text-center mb-3">
-            {t('auth:login.demoCredentials')}
+            {t('auth:login.demoCredentialsFlusistip')}
           </p>
           <div className="grid grid-cols-2 gap-2 text-xs">
             <button
               type="button"
-              onClick={() => { setEmail('ceo@acmetech.com'); setPassword('Demo@2026'); }}
-              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-gray-300 transition-colors"
+              onClick={() => { setEmail('maria@acmetech.com'); setPassword('Demo@2026'); }}
+              className="px-3 py-2 bg-blue-700 hover:bg-blue-600 rounded text-gray-300 transition-colors"
             >
-              {t('auth:roles.c_level')}
-            </button>
-            <button
-              type="button"
-              onClick={() => { setEmail('admin@acmetech.com'); setPassword('Demo@2026'); }}
-              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-gray-300 transition-colors"
-            >
-              {t('auth:roles.admin')}
+              {t('auth:roles.flusistip_student')}
             </button>
             <button
               type="button"
               onClick={() => { setEmail('prof@acmetech.com'); setPassword('Demo@2026'); }}
-              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-gray-300 transition-colors"
+              className="px-3 py-2 bg-orange-700 hover:bg-orange-600 rounded text-gray-300 transition-colors"
             >
-              {t('auth:roles.instructor')}
-            </button>
-            <button
-              type="button"
-              onClick={() => { setEmail('maria@acmetech.com'); setPassword('Demo@2026'); }}
-              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-gray-300 transition-colors"
-            >
-              {t('auth:roles.student')}
-            </button>
-            <button
-              type="button"
-              onClick={() => { setEmail('joao.silva.specialist@plataformab2b.com'); setPassword('Demo@2026'); }}
-              className="px-3 py-2 bg-indigo-700 hover:bg-indigo-600 rounded text-gray-300 transition-colors col-span-2"
-            >
-              {t('auth:roles.specialist')}
+              {t('auth:roles.flusistip_instructor')}
             </button>
           </div>
         </div>

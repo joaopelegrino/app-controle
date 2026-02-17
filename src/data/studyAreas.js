@@ -1,199 +1,111 @@
 /**
- * Áreas de Estudo - MVP Simplificado (US-044)
+ * Áreas de Estudo - FluSisTip Onboarding
  *
- * Este arquivo contém apenas as áreas que seguem o padrão estabelecido.
- * No MVP, apenas BASH está ativo como referência de implementação correta.
+ * 5 cursos de onboarding gerados por diagnóstico forense
+ * do projeto FluSisTip (Healthcare LLM - 47.390 LOC).
  *
  * PADRÃO DE ÁREA DE ESTUDO:
  * - name: Nome do curso
  * - icon: Emoji representativo
  * - description: Descrição curta
  * - status: 'active' | 'in-development'
- * - badge: 'integrated' | 'new' | null
+ * - badge: 'integrated' | 'new' | 'onboarding' | null
  * - modules: Número de módulos
  * - hours: Horas estimadas
  * - hasIntegratedApp: true se tem sistema integrado (LearningSystem)
  * - flashcards: Objeto com categorias de flashcards
  *
- * @see docs/backlog/ROADMAP.md - US-044
- * @see bashLearningData.js - Padrão de referência para módulos
+ * @see flusistipOnboardingData.js - Dados detalhados FluSisTip
+ * @see flusistipFlashCards.js - Flash cards FluSisTip
  */
+
+import { flashCardsFlusistipOnboarding } from './flusistipFlashCards';
+
+/**
+ * Converte flash cards FluSisTip (pergunta/resposta) para o formato
+ * esperado pelo sistema (question/answer com categorias agrupadas).
+ */
+function buildFlusistipFlashcards(cursoId) {
+  const cards = flashCardsFlusistipOnboarding.filter(c => c.cursoId === cursoId);
+  const byCategory = {};
+  cards.forEach(card => {
+    const cat = card.categoria;
+    if (!byCategory[cat]) {
+      byCategory[cat] = { name: cat.charAt(0).toUpperCase() + cat.slice(1), cards: [] };
+    }
+    byCategory[cat].cards.push({
+      question: card.pergunta,
+      answer: card.resposta,
+      details: `Fonte: ${card.fonte} | Dificuldade: ${card.dificuldade}`
+    });
+  });
+  return byCategory;
+}
 
 export const studyAreas = {
   // ============================================
-  // ÁREA ATIVA - PADRÃO DE REFERÊNCIA
+  // FLUSISTIP ONBOARDING - Diagnóstico Forense
+  // 5 cursos gerados de análise de 47.390 LOC
+  // @see database/seed-onboarding-flusistip.sql
   // ============================================
 
-  bash: {
-    name: 'Bash',
-    icon: '🐚',
-    description: 'Shell scripting, automação e linha de comando',
+  'flusistip-fundamentos': {
+    name: 'FluSisTip - Fundamentos e Ambiente',
+    icon: '\u{1F527}',
+    description: 'Setup completo: Clojure 1.12, Java 21, Datomic Local, Bun, mise. REPL-first workflow e validação L1-L4.',
     status: 'active',
-    badge: 'integrated',
-    modules: 16,
-    hours: 32,
-    hasIntegratedApp: true,
-    flashcards: {
-      basics: {
-        name: 'Fundamentos',
-        cards: [
-          {
-            question: 'Como criar uma variável em Bash?',
-            answer: 'VARIAVEL="valor" (sem espaços ao redor do =)',
-            code: 'NAME="Developer"\necho $NAME\n# ou\necho ${NAME}',
-            details: 'Em Bash, não use espaços ao redor do =\nUse $ para acessar o valor\nUse ${} para delimitar claramente a variável'
-          },
-          {
-            question: 'Como fazer um loop for em Bash?',
-            answer: 'Use for item in lista; do comandos; done',
-            code: 'for i in 1 2 3 4 5; do\n    echo "Número: $i"\ndone\n\n# Ou com range\nfor i in {1..5}; do\n    echo "Número: $i"\ndone',
-            details: 'Sintaxe: for VAR in LISTA; do COMANDOS; done\n{1..5} expande para 1 2 3 4 5\nPode iterar sobre arquivos: for file in *.txt'
-          }
-        ]
-      }
-    }
-  }
-
-  // ============================================
-  // ÁREAS COMENTADAS - NÃO SEGUEM PADRÃO BASH
-  // Serão reativadas após padronização (US-043)
-  // ============================================
-
-  /*
-  linux: {
-    name: 'Linux',
-    icon: '🐧',
-    description: 'Sistema operacional, comandos e administração',
-    status: 'in-development',
-    modules: 12,
-    hours: 24,
-    flashcards: { ... }
+    badge: 'onboarding',
+    modules: 5,
+    hours: 8,
+    hasIntegratedApp: false,
+    flashcards: buildFlusistipFlashcards('flusistip-fundamentos')
   },
 
-  servers: {
-    name: 'Servidores',
-    icon: '🖥️',
-    description: 'Web servers, configuração e otimização',
-    status: 'in-development',
-    modules: 10,
-    hours: 20,
-    flashcards: { ... }
-  },
-
-  devops: {
-    name: 'DevOps',
-    icon: '⚙️',
-    description: 'CI/CD, automação e práticas modernas',
-    status: 'in-development',
-    modules: 15,
-    hours: 30,
-    flashcards: { ... }
-  },
-
-  cryptography: {
-    name: 'Criptografia',
-    icon: '🔐',
-    description: 'Algoritmos, protocolos e segurança de dados',
-    status: 'in-development',
+  'flusistip-dominio': {
+    name: 'FluSisTip - Domínio Healthcare e Multi-Tenant',
+    icon: '\u{1F3E5}',
+    description: 'Entidades DDD, Datomic schemas (12 EDN), multi-tenant isolation, RBAC 8 personas, compliance LGPD/CFM/CRP.',
+    status: 'active',
+    badge: 'onboarding',
     modules: 8,
-    hours: 16,
-    flashcards: { ... }
+    hours: 12,
+    hasIntegratedApp: false,
+    flashcards: buildFlusistipFlashcards('flusistip-dominio')
   },
 
-  security: {
-    name: 'Segurança',
-    icon: '🛡️',
-    description: 'Pentest, hardening e proteção de sistemas',
-    status: 'in-development',
-    modules: 12,
-    hours: 24,
-    flashcards: { ... }
-  },
-
-  clang: {
-    name: 'Linguagem C',
-    icon: '🔨',
-    description: 'Programação em C do básico ao avançado',
+  'flusistip-workflow': {
+    name: 'FluSisTip - Workflow Engine e HITL',
+    icon: '\u{2699}\u{FE0F}',
+    description: 'State machine 7 estados, aprovação unânime, Decision Points (LGPD), HITL checkpoints, Kanban SLA monitoring.',
     status: 'active',
-    badge: 'integrated',
-    modules: 50,
-    hours: 100,
-    hasIntegratedApp: true,
-    // NOTA: Não segue padrão Bash - precisa refatoração
-    flashcards: { ... }
+    badge: 'onboarding',
+    modules: 9,
+    hours: 15,
+    hasIntegratedApp: false,
+    flashcards: buildFlusistipFlashcards('flusistip-workflow')
   },
 
-  docker: {
-    name: 'Docker',
-    icon: '🐳',
-    description: 'Containers, imagens e orquestração',
-    status: 'in-development',
-    modules: 10,
-    hours: 20,
-    flashcards: { ... }
-  },
-
-  kubernetes: {
-    name: 'Kubernetes',
-    icon: '☸️',
-    description: 'Orquestração de containers em escala',
-    status: 'in-development',
-    modules: 15,
-    hours: 30,
-    flashcards: { ... }
-  },
-
-  vscode: {
-    name: 'VS Code WSL',
-    icon: '💻',
-    description: 'Desenvolvimento integrado com WSL2',
+  'flusistip-llm': {
+    name: 'FluSisTip - Integração LLM',
+    icon: '\u{1F916}',
+    description: 'Gemini/Claude via Vertex AI, provider fallback chain, placeholders {{var}}, sistemas A/B/C/D, cost tracking.',
     status: 'active',
-    badge: 'integrated',
-    modules: 8,
-    hours: 16,
-    hasIntegratedApp: true,
-    // NOTA: Não segue padrão Bash - precisa refatoração
-    flashcards: { ... }
+    badge: 'onboarding',
+    modules: 6,
+    hours: 10,
+    hasIntegratedApp: false,
+    flashcards: buildFlusistipFlashcards('flusistip-llm')
   },
 
-  claudecode: {
-    name: 'Claude Code',
-    icon: '🤖',
-    description: 'Ferramenta CLI da Anthropic para desenvolvimento assistido por IA',
+  'flusistip-frontend': {
+    name: 'FluSisTip - Frontend ClojureScript/Re-frame',
+    icon: '\u{1F3A8}',
+    description: 'Reagent (React 18), Re-frame (events/subs/fx), Playground editor, Kanban board, HITL interface, routing RBAC.',
     status: 'active',
-    badge: 'new',
-    modules: 12,
-    hours: 120,
-    hasIntegratedApp: true,
-    // NOTA: Não segue padrão Bash - precisa refatoração
-    flashcards: { ... }
-  },
-
-  rustprogramming: {
-    name: 'Sistemas de Aprendizado Rust',
-    icon: '🦀',
-    description: 'Curso completo de Rust Programming',
-    status: 'active',
-    badge: 'integrated',
-    modules: 24,
-    hours: 120,
-    hasIntegratedApp: true,
-    // NOTA: Não segue padrão Bash - precisa refatoração
-    flashcards: { ... }
-  },
-
-  rust: {
-    name: 'Rust',
-    icon: '🦀',
-    description: 'Caminho completo de aprendizado em desenvolvimento moderno',
-    status: 'active',
-    badge: 'new',
-    modules: 35,
-    hours: 140,
-    isLearningPath: true,
-    // NOTA: Modelo antigo de Learning Path com flashcards soltos
-    // Substituído pelo novo modelo em caminhoExemploData.js
-    flashcards: { ... }
+    badge: 'onboarding',
+    modules: 7,
+    hours: 12,
+    hasIntegratedApp: false,
+    flashcards: buildFlusistipFlashcards('flusistip-frontend')
   }
-  */
 };

@@ -401,9 +401,7 @@ const SistemaEducacionalCompleto = () => {
             <PrivateRoute>
               <HubView
                 studyAreas={studyAreas}
-                calculateStats={calculateStats}
                 openArea={openArea}
-                openLearningPath={openLearningPath}
               />
             </PrivateRoute>
           }

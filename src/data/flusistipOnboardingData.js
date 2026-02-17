@@ -68,6 +68,7 @@ export const diagnosticoForense = {
   tempoOnboardingEstimado: '6-8 semanas',
   cursosGerados: 5,
   modulosTotais: 35,
+  estadosWorkflow: ['draft', 'technical-review', 'clinical-review', 'compliance-review', 'approved', 'published', 'archived'],
 };
 
 // ============================================================================

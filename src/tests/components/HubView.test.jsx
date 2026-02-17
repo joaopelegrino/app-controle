@@ -47,18 +47,17 @@ const renderWithRouter = (ui) => {
 
 describe('HubView Component', () => {
   const mockOpenArea = vi.fn();
-  const mockOpenLearningPath = vi.fn();
 
   const mockStudyAreas = {
-    bash: {
-      name: 'Bash',
-      icon: '🐚',
-      description: 'Shell scripting e automação',
+    'flusistip-fundamentos': {
+      name: 'FluSisTip - Fundamentos e Ambiente',
+      icon: '\u{1F527}',
+      description: 'Setup completo: Clojure 1.12, Java 21, Datomic Local',
       status: 'active',
-      badge: 'integrated',
-      modules: 16,
-      hours: 32,
-      hasIntegratedApp: true,
+      badge: 'onboarding',
+      modules: 5,
+      hours: 8,
+      hasIntegratedApp: false,
       flashcards: {
         basics: {
           name: 'Fundamentos',
@@ -66,16 +65,18 @@ describe('HubView Component', () => {
         }
       }
     },
-    linux: {
-      name: 'Linux',
-      icon: '🐧',
-      description: 'Sistema operacional',
-      status: 'in-development',
-      modules: 12,
-      hours: 24,
+    'flusistip-dominio': {
+      name: 'FluSisTip - Domínio Healthcare',
+      icon: '\u{1F3E5}',
+      description: 'Entidades DDD, Datomic schemas',
+      status: 'active',
+      badge: 'onboarding',
+      modules: 8,
+      hours: 12,
+      hasIntegratedApp: false,
       flashcards: {
-        commands: {
-          name: 'Comandos',
+        domain: {
+          name: 'Domínio',
           cards: [{ question: 'Q3', answer: 'A3' }]
         }
       }
@@ -92,7 +93,6 @@ describe('HubView Component', () => {
         <HubView
           studyAreas={mockStudyAreas}
           openArea={mockOpenArea}
-          openLearningPath={mockOpenLearningPath}
         />
       );
 
@@ -106,7 +106,6 @@ describe('HubView Component', () => {
         <HubView
           studyAreas={mockStudyAreas}
           openArea={mockOpenArea}
-          openLearningPath={mockOpenLearningPath}
         />
       );
 
@@ -121,12 +120,11 @@ describe('HubView Component', () => {
         <HubView
           studyAreas={mockStudyAreas}
           openArea={mockOpenArea}
-          openLearningPath={mockOpenLearningPath}
         />
       );
 
-      expect(screen.getByText('Bash')).toBeInTheDocument();
-      expect(screen.getByText('Shell scripting e automação')).toBeInTheDocument();
+      expect(screen.getByText('FluSisTip - Fundamentos e Ambiente')).toBeInTheDocument();
+      expect(screen.getByText('Setup completo: Clojure 1.12, Java 21, Datomic Local')).toBeInTheDocument();
     });
 
     it('calls openArea when clicking on active area card', () => {
@@ -134,43 +132,29 @@ describe('HubView Component', () => {
         <HubView
           studyAreas={mockStudyAreas}
           openArea={mockOpenArea}
-          openLearningPath={mockOpenLearningPath}
         />
       );
 
-      const bashCard = screen.getByText('Bash').closest('div[class*="cursor-pointer"]');
-      if (bashCard) {
-        fireEvent.click(bashCard);
-        expect(mockOpenArea).toHaveBeenCalledWith('bash');
+      const card = screen.getByText('FluSisTip - Fundamentos e Ambiente').closest('div[class*="cursor-pointer"]');
+      if (card) {
+        fireEvent.click(card);
+        expect(mockOpenArea).toHaveBeenCalledWith('flusistip-fundamentos');
       }
     });
   });
 
-  describe('Hub de Especialistas Section (US-153)', () => {
-    it('renders Hub de Especialistas CTA card', () => {
+  describe('Statistics', () => {
+    it('renders correct stats for FluSisTip areas', () => {
       renderWithRouter(
         <HubView
           studyAreas={mockStudyAreas}
           openArea={mockOpenArea}
-          openLearningPath={mockOpenLearningPath}
         />
       );
 
-      // The Hub de Especialistas section has a gradient card
-      const gradientCard = document.querySelector('[class*="from-indigo-600"]');
-      expect(gradientCard).toBeInTheDocument();
-    });
-
-    it('renders Hub de Especialistas title', () => {
-      renderWithRouter(
-        <HubView
-          studyAreas={mockStudyAreas}
-          openArea={mockOpenArea}
-          openLearningPath={mockOpenLearningPath}
-        />
-      );
-
-      expect(screen.getByText('Hub de Especialistas')).toBeInTheDocument();
+      // 2 areas, 13 modules (5+8), 20h (8+12)
+      expect(screen.getByText('2')).toBeInTheDocument();
+      expect(screen.getByText('13')).toBeInTheDocument();
     });
   });
 
@@ -180,7 +164,6 @@ describe('HubView Component', () => {
         <HubView
           studyAreas={{}}
           openArea={mockOpenArea}
-          openLearningPath={mockOpenLearningPath}
         />
       );
 
@@ -204,7 +187,6 @@ describe('HubView Component', () => {
         <HubView
           studyAreas={areasNoCards}
           openArea={mockOpenArea}
-          openLearningPath={mockOpenLearningPath}
         />
       );
 

@@ -1,388 +1,153 @@
-# UltraThink - Plataforma B2B de Treinamento Técnico Corporativo
+# FluSisTip - Plataforma de Onboarding Tecnico
 
-**Plataforma B2B multi-tenant** para treinamento técnico corporativo com autenticação JWT, RBAC (4 roles), dashboards por perfil e analytics avançado.
-
-## 🎯 Visão Geral
-
-**UltraThink** resolve o problema de empresas que gastam R$150k-200k/ano em plataformas genéricas (Udemy Business, Coursera) mas enfrentam:
-- ❌ Baixa taxa de engajamento (apenas 10-15% dos colaboradores usam)
-- ❌ Conteúdo não customizável para stack específico da empresa
-- ❌ Impossibilidade de medir ROI real do treinamento
-- ❌ Onboarding técnico desorganizado (2+ meses para produtividade)
-
-**Solução:** Plataforma própria white-label com:
-- ✅ Autenticação JWT real via NocoDB + PostgreSQL
-- ✅ Sistema RBAC com 4 roles e 21 permissões
-- ✅ Dashboards específicos por perfil (Student, Instructor, Admin, C-Level)
-- ✅ Analytics de ROI e módulos difíceis
-- ✅ Multi-tenancy por empresa
-- ✅ **Internacionalização (i18n)**: pt-BR, en-US, es-ES
+**Branch:** `feature/onboarding-flusistip-forensic`
+**Stack:** React 18 + Vite 5 + Tailwind CSS + NocoDB + PostgreSQL
+**Data:** 2026-02-17
 
 ---
 
-## 💼 Contexto B2B
+## O que e o FluSisTip?
 
-### **Público-Alvo Principal**
-- Empresas de tecnologia (startups a mid-size, 50-500 funcionários)
-- Áreas de RH/T&D de corporações tech
-- Times de engenharia que precisam padronizar onboarding técnico
-- Consultorias que treinam clientes em tecnologias específicas
+Plataforma de onboarding tecnico para novos colaboradores do projeto FluSisTip (Healthcare LLM). Esta branch contem **exclusivamente** conteudo FluSisTip — sem cursos genericos (Bash), trilhas propostas ou Hub de Especialistas. Oferece uma trilha estruturada de 5 cursos com 35 modulos, 50 flash cards e checklists por persona.
 
-### **Problema Resolvido**
-\`\`\`
-Cenário Típico CTO:
-"Gastamos R$ 180 mil/ano no Udemy Business, mas só 10% dos devs usam.
- Precisamos de algo mais focado no nosso stack (React, Rust, DevOps)."
-
-Cenário Típico Gerente de Engenharia:
-"Nosso onboarding técnico é um caos. Cada líder ensina do seu jeito.
- Levamos 2 meses para um júnior ficar produtivo."
-\`\`\`
-
-### **Proposta de Valor**
-- ✅ **Customizável**: Crie cursos específicos da empresa (stack, ferramentas internas)
-- ✅ **Mensurável**: Analytics de engajamento, conclusão, tempo por módulo
-- ✅ **Escalável**: Onboard 10 ou 100 devs com mesmo padrão de qualidade
-- ✅ **Flexível**: Self-hosted gratuito ou SaaS gerenciado com consultoria
-
----
-
-## 💡 Modelo de Negócio (Em Definição)
-
-> **Status:** 🟡 Decisão em aberto - pesquisa de tecnologias concluída, validação pendente
-
-### Visão: Open Core + Consultoria T&D
-
-O Plataforma B2B de treinamento técnico corporativo está sendo desenvolvido com modelo **Open Core**, inspirado em casos de sucesso como GitLab (69% YoY growth), Supabase e Mattermost:
+### Trilha de Aprendizado (5 Cursos)
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                    MODELO HÍBRIDO (EM VALIDAÇÃO)                     │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  🆓 COMMUNITY (Self-Hosted)        💼 SAAS GERENCIADO               │
-│  ────────────────────────          ────────────────────────         │
-│  • 100% gratuito                   • Starter: R$ 499/mês            │
-│  • Docker Compose                  • Professional: R$ 2.499/mês     │
-│  • Código aberto (AGPL-3.0*)       • Enterprise: Sob consulta       │
-│  • Suporte: comunidade             • Suporte: dedicado              │
-│  • Sem limite de usuários          • + Consultoria T&D inclusa      │
-│                                                                      │
-│  * Licença em definição (AGPL-3.0, Apache 2.0 ou MIT)               │
-│                                                                      │
-└─────────────────────────────────────────────────────────────────────┘
+FluSisTip Fundamentos (8h, 5 modulos) ─── beginner
+    ├── FluSisTip Dominio (12h, 8 modulos) ─── intermediate
+    │       └── FluSisTip Workflow (15h, 9 modulos) ─── advanced
+    │       └── FluSisTip LLM (10h, 6 modulos) ─── advanced
+    └── FluSisTip Frontend (12h, 7 modulos) ─── intermediate
 ```
 
-### Opções de Stack Backend (Em Avaliação)
-
-| Componente | Opção A (Self-Hosted) | Opção B (Cloud) | Status |
-|------------|----------------------|-----------------|--------|
-| **Database** | PostgreSQL 16 (Docker) | Supabase | 🟡 Em avaliação |
-| **Autenticação** | Keycloak / Authentik / Ory | Supabase Auth | 🟡 Em avaliação |
-| **Storage** | MinIO (S3-compatible) | Supabase Storage | 🟡 Em avaliação |
-| **Analytics** | DuckDB | MotherDuck | 🟡 Em avaliação |
-
-> **Pesquisa completa:** [docs/backlog/relatorios/2025-11-22-pesquisa-solucoes-database.md](docs/backlog/relatorios/2025-11-22-pesquisa-solucoes-database.md)
-
-### Diferencial: Consultoria T&D
-
-Além do software, o Plataforma B2B de treinamento técnico corporativo oferecerá serviços de consultoria especializada:
-- Diagnóstico de gaps de competência
-- Criação de trilhas customizadas
-- Workshops presenciais/remotos
-- Implementação enterprise
+- **35 modulos** com complexidade 4D (conceitual, tecnico, dominio, integracao)
+- **50 flash cards** com rastreabilidade de fonte
+- **4 checklists** por persona (71 items verificaveis)
 
 ---
 
-## ⚡ Estado Atual - Janeiro 2026
+## 2 Personas
 
-### 🎯 Status: Sprint 12 COMPLETO (i18n) ✅
+A tela de login apresenta 2 botoes de acesso rapido:
 
-```
-┌─────────────────┬────────────┬───────────────────────┐
-│   Componente    │   Status   │          URL          │
-├─────────────────┼────────────┼───────────────────────┤
-│ Frontend (Vite) │ ✅ Rodando │ http://localhost:3001 │
-├─────────────────┼────────────┼───────────────────────┤
-│ NocoDB          │ ✅ Healthy │ http://localhost:8081 │
-├─────────────────┼────────────┼───────────────────────┤
-│ PostgreSQL      │ ✅ Healthy │ localhost:5432        │
-└─────────────────┴────────────┴───────────────────────┘
-```
+| Persona | Email | Role | Acesso |
+|---------|-------|------|--------|
+| **Colaborador FluSisTip** | maria@acmetech.com | student | Hub de Aprendizado, Dashboard, Cursos, Flash Cards |
+| **Profissional de Capacitacao** | prof@acmetech.com | instructor | Dashboard do Time, Catalogo, Gestao de Alunos |
 
-### 🆕 Funcionalidades Implementadas (Sprints 6-11)
+**Senha:** `Demo@2026`
 
-**Autenticação & RBAC:**
-- 🔐 **Auth JWT NocoDB**: Login real com validação de token
-- 👥 **4 Roles**: student, instructor, admin, c_level
-- 🛡️ **21 Permissões**: 17 com UI implementada (81%)
-- 🏢 **Multi-tenancy**: Isolamento por empresa
+### Colaborador FluSisTip (student)
 
-**Dashboards por Perfil:**
-- 📊 **UserDashboard**: Progresso pessoal, notas, cursos
-- 👨‍🏫 **InstructorDashboard**: Time, alunos que precisam atenção
-- ⚙️ **AdminDashboard**: CRUD usuários, matrículas, analytics
-- 📈 **ExecutiveDashboard**: ROI, KPIs, métricas corporativas
+Acessa a trilha de aprendizado:
+- `/` — Hub com 5 areas FluSisTip (stats: 5 areas, 35 modulos, 57h)
+- `/dashboard` — Meu Progresso (cursos, notas)
+- `/curso/*` — Conteudo dos cursos + flash cards
 
-**UX Polish (Sprint 11):**
-- 📱 **Responsividade Mobile**: MobileMenu hamburger
-- 🎯 **Empty States**: Estados vazios reutilizáveis
-- ⚠️ **Confirm Modal**: Confirmação antes de ações destrutivas
-- 🎉 **Onboarding Wizard**: 4 steps para novos usuários
-- 🔔 **Toast Notifications**: Feedback visual
-- ⏳ **Loading States**: Skeletons e spinners
+Bloqueado em:
+- `/admin` — Acesso Negado
+- `/instructor` — Acesso Negado
+- `/admin/executive` — Acesso Negado
+- `/specialist` — Acesso Negado
 
-**Internacionalização (Sprint 12) ✅ COMPLETO:**
-- 🌍 **3 Idiomas**: Português (pt-BR), Inglês (en-US), Espanhol (es-ES)
-- 🔄 **Troca Dinâmica**: LanguageSelector com 3 variantes
-- 📦 **4 Namespaces**: common (~85), auth (~45), errors (~20), dashboard (~100)
-- 💾 **Persistência**: Preferência salva no localStorage
-- 📄 **6 Componentes**: Login, Hub, UserHeader, 4 Dashboards
+### Profissional de Capacitacao (instructor)
 
-### 📊 Métricas do Projeto
-
-| Métrica | Valor |
-|---------|-------|
-| Sprints Completos | 7 (Sprint 6-12) |
-| Sprint Atual | ✅ Todos completos |
-| User Stories | 43/43 (100%) |
-| Permissões RBAC | 17/21 (81%) |
-| Testes E2E | 14/14 (100%) |
-| Idiomas i18n | 3 (pt-BR, en-US, es-ES) |
-| Strings i18n | ~250 (4 namespaces) |
-| Console Errors | 0 |
+Gerencia o onboarding e acompanha progresso:
+- `/instructor` — Dashboard do time (alunos, progresso, notas)
+- `/` — Hub de Aprendizado (visao dos cursos)
+- `/curso/*` — Conteudo dos cursos
 
 ---
 
-## 🚀 Diferenciais da Plataforma
+## Como Rodar
 
-### **Para CTOs e Gestores de Engenharia**
-- 🎯 **Onboarding Estruturado**: Padronize treinamento técnico em 4 semanas (vs 2+ meses atual)
-- 📊 **Analytics Corporativo**: Dashboards de engajamento, conclusão, tempo médio (Release 3.0)
-- 💰 **ROI Mensurável**: Compare custo/colaborador vs plataformas genéricas
-- 🔐 **Controle Total**: Conteúdo 100% customizável, sem vendor lock-in
+### Pre-requisitos
 
-### **Para Colaboradores (Usuários Finais)**
-- 📖 **Trilhas Claras**: Curso → Aula → Prática (hierarquia de 4 níveis)
-- 🎓 **Progresso Visível**: Badges, conclusão percentual, tempo estimado
-- 📝 **Caderno Integrado**: Anote enquanto aprende (auto-save 500ms)
-- 🃏 **Memorização Ativa**: Flash cards para reforço de conceitos
-- 🎥 **Multi-Formato**: Texto, vídeo, código interativo
-
-### **Para Times de RH/T&D**
-- 📚 **Biblioteca Técnica**: 13 áreas de conhecimento prontas
-- 🛤️ **Trilhas por Role**: Backend, Frontend, DevOps, Security
-- 📈 **Relatórios de Engajamento**: Quem está estudando, quanto tempo, taxa de conclusão (futuro)
-- 🎯 **Certificações Customizadas**: Crie certificados internos com logo da empresa (futuro)
-
----
-
-## 🛠️ Stack Tecnológica
-
-- **Bun 1.3.3**: Runtime JavaScript principal (Anthropic - 35x mais rápido que npm)
-- **React 18.3.1**: Framework frontend
-- **Vite 5.4.19**: Build tool moderno (startup 295ms)
-- **Tailwind CSS 3.4.1**: Design system utility-first
-- **Lucide React 0.344.0**: Biblioteca de ícones
-- **React Markdown 10.1.0**: Renderização de conteúdo
-- **Vitest 3.2.4**: Testes unitários
-- **Playwright 1.56.1**: Testes E2E
-- **Docker + Nginx**: Containerização e deploy
-- **mise**: Gerenciador de versões (Node.js 24.11.1 como fallback)
-
----
-
-## 📁 Estrutura do Projeto
-
-\`\`\`
-plataforma-b2b/
-├── src/
-│   ├── components/          # 18 componentes React
-│   │   ├── SistemaEducacionalCompleto.jsx  # Root component
-│   │   ├── HubView.jsx                     # Hub principal
-│   │   ├── *LearningSystem.jsx (5x)        # Sistemas de cursos
-│   │   ├── *NotesView.jsx (5x)             # Caderno de notas
-│   │   ├── Breadcrumb.jsx                  # Navegação WCAG AA
-│   │   ├── FlashcardModal.jsx              # Flash cards 3D
-│   │   └── ...
-│   ├── data/                # Dados estruturados
-│   │   ├── studyAreas.js                   # 13 áreas de conhecimento
-│   │   ├── *LearningData.js (5x)           # Conteúdo dos cursos
-│   │   └── ...
-│   ├── utils/               # Utilitários
-│   └── tests/               # Testes automatizados
-├── docs/                    # Documentação técnica
-│   ├── conceitual/          # Docs de negócio (PRD, glossário)
-│   ├── tecnico/             # Docs de arquitetura
-│   └── treinamento-interno/ # Onboarding desenvolvedores
-├── .claude/                 # Configuração Claude Code
-│   ├── skills/              # Skills especializadas (auto-ativa)
-│   ├── agents/              # Agents complexos
-│   └── meta-docs/           # Meta-documentação
-├── dist/                    # Build de produção
-├── docker-compose.yml       # Orquestração Docker
-├── package.json             # Dependências
-└── README.md                # Este arquivo
-\`\`\`
-
----
-
-## 🚀 Como Rodar Localmente
-
-### **Pré-requisitos**
-- **Bun 1.3.3+** (recomendado - via mise)
+- **Bun 1.3.3+** (via mise)
 - **Docker Desktop** com WSL2 Integration (para backend)
-- mise (gerenciador de versões) ou Node.js 24+ como fallback
 
-### **Modo 1: Frontend Apenas (Dados Mock)**
+### Frontend (dados mock)
 
 ```bash
-# Instale dependências
 bun install
-
-# Rode o servidor de desenvolvimento
 bun run dev
-# Acesse: http://localhost:3001
+# Acesse: http://localhost:3001/login
 ```
 
-### **Modo 2: Full Stack (Recomendado)**
+### Full Stack (recomendado)
 
 ```bash
-# 1. Iniciar Docker Desktop (Windows)
-# 2. Iniciar backend (PostgreSQL + NocoDB)
+# 1. Backend
 docker compose -f docker-compose.nocodb.yml up -d
 
-# 3. Executar migrations (primeira vez)
+# 2. Migrations
 docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-001-rbac.sql
 docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/migration-002-enrollments.sql
 
-# 4. Iniciar frontend
+# 3. Seed FluSisTip (5 cursos)
+docker exec -i app-controle-db psql -U nocodb_user -d app_controle < database/seed-onboarding-flusistip.sql
+
+# 4. Frontend
 bun run dev
 ```
 
-### **Credenciais de Demo**
-
-```
-Senha padrão: Demo@2026
-
-ACME Tech Solutions:
-├── ceo@acmetech.com     (C-Level)    → /admin/executive
-├── admin@acmetech.com   (Admin)      → /admin
-├── prof@acmetech.com    (Instructor) → /instructor
-└── maria@acmetech.com   (Student)    → /dashboard
-```
-
-### **Build de Produção**
+### Testes
 
 ```bash
-bun run build && bun run preview
+bun run test
+# 74/75 pass (1 falha pre-existente nao relacionada ao FluSisTip)
 ```
 
 ---
 
-## 🧪 Testes
+## Artefatos do Onboarding
 
-\`\`\`bash
-# Testes unitários
-bun run test
-
-# Testes com UI
-bun run test:ui
-
-# Cobertura de testes
-bun run test:coverage
-
-# Testes E2E (Playwright)
-bun run test-usabilidade-mcp.cjs
-\`\`\`
-
----
-
-## 📊 Roadmap de Produto
-
-### **Sprints 6-12** ✅ **COMPLETOS** (Janeiro 2026)
-- ✅ Auth JWT NocoDB + PostgreSQL
-- ✅ Sistema RBAC (4 roles, 21 permissões)
-- ✅ 4 Dashboards por perfil
-- ✅ CRUD completo de usuários
-- ✅ Matrículas em cursos
-- ✅ Exportação Excel/JSON
-- ✅ Analytics de ROI e módulos difíceis
-- ✅ Responsividade mobile
-- ✅ Onboarding wizard
-- ✅ Toast notifications
-- ✅ Loading states (skeletons)
-- ✅ Internacionalização i18n (pt-BR, en-US, es-ES)
-
-### **Sprint 13** 📋 **PRÓXIMO**
-- [ ] CRUD de cursos (courses.create/edit)
-- [ ] Certificados de conclusão
-- [ ] Tour guiado real (highlight UI)
-- [ ] Correção BUG-001 (navegação instructor)
-
-### **Release 3.0 "Enterprise"** 📋 **PLANEJADA**
-- [ ] SSO Corporativo (SAML, OAuth)
-- [ ] API RESTful para criação de cursos
-- [ ] Dark mode
-- [ ] TypeScript migration (gradual)
-- [ ] Acessibilidade WCAG 2.1 AA (100%)
-
-### **Release 4.0 "Scale"** 📋 **PLANEJADA**
-- [ ] Marketplace B2B2C de cursos técnicos
-- [ ] Gamificação (badges, leaderboards)
-- [ ] PWA com modo offline
-- [ ] Mobile apps (iOS/Android)
-- [ ] Integração Slack/Teams
+```
+app-controle/
+├── docs/onboarding/flusistip/
+│   ├── RELATORIO-FORENSE.md            # Diagnostico completo (metricas, gaps)
+│   └── TRILHA-ONBOARDING.md            # Visao geral 5 cursos + DAG
+├── src/data/
+│   ├── flusistipOnboardingData.js       # 5 cursos, 35 modulos, complexidade 4D
+│   ├── flusistipFlashCards.js           # 50 flash cards com rastreabilidade
+│   ├── flusistipOnboardingChecklist.js  # 4 personas, 71 items verificaveis
+│   └── studyAreas.js                   # 5 areas FluSisTip (somente onboarding)
+├── database/
+│   └── seed-onboarding-flusistip.sql    # 5 cursos para NocoDB (idempotente)
+└── src/components/
+    ├── LoginView.jsx                    # Login com 2 botoes FluSisTip
+    └── HubView.jsx                      # Hub exclusivo FluSisTip (sem Bash/Caminhos/Hub Especialistas)
+```
 
 ---
 
-## 🤝 Contribuindo
+## Validacao
 
-Este é um projeto proprietário B2B. Se você é colaborador:
+Comando de validacao completa (57 test cases, 7 layers):
 
-1. Clone o repositório
-2. Leia \`CLAUDE.md\` para entender arquitetura e padrões
-3. Consulte \`docs/conceitual/01-visao-geral/00-definicoes-principais.md\` para glossário
-4. Consulte \`PRODUCT-CENTRAL-DOCUMENT.md\` para PRD e User Stories
-5. Crie branch: \`feature/US-XXX-descricao\`
-6. Implemente seguindo padrões do projeto
-7. Rode testes: \`npm test\`
-8. Abra Pull Request
+```
+/validacao-onboarding-flusistip
+```
+
+Resultado atual: **45 PASS | 2 FAIL | 6 PARTIAL | 4 SKIP (79%)**
 
 ---
 
-## 📚 Documentação
+## Stack
 
-- **[CLAUDE.md](CLAUDE.md)** - Contexto completo para Claude Code (arquitetura, skills, MCP)
-- **[docs/backlog/ROADMAP.md](docs/backlog/ROADMAP.md)** - PRD B2B, User Stories, Backlog (SSOT)
-- **[docs/conceitual/](docs/conceitual/)** - Glossário, modelo de domínio, personas
-- **[docs/tecnico/](docs/tecnico/)** - Arquitetura, guias MCP, templates
-- **[.claude/meta-docs/](.claude/meta-docs/)** - Meta-documentação de evolução
-
----
-
-## 📞 Contato
-
-**Desenvolvedor:** João Pelegrino
-**Projeto:** UltraThink - Plataforma B2B de Treinamento Técnico Corporativo
-**Status:** Demo B2B Ready + i18n (Sprint 12 completo)
-**Branch:** `demo-nocodb-simple`
-**Repositório:** Privado
+| Tecnologia | Uso |
+|------------|-----|
+| React 18 | UI Framework |
+| Vite 5 | Build + HMR |
+| Tailwind CSS 3 | Styling |
+| react-router-dom v6 | Routing SPA |
+| react-i18next | i18n (pt-BR, en-US, es-ES) |
+| NocoDB + PostgreSQL 16 | Backend |
+| Vitest | Testes unitarios |
+| Bun 1.3.3 | Runtime JS |
 
 ---
 
-## 📄 Licença
-
-> **Status:** 🟡 Em definição
-
-**Opções em avaliação:**
-- **AGPL-3.0** (recomendado) - Protege contra "cloud washing", incentiva contribuições
-- **Apache 2.0** - Mais permissivo, facilita adoção enterprise
-- **MIT** - Máxima permissividade
-
-A decisão final será tomada antes da Release 3.0 (Q2 2026), considerando:
-- Proteção do modelo de negócio
-- Facilidade de adoção por empresas
-- Incentivo a contribuições da comunidade
-
-**Atualmente:** Código em desenvolvimento, repositório privado.
+**Desenvolvido por:** TrainB2B
+**Branch:** `feature/onboarding-flusistip-forensic`
+**Base:** app-controle v12.0.0

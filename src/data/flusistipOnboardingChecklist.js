@@ -216,10 +216,10 @@ export const checklistOnboarding = {
 export const checklistMetricas = {
   perfis: 4,
   totalItems: {
-    'dev-pleno-backend': 30,
-    'dev-pleno-frontend': 19,
-    'dev-senior-fullstack': 18,
-    'qa-engineer': 14,
+    'dev-pleno-backend': 27,
+    'dev-pleno-frontend': 18,
+    'dev-senior-fullstack': 15,
+    'qa-engineer': 11,
   },
   tempoTotal: {
     'dev-pleno-backend': '6 semanas',
